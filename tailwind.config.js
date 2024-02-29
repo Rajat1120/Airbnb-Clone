@@ -2,7 +2,6 @@
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
-    colors: {},
     fontFamily: {
       sans: ["Poppins"],
     },
@@ -13,6 +12,8 @@ module.exports = {
       colors: {
         pink: "#ff385c",
         grey: "#717171;",
+        "grey-light": "#B3B3B3",
+        "grey-dim": "#DBDBDB",
       },
     },
   },
