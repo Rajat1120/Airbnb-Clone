@@ -3,6 +3,7 @@
 import icon from "../data/airbnbLogo.svg";
 import globe from "../data/globe.svg";
 import menu from "../data/Menu-Icon.svg";
+import person from "../data/person.svg";
 
 function Header() {
   return (
@@ -31,15 +32,16 @@ function Header() {
       </div>
       <div className="h-20 flex items-center  justify-end ">
         <a href="#">
-          <p className="text-sm ">Airbnb your home</p>
+          <p className="text-sm font-[450]; ">Airbnb your home</p>
         </a>
         <button className="px-[10px]">
           <img className="scale-[0.7] w-[100%]" src={globe} alt="" />
         </button>
 
-        <div className=" py-[8px] pl-[14px] pr-[8px] ">
-          <button className="w-[62px] ">
-            <img src={menu} alt="" />
+        <div className=" py-[8px] pl-[14px] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey opacity-[0.7] ">
+          <button className="w-[62px] flex space-x-3">
+            <img src={menu} className="scale-[0.8]" alt="" />
+            <img src={person} className="scale-[1.5]" alt="" />
           </button>
         </div>
       </div>
