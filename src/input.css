@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* @layer base; */
+/* Hide scrollbars in WebKit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  display: none; /* Hide the scrollbar */
+}
+
+/* .inset-shadow {
+  box-shadow: inset -45px 0px 30px -31px #e8e8e8,
+    inset 32px 2px 33px -31px #dddddb;
+} */

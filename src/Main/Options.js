@@ -19,24 +19,24 @@ const Options = () => {
   return (
     <div className="px-[40px]">
       <div className="h-[98px] py-3 relative ">
-        <div className={"w-[60%]   border-blur    rounded-lg overflow-hidden"}>
-          <div className="flex  overflow-scroll justify-evenly ">
+        <div className={"w-[70%]    border-blur    rounded-lg overflow-hidden"}>
+          <div className="flex inset-shadow relative  overflow-scroll justify-evenly ">
             {options.map((item) => {
               return (
                 <div
                   key={item.key}
-                  className="opacity-60 flex px-4 space-y-2 h-[48px] my-[12px] py-[4px] flex-col justify-center "
+                  className="opacity-60 hover:opacity-100 cursor-pointer  flex px-4 space-y-2 h-[48px] my-[12px] py-[4px]  flex-col justify-center "
                 >
-                  <img src={item.svg} className="h-6" alt="" />
-                  <p className="text-xs ">Trending</p>
+                  <img src={item.svg} className="h-6 cursor-pointer " alt="" />
+                  <p className="text-xs cursor-pointer  ">Trending</p>
                 </div>
               );
             })}
           </div>
 
-          {/*  <button>
-            <img src={arrow_right} className="h-6" alt="" />
-          </button> */}
+          <button className=" absolute top-[25%] right-1 rounded-[50%] border-2">
+            <img src={arrow_right} className="h-6 " alt="" />
+          </button>
         </div>
       </div>
     </div>
