@@ -10,6 +10,10 @@ module.exports = {
     extend: {
       boxShadow: {
         "3xl": "-1px 3.5px 5px 1px #CFCFD1",
+        /*  "inset-shadow": {
+          "-10px-0px-9px-1px": "#EFEFEF",
+          "10px-0px-10px-1px": "#EFEFEF",
+        }, */
       },
       colors: {
         pink: "#ff385c",
@@ -36,6 +40,11 @@ module.exports = {
           right: "0",
           /*  "border-image":
             "linear-gradient(to right, rgba(255, 255, 255, 0), #e5e7eb, rgba(255, 255, 255, 0)) 1", */
+        },
+        ".remove-scrollbar": {
+          "::-webkit-scrollbar": {
+            display: "none", // Hides the scrollbar in WebKit browsers
+          },
         },
       };
 
