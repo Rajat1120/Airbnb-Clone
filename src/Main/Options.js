@@ -20,7 +20,7 @@ const Options = () => {
   return (
     <div className="px-[40px]  ">
       <div className="h-[98px] flex  py-3 relative ">
-        <div className={"w-[70%]    border-blur    rounded-lg overflow-hidden"}>
+        <div className={"w-[70%]    rounded-lg overflow-hidden"}>
           <div className="flex inset-shadow relative  overflow-scroll justify-evenly ">
             {options.map((item) => {
               return (
