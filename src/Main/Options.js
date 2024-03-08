@@ -1,4 +1,5 @@
 import React from "react";
+import FilterHome from "./FilterHome";
 import arrow_left from "./../data/Arrows/arrow-left.svg";
 import arrow_right from "./../data/Arrows/arrow-right.svg";
 
@@ -17,8 +18,8 @@ const Options = () => {
 
   console.log(options);
   return (
-    <div className="px-[40px]">
-      <div className="h-[98px] py-3 relative ">
+    <div className="px-[40px]  ">
+      <div className="h-[98px] flex  py-3 relative ">
         <div className={"w-[70%]    border-blur    rounded-lg overflow-hidden"}>
           <div className="flex inset-shadow relative  overflow-scroll justify-evenly ">
             {options.map((item) => {
@@ -38,6 +39,7 @@ const Options = () => {
             <img src={arrow_right} className="h-6 " alt="" />
           </button>
         </div>
+        <FilterHome></FilterHome>
       </div>
     </div>
   );
