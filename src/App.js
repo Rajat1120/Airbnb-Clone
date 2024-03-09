@@ -1,12 +1,15 @@
 import styles from "./input.css";
 import Header from "./Header/Header";
 import Options from "./Main/Options";
+import Toggle from "./Main/Toggle";
+import House from "./Main/House";
 
 export default function App() {
   return (
-    <div className="">
+    <div className="px-[40px]">
       <Header></Header>
       <Options></Options>
+      <House></House>
     </div>
   );
 }

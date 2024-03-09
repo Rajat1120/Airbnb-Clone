@@ -1,5 +1,5 @@
 import React from "react";
-import FilterHome from "./FilterHome";
+import FilterHome from "./buttons/FilterHome";
 import arrow_left from "./../data/Arrows/arrow-left.svg";
 import arrow_right from "./../data/Arrows/arrow-right.svg";
 
@@ -42,7 +42,7 @@ const Options = () => {
             })}
           </div>
 
-          <button className=" absolute top-[25%] right-1 rounded-[50%] border-2">
+          <button className=" absolute top-[25%] z-20 -right-2 rounded-[50%] border-2">
             <img src={arrow_right} className="h-6 " alt="" />
           </button>
         </div>
