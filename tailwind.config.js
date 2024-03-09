@@ -21,6 +21,9 @@ module.exports = {
         "grey-light": "#B3B3B3",
         "grey-dim": "#DBDBDB",
       },
+      gridTemplateColumns: {
+        three: "repeat(3, minmax(300px,1fr))",
+      },
     },
   },
   plugins: [
