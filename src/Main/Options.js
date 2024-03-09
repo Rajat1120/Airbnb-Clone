@@ -18,7 +18,7 @@ const Options = () => {
 
   console.log(options);
   return (
-    <div className="px-[40px]  ">
+    <div className="  ">
       <div className="h-[98px] flex  py-3 relative ">
         <div
           className={
