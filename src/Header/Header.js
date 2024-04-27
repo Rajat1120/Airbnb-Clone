@@ -7,7 +7,7 @@ import person from "../data/person.svg";
 
 function Header() {
   return (
-    <div className="after:content-[''] after:flex  after:w-full after:bg-grey-dim after:h-[0.6px]">
+    <div className="after:content-[''] after:flex  after:w-full after:bg-grey-dim bg-white after:h-[0.6px]">
       <div className="grid grid-cols-3  px-10     ">
         <div className="w-8 ">
           <a href="#">
