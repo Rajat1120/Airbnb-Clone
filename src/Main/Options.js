@@ -18,7 +18,7 @@ const Options = () => {
 
   console.log(options);
   return (
-    <div className="  ">
+    <div className=" bg-white ">
       <div className="h-[98px] flex  py-3 relative ">
         <div
           className={
