@@ -7,11 +7,13 @@ import House from "./Main/House";
 export default function App() {
   return (
     <div className="px-[40px]">
-      <div className="fixed">
+      <div className="fixed top-0">
         <Header></Header>
         <Options></Options>
       </div>
-      <House></House>
+      <div className="mt-[180px]">
+        <House></House>
+      </div>
     </div>
   );
 }
