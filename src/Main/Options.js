@@ -18,17 +18,17 @@ const Options = () => {
 
   console.log(options);
   return (
-    <div className=" bg-white ">
-      <div className="h-[98px] flex  py-3 relative ">
+    <div className=" bg-white justify-self-center ">
+      <div className="h-[98px] flex    py-3  ">
         <div
           className={
-            "w-[70%] flex relative items-center   rounded-lg overflow-hidden"
+            "w-[980px] flex relative  items-center  rounded-lg overflow-hidden"
           }
         >
-          <button className=" absolute top-[25%] left-1 rounded-[50%] border-2">
-            <img src={arrow_left} className="h-6 " alt="" />
-          </button>
-          <div className="flex inset-shadow relative  overflow-scroll justify-evenly ">
+          <div className="flex inset-shadow    overflow-scroll w-[970px] justify-evenly ">
+            <button className=" absolute  top-[25%] left-1 rounded-[50%] border-2">
+              <img src={arrow_left} className="h-6 " alt="" />
+            </button>
             {options.map((item) => {
               return (
                 <div
@@ -40,11 +40,10 @@ const Options = () => {
                 </div>
               );
             })}
+            <button className=" absolute top-[25%] z-20 -right-2 rounded-[50%] border-2">
+              <img src={arrow_right} className="h-6 " alt="" />
+            </button>
           </div>
-
-          <button className=" absolute top-[25%] z-20 -right-2 rounded-[50%] border-2">
-            <img src={arrow_right} className="h-6 " alt="" />
-          </button>
         </div>
         <FilterHome></FilterHome>
       </div>
