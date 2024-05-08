@@ -15,7 +15,7 @@ const Options = () => {
   const optionsRef = useRef(null);
 
   const [scrollPosition, setScrollPosition] = useState(0);
-  console.log(scrollPosition);
+
   useEffect(() => {
     const handleScroll = () => {
       if (optionsRef.current) {
