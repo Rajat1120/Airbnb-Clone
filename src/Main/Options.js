@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import FilterHome from "./buttons/FilterHome";
 import arrow_left from "./../data/Arrows/arrow-left.svg";
 import arrow_right from "./../data/Arrows/arrow-right.svg";
@@ -12,11 +12,41 @@ const Options = () => {
     });
   }
 
+  const optionsRef = useRef(null);
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+  console.log(scrollPosition);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (optionsRef.current) {
+        setScrollPosition(optionsRef.current.scrollLeft);
+      }
+    };
+
+    if (optionsRef.current) {
+      optionsRef.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (optionsRef.current) {
+        optionsRef.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
+  let btnLeftClassName = ` absolute  ${
+    scrollPosition === 0 ? "hidden" : ""
+  }  top-[25%] left-1 z-50 bg-white rounded-[50%] border-2`;
+
+  let btnRightClassName = `absolute ${
+    scrollPosition === 1493.5 ? "hidden" : ""
+  } top-[25%] z-90 right-0 bg-white  rounded-[50%] border-2`;
+
   const options = importAll(
     require.context("../data/Options-Svg", false, /\.svg$/)
   );
 
-  console.log(options);
+  // console.log(options);
   return (
     <div className=" bg-white justify-self-center ">
       <div className="h-[98px] flex    py-3  ">
@@ -25,8 +55,11 @@ const Options = () => {
             "w-[980px] flex relative  items-center  rounded-lg overflow-hidden"
           }
         >
-          <div className="flex inset-shadow    overflow-scroll w-[970px] justify-evenly ">
-            <button className=" absolute  top-[25%] left-1 rounded-[50%] border-2">
+          <div
+            ref={optionsRef}
+            className="flex inset-shadow   overflow-scroll w-[970px] justify-evenly "
+          >
+            <button className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
             {options.map((item) => {
@@ -40,7 +73,7 @@ const Options = () => {
                 </div>
               );
             })}
-            <button className=" absolute top-[25%] z-20 -right-2 rounded-[50%] border-2">
+            <button className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
           </div>
