@@ -6,7 +6,7 @@ const FilterHome = () => {
   return (
     <div
       className={
-        "w-[400px]  gap-x-[10px] mx-0  rounded-lg flex items-center justify-center "
+        "w-[380px]  gap-x-[10px] mx-0   rounded-lg flex items-center justify-center "
       }
     >
       <button className="border-[1px] py-[7px] text-[12px] font-medium w-[92px] h-[48px] border-grey-dim rounded-lg flex items-center gap-x-1 justify-center ">
