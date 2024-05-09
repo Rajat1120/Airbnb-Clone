@@ -107,7 +107,7 @@ const Options = () => {
       <div className="h-[98px] flex    py-3  ">
         <div
           className={
-            "w-[980px] flex relative  items-center  rounded-lg overflow-hidden"
+            "w-[920px] flex relative ml-[2rem]   items-center  rounded-lg overflow-hidden"
           }
         >
           <div

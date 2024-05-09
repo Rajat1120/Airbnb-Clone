@@ -4,9 +4,9 @@ import star from "../data/Extra/star-rate.svg";
 const House = () => {
   let numOfHouse = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
   return (
-    <div className="three grid grid-cols-4 justify-items-center items-center gap-x-0 gap-y-8  grid-flow-row">
+    <div className=" grid gap-x-6  grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
       {numOfHouse.map((item) => (
-        <div className="w-[302px] h-[386px] flex gap-y-4 items-center justify-center flex-col ">
+        <div className="w-[280px] h-[386px] flex gap-y-4 items-center justify-center flex-col ">
           <div className="w-[302px]  h-[286px]">
             <img
               className="rounded-[20px] w-full h-full object-cover "
