@@ -13,8 +13,11 @@ const Options = () => {
   }
 
   const optionsRef = useRef(null);
+  const rightScrollBtnRef = useRef(null);
+  const leftScrollBtnRef = useRef();
 
   const [scrollPosition, setScrollPosition] = useState(0);
+  console.log(scrollPosition);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,6 +36,58 @@ const Options = () => {
       }
     };
   }, []);
+
+  // scroll btn right
+
+  useEffect(() => {
+    function handleScrollRightBtn() {
+      const newPosition = scrollPosition + 750;
+      optionsRef.current.scrollTo({
+        left: newPosition,
+        behavior: "smooth",
+      });
+      setScrollPosition(newPosition);
+    }
+
+    if (rightScrollBtnRef.current) {
+      rightScrollBtnRef.current.addEventListener("click", handleScrollRightBtn);
+    }
+
+    return () => {
+      if (rightScrollBtnRef.current) {
+        rightScrollBtnRef.current.removeEventListener(
+          "click",
+          handleScrollRightBtn
+        );
+      }
+    };
+  }, [scrollPosition]);
+
+  // scroll btn left
+
+  useEffect(() => {
+    function handleScrollLeftBtn() {
+      const newPosition = scrollPosition - 750;
+      optionsRef.current.scrollTo({
+        left: newPosition,
+        behavior: "smooth",
+      });
+      setScrollPosition(newPosition);
+    }
+
+    if (leftScrollBtnRef.current) {
+      leftScrollBtnRef.current.addEventListener("click", handleScrollLeftBtn);
+    }
+
+    return () => {
+      if (leftScrollBtnRef.current) {
+        leftScrollBtnRef.current.removeEventListener(
+          "click",
+          handleScrollLeftBtn
+        );
+      }
+    };
+  }, [scrollPosition]);
 
   let btnLeftClassName = ` absolute  ${
     scrollPosition === 0 ? "hidden" : ""
@@ -59,7 +114,7 @@ const Options = () => {
             ref={optionsRef}
             className="flex inset-shadow   overflow-scroll w-[970px] justify-evenly "
           >
-            <button className={btnLeftClassName}>
+            <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
             {options.map((item) => {
@@ -73,7 +128,7 @@ const Options = () => {
                 </div>
               );
             })}
-            <button className={btnRightClassName}>
+            <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
           </div>
