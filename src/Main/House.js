@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import house1 from "../data/houseImg/house1.jpg";
 import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
 const House = () => {
-  let numOfHouse = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  let houseRef = useRef();
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      console.log(entries);
+      entries.forEach((entry) => {
+        console.log(entry);
+        if (entry.isIntersecting) {
+          console.log(entry.target);
+        }
+      });
+    });
+    observer.observe(houseRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
   return (
-    <div className=" grid gap-x-6  grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
+    <div
+      ref={houseRef}
+      className=" grid gap-x-6  grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row"
+    >
       {houses.map((item) => (
         <div
           key={item.id}
@@ -29,7 +48,7 @@ const House = () => {
               <p className="text-gray-400 text-sm">16-21 May</p>
               <p className="inline">
                 ${item.price_per_night}{" "}
-                <p className="text-gray-500 inline"> night</p>
+                <span className="text-gray-500 inline"> night</span>
               </p>
             </div>
             <p className="flex  justify-between items-center">

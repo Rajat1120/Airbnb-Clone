@@ -5,10 +5,9 @@ import Toggle from "../Toggle";
 const FilterHome = () => {
   const [isChecked, setIsChecked] = useState(false); // Initial state
   const handleToggle = () => {
-    console.log("clicked toggle btn");
     setIsChecked(!isChecked); // Toggle checked state on click
   };
-  console.log(isChecked);
+
   return (
     <div
       className={

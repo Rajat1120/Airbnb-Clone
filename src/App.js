@@ -3,6 +3,7 @@ import Header from "./Header/Header";
 import Options from "./Main/Options";
 import Toggle from "./Main/Toggle";
 import House from "./Main/House";
+import { useRef } from "react";
 
 export default function App() {
   return (
@@ -11,7 +12,8 @@ export default function App() {
         <Header></Header>
         <Options></Options>
       </div>
-      <div className="mt-[180px]">
+
+      <div className="mt-[250px]">
         <House></House>
       </div>
     </div>
