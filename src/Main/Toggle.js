@@ -2,13 +2,13 @@ import React from "react";
 
 const Toggle = () => {
   return (
-    <div className="w-[90px] ml-12  cursor-pointer h-[30px]">
-      <input type="checkbox" id="check" />
-      <label
-        htmlFor="check"
-        className="bg-black w-[100px] h-[80px] rounded-s"
-      ></label>
-    </div>
+    <label for="toggleA" class="flex cursor-pointer items-center">
+      <div class="relative">
+        <input id="toggleA" type="checkbox" class="sr-only" />
+        <div class="h-5 w-8 rounded-full bg-gray-400 shadow-inner"></div>
+        <div class="dot absolute -left-1 top-0 h-5 w-5 rounded-full bg-white shadow transition"></div>
+      </div>
+    </label>
   );
 };
 
