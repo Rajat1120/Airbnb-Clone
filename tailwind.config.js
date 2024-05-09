@@ -22,7 +22,7 @@ module.exports = {
         "grey-dim": "#DBDBDB",
       },
       gridTemplateColumns: {
-        three: "repeat(3, minmax(300px,1fr))",
+        "four-col": "repeat(4, minmax(10rem,18.87rem))",
       },
     },
   },

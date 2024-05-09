@@ -35,7 +35,7 @@ function Header() {
           <a href="#">
             <p className="text-sm font-[450]; ">Airbnb your home</p>
           </a>
-          <button className="px-[10px]">
+          <button className="px-[0.62rem]">
             <img className="scale-[0.7] w-[100%]" src={globe} alt="" />
           </button>
 
