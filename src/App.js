@@ -12,7 +12,7 @@ export default function App() {
     <div className="px-[40px]">
       <div className="fixed top-0">
         <Header startScroll={startScroll}></Header>
-        <Options></Options>
+        <Options startScroll={startScroll}></Options>
       </div>
 
       <div className="mt-[16rem]">

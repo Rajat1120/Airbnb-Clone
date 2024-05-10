@@ -31,7 +31,7 @@ const House = ({ setStartScroll }) => {
   }, []);
   return (
     <div>
-      <div ref={houseRef} className="h-1   w-full mb-2 bg-black"></div>
+      <div ref={houseRef} className="h-1   w-full mb-2 bg-white"></div>
       <div className=" grid gap-x-6  grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (
           <div
