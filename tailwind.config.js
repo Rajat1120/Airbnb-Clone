@@ -10,6 +10,7 @@ module.exports = {
     extend: {
       boxShadow: {
         "3xl": "-1px 3.5px 5px 1px #CFCFD1",
+        "2xl": "0 10px 20px rgba(0, 0, 0, 0.2)",
         /*  "inset-shadow": {
           "-10px-0px-9px-1px": "#EFEFEF",
           "10px-0px-10px-1px": "#EFEFEF",

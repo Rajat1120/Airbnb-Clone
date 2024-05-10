@@ -47,7 +47,9 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className="w-[53rem]   self-center  h-[4rem] border-2 ">hi</div>
+      <div className="w-[53rem]  mb-5 border-[1px]  rounded-full shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ] self-center  h-[4rem]  ">
+        hi
+      </div>
     </div>
   );
 }

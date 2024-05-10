@@ -93,7 +93,7 @@ const Options = () => {
   }  top-[25%] left-1 z-50 bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-2`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition === 1493.5 ? "hidden" : ""
+    scrollPosition === 1543.5 ? "hidden" : ""
   } top-[25%] z-100 right-0 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
 
   const options = importAll(
