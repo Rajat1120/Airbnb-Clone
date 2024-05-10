@@ -3,18 +3,20 @@ import Header from "./Header/Header";
 import Options from "./Main/Options";
 import Toggle from "./Main/Toggle";
 import House from "./Main/House";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function App() {
+  const [startScroll, setStartScroll] = useState(false);
+
   return (
     <div className="px-[40px]">
       <div className="fixed top-0">
-        <Header></Header>
+        <Header startScroll={startScroll}></Header>
         <Options></Options>
       </div>
 
-      <div className="mt-[250px]">
-        <House></House>
+      <div className="mt-[16rem]">
+        <House setStartScroll={setStartScroll}></House>
       </div>
     </div>
   );

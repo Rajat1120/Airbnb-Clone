@@ -103,7 +103,7 @@ const Options = () => {
   // console.log(options);
   return (
     <div className=" bg-white   justify-self-center ">
-      <div className="h-[98px] flex    py-3  ">
+      <div className="h-[98px] flex     ">
         <div
           className={
             "w-[920px] flex relative ml-[2rem]   items-center  rounded-lg overflow-hidden"
