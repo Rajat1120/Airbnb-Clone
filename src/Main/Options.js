@@ -5,7 +5,7 @@ import arrow_right from "./../data/Arrows/arrow-right.svg";
 
 // import options from "../data/Options-Svg";
 
-const Options = () => {
+const Options = ({ startScroll }) => {
   function importAll(r) {
     return r.keys().map((item) => {
       return { key: item.slice(1, -4), svg: r(item) };
