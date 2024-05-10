@@ -5,9 +5,15 @@ import globe from "../data/globe.svg";
 import menu from "../data/Menu-Icon.svg";
 import person from "../data/person.svg";
 
-function Header() {
+function Header({ startScroll }) {
+  let onScrollProperty = "translate-y-[-5rem]  ";
+
+  let classForForm = `w-[53rem] ${
+    !startScroll ? onScrollProperty : ""
+  }  mb-5 border-[1px]  rounded-full shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ] self-center absolute top-[5rem]   h-[4rem]`;
+
   return (
-    <div className="after:content-[''] flex flex-col justify-center   after:flex  after:w-full after:bg-grey-dim bg-white after:h-[0.6px]">
+    <div className="after:content-[''] flex flex-col justify-start after:w-full after:bg-grey-dim bg-white after:translate-y-20  h-[11rem] after:h-[0.6px]">
       <div className="grid grid-cols-3  px-10     ">
         <div className="w-8 ">
           <a href="#">
@@ -47,9 +53,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <div className="w-[53rem]  mb-5 border-[1px]  rounded-full shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ] self-center  h-[4rem]  ">
-        hi
-      </div>
+      <div className={classForForm}>hi</div>
     </div>
   );
 }
