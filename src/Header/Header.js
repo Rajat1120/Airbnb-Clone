@@ -6,9 +6,10 @@ import menu from "../data/Menu-Icon.svg";
 import person from "../data/person.svg";
 
 function Header({ startScroll }) {
-  let onScrollProperty = "translate-y-[-4.5rem] duration-300 scale-50  ";
+  let onScrollProperty =
+    "translate-y-[-5.2rem] duration-300 scale-50 w-[40rem] h-[5.5rem]  ";
 
-  let classForForm = `w-[53rem] ${
+  let classForForm = `w-[53rem] flex ${
     !startScroll ? onScrollProperty : ""
   }  mb-5 border-[1px]  rounded-full shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ] self-center absolute top-[5rem]   h-[4rem]`;
 
@@ -16,9 +17,9 @@ function Header({ startScroll }) {
     <div
       className={`after:content-[''] flex flex-col justify-start after:w-full after:bg-grey-dim bg-white   after:absolute  ${
         !startScroll
-          ? "after:top-[5rem] duration-1000"
-          : "after:top-[10rem] duration-1000"
-      }  ${!startScroll ? "" : " h-[11rem] "} after:h-[0.6px]`}
+          ? "after:translate-y-[5rem]  after:duration-300 "
+          : "after:translate-y-[10rem] duration-1000"
+      }  ${!startScroll ? "" : " h-[10rem] "} after:h-[0.6px]`}
     >
       <div className="grid grid-cols-3  px-10 ">
         <div className="w-8 ">
@@ -63,7 +64,81 @@ function Header({ startScroll }) {
           </div>
         </div>
       </div>
-      <div className={classForForm}>hi</div>
+      <div className={classForForm}>
+        <div>
+          <div className="flex justify-center  items-center">
+            <label
+              htmlFor="destination"
+              className="w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
+            >
+              <div className="0">
+                <div className="text-xs font-medium">Where</div>
+                <input
+                  type="text"
+                  className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                  id="destination"
+                  placeholder="Search destinations"
+                />
+              </div>
+            </label>
+          </div>
+          <div className=":map"></div>
+        </div>
+        <div></div>
+        <div className="flex">
+          <div className="flex justify-center  items-center">
+            <label
+              htmlFor="dates"
+              className="w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
+            >
+              <div className="0">
+                <div className="text-xs font-medium">Check in</div>
+                <input
+                  type="text"
+                  className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                  id="dates"
+                  placeholder="Add dates"
+                />
+              </div>
+            </label>
+          </div>
+          <div className="flex justify-center  items-center">
+            <label
+              htmlFor="dates"
+              className="w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
+            >
+              <div className="0">
+                <div className="text-xs font-medium">Check in</div>
+                <input
+                  type="text"
+                  className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                  id="dates"
+                  placeholder="Add dates"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+        <div></div>
+        <div>
+          <div className="flex justify-center  items-center">
+            <label
+              htmlFor="destination"
+              className="w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[35.20rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
+            >
+              <div className="0">
+                <div className="text-xs font-medium">Who</div>
+                <input
+                  type="text"
+                  className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                  id="destination"
+                  placeholder="Add guests"
+                />
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
