@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import FilterHome from "./buttons/FilterHome";
-import arrow_left from "./../data/Arrows/arrow-left.svg";
-import arrow_right from "./../data/Arrows/arrow-right.svg";
+import arrow_left from "./../data/Icons svg/arrow-left.svg";
+import arrow_right from "./../data/Icons svg/arrow-right.svg";
 
 // import options from "../data/Options-Svg";
 
