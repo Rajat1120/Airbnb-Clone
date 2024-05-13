@@ -25,6 +25,7 @@ module.exports = {
       gridTemplateColumns: {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",
       },
+      backFaceVisibility: ["hidden"],
     },
   },
   plugins: [

@@ -1,93 +1,38 @@
 import React from "react";
+import MainFormContent from "./MainFormContent";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 
 const MainForm = ({ startScroll }) => {
   let onScrollProperty =
-    "translate-y-[-0.5rem]  duration-300 scale-50 self-center  w-[53rem] h-[5.5rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem] backface-hidden border-[3px]  duration-200 scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack =
-    "translate-y-[5.2rem] duration-300 scale-100 self-center  w-[53rem] h-[4rem]shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ";
+    "translate-y-[0.2rem] backface-hidden border-[1.5px] duration-200 scale-100 self-center  w-[53rem] h-[4rem]shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ";
 
   let classForForm = ` flex ${
     !startScroll ? onScrollProperty : onScrollBack
-  }  mb-5 border-[1px]  rounded-full   absolute    `;
+  }  mb-5   rounded-full   absolute    `;
   return (
-    <div className={classForForm}>
-      <div>
-        <div className="flex justify-center  items-center">
-          <label
-            htmlFor="destination"
-            className="w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
-          >
-            <div className="0">
-              <div className="text-xs font-medium">Where</div>
-              <input
-                type="text"
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="destination"
-                placeholder="Search destinations"
-              />
-            </div>
-          </label>
-        </div>
-        <div className=":map"></div>
-      </div>
-      <div></div>
-      <div className="flex">
-        <div className="flex justify-center  items-center">
-          <label
-            htmlFor="dates"
-            className="w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
-          >
-            <div className="0">
-              <div className="text-xs font-medium">Check in</div>
-              <input
-                type="text"
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="dates"
-                placeholder="Add dates"
-              />
-            </div>
-          </label>
-        </div>
-        <div className="flex justify-center  items-center">
-          <label
-            htmlFor="dates"
-            className="w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
-          >
-            <div className="0">
-              <div className="text-xs font-medium">Check in</div>
-              <input
-                type="text"
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="dates"
-                placeholder="Add dates"
-              />
-            </div>
-          </label>
-        </div>
-      </div>
-      <div></div>
-      <div className="flex justify-center items-center">
-        <div className="flex justify-center  items-center">
-          <label
-            htmlFor="destination"
-            className="w-[13.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[35.20rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
-          >
-            <div className="0">
-              <div className="text-xs font-medium">Who</div>
-              <input
-                type="text"
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="destination"
-                placeholder="Add guests"
-              />
-            </div>
-          </label>
-        </div>
-        <div className="w-[3rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[3rem]">
-          <img src={searchIcon} alt="" />
-        </div>
+    <div className="flex   flex-col">
+      <div className={classForForm}>
+        {!startScroll ? (
+          <div className="w-[48rem] flex items-center justify-center h-[6rem] px-[3rem]">
+            <span className="flex w-[58rem] items-center mb-3 self-center  justify-around">
+              <button className="text-3xl h-[6rem] ">Anywhere</button>
+              <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
+              <button className="text-3xl h-[6rem] ">Any week</button>
+              <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
+              <button className="text-3xl w-[18rem] gap-10 flex items-center  justify-center h-[6rem]">
+                <p>Add guest</p>
+                <div className="w-[4rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[4rem]">
+                  <img className="scale-125" src={searchIcon} alt="" />
+                </div>
+              </button>
+            </span>
+          </div>
+        ) : (
+          <MainFormContent></MainFormContent>
+        )}
       </div>
     </div>
   );
