@@ -7,13 +7,15 @@ import person from "../data/person.svg";
 import MainForm from "./Form/MainForm";
 
 function Header({ startScroll }) {
+  let classForAfter = `after:content-[''] after:w-full after:bg-grey-dim ${
+    !startScroll
+      ? "after:translate-y-[5rem]  after:duration-200 "
+      : "after:translate-y-[10rem] duration-200"
+  }  ${!startScroll ? "" : " h-[10rem] "} after:h-[0.6px]`;
+
   return (
     <div
-      className={`after:content-[''] flex flex-col justify-start after:w-full after:bg-grey-dim bg-white   after:absolute  ${
-        !startScroll
-          ? "after:translate-y-[5rem]  after:duration-300 "
-          : "after:translate-y-[10rem] duration-1000"
-      }  ${!startScroll ? "" : " h-[10rem] "} after:h-[0.6px]`}
+      className={` ${classForAfter} flex flex-col  relative  bg-white   after:absolute  `}
     >
       <div className="grid grid-cols-3  px-10 ">
         <div className="w-8 ">
@@ -28,7 +30,7 @@ function Header({ startScroll }) {
         </div>
         <div
           className={`flex h-20 ${
-            !startScroll ? "scale-0 duration-300 " : ""
+            !startScroll ? "-translate-y-20 duration-300 " : ""
           } justify-center  items-center px-6`}
         >
           <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">
