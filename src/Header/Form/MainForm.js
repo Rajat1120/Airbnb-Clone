@@ -18,12 +18,16 @@ const MainForm = ({ startScroll }) => {
         {!startScroll ? (
           <div className="w-[48rem] flex items-center justify-center h-[6rem] px-[3rem]">
             <span className="flex w-[58rem] items-center mb-3 self-center  justify-around">
-              <button className="text-3xl h-[6rem] ">Anywhere</button>
+              <button className="text-[1.8rem] h-[6rem]  font-normal ">
+                Anywhere
+              </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
-              <button className="text-3xl h-[6rem] ">Any week</button>
+              <button className="text-[1.8rem] h-[6rem] font-normal ">
+                Any week
+              </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
               <button className="text-3xl w-[18rem] gap-10 flex items-center  justify-center h-[6rem]">
-                <p>Add guest</p>
+                <p className="text-gray-400 font-light">Add guest</p>
                 <div className="w-[4rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[4rem]">
                   <img className="scale-125" src={searchIcon} alt="" />
                 </div>
