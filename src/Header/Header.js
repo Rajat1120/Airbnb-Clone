@@ -46,13 +46,15 @@ function Header({ startScroll }) {
         </div>
         <div className="h-20 flex items-center justify-end ">
           <a href="#">
-            <p className="text-sm font-[450]; ">Airbnb your home</p>
+            <p className="text-sm h-[2.5rem] flex items-center justify-center rounded-full hover:bg-gray-100  w-[10rem] font-[450]; ">
+              Airbnb your home
+            </p>
           </a>
-          <button className="px-[0.62rem]">
+          <button className="px-[0.62rem] h-[3rem]  flex items-center justify-center rounded-full hover:bg-gray-100  w-[3rem] ">
             <img className="scale-[0.7] w-[100%]" src={globe} alt="" />
           </button>
 
-          <div className=" py-[8px] pl-[14px] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey opacity-[0.7] ">
+          <div className=" py-[8px] pl-[14px] ml-3 pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey opacity-[0.7] ">
             <button className="w-[62px] flex space-x-3">
               <img src={menu} className="scale-[0.8]" alt="" />
               <img src={person} className="scale-[1.5]" alt="" />
