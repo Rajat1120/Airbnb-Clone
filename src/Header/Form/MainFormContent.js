@@ -3,7 +3,7 @@ import searchIcon from "../../data/Icons svg/search-icon.svg";
 
 const MainFormContent = () => {
   return (
-    <div className="flex">
+    <div className="flex justify-center items-center">
       <div>
         <div className="flex justify-center  items-center">
           <label
@@ -23,8 +23,8 @@ const MainFormContent = () => {
         </div>
         <div className=":map"></div>
       </div>
-      <div></div>
-      <div className="flex">
+      <div className="w-[0.05rem] h-[2rem] bg-gray-300"></div>
+      <div className="flex justify-center items-center">
         <div className="flex justify-center  items-center">
           <label
             htmlFor="dates"
@@ -41,6 +41,7 @@ const MainFormContent = () => {
             </div>
           </label>
         </div>
+        <div className="w-[0.05rem] h-[2rem] bg-gray-300"></div>
         <div className="flex justify-center  items-center">
           <label
             htmlFor="dates"
@@ -58,7 +59,7 @@ const MainFormContent = () => {
           </label>
         </div>
       </div>
-      <div></div>
+      <div className="w-[0.05rem] h-[2rem] bg-gray-400"></div>
       <div className="flex justify-center items-center">
         <div className="flex justify-center  items-center">
           <label
