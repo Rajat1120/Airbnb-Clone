@@ -9,8 +9,8 @@ import MainForm from "./Form/MainForm";
 function Header({ startScroll }) {
   let classForAfter = `after:content-[''] after:w-full after:z-10  ${
     !startScroll
-      ? "after:translate-y-[4.5rem]  after:duration-200 "
-      : "after:translate-y-[10rem] after:duration-200"
+      ? "after:animate-moveAfterUp  "
+      : "after:animate-moveAfterDown "
   }  ${
     !startScroll ? "after:bg-grey-light" : " h-[10rem]  after:bg-grey-dim"
   } after:h-[0.6px]`;

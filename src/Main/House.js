@@ -4,70 +4,42 @@ import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
 
 const House = ({ startScroll, setStartScroll }) => {
-  const houseContainerRef = useRef(); // Ref for the parent container
-
-  /*   useEffect(() => {
-    const newObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!startScroll && entry.boundingClientRect.top >= 150) {
-            console.log("working");
-            setStartScroll(true);
-          }
-        });
-      },
-      {
-        threshold: 1,
-        rootMargin: "-50px 0px 0px 0px",
-      }
-    );
-    if (!startScroll) newObserver.observe(houseContainerRef.current);
-    return () => {
-      newObserver.disconnect();
-    };
-  }, [startScroll, setStartScroll]); */
+  let lastScrollPosition = useRef(window.scrollY);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // console.log(startScroll);
-        entries.forEach((entry) => {
-          console.log(entry.isIntersecting);
-          if (!entry.isIntersecting) {
-            setStartScroll(false);
-          }
-          if (
-            !startScroll &&
-            entry.boundingClientRect.y >= 150 &&
-            entry.boundingClientRect.y <= 160
-          ) {
-            console.log("ran");
-            setStartScroll(true);
-          }
-        });
-      },
-      {
-        threshold: 1,
-        rootMargin: "-240px 0px 0px 0px",
+    const handleScroll = () => {
+      const currentScrollPosition = window.scrollY;
+
+      if (currentScrollPosition > lastScrollPosition.current) {
+        // Scrolling down (no change needed here)
+        setStartScroll(false); // Set)
+      } else {
+        // Scrolling up
+        setStartScroll(true);
       }
-    );
-    if (startScroll) observer.observe(houseContainerRef.current); // Observe the parent container
+
+      lastScrollPosition.current = currentScrollPosition;
+    };
+
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, [setStartScroll, startScroll]);
+  }, [startScroll, setStartScroll]);
 
   useEffect(() => {
     console.log(startScroll);
   }, [startScroll]);
 
   return (
-    <div className={`${!startScroll ? " -z-500" : ""}`}>
-      <div
-        ref={houseContainerRef}
-        className="h-1 bg-black   w-full mb-2 "
-      ></div>
+    <div
+      className={` relative   ${
+        !startScroll
+          ? "animate-moveUpHouse -z-50  "
+          : "animate-moveDownHouse -z-50"
+      }`}
+    >
       <div className=" grid gap-x-6  fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (
           <div
