@@ -1,38 +1,74 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import house1 from "../data/houseImg/house1.jpg";
 import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
-const House = ({ setStartScroll }) => {
-  let zoomOut;
-  let houseRef = useRef();
-  useEffect(() => {
-    const observer = new IntersectionObserver(
+
+const House = ({ startScroll, setStartScroll }) => {
+  const houseContainerRef = useRef(); // Ref for the parent container
+
+  /*   useEffect(() => {
+    const newObserver = new IntersectionObserver(
       (entries) => {
-        console.log(entries);
         entries.forEach((entry) => {
-          console.log(entry);
-          if (entry.isIntersecting) {
+          if (!startScroll && entry.boundingClientRect.top >= 150) {
+            console.log("working");
             setStartScroll(true);
-          } else {
-            setStartScroll(false);
           }
         });
       },
       {
         threshold: 1,
-        rootMargin: "-238px 0px 0px 0px",
+        rootMargin: "-50px 0px 0px 0px",
       }
     );
-    observer.observe(houseRef.current);
+    if (!startScroll) newObserver.observe(houseContainerRef.current);
+    return () => {
+      newObserver.disconnect();
+    };
+  }, [startScroll, setStartScroll]); */
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // console.log(startScroll);
+        entries.forEach((entry) => {
+          console.log(entry.isIntersecting);
+          if (!entry.isIntersecting) {
+            setStartScroll(false);
+          }
+          if (
+            !startScroll &&
+            entry.boundingClientRect.y >= 150 &&
+            entry.boundingClientRect.y <= 160
+          ) {
+            console.log("ran");
+            setStartScroll(true);
+          }
+        });
+      },
+      {
+        threshold: 1,
+        rootMargin: "-240px 0px 0px 0px",
+      }
+    );
+    if (startScroll) observer.observe(houseContainerRef.current); // Observe the parent container
 
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [setStartScroll, startScroll]);
+
+  useEffect(() => {
+    console.log(startScroll);
+  }, [startScroll]);
+
   return (
-    <div>
-      <div ref={houseRef} className="h-1   w-full mb-2 bg-white"></div>
-      <div className=" grid gap-x-6  grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
+    <div className={`${!startScroll ? " -z-500" : ""}`}>
+      <div
+        ref={houseContainerRef}
+        className="h-1 bg-black   w-full mb-2 "
+      ></div>
+      <div className=" grid gap-x-6  fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (
           <div
             key={item.id}

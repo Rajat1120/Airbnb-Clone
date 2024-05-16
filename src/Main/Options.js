@@ -100,9 +100,15 @@ const Options = ({ startScroll }) => {
     require.context("../data/Options-Svg", false, /\.svg$/)
   );
 
-  // console.log(options);
+  //${!startScroll ? "animate-moveUp" : ""}
+
+  // console.log(startScroll);
   return (
-    <div className=" bg-white   justify-self-center ">
+    <div
+      className={` bg-white ${
+        !startScroll ? "animate-moveUp " : "animate-moveDown"
+      } fixed  top-[20%]    justify-self-center `}
+    >
       <div className="h-[98px] flex     ">
         <div
           className={
