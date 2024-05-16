@@ -26,6 +26,25 @@ module.exports = {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",
       },
       backFaceVisibility: ["hidden"],
+      keyframes: {
+        moveUp: {
+          "0%": { transform: "translate(0rem,0rem)" },
+          "100%": { transform: "translate(0rem, -5.8rem)" },
+        },
+        moveUpHouse: {
+          "0%": { transform: "translate(0rem,0rem)" },
+          "100%": { transform: "translate(0rem, -4.5rem)" },
+        },
+        moveDown: {
+          "0%": { transform: "translate(0rem,0rem)" },
+          "100%": { transform: "translate(0rem, 0rem)" },
+        },
+      },
+      animation: {
+        moveUp: "moveUp 0.3s forwards ",
+        moveDown: "moveDown 0.3s forwards ",
+        moveUpHouse: "moveUpHouse 0.3s forwards ",
+      },
     },
   },
   plugins: [

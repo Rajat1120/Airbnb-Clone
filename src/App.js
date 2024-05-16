@@ -6,7 +6,7 @@ import House from "./Main/House";
 import { useRef, useState } from "react";
 
 export default function App() {
-  const [startScroll, setStartScroll] = useState(false);
+  const [startScroll, setStartScroll] = useState(true);
 
   return (
     <div className="px-[40px]">
@@ -16,7 +16,10 @@ export default function App() {
       </div>
 
       <div className="mt-[16rem]">
-        <House setStartScroll={setStartScroll}></House>
+        <House
+          startScroll={startScroll}
+          setStartScroll={setStartScroll}
+        ></House>
       </div>
     </div>
   );
