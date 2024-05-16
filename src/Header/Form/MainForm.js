@@ -4,10 +4,10 @@ import searchIcon from "../../data/Icons svg/search-icon.svg";
 
 const MainForm = ({ startScroll }) => {
   let onScrollProperty =
-    "translate-y-[-5.5rem] backface-hidden border-[3px]  duration-200 scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem] backface-hidden border-[3px]  duration-300 scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack =
-    "translate-y-[0.2rem] backface-hidden border-[1.5px] duration-200 scale-100 self-center  w-[53rem] h-[4rem]shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ";
+    "translate-y-[0.2rem] backface-hidden border-[1.5px] duration-300 scale-100 self-center  w-[53rem] h-[4rem]shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)] ";
 
   let classForForm = ` flex ${
     !startScroll ? onScrollProperty : onScrollBack

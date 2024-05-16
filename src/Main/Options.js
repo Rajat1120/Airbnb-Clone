@@ -106,10 +106,10 @@ const Options = ({ startScroll }) => {
   return (
     <div
       className={` bg-white ${
-        !startScroll ? "animate-moveUp " : "animate-moveDown"
-      } fixed  top-[20%]    justify-self-center `}
+        !startScroll ? "animate-moveUp  z-50" : "animate-moveDown z-50"
+      }    relative  justify-self-center `}
     >
-      <div className="h-[98px] flex     ">
+      <div className="h-[80px] flex     ">
         <div
           className={
             "w-[920px] flex relative ml-[2rem]   items-center  rounded-lg overflow-hidden"
