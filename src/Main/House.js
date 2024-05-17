@@ -13,7 +13,7 @@ const House = ({ startScroll, setStartScroll }) => {
       if (currentScrollPosition > lastScrollPosition.current) {
         // Scrolling down (no change needed here)
         setStartScroll(false); // Set)
-      } else {
+      } else if (currentScrollPosition < 22) {
         // Scrolling up
         setStartScroll(true);
       }
@@ -34,13 +34,13 @@ const House = ({ startScroll, setStartScroll }) => {
 
   return (
     <div
-      className={` relative   ${
+      className={` absolute   top-[16rem] overflow-scroll   ${
         !startScroll
           ? "animate-moveUpHouse -z-50  "
           : "animate-moveDownHouse -z-50"
       }`}
     >
-      <div className=" grid gap-x-6  fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
+      <div className=" grid gap-x-6 ml-4 fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (
           <div
             key={item.id}

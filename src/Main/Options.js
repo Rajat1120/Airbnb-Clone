@@ -6,6 +6,7 @@ import arrow_right from "./../data/Icons svg/arrow-right.svg";
 // import options from "../data/Options-Svg";
 
 const Options = ({ startScroll }) => {
+  // startScroll = false;
   function importAll(r) {
     return r.keys().map((item) => {
       return { key: item.slice(1, -4), svg: r(item) };
@@ -102,12 +103,14 @@ const Options = ({ startScroll }) => {
 
   //${!startScroll ? "animate-moveUp" : ""}
 
-  // console.log(startScroll);
+  console.log(startScroll);
   return (
     <div
-      className={` bg-white ${
-        !startScroll ? "animate-moveUp  z-50" : "animate-moveDown z-50"
-      }    relative  justify-self-center `}
+      className={` bg-white  ${
+        !startScroll
+          ? " animate-moveUp absolute top-[10rem] "
+          : "animate-moveDown absolute top-[5rem] "
+      }     justify-self-center `}
     >
       <div className="h-[80px] flex     ">
         <div

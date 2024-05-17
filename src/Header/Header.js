@@ -7,10 +7,11 @@ import person from "../data/person.svg";
 import MainForm from "./Form/MainForm";
 
 function Header({ startScroll }) {
+  // startScroll = false;
   let classForAfter = `after:content-[''] after:w-full after:z-10  ${
     !startScroll
-      ? "after:animate-moveAfterUp  "
-      : "after:animate-moveAfterDown "
+      ? " after:animate-moveAfterUp   "
+      : " after:animate-moveAfterDown  "
   }  ${
     !startScroll ? "after:bg-grey-light" : " h-[10rem]  after:bg-grey-dim"
   } after:h-[0.6px]`;

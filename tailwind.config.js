@@ -28,35 +28,36 @@ module.exports = {
       backFaceVisibility: ["hidden"],
       keyframes: {
         moveUp: {
-          "0%": { transform: "translate(0rem,0rem)" },
-          "100%": { transform: "translate(0rem,0rem)" },
+          "0%": { transform: "translateY(0rem)" },
+          "100%": { transform: "translateY(-5rem)" },
+        },
+        moveDown: {
+          "0%": { transform: "translateY(0rem)" },
+          "100%": { transform: "translateY(5rem)" },
         },
         moveUpHouse: {
           "0%": { transform: "translateY(0rem)" },
           "100%": { transform: "translateY(-5rem)" },
         },
         moveDownHouse: {
-          "0%": { transform: "translateY(0rem)" },
-          "100%": { transform: "translateY( 0.5rem)" },
+          "0%": { transform: "translateY(-5rem)" },
+          "100%": { transform: "translateY( 0rem)" },
         },
-        moveDown: {
-          "0%": { transform: "translate(0rem,0rem)" },
-          "100%": { transform: "translate(0rem, 0.0rem)" },
-        },
+
         moveAfterUp: {
-          "0%": { transform: "translate(0rem, 0rem)" },
+          "0%": { transform: "translateY(0rem)" },
           "100%": { transform: "translateY(4.5rem)" },
         },
         moveAfterDown: {
-          "0%": { transform: "translate(0rem, 0rem)" },
+          "0%": { transform: "translateY( 0rem)" },
           "100%": { transform: "translateY(9.9rem)" },
         },
       },
       animation: {
-        moveUp: "moveUp 0.3s forwards ",
-        moveDown: "moveDown 0.3s forwards ",
-        moveUpHouse: "moveUpHouse 0.3s forwards ",
-        moveDownHouse: "moveDownHouse 0.3s forwards ",
+        moveUp: "moveUp 0.3s  forwards ",
+        moveDown: "moveDown 0.3s   forwards ",
+        moveUpHouse: "moveUpHouse 0.3s  forwards ",
+        moveDownHouse: "moveDownHouse   0.3s forwards  ",
         moveAfterUp: "moveAfterUp 0.3s forwards ",
         moveAfterDown: "moveAfterDown 0.3s forwards ",
       },
