@@ -15,7 +15,7 @@ export default function App() {
         <Options startScroll={startScroll}></Options>
       </div>
 
-      <div className="mt-[16rem]">
+      <div className="mt-[16rem] flex justify-center items-center ">
         <House
           startScroll={startScroll}
           setStartScroll={setStartScroll}
