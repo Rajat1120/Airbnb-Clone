@@ -1,5 +1,6 @@
 // import myIcon from "./data/airbnb-Img.svg";
 
+import { useState } from "react";
 import icon from "../data/airbnbLogo.svg";
 import globe from "../data/globe.svg";
 import menu from "../data/Menu-Icon.svg";
@@ -7,6 +8,7 @@ import person from "../data/person.svg";
 import MainForm from "./Form/MainForm";
 
 function Header({ startScroll }) {
+  const [onHover, setonHover] = useState("first");
   // startScroll = false;
   let classForAfter = `after:content-[''] after:w-full after:z-10  ${
     !startScroll
@@ -40,14 +42,15 @@ function Header({ startScroll }) {
             Stays
           </button>
 
-          <p className="h-[44]  text-center w-[7rem] text-grey font-light  ">
+          <p className="h-[2.5rem] flex items-center justify-center hover:bg-gray-100 hover:text-slate-600 rounded-full text-center w-[8rem] text-grey font-light">
             Experiences
           </p>
-          <p className="w-[12rem] text-center text-grey font-light ">
+
+          <p className="w-[12rem] h-[2.5rem] text-center hover:bg-gray-100 rounded-full  hover:text-slate-600  flex items-center justify-center  text-grey font-light ">
             Online Experiences
           </p>
         </div>
-        <div className="h-20 flex items-center justify-end ">
+        <div className="h-20 flex items-center mr-10 justify-end ">
           <a href="#">
             <p className="text-sm h-[2.5rem] flex items-center justify-center rounded-full hover:bg-gray-100  w-[10rem] font-[450]; ">
               Airbnb your home
@@ -57,7 +60,7 @@ function Header({ startScroll }) {
             <img className="scale-[0.7] w-[100%]" src={globe} alt="" />
           </button>
 
-          <div className=" py-[8px] pl-[14px] ml-3 pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey opacity-[0.7] ">
+          <div className=" py-[8px] pl-[14px] ml-[0.75rem] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey opacity-[0.7] ">
             <button className="w-[62px] flex space-x-3">
               <img src={menu} className="scale-[0.8]" alt="" />
               <img src={person} className="scale-[1.5]" alt="" />
