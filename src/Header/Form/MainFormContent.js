@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 
 const MainFormContent = () => {
+  const [hoverInput, setHoverInput] = useState(null);
+
   return (
     <div className="flex justify-center items-center">
       <div>
-        <div className="flex justify-center  items-center">
+        <div
+          onMouseEnter={() => setHoverInput("destination")}
+          onMouseLeave={() => setHoverInput(null)}
+          className={`flex justify-center  items-center`}
+        >
           <label
             htmlFor="destination"
             className="w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
@@ -23,9 +29,19 @@ const MainFormContent = () => {
         </div>
         <div className=":map"></div>
       </div>
-      <div className="w-[0.05rem] h-[2rem] bg-gray-300"></div>
+      <div
+        className={`w-[0.05rem] ${
+          hoverInput === "destination" || hoverInput === "checkIn"
+            ? "bg-white"
+            : " bg-gray-300"
+        } h-[2rem] `}
+      ></div>
       <div className="flex justify-center items-center">
-        <div className="flex justify-center  items-center">
+        <div
+          onMouseEnter={() => setHoverInput("checkIn")}
+          onMouseLeave={() => setHoverInput(null)}
+          className="flex justify-center  items-center"
+        >
           <label
             htmlFor="dates"
             className="w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
@@ -41,14 +57,24 @@ const MainFormContent = () => {
             </div>
           </label>
         </div>
-        <div className="w-[0.05rem] h-[2rem] bg-gray-300"></div>
-        <div className="flex justify-center  items-center">
+        <div
+          className={`w-[0.05rem] ${
+            hoverInput === "checkOut" || hoverInput === "checkIn"
+              ? "bg-white"
+              : " bg-gray-300"
+          } h-[2rem] `}
+        ></div>
+        <div
+          onMouseEnter={() => setHoverInput("checkOut")}
+          onMouseLeave={() => setHoverInput(null)}
+          className="flex justify-center  items-center"
+        >
           <label
             htmlFor="dates"
             className="w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer"
           >
             <div className="0">
-              <div className="text-xs font-medium">Check in</div>
+              <div className="text-xs font-medium">Check out</div>
               <input
                 type="text"
                 className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
@@ -59,8 +85,18 @@ const MainFormContent = () => {
           </label>
         </div>
       </div>
-      <div className="w-[0.05rem] h-[2rem] bg-gray-400"></div>
-      <div className="flex justify-center items-center">
+      <div
+        className={`w-[0.05rem] ${
+          hoverInput === "checkOut" || hoverInput === "addGuest"
+            ? "bg-white"
+            : " bg-gray-300"
+        } h-[2rem] `}
+      ></div>
+      <div
+        onMouseEnter={() => setHoverInput("addGuest")}
+        onMouseLeave={() => setHoverInput(null)}
+        className="flex justify-center items-center"
+      >
         <div className="flex justify-center  items-center">
           <label
             htmlFor="destination"
