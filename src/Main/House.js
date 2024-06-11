@@ -34,7 +34,7 @@ const House = ({ startScroll, setStartScroll }) => {
 
   return (
     <div
-      className={` absolute   top-[16rem] overflow-scroll   ${
+      className={` absolute   top-[17rem] overflow-scroll   ${
         !startScroll
           ? "animate-moveUpHouse -z-50  "
           : "animate-moveDownHouse -z-50"

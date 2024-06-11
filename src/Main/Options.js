@@ -112,7 +112,11 @@ const Options = ({ startScroll }) => {
           : "animate-moveDown absolute top-[5rem] "
       }     justify-self-center `}
     >
-      <div className="h-[80px] flex     ">
+      <div
+        className={`h-[80px] ${
+          startScroll ? "mt-4 mb-1" : "mt-0 mb-0"
+        } flex     `}
+      >
         <div
           className={
             "w-[920px] flex relative ml-[2rem]   items-center  rounded-lg overflow-hidden"
