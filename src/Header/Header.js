@@ -20,7 +20,7 @@ function Header({ startScroll }) {
 
   return (
     <div
-      className={` ${classForAfter} flex flex-col  relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} after:mt-2 flex flex-col  relative  bg-white   after:absolute  `}
     >
       <div className="grid grid-cols-3  px-10 ">
         <div className="w-8 ">
@@ -61,8 +61,8 @@ function Header({ startScroll }) {
           </button>
 
           <div className=" py-[8px] pl-[14px] ml-[0.75rem] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey-light opacity-[0.7] ">
-            <button className="w-[62px] flex space-x-3">
-              <img src={menu} className="scale-[0.8]" alt="" />
+            <button className="w-[56px] flex space-x-3">
+              <img src={menu} className=" ml-[-0.4rem] scale-[0.8]" alt="" />
               <img src={person} className="scale-[1.5]" alt="" />
             </button>
           </div>

@@ -77,7 +77,7 @@ const MainFormContent = () => {
             </div>
           </label>
         </div>
-        <div className="w-[3rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[3rem]">
+        <div className="w-[3rem]  flex items-center justify-center bg-pink justify-self-end ml-2 rounded-full h-[3rem]">
           <img src={searchIcon} alt="" />
         </div>
       </div>
