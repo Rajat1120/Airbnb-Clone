@@ -21,6 +21,7 @@ module.exports = {
         grey: "#717171;",
         "grey-light": "#B3B3B3",
         "grey-dim": "#DBDBDB",
+        "shadow-gray": "#f0f0f0",
       },
       gridTemplateColumns: {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",

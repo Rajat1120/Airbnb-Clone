@@ -53,7 +53,7 @@ const MainFormContent = () => {
           <Modal.Window name="destination">
             <div className="h-full pt-[2rem] px-[1.5rem] shadow-2xl rounded-[2rem] justify-center  w-full  pb-[1.5rem] bg-white">
               <div className="flex flex-col justify-center items-center">
-                <p className="flex mb-2  text-sm font-medium ml-[1rem] w-full justify-self-start items-center ">
+                <p className="flex mb-3  text-sm font-medium ml-[1rem] w-full justify-self-start items-center ">
                   Search by region
                 </p>
                 <div className="grid grid-cols-3 gap-4">
