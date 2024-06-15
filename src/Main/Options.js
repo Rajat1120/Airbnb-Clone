@@ -103,7 +103,6 @@ const Options = ({ startScroll }) => {
 
   //${!startScroll ? "animate-moveUp" : ""}
 
-  console.log(startScroll);
   return (
     <div
       className={` bg-white  ${

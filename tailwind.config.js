@@ -11,6 +11,7 @@ module.exports = {
       boxShadow: {
         "3xl": "-1px 3.5px 5px 1px #CFCFD1",
         "2xl": "0 10px 20px rgba(0, 0, 0, 0.2)",
+        inputShadow: "-5px 0px 5px 0px #CFCFD1",
         /*  "inset-shadow": {
           "-10px-0px-9px-1px": "#EFEFEF",
           "10px-0px-10px-1px": "#EFEFEF",
@@ -21,7 +22,7 @@ module.exports = {
         grey: "#717171;",
         "grey-light": "#B3B3B3",
         "grey-dim": "#DBDBDB",
-        "shadow-gray": "#f0f0f0",
+        "shadow-gray": "#e6e6e6",
       },
       gridTemplateColumns: {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",

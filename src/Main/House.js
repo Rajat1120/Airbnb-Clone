@@ -28,9 +28,7 @@ const House = ({ startScroll, setStartScroll }) => {
     };
   }, [startScroll, setStartScroll]);
 
-  useEffect(() => {
-    console.log(startScroll);
-  }, [startScroll]);
+  useEffect(() => {}, [startScroll]);
 
   return (
     <div

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import Modal from "../../Modals/Modal";
 import Europe from "../../data/Continents/europe.jpg";
@@ -8,15 +8,17 @@ import UnitedArabEmirates from "../../data/Continents/UAE.jpg";
 import Thiland from "../../data/Continents/thisland.jpg";
 import SouthEastAsia from "../../data/Continents/southEash.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveInput } from "./mainFormSlice";
+import { setActiveElement, setActiveInput } from "./mainFormSlice";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
   const data = useSelector((store) => store.form.curSelectInput);
   const dispatch = useDispatch();
 
+  console.log(data);
+
   return (
-    <div className="flex justify-center  items-center">
+    <div className="flex  justify-center  items-center">
       <div>
         <Modal>
           <Modal.Open opens="destination">
@@ -132,30 +134,37 @@ const MainFormContent = () => {
         } h-[2rem] `}
       ></div>
       <div className="flex justify-center items-center">
-        <div
-          onMouseEnter={() => setHoverInput("checkIn")}
-          onMouseLeave={() => setHoverInput(null)}
-          className="flex justify-center  items-center"
-        >
-          <label
-            htmlFor="dates"
-            className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40 
+        <Modal>
+          <Modal.Open opens="checkIn">
+            <div
+              onMouseEnter={() => setHoverInput("checkIn")}
+              onMouseLeave={() => setHoverInput(null)}
+              className="flex justify-center  items-center"
+            >
+              <label
+                htmlFor="checkIn"
+                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40 
                ${data === "checkIn" ? "rounded-full bg-white" : ""} 
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
-          >
-            <div className="0">
-              <div className="text-xs font-medium">Check in</div>
-              <input
-                type="text"
-                onFocus={() => dispatch(setActiveInput("checkIn"))}
-                onBlur={() => dispatch(setActiveInput(""))}
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="dates"
-                placeholder="Add dates"
-              />
+              >
+                <div className="0">
+                  <div className="text-xs font-medium">Check in</div>
+                  <input
+                    type="text"
+                    onFocus={() => dispatch(setActiveInput("checkIn"))}
+                    onBlur={() => dispatch(setActiveInput(""))}
+                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    id="checkIn"
+                    placeholder="Add dates"
+                  />
+                </div>
+              </label>
             </div>
-          </label>
-        </div>
+          </Modal.Open>
+          <Modal.Window name="checkIn">
+            <p>check In</p>
+          </Modal.Window>
+        </Modal>
         <div
           className={`w-[0.05rem] ${
             hoverInput === "checkOut" || hoverInput === "checkIn"
@@ -163,31 +172,39 @@ const MainFormContent = () => {
               : " bg-gray-300"
           } h-[2rem] `}
         ></div>
-        <div
-          onMouseEnter={() => setHoverInput("checkOut")}
-          onMouseLeave={() => setHoverInput(null)}
-          className="flex justify-center  items-center"
-        >
-          <label
-            htmlFor="dates"
-            className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40 
+        <Modal>
+          <Modal.Open opens="checkOut">
+            <div
+              onMouseEnter={() => setHoverInput("checkOut")}
+              onMouseLeave={() => setHoverInput(null)}
+              className="flex justify-center  items-center"
+            >
+              <label
+                htmlFor="checkOut"
+                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40 
                ${data === "checkOut" ? "rounded-full bg-white" : ""}
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
-          >
-            <div className="0">
-              <div className="text-xs font-medium">Check out</div>
-              <input
-                type="text"
-                onFocus={() => dispatch(setActiveInput("checkOut"))}
-                onBlur={() => dispatch(setActiveInput(""))}
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="dates"
-                placeholder="Add dates"
-              />
+              >
+                <>
+                  <div className="text-xs font-medium">Check out</div>
+                  <input
+                    type="text"
+                    onFocus={() => dispatch(setActiveInput("checkOut"))}
+                    onBlur={() => dispatch(setActiveInput(""))}
+                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    id="checkOut"
+                    placeholder="Add dates"
+                  />
+                </>
+              </label>
             </div>
-          </label>
-        </div>
+          </Modal.Open>
+          <Modal.Window name="checkOut">
+            <p>checkOut</p>
+          </Modal.Window>
+        </Modal>
       </div>
+
       <div
         className={`w-[0.05rem] ${
           hoverInput === "checkOut" || hoverInput === "addGuest"
@@ -195,37 +212,52 @@ const MainFormContent = () => {
             : " bg-gray-300"
         } h-[2rem] `}
       ></div>
-      <div
-        onMouseEnter={() => setHoverInput("addGuest")}
-        onMouseLeave={() => setHoverInput(null)}
-        className={`flex  ${
-          data === "guest" ? "rounded-full bg-white" : ""
-        } justify-center items-center`}
-      >
-        <div className="flex justify-center  items-center">
-          <label
-            htmlFor="addGuest"
-            className={`w-[13.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
-              
-              before:left-[35.20rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
+      <Modal>
+        <Modal.Open opens="addGuest">
+          <div
+            onMouseEnter={() => {
+              if (data !== "guest") setHoverInput("addGuest");
+            }}
+            onMouseLeave={() => {
+              if (data !== "guest") setHoverInput(null);
+            }}
+            className={`flex w-[17.7rem] ${
+              data === "guest"
+                ? "rounded-full bg-white shadow-inputShadow "
+                : ""
+            } justify-center items-center`}
           >
-            <div className="0">
-              <div className="text-xs font-medium">Who</div>
-              <input
-                type="text"
-                onFocus={() => dispatch(setActiveInput("guest"))}
-                onBlur={() => dispatch(setActiveInput(""))}
-                className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
-                id="addGuest"
-                placeholder="Add guests"
-              />
+            <div className="flex justify-center  items-center">
+              <label
+                htmlFor="addGuest"
+                className={`w-[15.2rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
+                  ${data === "guest" ? "" : "before:hover:bg-gray-300 "}
+              
+               before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
+              >
+                <div className="0">
+                  <div className="text-xs font-medium">Who</div>
+                  <input
+                    type="text"
+                    onFocus={() => dispatch(setActiveInput("guest"))}
+                    onBlur={() => dispatch(setActiveInput(""))}
+                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    id="addGuest"
+                    placeholder="Add guests"
+                  />
+                </div>
+              </label>
             </div>
-          </label>
-        </div>
-        <div className="w-[3rem]  flex items-center justify-center bg-pink justify-self-end ml-2 rounded-full h-[3rem]">
-          <img src={searchIcon} alt="" />
-        </div>
-      </div>
+
+            <div className="w-[3rem]  flex items-center justify-center bg-pink  ml-[-1.5rem] rounded-full h-[3rem]">
+              <img src={searchIcon} alt="" />
+            </div>
+          </div>
+        </Modal.Open>
+        <Modal.Window name="addGuest">
+          <p>add guest</p>
+        </Modal.Window>
+      </Modal>
     </div>
   );
 };

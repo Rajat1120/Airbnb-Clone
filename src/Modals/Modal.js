@@ -6,10 +6,19 @@ import React, {
   useRef,
   useState,
 } from "react";
+
+import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
+import { setActiveInput } from "../Header/Form/mainFormSlice";
 
 const modalContext = createContext();
 
+let modalStye = {
+  checkIn: "top-[30%]",
+  destination: "top-[20%]",
+  checkOut: "top-[60%]",
+  guest: "top-[50%]",
+};
 function Modal({ children }) {
   const [openName, setOpenName] = useState("");
 
@@ -29,10 +38,13 @@ function Open({ children, opens: opensWindowName }) {
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
-function Window({ children, name, setIsOpenModal }) {
+function Window({ children, name }) {
   const { openName, close } = useContext(modalContext);
-
+  const data = useSelector((store) => store.form.curSelectInput);
+  const curEl = useSelector((store) => store.form.curElement);
+  console.log(curEl);
   const ref = useRef();
+  const dispatch = useDispatch();
 
   useEffect(
     function () {
@@ -52,13 +64,11 @@ function Window({ children, name, setIsOpenModal }) {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50">
-      <div
-        className="fixed top-[20%] left-[22%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem] "
-        ref={ref}
-      >
-        <div>{cloneElement(children, { setIsOpenModal: close })}</div>
-      </div>
+    <div
+      className={`fixed ${modalStye[data]} left-[22%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem] `}
+      ref={ref}
+    >
+      <div>{cloneElement(children)}</div>
     </div>,
     document.body
   );

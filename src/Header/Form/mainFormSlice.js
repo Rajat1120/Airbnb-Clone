@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let formState = {
   curSelectInput: "",
+  curElement: null,
 };
 
 const formSlice = createSlice({
@@ -12,8 +13,11 @@ const formSlice = createSlice({
     setActiveInput: (state, action) => {
       state.curSelectInput = action.payload;
     },
+    setActiveElement: (state, action) => {
+      state.curElement = action.payload;
+    },
   },
 });
 
-export const { setActiveInput } = formSlice.actions;
+export const { setActiveInput, setActiveElement } = formSlice.actions;
 export default formSlice.reducer;
