@@ -25,7 +25,7 @@ const MainFormContent = () => {
   console.log(data);
 
   return (
-    <div className="flex  justify-center  items-center">
+    <div className="flex z-20  justify-center  items-center">
       <div>
         <Modal>
           <Modal.Open opens="destination">
@@ -39,19 +39,21 @@ const MainFormContent = () => {
                 className={`w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
 
                 
-                ${
-                  data === "destination" ? "rounded-full bg-white" : ""
-                } before:hover:bg-gray-300 
+                ${data === "destination" ? "rounded-full bg-white" : ""} 
+
+                 ${data === "destination" ? "" : "before:hover:bg-gray-300 "}
                 
                 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
-                <div className={` ${data ? "" : ""} `}>
+                <div className="">
                   <div className="text-xs font-medium">Where</div>
                   <input
                     type="text"
                     onFocus={() => dispatch(setActiveInput("destination"))}
                     onBlur={() => dispatch(setActiveInput(""))}
-                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    className={`w-[13.62rem]  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                      data && data !== "destination" ? "bg-shadow-gray" : ""
+                    } placeholder:font-extralight placeholder:text-black`}
                     id="destination"
                     placeholder="Search destinations"
                   />
@@ -150,7 +152,11 @@ const MainFormContent = () => {
             >
               <label
                 htmlFor="checkIn"
-                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40 
+                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
+
+                   ${data === "checkIn" ? "" : "before:hover:bg-gray-300 "}
+                  
+                  before:hover:opacity-40 
                ${data === "checkIn" ? "rounded-full bg-white" : ""} 
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
@@ -160,7 +166,9 @@ const MainFormContent = () => {
                     type="text"
                     onFocus={() => dispatch(setActiveInput("checkIn"))}
                     onBlur={() => dispatch(setActiveInput(""))}
-                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                      data && data !== "checkIn" ? "bg-shadow-gray" : ""
+                    } placeholder:font-extralight placeholder:text-black`}
                     id="checkIn"
                     placeholder="Add dates"
                   />
@@ -188,7 +196,9 @@ const MainFormContent = () => {
             >
               <label
                 htmlFor="checkOut"
-                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full before:hover:bg-gray-300 before:hover:opacity-40 
+                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
+                   ${data === "checkOut" ? "" : "before:hover:bg-gray-300 "}
+                  before:hover:opacity-40 
                ${data === "checkOut" ? "rounded-full bg-white" : ""}
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
@@ -198,7 +208,9 @@ const MainFormContent = () => {
                     type="text"
                     onFocus={() => dispatch(setActiveInput("checkOut"))}
                     onBlur={() => dispatch(setActiveInput(""))}
-                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm 
+                      ${data && data !== "checkOut" ? "bg-shadow-gray" : ""}
+                      placeholder:font-extralight placeholder:text-black`}
                     id="checkOut"
                     placeholder="Add dates"
                   />
@@ -236,7 +248,7 @@ const MainFormContent = () => {
               <label
                 htmlFor="addGuest"
                 className={`${
-                  data === "guest" ? "w-[12.2rem]" : "w-[14.2rem]"
+                  data === "guest" ? "w-[12.2rem] " : "w-[14.2rem]"
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "guest" ? "" : "before:hover:bg-gray-300 "}
               
@@ -251,7 +263,9 @@ const MainFormContent = () => {
                       dispatch(setActiveInput(""));
                       dispatch(setSearchEl(false));
                     }}
-                    className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
+                    className={`w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm 
+                      ${data && data !== "guest" ? "bg-shadow-gray" : ""}
+                    placeholder:font-extralight placeholder:text-black`}
                     id="addGuest"
                     placeholder="Add guests"
                   />
@@ -263,7 +277,7 @@ const MainFormContent = () => {
             <div
               ref={searchIconRef}
               className={`${
-                data === "guest" ? "w-[8rem] z-50" : "w-[3rem]"
+                data === "guest" ? "w-[8rem]" : "w-[3rem]"
               } hover:cursor-pointer  flex items-center ${
                 data === "guest" ? "justify-start " : "justify-center"
               } duration-200 ease-out ${

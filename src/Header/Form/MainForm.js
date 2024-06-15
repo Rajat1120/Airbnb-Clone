@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 const MainForm = ({ startScroll }) => {
   const data = useSelector((store) => store.form.curSelectInput);
 
+  const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
+
   let onScrollProperty =
     "translate-y-[-5.5rem] backface-hidden border-[3px]  duration-300 scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
@@ -14,7 +16,7 @@ const MainForm = ({ startScroll }) => {
 
   let classForForm = ` border-gray-250 flex ${
     !startScroll ? onScrollProperty : onScrollBack
-  }  mb-5   rounded-full ${data ? "bg-shadow-gray" : ""}  absolute    `;
+  }  mb-5   rounded-full ${data ? styleForBefore : ""}  absolute    `;
   return (
     <div className="flex   flex-col">
       <div className={classForForm}>
