@@ -25,6 +25,12 @@ function Modal({ children }) {
   const close = () => setOpenName("");
   const open = setOpenName;
 
+  const searchInput = useSelector((store) => store.form.search);
+
+  useEffect(() => {
+    if (!searchInput) close();
+  }, [searchInput]);
+
   return (
     <modalContext.Provider value={{ openName, close, open }}>
       {children}
@@ -41,10 +47,8 @@ function Open({ children, opens: opensWindowName }) {
 function Window({ children, name }) {
   const { openName, close } = useContext(modalContext);
   const data = useSelector((store) => store.form.curSelectInput);
-  const curEl = useSelector((store) => store.form.curElement);
-  console.log(curEl);
+
   const ref = useRef();
-  const dispatch = useDispatch();
 
   useEffect(
     function () {

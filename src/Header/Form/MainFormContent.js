@@ -8,12 +8,19 @@ import UnitedArabEmirates from "../../data/Continents/UAE.jpg";
 import Thiland from "../../data/Continents/thisland.jpg";
 import SouthEastAsia from "../../data/Continents/southEash.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveElement, setActiveInput } from "./mainFormSlice";
+import { setActiveElement, setActiveInput, setSearchEl } from "./mainFormSlice";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
   const data = useSelector((store) => store.form.curSelectInput);
   const dispatch = useDispatch();
+
+  const searchIconRef = useRef();
+
+  function handleAddGuestField(target) {
+    dispatch(setActiveInput("guest"));
+    dispatch(setSearchEl(true));
+  }
 
   console.log(data);
 
@@ -213,24 +220,24 @@ const MainFormContent = () => {
         } h-[2rem] `}
       ></div>
       <Modal>
-        <Modal.Open opens="addGuest">
-          <div
-            onMouseEnter={() => {
-              if (data !== "guest") setHoverInput("addGuest");
-            }}
-            onMouseLeave={() => {
-              if (data !== "guest") setHoverInput(null);
-            }}
-            className={`flex w-[17.7rem] ${
-              data === "guest"
-                ? "rounded-full bg-white shadow-inputShadow "
-                : ""
-            } justify-center items-center`}
-          >
+        <div
+          onMouseEnter={() => {
+            if (data !== "guest") setHoverInput("addGuest");
+          }}
+          onMouseLeave={() => {
+            if (data !== "guest") setHoverInput(null);
+          }}
+          className={`flex w-[17.7rem] ${
+            data === "guest" ? "rounded-full bg-white shadow-inputShadow " : ""
+          } justify-center items-center`}
+        >
+          <Modal.Open opens="addGuest">
             <div className="flex justify-center  items-center">
               <label
                 htmlFor="addGuest"
-                className={`w-[15.2rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
+                className={`${
+                  data === "guest" ? "w-[12.2rem]" : "w-[14.2rem]"
+                } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "guest" ? "" : "before:hover:bg-gray-300 "}
               
                before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
@@ -239,8 +246,11 @@ const MainFormContent = () => {
                   <div className="text-xs font-medium">Who</div>
                   <input
                     type="text"
-                    onFocus={() => dispatch(setActiveInput("guest"))}
-                    onBlur={() => dispatch(setActiveInput(""))}
+                    onFocus={(e) => handleAddGuestField(e.target)}
+                    onBlur={() => {
+                      dispatch(setActiveInput(""));
+                      dispatch(setSearchEl(false));
+                    }}
                     className="w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm placeholder:font-extralight placeholder:text-black"
                     id="addGuest"
                     placeholder="Add guests"
@@ -248,12 +258,33 @@ const MainFormContent = () => {
                 </div>
               </label>
             </div>
-
-            <div className="w-[3rem]  flex items-center justify-center bg-pink  ml-[-1.5rem] rounded-full h-[3rem]">
-              <img src={searchIcon} alt="" />
+          </Modal.Open>
+          {
+            <div
+              ref={searchIconRef}
+              className={`${
+                data === "guest" ? "w-[8rem] z-50" : "w-[3rem]"
+              } hover:cursor-pointer  flex items-center ${
+                data === "guest" ? "justify-start " : "justify-center"
+              } duration-200 ease-out ${
+                data === "guest" ? "bg-dark-pink" : " bg-pink"
+              } ${
+                data === "guest" ? "ml-[-1.6rem] mr-2" : " ml-[-0.5rem] "
+              } rounded-full h-[3rem]`}
+            >
+              <img
+                className={` ${data === "guest" ? "pl-2 pr-1" : ""} `}
+                src={searchIcon}
+                alt=""
+              />
+              {data === "guest" ? (
+                <p className="text-center   text-white">Search</p>
+              ) : (
+                ""
+              )}
             </div>
-          </div>
-        </Modal.Open>
+          }
+        </div>
         <Modal.Window name="addGuest">
           <p>add guest</p>
         </Modal.Window>
