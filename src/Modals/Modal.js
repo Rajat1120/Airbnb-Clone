@@ -49,12 +49,14 @@ function Window({ children, name }) {
   const data = useSelector((store) => store.form.curSelectInput);
 
   const ref = useRef();
+  const dispatch = useDispatch();
 
   useEffect(
     function () {
       function handleClick(e) {
         if (ref?.current && !ref.current?.contains(e.target)) {
           close();
+          dispatch(setActiveInput(""));
         }
       }
 

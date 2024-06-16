@@ -17,9 +17,10 @@ const MainFormContent = () => {
 
   const searchIconRef = useRef();
 
-  function handleAddGuestField(target) {
-    dispatch(setActiveInput("guest"));
-    dispatch(setSearchEl(true));
+  function handleInputField(input) {
+    if (input === "destination") {
+      dispatch(setActiveInput("destination"));
+    }
   }
 
   console.log(data);
@@ -39,6 +40,7 @@ const MainFormContent = () => {
               } justify-center  items-center`}
             >
               <label
+                onClick={() => handleInputField("destination")}
                 htmlFor="destination"
                 className={`w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
 
@@ -53,8 +55,6 @@ const MainFormContent = () => {
                   <div className="text-xs font-medium">Where</div>
                   <input
                     type="text"
-                    onFocus={() => dispatch(setActiveInput("destination"))}
-                    onBlur={() => dispatch(setActiveInput(""))}
                     className={`w-[10.62rem]  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "destination" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
@@ -275,7 +275,6 @@ const MainFormContent = () => {
                   <div className="text-xs font-medium">Who</div>
                   <input
                     type="text"
-                    onFocus={(e) => handleAddGuestField(e.target)}
                     onBlur={() => {
                       dispatch(setActiveInput(""));
                       dispatch(setSearchEl(false));
