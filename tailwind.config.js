@@ -11,7 +11,12 @@ module.exports = {
       boxShadow: {
         "3xl": "-1px 3.5px 5px 1px #CFCFD1",
         "2xl": "0 10px 20px rgba(0, 0, 0, 0.2)",
-        inputShadow: "-5px 0px 5px 0px #CFCFD1",
+        AddGuestShadow: "-5px 0px 5px 0px #CFCFD1",
+        checkOutShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
+        checkInShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
+
+        destinationShadow: "5px 0px 5px 0px #CFCFD1",
+
         /*  "inset-shadow": {
           "-10px-0px-9px-1px": "#EFEFEF",
           "10px-0px-10px-1px": "#EFEFEF",

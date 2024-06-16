@@ -32,7 +32,11 @@ const MainFormContent = () => {
             <div
               onMouseEnter={() => setHoverInput("destination")}
               onMouseLeave={() => setHoverInput(null)}
-              className={`flex justify-center  items-center`}
+              className={`flex ${
+                data === "destination"
+                  ? "shadow-destinationShadow rounded-full"
+                  : ""
+              } justify-center  items-center`}
             >
               <label
                 htmlFor="destination"
@@ -51,7 +55,7 @@ const MainFormContent = () => {
                     type="text"
                     onFocus={() => dispatch(setActiveInput("destination"))}
                     onBlur={() => dispatch(setActiveInput(""))}
-                    className={`w-[13.62rem]  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                    className={`w-[10.62rem]  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "destination" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
                     id="destination"
@@ -140,7 +144,9 @@ const MainFormContent = () => {
           hoverInput === "destination" || hoverInput === "checkIn"
             ? "bg-white"
             : " bg-gray-300"
-        } h-[2rem] `}
+        } h-[2rem] 
+        ${data === "destination" || data === "checkIn" ? "hidden" : ""}
+        `}
       ></div>
       <div className="flex justify-center items-center">
         <Modal>
@@ -148,7 +154,9 @@ const MainFormContent = () => {
             <div
               onMouseEnter={() => setHoverInput("checkIn")}
               onMouseLeave={() => setHoverInput(null)}
-              className="flex justify-center  items-center"
+              className={`flex ${
+                data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
+              } justify-center  items-center`}
             >
               <label
                 htmlFor="checkIn"
@@ -185,14 +193,18 @@ const MainFormContent = () => {
             hoverInput === "checkOut" || hoverInput === "checkIn"
               ? "bg-white"
               : " bg-gray-300"
-          } h-[2rem] `}
+          } h-[2rem]
+          ${data === "checkOut" || data === "checkIn" ? "hidden" : ""}
+          `}
         ></div>
         <Modal>
           <Modal.Open opens="checkOut">
             <div
               onMouseEnter={() => setHoverInput("checkOut")}
               onMouseLeave={() => setHoverInput(null)}
-              className="flex justify-center  items-center"
+              className={`flex ${
+                data === "checkOut" ? "shadow-checkOutShadow rounded-full" : ""
+              } justify-center  items-center`}
             >
               <label
                 htmlFor="checkOut"
@@ -229,7 +241,10 @@ const MainFormContent = () => {
           hoverInput === "checkOut" || hoverInput === "addGuest"
             ? "bg-white"
             : " bg-gray-300"
-        } h-[2rem] `}
+        } h-[2rem]
+        ${data === "checkOut" || data === "guest" ? "hidden" : ""}
+        
+        `}
       ></div>
       <Modal>
         <div
@@ -240,7 +255,9 @@ const MainFormContent = () => {
             if (data !== "guest") setHoverInput(null);
           }}
           className={`flex w-[17.7rem] ${
-            data === "guest" ? "rounded-full bg-white shadow-inputShadow " : ""
+            data === "guest"
+              ? "rounded-full bg-white shadow-AddGuestShadow "
+              : ""
           } justify-center items-center`}
         >
           <Modal.Open opens="addGuest">
@@ -263,7 +280,7 @@ const MainFormContent = () => {
                       dispatch(setActiveInput(""));
                       dispatch(setSearchEl(false));
                     }}
-                    className={`w-[13.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm 
+                    className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm 
                       ${data && data !== "guest" ? "bg-shadow-gray" : ""}
                     placeholder:font-extralight placeholder:text-black`}
                     id="addGuest"
