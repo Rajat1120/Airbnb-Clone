@@ -9,7 +9,6 @@ import React, {
 
 import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
-import { setActiveInput } from "../Header/Form/mainFormSlice";
 
 const modalContext = createContext();
 
@@ -21,15 +20,18 @@ let modalStye = {
 };
 function Modal({ children }) {
   const [openName, setOpenName] = useState("");
+  const dispatch = useDispatch();
 
-  const close = () => setOpenName("");
+  const close = () => {
+    setOpenName("");
+  };
   const open = setOpenName;
 
-  const searchInput = useSelector((store) => store.form.search);
+  const curInput = useSelector((store) => store.form.curSelectInput);
 
   useEffect(() => {
-    if (!searchInput) close();
-  }, [searchInput]);
+    if (!curInput) close();
+  }, [curInput]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>
@@ -49,14 +51,12 @@ function Window({ children, name }) {
   const data = useSelector((store) => store.form.curSelectInput);
 
   const ref = useRef();
-  const dispatch = useDispatch();
 
   useEffect(
     function () {
       function handleClick(e) {
         if (ref?.current && !ref.current?.contains(e.target)) {
           close();
-          dispatch(setActiveInput(""));
         }
       }
 

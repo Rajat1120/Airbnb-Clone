@@ -15,24 +15,45 @@ const MainFormContent = () => {
   const data = useSelector((store) => store.form.curSelectInput);
   const dispatch = useDispatch();
 
-  const searchIconRef = useRef();
+  const formRef = useRef();
+  // to minimize the add guest input field, on clicking outside of the form
+  useEffect(
+    function () {
+      function handleClick(e) {
+        if (formRef?.current && !formRef.current?.contains(e.target)) {
+          dispatch(setActiveInput(""));
+        }
+      }
+
+      document.addEventListener("click", handleClick, true);
+
+      return () => document.removeEventListener("click", handleClick, true);
+    },
+    [dispatch]
+  );
 
   function handleInputField(input) {
-    if (input === "destination") {
-      dispatch(setActiveInput("destination"));
+    if (data === input) {
+      dispatch(setActiveInput(""));
+    } else {
+      dispatch(setActiveInput(input));
     }
   }
 
   console.log(data);
 
   return (
-    <div className="flex z-20  justify-center  items-center">
+    <div ref={formRef} className="flex z-20  justify-center  items-center">
       <div>
         <Modal>
           <Modal.Open opens="destination">
             <div
-              onMouseEnter={() => setHoverInput("destination")}
-              onMouseLeave={() => setHoverInput(null)}
+              onMouseEnter={() => {
+                if (data !== "destination") setHoverInput("destination");
+              }}
+              onMouseLeave={() => {
+                if (data !== "destination") setHoverInput(null);
+              }}
               className={`flex ${
                 data === "destination"
                   ? "shadow-destinationShadow rounded-full"
@@ -246,6 +267,7 @@ const MainFormContent = () => {
         
         `}
       ></div>
+
       <Modal>
         <div
           onMouseEnter={() => {
@@ -262,8 +284,9 @@ const MainFormContent = () => {
         >
           <Modal.Open opens="addGuest">
             <div className="flex justify-center  items-center">
-              <label
+              <div
                 htmlFor="addGuest"
+                onClick={(e) => handleInputField("guest")}
                 className={`${
                   data === "guest" ? "w-[12.2rem] " : "w-[14.2rem]"
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
@@ -271,29 +294,24 @@ const MainFormContent = () => {
               
                before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
-                <div className="0">
-                  <div className="text-xs font-medium">Who</div>
-                  <input
-                    type="text"
-                    onBlur={() => {
-                      dispatch(setActiveInput(""));
-                      dispatch(setSearchEl(false));
-                    }}
-                    className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm 
+                <div className="text-xs font-medium">Who</div>
+                <div
+                  className={`w-[5.62rem] outline-none focus:outline-none h[2rem] 
                       ${data && data !== "guest" ? "bg-shadow-gray" : ""}
-                    placeholder:font-extralight placeholder:text-black`}
-                    id="addGuest"
-                    placeholder="Add guests"
-                  />
+                   `}
+                >
+                  <p className="text-sm font-extralight text-black ">
+                    Add guest
+                  </p>
                 </div>
-              </label>
+                <div />
+              </div>
             </div>
           </Modal.Open>
           {
             <div
-              ref={searchIconRef}
-              className={`${
-                data === "guest" ? "w-[8rem]" : "w-[3rem]"
+              className={` ${
+                data === "guest" ? "w-[8rem] " : "w-[3rem] z-30"
               } hover:cursor-pointer  flex items-center ${
                 data === "guest" ? "justify-start " : "justify-center"
               } duration-200 ease-out ${
