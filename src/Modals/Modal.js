@@ -13,10 +13,14 @@ import { createPortal } from "react-dom";
 const modalContext = createContext();
 
 let modalStye = {
-  checkIn: "top-[30%]",
-  destination: "top-[20%]",
-  checkOut: "top-[60%]",
-  guest: "top-[50%]",
+  checkIn:
+    " fixed top-[20%] left-[22%] h-[35rem] w-[52rem] bg-black bg-opacity-50 rounded-[2rem] ",
+  destination:
+    "fixed top-[20%] left-[22%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem] ",
+  checkOut:
+    "  fixed top-[20%] left-[22%] h-[35rem] w-[52rem] bg-black bg-opacity-50 rounded-[2rem] ",
+  guest:
+    "fixed top-[20%] left-[52%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
 };
 function Modal({ children }) {
   const [openName, setOpenName] = useState("");
@@ -70,10 +74,7 @@ function Window({ children, name }) {
   if (name !== openName) return null;
 
   return createPortal(
-    <div
-      className={`fixed ${modalStye[data]} left-[22%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem] `}
-      ref={ref}
-    >
+    <div className={`${modalStye[data]}`} ref={ref}>
       <div>{cloneElement(children)}</div>
     </div>,
     document.body
