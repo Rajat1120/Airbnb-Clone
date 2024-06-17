@@ -9,6 +9,7 @@ import Thiland from "../../data/Continents/thisland.jpg";
 import SouthEastAsia from "../../data/Continents/southEash.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveElement, setActiveInput, setSearchEl } from "./mainFormSlice";
+import Calendar from "../../Utils/Calander";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -217,7 +218,7 @@ const MainFormContent = () => {
             </div>
           </Modal.Open>
           <Modal.Window name="checkIn">
-            <p>check In</p>
+            <Calendar></Calendar>
           </Modal.Window>
         </Modal>
         <div
