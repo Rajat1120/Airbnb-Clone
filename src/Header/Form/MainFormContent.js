@@ -16,12 +16,13 @@ const MainFormContent = () => {
   const dispatch = useDispatch();
 
   const formRef = useRef();
-  // to minimize the add guest input field, on clicking outside of the form
+  // to minimize the form input fields, on clicking outside of the form
   useEffect(
     function () {
       function handleClick(e) {
         if (formRef?.current && !formRef.current?.contains(e.target)) {
           dispatch(setActiveInput(""));
+          setHoverInput(null);
         }
       }
 
@@ -37,6 +38,12 @@ const MainFormContent = () => {
       dispatch(setActiveInput(""));
     } else {
       dispatch(setActiveInput(input));
+    }
+  }
+
+  function handleDestinationField(input) {
+    if (input === "destination") {
+      dispatch(setActiveInput("destination"));
     }
   }
 
@@ -61,7 +68,7 @@ const MainFormContent = () => {
               } justify-center  items-center`}
             >
               <label
-                onClick={() => handleInputField("destination")}
+                onClick={() => handleDestinationField("destination")}
                 htmlFor="destination"
                 className={`w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
 
@@ -162,7 +169,11 @@ const MainFormContent = () => {
       </div>
       <div
         className={`w-[0.05rem] ${
-          hoverInput === "destination" || hoverInput === "checkIn"
+          data
+            ? hoverInput === "destination" || hoverInput === "checkIn"
+              ? "bg-shadow-gray"
+              : " bg-gray-300"
+            : hoverInput === "destination" || hoverInput === "checkIn"
             ? "bg-white"
             : " bg-gray-300"
         } h-[2rem] 
@@ -179,7 +190,8 @@ const MainFormContent = () => {
                 data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
               } justify-center  items-center`}
             >
-              <label
+              <div
+                onClick={() => handleInputField("checkIn")}
                 htmlFor="checkIn"
                 className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
 
@@ -190,19 +202,18 @@ const MainFormContent = () => {
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
                 <div className="0">
-                  <div className="text-xs font-medium">Check in</div>
-                  <input
-                    type="text"
-                    onFocus={() => dispatch(setActiveInput("checkIn"))}
-                    onBlur={() => dispatch(setActiveInput(""))}
+                  <div
                     className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "checkIn" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
-                    id="checkIn"
-                    placeholder="Add dates"
-                  />
+                  >
+                    <p className="text-xs font-medium">Check in</p>
+                    <p className="text-sm font-extralight mt-[2px] text-black ">
+                      Add dates
+                    </p>
+                  </div>
                 </div>
-              </label>
+              </div>
             </div>
           </Modal.Open>
           <Modal.Window name="checkIn">
@@ -211,10 +222,16 @@ const MainFormContent = () => {
         </Modal>
         <div
           className={`w-[0.05rem] ${
-            hoverInput === "checkOut" || hoverInput === "checkIn"
+            data
+              ? hoverInput === "checkOut" || hoverInput === "checkIn"
+                ? "bg-shadow-gray"
+                : " bg-gray-300"
+              : hoverInput === "checkOut" || hoverInput === "checkIn"
               ? "bg-white"
               : " bg-gray-300"
-          } h-[2rem]
+          }
+          
+          h-[2rem]
           ${data === "checkOut" || data === "checkIn" ? "hidden" : ""}
           `}
         ></div>
@@ -227,28 +244,25 @@ const MainFormContent = () => {
                 data === "checkOut" ? "shadow-checkOutShadow rounded-full" : ""
               } justify-center  items-center`}
             >
-              <label
-                htmlFor="checkOut"
+              <div
+                onClick={() => handleInputField("checkOut")}
                 className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
                    ${data === "checkOut" ? "" : "before:hover:bg-gray-300 "}
                   before:hover:opacity-40 
                ${data === "checkOut" ? "rounded-full bg-white" : ""}
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
-                <>
-                  <div className="text-xs font-medium">Check out</div>
-                  <input
-                    type="text"
-                    onFocus={() => dispatch(setActiveInput("checkOut"))}
-                    onBlur={() => dispatch(setActiveInput(""))}
-                    className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm 
-                      ${data && data !== "checkOut" ? "bg-shadow-gray" : ""}
-                      placeholder:font-extralight placeholder:text-black`}
-                    id="checkOut"
-                    placeholder="Add dates"
-                  />
-                </>
-              </label>
+                <div
+                  className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                    data && data !== "checkOut" ? "bg-shadow-gray" : ""
+                  } placeholder:font-extralight placeholder:text-black`}
+                >
+                  <p className="text-xs font-medium">Check out</p>
+                  <p className="text-sm font-extralight mt-[2px] text-black ">
+                    Add dates
+                  </p>
+                </div>
+              </div>
             </div>
           </Modal.Open>
           <Modal.Window name="checkOut">
@@ -259,7 +273,11 @@ const MainFormContent = () => {
 
       <div
         className={`w-[0.05rem] ${
-          hoverInput === "checkOut" || hoverInput === "addGuest"
+          data
+            ? hoverInput === "checkOut" || hoverInput === "addGuest"
+              ? "bg-shadow-gray"
+              : " bg-gray-300"
+            : hoverInput === "checkOut" || hoverInput === "addGuest"
             ? "bg-white"
             : " bg-gray-300"
         } h-[2rem]
@@ -300,7 +318,7 @@ const MainFormContent = () => {
                       ${data && data !== "guest" ? "bg-shadow-gray" : ""}
                    `}
                 >
-                  <p className="text-sm font-extralight text-black ">
+                  <p className="text-sm mt-[2px] font-extralight text-black ">
                     Add guest
                   </p>
                 </div>
@@ -310,7 +328,7 @@ const MainFormContent = () => {
           </Modal.Open>
           {
             <div
-              className={` ${
+              className={` hover:bg-dark-pink ${
                 data === "guest" ? "w-[8rem] " : "w-[3rem] z-30"
               } hover:cursor-pointer  flex items-center ${
                 data === "guest" ? "justify-start " : "justify-center"
