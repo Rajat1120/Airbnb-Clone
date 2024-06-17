@@ -13,6 +13,7 @@ import Calendar from "../../Utils/Calander";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
+  const [dateOption, setDateOption] = useState("dates");
   const data = useSelector((store) => store.form.curSelectInput);
   const dispatch = useDispatch();
 
@@ -218,7 +219,43 @@ const MainFormContent = () => {
             </div>
           </Modal.Open>
           <Modal.Window formRef={formRef} name="checkIn">
-            <Calendar></Calendar>
+            <div className="flex flex-col justify-center items-center ">
+              <div className="flex gap-3 bg-shadow-gray rounded-full my-7 h-11 justify-center items-center w-[20rem]  ">
+                <span
+                  onClick={() => setDateOption("dates")}
+                  className={`rounded-full text-sm font-medium  flex  text-zinc-700  justify-center items-center h-9 w-[6rem] ${
+                    dateOption === "dates"
+                      ? "bg-white"
+                      : "cursor-pointer hover:bg-grey-dim"
+                  }`}
+                >
+                  Dates
+                </span>
+                <span
+                  onClick={() => setDateOption("months")}
+                  className={`rounded-full text-zinc-700 flex text-sm font-medium justify-center items-center h-9 w-[6rem] ${
+                    dateOption === "months"
+                      ? "bg-white   "
+                      : "cursor-pointer hover:bg-grey-dim"
+                  }`}
+                >
+                  {" "}
+                  Months
+                </span>
+                <span
+                  onClick={() => setDateOption("flexible")}
+                  className={`rounded-full  text-zinc-700  text-sm font-medium flex justify-center items-center h-9 w-[6rem] ${
+                    dateOption === "flexible"
+                      ? "bg-white"
+                      : "cursor-pointer hover:bg-grey-dim"
+                  }`}
+                >
+                  {" "}
+                  Flexible
+                </span>
+              </div>
+              <Calendar></Calendar>
+            </div>
           </Modal.Window>
         </Modal>
         <div
@@ -353,7 +390,7 @@ const MainFormContent = () => {
           }
         </div>
         <Modal.Window formRef={formRef} name="addGuest">
-          <p>add guest</p>
+          <div className="w-[26rem] h-[25rem]"></div>
         </Modal.Window>
       </Modal>
     </div>

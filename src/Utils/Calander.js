@@ -42,6 +42,7 @@ const Calendar = () => {
   const renderDays = () => {
     const dateFormat = "eeee";
     const days = [];
+    console.log(days);
 
     let startDate = startOfWeek(currentMonth);
 
@@ -113,10 +114,17 @@ const Calendar = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 border rounded-lg shadow-lg">
-      {renderHeader()}
-      {renderDays()}
-      {renderCells()}
+    <div className="flex">
+      <div className="max-w-md w-[30rem]  mx-auto p-4 border rounded-lg shadow-lg">
+        {renderHeader()}
+        {renderDays()}
+        {renderCells()}
+      </div>
+      <div className="max-w-md  mx-auto p-4 border rounded-lg shadow-lg">
+        {renderHeader()}
+        {renderDays()}
+        {renderCells()}
+      </div>
     </div>
   );
 };
