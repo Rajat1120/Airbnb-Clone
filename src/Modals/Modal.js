@@ -50,7 +50,7 @@ function Open({ children, opens: opensWindowName }) {
   return cloneElement(children, { onClick: () => open(opensWindowName) });
 }
 
-function Window({ children, name }) {
+function Window({ children, name, formRef }) {
   const { openName, close } = useContext(modalContext);
   const data = useSelector((store) => store.form.curSelectInput);
 
@@ -75,7 +75,7 @@ function Window({ children, name }) {
 
   return createPortal(
     <div className={`${modalStye[data]}`} ref={ref}>
-      <div>{cloneElement(children)}</div>
+      <div ref={formRef}>{cloneElement(children)}</div>
     </div>,
     document.body
   );

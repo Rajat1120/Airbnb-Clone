@@ -51,7 +51,7 @@ const MainFormContent = () => {
   console.log(data);
 
   return (
-    <div ref={formRef} className="flex z-20  justify-center  items-center">
+    <div className="flex z-20  justify-center  items-center">
       <div>
         <Modal>
           <Modal.Open opens="destination">
@@ -94,7 +94,7 @@ const MainFormContent = () => {
               </label>
             </div>
           </Modal.Open>
-          <Modal.Window name="destination">
+          <Modal.Window formRef={formRef} name="destination">
             <div className="h-full pt-[2rem] px-[1.5rem] shadow-2xl rounded-[2rem] justify-center  w-full  pb-[1.5rem] bg-white">
               <div className="flex flex-col justify-center items-center">
                 <p className="flex mb-3  text-sm font-medium ml-[1rem] w-full justify-self-start items-center ">
@@ -217,7 +217,7 @@ const MainFormContent = () => {
               </div>
             </div>
           </Modal.Open>
-          <Modal.Window name="checkIn">
+          <Modal.Window formRef={formRef} name="checkIn">
             <Calendar></Calendar>
           </Modal.Window>
         </Modal>
@@ -266,8 +266,8 @@ const MainFormContent = () => {
               </div>
             </div>
           </Modal.Open>
-          <Modal.Window name="checkOut">
-            <p>checkOut</p>
+          <Modal.Window formRef={formRef} name="checkOut">
+            <Calendar></Calendar>
           </Modal.Window>
         </Modal>
       </div>
@@ -352,7 +352,7 @@ const MainFormContent = () => {
             </div>
           }
         </div>
-        <Modal.Window name="addGuest">
+        <Modal.Window formRef={formRef} name="addGuest">
           <p>add guest</p>
         </Modal.Window>
       </Modal>
