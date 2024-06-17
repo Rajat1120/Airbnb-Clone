@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import MainFormContent from "./MainFormContent";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setActiveInput } from "./mainFormSlice";
 
 const MainForm = ({ startScroll }) => {
   const data = useSelector((store) => store.form.curSelectInput);
+
+  const dispatch = useDispatch();
+
+  useEffect(
+    function () {
+      if (!startScroll) dispatch(setActiveInput(""));
+    },
+    [startScroll, dispatch]
+  );
 
   const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
 
@@ -17,7 +27,9 @@ const MainForm = ({ startScroll }) => {
 
   let classForForm = ` border-gray-250 flex ${
     !startScroll ? onScrollProperty : onScrollBack
-  }  mb-5   rounded-full ${data ? styleForBefore : ""}  absolute    `;
+  }  mb-5   rounded-full ${
+    !startScroll ? "" : data ? styleForBefore : ""
+  }  absolute    `;
   return (
     <div className="flex   flex-col">
       <div className={classForForm}>
