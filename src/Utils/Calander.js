@@ -31,7 +31,7 @@ const Calendar = () => {
 
     return (
       <div className="flex justify-between items-center py-2">
-        <div className=" ">
+        <div className="">
           {showLeftButton && (
             <button
               onClick={prevMonth}
@@ -65,7 +65,7 @@ const Calendar = () => {
 
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="flex  text-xs px-4 text-center py-2" key={i}>
+        <div className="flex text-xs px-4 text-center py-2" key={i}>
           {format(addDays(startDate, i), dateFormat)}
         </div>
       );
@@ -84,17 +84,15 @@ const Calendar = () => {
     const rows = [];
     let days = [];
     let day = startDate;
-    let formattedDate = "";
 
     while (day <= endDate) {
       for (let i = 0; i < 7; i++) {
-        formattedDate = format(day, dateFormat);
+        const formattedDate = format(day, dateFormat);
         const cloneDay = day;
         let cellClass = "";
+        let onClickHandler = () => onDateClick(cloneDay);
 
-        if (!isSameMonth(day, monthStart)) {
-          cellClass = "bg-gray-200 text-gray-400";
-        } else if (
+        if (
           selectedStartDate &&
           selectedEndDate &&
           isWithinInterval(day, {
@@ -102,29 +100,32 @@ const Calendar = () => {
             end: selectedEndDate,
           })
         ) {
-          cellClass = "bg-blue-300 text-white";
+          cellClass = "bg-shadow-gray-light text-black";
         } else if (
           isSameDay(day, selectedStartDate) ||
           isSameDay(day, selectedEndDate)
         ) {
           cellClass = "bg-blue-500 text-white";
+        } else if (!isSameMonth(day, monthStart)) {
+          cellClass = "bg-white text-white";
+          onClickHandler = null; // Disable onClick for dates outside the current month
         } else {
-          cellClass = "bg-white text-black";
+          cellClass = "bg-white text-black hover:rounded-full hover:border";
         }
 
         days.push(
           <div
-            className={` h-10 w-12 flex items-center justify-center cursor-pointer ${cellClass}`}
-            key={day}
-            onClick={() => onDateClick(cloneDay)}
+            className={`h-[3rem] w-[3rem] flex items-center justify-center cursor-pointer ${cellClass}`}
+            key={cloneDay}
+            onClick={onClickHandler}
           >
-            <span>{formattedDate}</span>
+            <span className="text-sm font-medium">{formattedDate}</span>
           </div>
         );
         day = addDays(day, 1);
       }
       rows.push(
-        <div className="flex items-center justify-center" key={day}>
+        <div className="flex mb-[2px] items-center justify-center" key={day}>
           {days}
         </div>
       );
@@ -166,14 +167,14 @@ const Calendar = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center mt-10">
+    <div className="flex flex-col justify-center">
       <div className="flex justify-self-center">
-        <div className="max-w-md w-[25rem] mx-2  border rounded-lg shadow-lg">
+        <div className="max-w-md w-[25rem] mx-2 rounded-lg">
           {renderHeader(currentMonth, nextMonth, prevMonth, true, false)}
           {renderDays()}
-          <div className="">{renderCells(currentMonth)}</div>
+          <div>{renderCells(currentMonth)}</div>
         </div>
-        <div className="max-w-md w-[25rem] mx-2  border rounded-lg shadow-lg">
+        <div className="max-w-md w-[25rem] mx-2 rounded-lg">
           {renderHeader(
             addMonths(currentMonth, 1),
             nextMonthRight,
@@ -185,7 +186,13 @@ const Calendar = () => {
           <div className="ml-8">{renderCells(addMonths(currentMonth, 1))}</div>
         </div>
       </div>
-      <div className="h-[5rem] ml-10 justify-self-start w-[30rem] bg-slate-400"></div>
+      <div className="h-[5rem] flex ml-10 justify-self-start w-[30rem]">
+        <button>button1</button>
+        <button>button2</button>
+        <button>button3</button>
+        <button>button4</button>
+        <button>button5</button>
+      </div>
     </div>
   );
 };
