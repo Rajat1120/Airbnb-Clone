@@ -62,12 +62,12 @@ module.exports = {
           "100%": { transform: "translateY(9.9rem)" },
         },
         slideInLeft: {
-          "0%": { transform: "translateX(-3.5rem)", opacity: "1" },
+          "0%": { transform: "translateX(-3.2rem)", opacity: "1" },
 
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
         slideInRight: {
-          "0%": { transform: "translateX(3.5rem)", opacity: "1" },
+          "0%": { transform: "translateX(3.2rem)", opacity: "1" },
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
       },

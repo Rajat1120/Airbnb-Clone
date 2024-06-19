@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   format,
   startOfMonth,
@@ -21,6 +21,14 @@ const Calendar = () => {
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [animationDirection, setAnimationDirection] = useState("");
   const [uniqueKey, setUniqueKey] = useState(0);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+
+  useEffect(() => {
+    // Disable the initial render animation
+    if (isFirstRender) {
+      setIsFirstRender(false);
+    }
+  }, [isFirstRender]);
 
   const renderHeader = (
     currentMonth,
@@ -222,9 +230,11 @@ const Calendar = () => {
         <div
           key={`${uniqueKey}-current`} // Add unique key to force re-render
           className={`max-w-md justify-center items-center w-[25rem] mx-1 rounded-lg ${
-            animationDirection === "slideInLeft"
+            !isFirstRender && animationDirection === "slideInLeft"
               ? "animate-slideInLeft"
-              : "animate-slideInRight"
+              : !isFirstRender && animationDirection === "slideInRight"
+              ? "animate-slideInRight"
+              : ""
           }`}
         >
           {renderHeader(currentMonth, nextMonth, prevMonth, true, false)}
@@ -234,10 +244,12 @@ const Calendar = () => {
         <div
           key={`${uniqueKey}-next`} // Add unique key to force re-render
           className={`max-w-md w-[25rem] mx-1 rounded-lg ${
-            animationDirection === "slideInLeft"
+            !isFirstRender && animationDirection === "slideInLeft"
               ? "animate-slideInLeft"
-              : "animate-slideInRight"
-          }`}
+              : !isFirstRender && animationDirection === "slideInRight"
+              ? "animate-slideInRight"
+              : ""
+          } `}
         >
           {renderHeader(
             addMonths(currentMonth, 1),
