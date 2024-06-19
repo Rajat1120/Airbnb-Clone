@@ -15,16 +15,22 @@ import {
 import arrowRight from "../data/Icons svg/arrow-right.svg";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentMonth } from "../Header/Form/mainFormSlice";
+import {
+  setCurrentMonth,
+  setSelectedEndDate,
+  setSelectedStartDate,
+} from "../Header/Form/mainFormSlice";
 
 const Calendar = () => {
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [animationDirection, setAnimationDirection] = useState("");
   const [uniqueKey, setUniqueKey] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   const currentMonth = useSelector((store) => store.form.currentMonth);
+  const selectedStartDate = useSelector(
+    (store) => store.form.selectedStartDate
+  );
+  const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
 
   const dispatch = useDispatch();
 
@@ -139,9 +145,15 @@ const Calendar = () => {
             end: selectedEndDate,
           })
         ) {
-          if (isSameDay(day, selectedStartDate)) {
+          if (
+            isSameDay(day, selectedStartDate) &&
+            isSameMonth(day, monthStart)
+          ) {
             cellClass = "bg-black text-white rounded-full"; // Start date
-          } else if (isSameDay(day, selectedEndDate)) {
+          } else if (
+            isSameDay(day, selectedEndDate) &&
+            isSameMonth(day, monthStart)
+          ) {
             cellClass = "bg-black text-white rounded-full"; // End date
           } else if (!isSameMonth(day, monthStart)) {
             cellClass = "bg-white cursor-default text-white";
@@ -149,9 +161,15 @@ const Calendar = () => {
           } else {
             cellClass = "bg-shadow-gray-light text-black"; // Interval dates
           }
-        } else if (isSameDay(day, selectedStartDate)) {
+        } else if (
+          isSameDay(day, selectedStartDate) &&
+          isSameMonth(day, monthStart)
+        ) {
           cellClass = "bg-black text-white rounded-full"; // Start date
-        } else if (isSameDay(day, selectedEndDate)) {
+        } else if (
+          isSameDay(day, selectedEndDate) &&
+          isSameMonth(day, monthStart)
+        ) {
           cellClass = "bg-black text-white rounded-full"; // End date
         } else if (!isSameMonth(day, monthStart)) {
           cellClass = "bg-white text-white";
@@ -188,17 +206,17 @@ const Calendar = () => {
 
   const onDateClick = (day) => {
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
-      setSelectedStartDate(day);
-      setSelectedEndDate(null);
+      dispatch(setSelectedStartDate(day));
+      dispatch(setSelectedEndDate(null));
     } else if (
       selectedStartDate &&
       !selectedEndDate &&
       day >= selectedStartDate
     ) {
-      setSelectedEndDate(day);
+      dispatch(setSelectedEndDate(day));
     } else {
-      setSelectedStartDate(day);
-      setSelectedEndDate(null);
+      dispatch(setSelectedStartDate(day));
+      dispatch(setSelectedEndDate(null));
     }
   };
 

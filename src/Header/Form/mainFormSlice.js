@@ -6,6 +6,8 @@ let formState = {
   curSelectInput: "",
   search: false,
   currentMonth: new Date(),
+  selectedStartDate: null,
+  selectedEndDate: null,
 };
 
 const formSlice = createSlice({
@@ -21,9 +23,20 @@ const formSlice = createSlice({
     setCurrentMonth: (state, action) => {
       state.currentMonth = action.payload;
     },
+    setSelectedStartDate(state, action) {
+      state.selectedStartDate = action.payload;
+    },
+    setSelectedEndDate(state, action) {
+      state.selectedEndDate = action.payload;
+    },
   },
 });
 
-export const { setActiveInput, setSearchEl, setCurrentMonth } =
-  formSlice.actions;
+export const {
+  setActiveInput,
+  setSearchEl,
+  setCurrentMonth,
+  setSelectedEndDate,
+  setSelectedStartDate,
+} = formSlice.actions;
 export default formSlice.reducer;
