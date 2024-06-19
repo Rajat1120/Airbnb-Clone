@@ -16,6 +16,7 @@ import {
 } from "./mainFormSlice";
 import Calendar from "../../Utils/Calendar";
 import CheckInOption from "./DatesOption";
+import { format } from "date-fns";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -28,6 +29,16 @@ const MainFormContent = () => {
   const checkInRef = useRef();
   const checkOutRef = useRef();
   const addGuestRef = useRef();
+
+  const startDate = useSelector((store) => store.form.selectedStartDate);
+  const endDate = useSelector((store) => store.form.selectedEndDate);
+
+  const formattedStartDate = startDate
+    ? format(new Date(startDate), "dd MMM")
+    : "Add dates";
+  const formattedEndDate = endDate
+    ? format(new Date(endDate), "dd MMM")
+    : "Add dates";
 
   // to minimize the form input fields, on clicking outside of the form
   useEffect(
@@ -234,8 +245,9 @@ const MainFormContent = () => {
                     } placeholder:font-extralight placeholder:text-black`}
                   >
                     <p className="text-xs font-medium">Check in</p>
-                    <p className="text-sm font-extralight mt-[2px] text-black ">
-                      Add dates
+                    <p className="text-sm font-medium mt-[2px] text-black  ">
+                      {" "}
+                      {startDate ? formattedStartDate : "Add dates"}
                     </p>
                   </div>
                 </div>
@@ -288,8 +300,8 @@ const MainFormContent = () => {
                   } placeholder:font-extralight placeholder:text-black`}
                 >
                   <p className="text-xs font-medium">Check out</p>
-                  <p className="text-sm font-extralight mt-[2px] text-black ">
-                    Add dates
+                  <p className="text-sm font-medium mt-[2px] text-black ">
+                    {endDate ? formattedEndDate : "Add dates"}
                   </p>
                 </div>
               </div>
