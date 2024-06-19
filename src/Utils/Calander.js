@@ -30,30 +30,38 @@ const Calendar = () => {
     const dateFormat = "MMMM yyyy";
 
     return (
-      <div className="flex justify-between items-center py-2">
-        <div className="">
-          {showLeftButton && (
-            <button
-              onClick={prevMonth}
-              className="text-lg ml-[2rem] font-light"
-            >
-              <img src={arrowLeft} alt="" />
-            </button>
-          )}
-        </div>
-        <div className="text-center text-base font-medium">
+      <div className="flex mb-5 justify-center items-center py-2">
+        {showLeftButton && (
+          <div
+            className={`flex items-center cursor-pointer justify-center hover:rounded-full h-[2rem] w-[2rem] hover:bg-shadow-gray-light ml-3  `}
+            onClick={prevMonth}
+          >
+            <img
+              src={arrowLeft}
+              alt="Previous Month"
+              className="text-lg font-semibold"
+            />
+          </div>
+        )}
+        <div
+          className={`flex items-center ${
+            showLeftButton ? "pr-8" : "pl-6"
+          } justify-center flex-grow text-base font-medium`}
+        >
           <span>{format(currentMonth, dateFormat)}</span>
         </div>
-        <div className="">
-          {showRightButton && (
-            <button
-              onClick={nextMonth}
-              className="text-lg ml-[-5rem] font-semibold"
-            >
-              <img src={arrowRight} alt="" />
-            </button>
-          )}
-        </div>
+        {showRightButton && (
+          <div
+            className={`flex items-center h-[2rem] w-[2rem] hover:rounded-full hover:bg-shadow-gray-light   justify-center`}
+            onClick={nextMonth}
+          >
+            <img
+              src={arrowRight}
+              alt="Next Month"
+              className="text-lg font-semibold"
+            />
+          </div>
+        )}
       </div>
     );
   };
@@ -65,13 +73,13 @@ const Calendar = () => {
 
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="flex text-xs px-4 text-center py-2" key={i}>
+        <div className="flex text-xs  text-center w-[2.9rem] " key={i}>
           {format(addDays(startDate, i), dateFormat)}
         </div>
       );
     }
 
-    return <div className="flex justify-center items-center">{days}</div>;
+    return <div className="flex justify-center ml-6 items-center">{days}</div>;
   };
 
   const renderCells = (currentMonth) => {
@@ -79,6 +87,8 @@ const Calendar = () => {
     const monthEnd = endOfMonth(monthStart);
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
+
+    console.log(startDate);
 
     const dateFormat = "d";
     const rows = [];
@@ -101,21 +111,17 @@ const Calendar = () => {
           })
         ) {
           cellClass = "bg-shadow-gray-light text-black";
-        } else if (
-          isSameDay(day, selectedStartDate) ||
-          isSameDay(day, selectedEndDate)
-        ) {
-          cellClass = "bg-blue-500 text-white";
         } else if (!isSameMonth(day, monthStart)) {
           cellClass = "bg-white text-white";
           onClickHandler = null; // Disable onClick for dates outside the current month
         } else {
-          cellClass = "bg-white text-black hover:rounded-full hover:border";
+          cellClass =
+            "bg-white text-black hover:rounded-full hover:border-[1.5px]  hover:border-black";
         }
 
         days.push(
           <div
-            className={`h-[3rem] w-[3rem] flex items-center justify-center cursor-pointer ${cellClass}`}
+            className={`h-[3rem] w-[2.9rem] flex items-center justify-center cursor-pointer ${cellClass}`}
             key={cloneDay}
             onClick={onClickHandler}
           >
@@ -131,6 +137,7 @@ const Calendar = () => {
       );
       days = [];
     }
+
     return <div>{rows}</div>;
   };
 
@@ -172,7 +179,7 @@ const Calendar = () => {
         <div className="max-w-md w-[25rem] mx-2 rounded-lg">
           {renderHeader(currentMonth, nextMonth, prevMonth, true, false)}
           {renderDays()}
-          <div>{renderCells(currentMonth)}</div>
+          <div className="">{renderCells(currentMonth)}</div>
         </div>
         <div className="max-w-md w-[25rem] mx-2 rounded-lg">
           {renderHeader(
@@ -183,7 +190,7 @@ const Calendar = () => {
             true
           )}
           {renderDays()}
-          <div className="ml-8">{renderCells(addMonths(currentMonth, 1))}</div>
+          <div className="">{renderCells(addMonths(currentMonth, 1))}</div>
         </div>
       </div>
       <div className="h-[5rem] flex ml-10 justify-self-start w-[30rem]">
