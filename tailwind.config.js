@@ -61,6 +61,15 @@ module.exports = {
           "0%": { transform: "translateY( 4.5rem)" },
           "100%": { transform: "translateY(9.9rem)" },
         },
+        slideInLeft: {
+          "0%": { transform: "translateX(-3.5rem)", opacity: "1" },
+
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
+        slideInRight: {
+          "0%": { transform: "translateX(3.5rem)", opacity: "1" },
+          "100%": { transform: "translateX(0)", opacity: "1" },
+        },
       },
       animation: {
         moveUp: "moveUp 0.2s  forwards ",
@@ -69,6 +78,8 @@ module.exports = {
         moveDownHouse: "moveDownHouse   0.2s forwards  ",
         moveAfterUp: "moveAfterUp 0.2s forwards ",
         moveAfterDown: "moveAfterDown 0.2s forwards ",
+        slideInLeft: "slideInLeft 0.3s ease-in-out forwards ",
+        slideInRight: "slideInRight 0.3s ease-in-out forwards ",
       },
     },
   },

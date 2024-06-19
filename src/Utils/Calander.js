@@ -19,6 +19,8 @@ const Calendar = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [animationDirection, setAnimationDirection] = useState("");
+  const [uniqueKey, setUniqueKey] = useState(0);
 
   const renderHeader = (
     currentMonth,
@@ -28,7 +30,6 @@ const Calendar = () => {
     showRightButton
   ) => {
     const dateFormat = "MMMM yyyy";
-
     let today = new Date();
 
     const isCurrentMonth =
@@ -41,7 +42,7 @@ const Calendar = () => {
           <div
             className={`flex items-center cursor-pointer justify-center hover:rounded-full h-[2rem] ${
               isCurrentMonth ? "cursor-not-allowed opacity-20" : ""
-            } w-[2rem] hover:bg-shadow-gray-light   `}
+            } w-[2rem] hover:bg-shadow-gray-light`}
             onClick={!isCurrentMonth ? prevMonth : undefined}
           >
             <img
@@ -53,14 +54,12 @@ const Calendar = () => {
         ) : (
           <div className="h-[2rem] w-[2rem]"></div>
         )}
-        <div
-          className={`flex items-center  justify-center flex-grow text-base font-medium`}
-        >
+        <div className="flex items-center justify-center flex-grow text-base font-medium">
           <span>{format(currentMonth, dateFormat)}</span>
         </div>
         {showRightButton ? (
           <div
-            className={`flex items-center h-[2rem] w-[2rem] hover:rounded-full hover:bg-shadow-gray-light   justify-center`}
+            className="flex items-center h-[2rem] w-[2rem] hover:rounded-full hover:bg-shadow-gray-light justify-center"
             onClick={nextMonth}
           >
             <img
@@ -83,13 +82,16 @@ const Calendar = () => {
 
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div className="flex text-xs  text-center w-[2.9rem] " key={i}>
+        <div
+          className="flex w-[3rem] justify-center text-xs text-center "
+          key={i}
+        >
           {format(addDays(startDate, i), dateFormat)}
         </div>
       );
     }
 
-    return <div className="flex justify-center ml-6 items-center">{days}</div>;
+    return <div className="flex justify-center  items-center">{days}</div>;
   };
 
   const renderCells = (currentMonth) => {
@@ -179,30 +181,64 @@ const Calendar = () => {
   };
 
   const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
+    setAnimationDirection(""); // Reset animation
+    setTimeout(() => {
+      setAnimationDirection("slideInRight");
+      setCurrentMonth(addMonths(currentMonth, 1));
+      setUniqueKey((prevKey) => prevKey + 1);
+    }, 0);
   };
 
   const prevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    setAnimationDirection(""); // Reset animation
+    setTimeout(() => {
+      setAnimationDirection("slideInLeft");
+      setCurrentMonth(subMonths(currentMonth, 1));
+      setUniqueKey((prevKey) => prevKey + 1);
+    }, 0);
   };
 
   const nextMonthRight = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
+    setAnimationDirection(""); // Reset animation
+    setTimeout(() => {
+      setAnimationDirection("slideInRight");
+      setCurrentMonth(addMonths(currentMonth, 1));
+      setUniqueKey((prevKey) => prevKey + 1);
+    }, 0);
   };
 
   const prevMonthLeft = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    setAnimationDirection(""); // Reset animation
+    setTimeout(() => {
+      setAnimationDirection("slideInLeft");
+      setCurrentMonth(subMonths(currentMonth, 1));
+      setUniqueKey((prevKey) => prevKey + 1);
+    }, 0);
   };
 
   return (
     <div className="flex flex-col justify-center">
       <div className="flex justify-self-center">
-        <div className="max-w-md w-[25rem] mx-1 rounded-lg">
+        <div
+          key={`${uniqueKey}-current`} // Add unique key to force re-render
+          className={`max-w-md justify-center items-center w-[25rem] mx-1 rounded-lg ${
+            animationDirection === "slideInLeft"
+              ? "animate-slideInLeft"
+              : "animate-slideInRight"
+          }`}
+        >
           {renderHeader(currentMonth, nextMonth, prevMonth, true, false)}
           {renderDays()}
-          <div className="">{renderCells(currentMonth)}</div>
+          <div>{renderCells(currentMonth)}</div>
         </div>
-        <div className="max-w-md w-[25rem] mx-1 rounded-lg">
+        <div
+          key={`${uniqueKey}-next`} // Add unique key to force re-render
+          className={`max-w-md w-[25rem] mx-1 rounded-lg ${
+            animationDirection === "slideInLeft"
+              ? "animate-slideInLeft"
+              : "animate-slideInRight"
+          }`}
+        >
           {renderHeader(
             addMonths(currentMonth, 1),
             nextMonthRight,
@@ -211,7 +247,7 @@ const Calendar = () => {
             true
           )}
           {renderDays()}
-          <div className="">{renderCells(addMonths(currentMonth, 1))}</div>
+          <div>{renderCells(addMonths(currentMonth, 1))}</div>
         </div>
       </div>
       <div className="h-[5rem] flex ml-10 justify-self-start w-[30rem]">
