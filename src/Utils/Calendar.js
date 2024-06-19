@@ -139,11 +139,20 @@ const Calendar = () => {
             end: selectedEndDate,
           })
         ) {
-          cellClass = "bg-shadow-gray-light text-black";
+          if (isSameDay(day, selectedStartDate)) {
+            cellClass = "bg-black text-white rounded-full"; // Start date
+          } else if (isSameDay(day, selectedEndDate)) {
+            cellClass = "bg-black text-white rounded-full"; // End date
+          } else if (!isSameMonth(day, monthStart)) {
+            cellClass = "bg-white cursor-default text-white";
+            onClickHandler = null; // Disable onClick for dates outside the current month
+          } else {
+            cellClass = "bg-shadow-gray-light text-black"; // Interval dates
+          }
         } else if (isSameDay(day, selectedStartDate)) {
-          cellClass = "bg-black text-white"; // Start date
+          cellClass = "bg-black text-white rounded-full"; // Start date
         } else if (isSameDay(day, selectedEndDate)) {
-          cellClass = "bg-black text-white"; // End date
+          cellClass = "bg-black text-white rounded-full"; // End date
         } else if (!isSameMonth(day, monthStart)) {
           cellClass = "bg-white text-white";
           onClickHandler = null; // Disable onClick for dates outside the current month
