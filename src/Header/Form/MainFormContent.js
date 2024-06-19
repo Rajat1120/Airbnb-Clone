@@ -8,8 +8,13 @@ import UnitedArabEmirates from "../../data/Continents/UAE.jpg";
 import Thiland from "../../data/Continents/thisland.jpg";
 import SouthEastAsia from "../../data/Continents/southEash.jpg";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveElement, setActiveInput, setSearchEl } from "./mainFormSlice";
-import Calendar from "../../Utils/Calander";
+import {
+  setActiveElement,
+  setActiveInput,
+  setCurrentMonth,
+  setSearchEl,
+} from "./mainFormSlice";
+import Calendar from "../../Utils/Calendar";
 import CheckInOption from "./DatesOption";
 
 const MainFormContent = () => {
@@ -19,13 +24,30 @@ const MainFormContent = () => {
   const dispatch = useDispatch();
 
   const formRef = useRef();
+  const buttonRef = useRef();
+  const checkInRef = useRef();
+  const checkOutRef = useRef();
+  const addGuestRef = useRef();
+
   // to minimize the form input fields, on clicking outside of the form
   useEffect(
     function () {
       function handleClick(e) {
+        // Check if the click target or its ancestors have specific classes or attributes
         if (formRef?.current && !formRef.current?.contains(e.target)) {
           dispatch(setActiveInput(""));
           setHoverInput(null);
+        }
+
+        if (
+          !checkInRef.current?.contains(e.target) &&
+          checkOutRef?.current &&
+          !checkOutRef.current?.contains(e.target) &&
+          addGuestRef?.current &&
+          formRef?.current &&
+          !formRef.current?.contains(e.target)
+        ) {
+          dispatch(setCurrentMonth(new Date()));
         }
       }
 
@@ -58,6 +80,7 @@ const MainFormContent = () => {
         <Modal>
           <Modal.Open opens="destination">
             <div
+              ref={buttonRef}
               onMouseEnter={() => {
                 if (data !== "destination") setHoverInput("destination");
               }}
@@ -187,6 +210,7 @@ const MainFormContent = () => {
         <Modal>
           <Modal.Open opens="checkIn">
             <div
+              ref={checkInRef}
               onMouseEnter={() => setHoverInput("checkIn")}
               onMouseLeave={() => setHoverInput(null)}
               className={`flex ${
@@ -195,7 +219,6 @@ const MainFormContent = () => {
             >
               <div
                 onClick={() => handleInputField("checkIn")}
-                htmlFor="checkIn"
                 className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
 
                    ${data === "checkIn" ? "" : "before:hover:bg-gray-300 "}
@@ -244,6 +267,7 @@ const MainFormContent = () => {
         <Modal>
           <Modal.Open opens="checkOut">
             <div
+              ref={checkOutRef}
               onMouseEnter={() => setHoverInput("checkOut")}
               onMouseLeave={() => setHoverInput(null)}
               className={`flex ${
@@ -297,6 +321,7 @@ const MainFormContent = () => {
 
       <Modal>
         <div
+          ref={addGuestRef}
           onMouseEnter={() => {
             if (data !== "guest") setHoverInput("addGuest");
           }}

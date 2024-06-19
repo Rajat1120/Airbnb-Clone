@@ -9,6 +9,7 @@ import React, {
 
 import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
+import { setCurrentMonth } from "../Header/Form/mainFormSlice";
 
 const modalContext = createContext();
 
@@ -24,7 +25,6 @@ let modalStye = {
 };
 function Modal({ children }) {
   const [openName, setOpenName] = useState("");
-  const dispatch = useDispatch();
 
   const close = () => {
     setOpenName("");
@@ -52,6 +52,7 @@ function Open({ children, opens: opensWindowName }) {
 
 function Window({ children, name, formRef }) {
   const { openName, close } = useContext(modalContext);
+
   const data = useSelector((store) => store.form.curSelectInput);
 
   const ref = useRef();

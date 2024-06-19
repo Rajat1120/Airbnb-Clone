@@ -14,14 +14,19 @@ import {
 } from "date-fns";
 import arrowRight from "../data/Icons svg/arrow-right.svg";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrentMonth } from "../Header/Form/mainFormSlice";
 
 const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [animationDirection, setAnimationDirection] = useState("");
   const [uniqueKey, setUniqueKey] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
+
+  const currentMonth = useSelector((store) => store.form.currentMonth);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Disable the initial render animation
@@ -192,7 +197,7 @@ const Calendar = () => {
     setAnimationDirection(""); // Reset animation
     setTimeout(() => {
       setAnimationDirection("slideInRight");
-      setCurrentMonth(addMonths(currentMonth, 1));
+      dispatch(setCurrentMonth(addMonths(addMonths(currentMonth, 1))));
       setUniqueKey((prevKey) => prevKey + 1);
     }, 0);
   };
@@ -201,7 +206,7 @@ const Calendar = () => {
     setAnimationDirection(""); // Reset animation
     setTimeout(() => {
       setAnimationDirection("slideInLeft");
-      setCurrentMonth(subMonths(currentMonth, 1));
+      dispatch(setCurrentMonth(subMonths(currentMonth, 1)));
       setUniqueKey((prevKey) => prevKey + 1);
     }, 0);
   };
@@ -210,7 +215,7 @@ const Calendar = () => {
     setAnimationDirection(""); // Reset animation
     setTimeout(() => {
       setAnimationDirection("slideInRight");
-      setCurrentMonth(addMonths(currentMonth, 1));
+      dispatch(setCurrentMonth(addMonths(currentMonth, 1)));
       setUniqueKey((prevKey) => prevKey + 1);
     }, 0);
   };
@@ -219,7 +224,7 @@ const Calendar = () => {
     setAnimationDirection(""); // Reset animation
     setTimeout(() => {
       setAnimationDirection("slideInLeft");
-      setCurrentMonth(subMonths(currentMonth, 1));
+      dispatch(setCurrentMonth(subMonths(currentMonth, 1)));
       setUniqueKey((prevKey) => prevKey + 1);
     }, 0);
   };
