@@ -7,12 +7,15 @@ import world from "../../data/Continents/world.jpg";
 import UnitedArabEmirates from "../../data/Continents/UAE.jpg";
 import Thiland from "../../data/Continents/thisland.jpg";
 import SouthEastAsia from "../../data/Continents/southEash.jpg";
+import cross from "../../data/Icons svg/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveElement,
   setActiveInput,
   setCurrentMonth,
   setSearchEl,
+  setSelectedEndDate,
+  setSelectedStartDate,
 } from "./mainFormSlice";
 import Calendar from "../../Utils/Calendar";
 import CheckInOption from "./DatesOption";
@@ -20,6 +23,8 @@ import { format } from "date-fns";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
+  const [startDateToShow, setStartDateToShow] = useState(null);
+  const [EndDateToShow, setEndDateToShow] = useState(null);
 
   const data = useSelector((store) => store.form.curSelectInput);
   const dispatch = useDispatch();
@@ -40,6 +45,11 @@ const MainFormContent = () => {
     ? format(new Date(endDate), "dd MMM")
     : "Add dates";
 
+  useEffect(() => {
+    if (startDate) setStartDateToShow(formattedStartDate);
+    if (endDate) setEndDateToShow(formattedEndDate);
+  }, [formattedStartDate, formattedEndDate, startDate, endDate]);
+
   // to minimize the form input fields, on clicking outside of the form
   useEffect(
     function () {
@@ -50,7 +60,12 @@ const MainFormContent = () => {
           setHoverInput(null);
         }
 
-        if (
+        // if user has selected the interval (both start and end date, do not reset the current month)
+
+        if (startDate && endDate) {
+          return;
+        } else if (
+          checkInRef?.current &&
           !checkInRef.current?.contains(e.target) &&
           checkOutRef?.current &&
           !checkOutRef.current?.contains(e.target) &&
@@ -66,10 +81,25 @@ const MainFormContent = () => {
 
       return () => document.removeEventListener("click", handleClick, true);
     },
-    [dispatch]
+    [dispatch, startDate, endDate]
   );
 
-  function handleInputField(input) {
+  /*  useEffect(() => {
+    function handleClick(e) {
+      console.log("Click detected on:", e.target);
+    }
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, []); */
+
+  function handleCrossClick(e) {
+    e.stopPropagation();
+    console.log("run");
+    dispatch(setSelectedStartDate(null));
+    dispatch(setSelectedEndDate(null));
+  }
+
+  function handleInputField(target, input) {
     if (data === input) {
       dispatch(setActiveInput(""));
     } else {
@@ -82,8 +112,6 @@ const MainFormContent = () => {
       dispatch(setActiveInput("destination"));
     }
   }
-
-  console.log(data);
 
   return (
     <div className="flex z-20  justify-center  items-center">
@@ -229,7 +257,7 @@ const MainFormContent = () => {
               } justify-center  items-center`}
             >
               <div
-                onClick={() => handleInputField("checkIn")}
+                onClick={(e) => handleInputField(e.target, "checkIn")}
                 className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
 
                    ${data === "checkIn" ? "" : "before:hover:bg-gray-300 "}
@@ -238,18 +266,29 @@ const MainFormContent = () => {
                ${data === "checkIn" ? "rounded-full bg-white" : ""} 
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
-                <div className="0">
+                <div
+                  className={`w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
+                    data && data !== "checkIn" ? "bg-shadow-gray" : ""
+                  } placeholder:font-extralight placeholder:text-black`}
+                >
                   <div
-                    className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm ${
-                      data && data !== "checkIn" ? "bg-shadow-gray" : ""
-                    } placeholder:font-extralight placeholder:text-black`}
+                    className={
+                      startDateToShow && data === "checkIn" ? "ml-[-1rem]" : ""
+                    }
                   >
                     <p className="text-xs font-medium">Check in</p>
                     <p className="text-sm font-medium mt-[2px] text-black  ">
-                      {" "}
-                      {startDate ? formattedStartDate : "Add dates"}
+                      {startDateToShow ? startDateToShow : "Add dates"}
                     </p>
                   </div>
+                  {startDateToShow && data === "checkIn" && (
+                    <div
+                      onClick={(e) => handleCrossClick(e)}
+                      className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
+                    >
+                      <img src={cross} alt="" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -287,7 +326,9 @@ const MainFormContent = () => {
               } justify-center  items-center`}
             >
               <div
-                onClick={() => handleInputField("checkOut")}
+                onClick={(e) => {
+                  handleInputField(e.target, "checkOut");
+                }}
                 className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
                    ${data === "checkOut" ? "" : "before:hover:bg-gray-300 "}
                   before:hover:opacity-40 
@@ -295,14 +336,28 @@ const MainFormContent = () => {
               py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
                 <div
-                  className={`w-[5.62rem] outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                  className={`w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                     data && data !== "checkOut" ? "bg-shadow-gray" : ""
                   } placeholder:font-extralight placeholder:text-black`}
                 >
-                  <p className="text-xs font-medium">Check out</p>
-                  <p className="text-sm font-medium mt-[2px] text-black ">
-                    {endDate ? formattedEndDate : "Add dates"}
-                  </p>
+                  <div
+                    className={
+                      startDateToShow && data === "checkOut" ? "ml-[-1rem]" : ""
+                    }
+                  >
+                    <p className="text-xs font-medium">Check out</p>
+                    <p className="text-sm font-medium mt-[2px] text-black ">
+                      {EndDateToShow ? EndDateToShow : "Add dates"}
+                    </p>
+                  </div>
+                  {EndDateToShow && data === "checkOut" && (
+                    <div
+                      onClick={() => handleCrossClick()}
+                      className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
+                    >
+                      <img src={cross} alt="" />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
