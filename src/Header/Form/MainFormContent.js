@@ -435,7 +435,7 @@ const MainFormContent = () => {
                 htmlFor="addGuest"
                 onClick={(e) => handleInputField(e.target, "guest")}
                 className={`${
-                  data === "guest" ? "w-[12.2rem] " : "w-[14.2rem]"
+                  data ? "w-[12.2rem] before:z-10 " : "w-[14.2rem]"
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "guest" ? "" : "before:hover:bg-gray-300 "}
               
@@ -457,26 +457,20 @@ const MainFormContent = () => {
           </Modal.Open>
           {
             <div
-              className={` hover:bg-dark-pink ${
-                data === "guest" ? "w-[8rem] " : "w-[3rem] z-30"
-              } hover:cursor-pointer  flex items-center ${
-                data === "guest" ? "justify-start " : "justify-center"
+              className={`hover:bg-dark-pink  ${
+                data ? "w-[8rem] z-50" : "w-[3rem] z-50 "
+              } hover:cursor-pointer flex items-center justify-${
+                data ? "start" : "center"
               } duration-200 ease-out ${
-                data === "guest" ? "bg-dark-pink" : " bg-pink"
-              } ${
-                data === "guest" ? "ml-[-1.6rem] mr-2" : " ml-[-0.5rem] "
+                data ? "bg-dark-pink ml-[-1.6rem] mr-2" : "bg-pink ml-[-0.5rem]"
               } rounded-full h-[3rem]`}
             >
               <img
-                className={` ${data === "guest" ? "pl-2 pr-1" : ""} `}
+                className={` ${data ? "pl-2 pr-1" : ""} `}
                 src={searchIcon}
                 alt=""
               />
-              {data === "guest" ? (
-                <p className="text-center   text-white">Search</p>
-              ) : (
-                ""
-              )}
+              {data ? <p className=" text-center   text-white ">Search</p> : ""}
             </div>
           }
         </div>
