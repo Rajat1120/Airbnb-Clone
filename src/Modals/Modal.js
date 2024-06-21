@@ -34,7 +34,9 @@ function Modal({ children }) {
   const curInput = useSelector((store) => store.form.curSelectInput);
 
   useEffect(() => {
-    if (!curInput) close();
+    if (!curInput) {
+      close();
+    }
   }, [curInput]);
 
   return (
@@ -47,10 +49,14 @@ function Modal({ children }) {
 function Open({ children, opens: opensWindowName }) {
   const { open } = useContext(modalContext);
 
-  return cloneElement(children, { onClick: () => open(opensWindowName) });
+  return cloneElement(children, {
+    onClick: () => {
+      open(opensWindowName);
+    },
+  });
 }
 
-function Window({ children, name, formRef }) {
+function Window({ children, name, modalRef }) {
   const { openName, close } = useContext(modalContext);
 
   const data = useSelector((store) => store.form.curSelectInput);
@@ -76,7 +82,7 @@ function Window({ children, name, formRef }) {
 
   return createPortal(
     <div className={`${modalStye[data]}`} ref={ref}>
-      <div className="bg-white shadow-2xl rounded-[2rem]" ref={formRef}>
+      <div className="bg-white shadow-2xl rounded-[2rem]" ref={modalRef}>
         {cloneElement(children)}
       </div>
     </div>,

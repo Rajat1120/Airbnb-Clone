@@ -20,6 +20,7 @@ import {
 import Calendar from "../../Utils/Calendar";
 import CheckInOption from "./DatesOption";
 import { format } from "date-fns";
+import { current } from "@reduxjs/toolkit";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -29,7 +30,7 @@ const MainFormContent = () => {
   const data = useSelector((store) => store.form.curSelectInput);
   const dispatch = useDispatch();
 
-  const formRef = useRef();
+  const modalRef = useRef();
   const buttonRef = useRef();
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -54,10 +55,20 @@ const MainFormContent = () => {
   useEffect(
     function () {
       function handleClick(e) {
-        // Check if the click target or its ancestors have specific classes or attributes
-        if (formRef?.current && !formRef.current?.contains(e.target)) {
+        // if user click outside the form and open modal minimize the active input field
+        if (
+          modalRef?.current &&
+          !modalRef.current?.contains(e.target) &&
+          buttonRef?.current &&
+          !buttonRef.current?.contains(e.target) &&
+          checkInRef?.current &&
+          !checkInRef.current?.contains(e.target) &&
+          checkOutRef?.current &&
+          !checkOutRef.current?.contains(e.target) &&
+          addGuestRef?.current &&
+          !addGuestRef.current?.contains(e.target)
+        ) {
           dispatch(setActiveInput(""));
-          setHoverInput(null);
         }
 
         // if user has selected the interval (both start and end date, do not reset the current month)
@@ -70,8 +81,8 @@ const MainFormContent = () => {
           checkOutRef?.current &&
           !checkOutRef.current?.contains(e.target) &&
           addGuestRef?.current &&
-          formRef?.current &&
-          !formRef.current?.contains(e.target)
+          modalRef?.current &&
+          !modalRef.current?.contains(e.target)
         ) {
           dispatch(setCurrentMonth(new Date()));
         }
@@ -158,7 +169,7 @@ const MainFormContent = () => {
               </label>
             </div>
           </Modal.Open>
-          <Modal.Window formRef={formRef} name="destination">
+          <Modal.Window modalRef={modalRef} name="destination">
             <div className="h-full pt-[2rem] px-[1.5rem] shadow-2xl rounded-[2rem] justify-center  w-full  pb-[1.5rem] bg-white">
               <div className="flex flex-col justify-center items-center">
                 <p className="flex mb-3  text-sm font-medium ml-[1rem] w-full justify-self-start items-center ">
@@ -293,7 +304,7 @@ const MainFormContent = () => {
               </div>
             </div>
           </Modal.Open>
-          <Modal.Window formRef={formRef} name="checkIn">
+          <Modal.Window modalRef={modalRef} name="checkIn">
             <div className="flex flex-col justify-center items-center ">
               <CheckInOption></CheckInOption>
               <Calendar></Calendar>
@@ -362,7 +373,7 @@ const MainFormContent = () => {
               </div>
             </div>
           </Modal.Open>
-          <Modal.Window formRef={formRef} name="checkOut">
+          <Modal.Window modalRef={modalRef} name="checkOut">
             <div className="flex flex-col justify-center items-center ">
               <CheckInOption></CheckInOption>
               <Calendar></Calendar>
@@ -405,7 +416,7 @@ const MainFormContent = () => {
             <div className="flex justify-center  items-center">
               <div
                 htmlFor="addGuest"
-                onClick={(e) => handleInputField("guest")}
+                onClick={(e) => handleInputField(e.target, "guest")}
                 className={`${
                   data === "guest" ? "w-[12.2rem] " : "w-[14.2rem]"
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
@@ -452,7 +463,7 @@ const MainFormContent = () => {
             </div>
           }
         </div>
-        <Modal.Window formRef={formRef} name="addGuest">
+        <Modal.Window modalRef={modalRef} name="addGuest">
           <div className="w-[26rem] h-[25rem]"></div>
         </Modal.Window>
       </Modal>
