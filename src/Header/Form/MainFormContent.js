@@ -47,8 +47,8 @@ const MainFormContent = () => {
     : "Add dates";
 
   useEffect(() => {
-    if (startDate) setStartDateToShow(formattedStartDate);
-    if (endDate) setEndDateToShow(formattedEndDate);
+    setStartDateToShow(formattedStartDate);
+    setEndDateToShow(formattedEndDate);
   }, [formattedStartDate, formattedEndDate, startDate, endDate]);
 
   // to minimize the form input fields, on clicking outside of the form
@@ -106,6 +106,7 @@ const MainFormContent = () => {
   function handleCrossClick(e) {
     e.stopPropagation();
     console.log("run");
+    dispatch(setActiveInput(""));
     dispatch(setSelectedStartDate(null));
     dispatch(setSelectedEndDate(null));
   }
@@ -274,8 +275,10 @@ const MainFormContent = () => {
                    ${data === "checkIn" ? "" : "before:hover:bg-gray-300 "}
                   
                   before:hover:opacity-40 
-               ${data === "checkIn" ? "rounded-full bg-white" : ""} 
-              py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
+               ${
+                 data === "checkIn" ? "rounded-full bg-white" : ""
+               } flex-col flex justify-center items-center 
+               h-[3.85rem] cursor-pointer`}
               >
                 <div
                   className={`w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
@@ -283,16 +286,24 @@ const MainFormContent = () => {
                   } placeholder:font-extralight placeholder:text-black`}
                 >
                   <div
-                    className={
-                      startDateToShow && data === "checkIn" ? "ml-[-1rem]" : ""
-                    }
+                    className={` flex flex-col justify-center items-start ${
+                      startDateToShow && data === "checkIn"
+                        ? "ml-[-0.5rem]"
+                        : ""
+                    }`}
                   >
-                    <p className="text-xs font-medium">Check in</p>
-                    <p className="text-sm font-medium mt-[2px] text-black  ">
-                      {startDateToShow ? startDateToShow : "Add dates"}
+                    <p className="text-xs  font-medium">Check in</p>
+                    <p
+                      className={`${
+                        startDateToShow === "Add dates"
+                          ? "font-extralight text-sm"
+                          : "text-sm font-medium"
+                      }`}
+                    >
+                      {startDateToShow}
                     </p>
                   </div>
-                  {startDateToShow && data === "checkIn" && (
+                  {startDateToShow !== "Add dates" && data === "checkIn" && (
                     <div
                       onClick={(e) => handleCrossClick(e)}
                       className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
@@ -344,7 +355,7 @@ const MainFormContent = () => {
                    ${data === "checkOut" ? "" : "before:hover:bg-gray-300 "}
                   before:hover:opacity-40 
                ${data === "checkOut" ? "rounded-full bg-white" : ""}
-              py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
+               h-[3.85rem] flex-col flex justify-center items-center  cursor-pointer`}
               >
                 <div
                   className={`w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
@@ -352,18 +363,24 @@ const MainFormContent = () => {
                   } placeholder:font-extralight placeholder:text-black`}
                 >
                   <div
-                    className={
-                      startDateToShow && data === "checkOut" ? "ml-[-1rem]" : ""
-                    }
+                    className={` flex flex-col justify-center items-start ${
+                      EndDateToShow && data === "checkOut" ? "ml-[-0.5rem]" : ""
+                    }`}
                   >
-                    <p className="text-xs font-medium">Check out</p>
-                    <p className="text-sm font-medium mt-[2px] text-black ">
-                      {EndDateToShow ? EndDateToShow : "Add dates"}
+                    <p className="text-xs  font-medium">Check out</p>
+                    <p
+                      className={`${
+                        EndDateToShow === "Add dates"
+                          ? "font-extralight text-sm"
+                          : "text-sm font-medium"
+                      }`}
+                    >
+                      {EndDateToShow}
                     </p>
                   </div>
-                  {EndDateToShow && data === "checkOut" && (
+                  {EndDateToShow !== "Add dates" && data === "checkOut" && (
                     <div
-                      onClick={() => handleCrossClick()}
+                      onClick={(e) => handleCrossClick(e)}
                       className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
                       <img src={cross} alt="" />
