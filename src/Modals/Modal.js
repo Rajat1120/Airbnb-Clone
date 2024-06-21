@@ -9,7 +9,7 @@ import React, {
 
 import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
-import { setCurrentMonth } from "../Header/Form/mainFormSlice";
+import { setActiveInput, setCurrentMonth } from "../Header/Form/mainFormSlice";
 
 const modalContext = createContext();
 
@@ -31,13 +31,29 @@ function Modal({ children }) {
   };
   const open = setOpenName;
 
+  const dispatch = useDispatch();
+
   const curInput = useSelector((store) => store.form.curSelectInput);
+  const region = useSelector((store) => store.form.region);
+  const startDate = useSelector((store) => store.form.selectedStartDate);
+  const endDate = useSelector((store) => store.form.selectedEndDate);
 
   useEffect(() => {
-    if (!curInput) {
+    if (!curInput || region) {
       close();
+      setOpenName(curInput);
     }
-  }, [curInput]);
+
+    if (startDate) {
+      setOpenName("checkOut");
+      dispatch(setActiveInput("checkOut"));
+    }
+
+    if (endDate) {
+      setOpenName("addGuest");
+      dispatch(setActiveInput("guest"));
+    }
+  }, [curInput, region, endDate, startDate, dispatch]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>

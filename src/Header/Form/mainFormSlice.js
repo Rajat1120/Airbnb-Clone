@@ -9,6 +9,7 @@ let formState = {
   currentMonth: new Date(),
   selectedStartDate: null,
   selectedEndDate: null,
+  region: "all",
 };
 
 const formSlice = createSlice({
@@ -30,6 +31,9 @@ const formSlice = createSlice({
     setSelectedEndDate(state, action) {
       state.selectedEndDate = action.payload;
     },
+    setRegion(state, action) {
+      state.region = action.payload;
+    },
   },
 });
 
@@ -39,5 +43,6 @@ export const {
   setCurrentMonth,
   setSelectedEndDate,
   setSelectedStartDate,
+  setRegion,
 } = formSlice.actions;
 export default formSlice.reducer;

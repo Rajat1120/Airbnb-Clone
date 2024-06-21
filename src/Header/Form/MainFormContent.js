@@ -13,6 +13,7 @@ import {
   setActiveElement,
   setActiveInput,
   setCurrentMonth,
+  setRegion,
   setSearchEl,
   setSelectedEndDate,
   setSelectedStartDate,
@@ -28,6 +29,8 @@ const MainFormContent = () => {
   const [EndDateToShow, setEndDateToShow] = useState(null);
 
   const data = useSelector((store) => store.form.curSelectInput);
+
+  const region = useSelector((store) => store.form.region);
 
   const dispatch = useDispatch();
 
@@ -121,6 +124,11 @@ const MainFormContent = () => {
     }
   }
 
+  function handleRegion(region) {
+    dispatch(setRegion(region));
+    dispatch(setActiveInput("checkIn"));
+  }
+
   function handleDestinationField(input) {
     if (input === "destination") {
       dispatch(setActiveInput("destination"));
@@ -179,7 +187,10 @@ const MainFormContent = () => {
                   Search by region
                 </p>
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] ">
+                  <div
+                    onClick={() => handleRegion("all")}
+                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
+                  >
                     <img
                       className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
                       src={world}
@@ -190,7 +201,10 @@ const MainFormContent = () => {
                       I'm flexible
                     </p>
                   </div>
-                  <div className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] ">
+                  <div
+                    onClick={() => handleRegion("Europe")}
+                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
+                  >
                     <img
                       className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
                       src={Europe}
@@ -200,7 +214,10 @@ const MainFormContent = () => {
                       Europe
                     </p>
                   </div>
-                  <div className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] ">
+                  <div
+                    onClick={() => handleRegion("Thiland")}
+                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
+                  >
                     <img
                       className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
                       src={Thiland}
@@ -210,7 +227,10 @@ const MainFormContent = () => {
                       Thailand
                     </p>
                   </div>
-                  <div className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] ">
+                  <div
+                    onClick={() => handleRegion("SouthAsia")}
+                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
+                  >
                     <img
                       className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
                       src={SouthEastAsia}
@@ -220,7 +240,10 @@ const MainFormContent = () => {
                       Southeast Asia
                     </p>
                   </div>
-                  <div className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] ">
+                  <div
+                    onClick={() => handleRegion("UAE")}
+                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
+                  >
                     <img
                       className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
                       src={UnitedArabEmirates}
@@ -230,7 +253,10 @@ const MainFormContent = () => {
                       United Arab Emirates
                     </p>
                   </div>
-                  <div className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] ">
+                  <div
+                    onClick={() => handleRegion("MiddleEast")}
+                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
+                  >
                     <img
                       className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
                       src={MiddleEast}
