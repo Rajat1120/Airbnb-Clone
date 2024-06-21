@@ -28,6 +28,7 @@ const MainFormContent = () => {
   const [EndDateToShow, setEndDateToShow] = useState(null);
 
   const data = useSelector((store) => store.form.curSelectInput);
+
   const dispatch = useDispatch();
 
   const modalRef = useRef();
@@ -69,6 +70,7 @@ const MainFormContent = () => {
           !addGuestRef.current?.contains(e.target)
         ) {
           dispatch(setActiveInput(""));
+          setHoverInput(null);
         }
 
         // if user has selected the interval (both start and end date, do not reset the current month)
@@ -249,10 +251,10 @@ const MainFormContent = () => {
           data
             ? hoverInput === "destination" || hoverInput === "checkIn"
               ? "bg-shadow-gray"
-              : " bg-gray-300"
+              : "bg-gray-300"
             : hoverInput === "destination" || hoverInput === "checkIn"
             ? "bg-white"
-            : " bg-gray-300"
+            : "bg-gray-300"
         } h-[2rem] 
         ${data === "destination" || data === "checkIn" ? "hidden" : ""}
         `}
