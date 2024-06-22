@@ -437,7 +437,7 @@ const MainFormContent = () => {
             ? "bg-white"
             : " bg-gray-300"
         } h-[2rem]
-        ${data === "checkOut" || data === "guest" ? "hidden" : ""}
+        ${data === "checkOut" || data === "addGuest" ? "hidden" : ""}
         
         `}
       ></div>
@@ -446,13 +446,13 @@ const MainFormContent = () => {
         <div
           ref={addGuestRef}
           onMouseEnter={() => {
-            if (data !== "guest") setHoverInput("addGuest");
+            if (data !== "addGuest") setHoverInput("addGuest");
           }}
           onMouseLeave={() => {
-            if (data !== "guest") setHoverInput(null);
+            if (data !== "addGuest") setHoverInput(null);
           }}
           className={`flex w-[17.7rem] ${
-            data === "guest"
+            data === "addGuest"
               ? "rounded-full bg-white shadow-AddGuestShadow "
               : ""
           } justify-center items-center`}
@@ -461,18 +461,18 @@ const MainFormContent = () => {
             <div className="flex justify-center  items-center">
               <div
                 htmlFor="addGuest"
-                onClick={(e) => handleInputField(e.target, "guest")}
+                onClick={(e) => handleInputField(e.target, "addGuest")}
                 className={`${
                   data ? "w-[12.2rem] before:z-10 " : "w-[14.2rem]"
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
-                  ${data === "guest" ? "" : "before:hover:bg-gray-300 "}
+                  ${data === "addGuest" ? "" : "before:hover:bg-gray-300 "}
               
                before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
                 <div className="text-xs font-medium">Who</div>
                 <div
                   className={`w-[5.62rem] outline-none focus:outline-none h[2rem] 
-                      ${data && data !== "guest" ? "bg-shadow-gray" : ""}
+                      ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
                    `}
                 >
                   <p className="text-sm mt-[2px] font-extralight text-black ">

@@ -20,7 +20,7 @@ let modalStye = {
     "fixed top-[20%] left-[22%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem] ",
   checkOut:
     "  fixed top-[20%] left-[22%] h-[35rem] w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
-  guest:
+  addGuest:
     "fixed top-[20%] left-[52%] h-[25rem] w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
 };
 function Modal({ children }) {
@@ -43,17 +43,14 @@ function Modal({ children }) {
       close();
       setOpenName(curInput);
     }
+  }, [curInput, region]);
 
+  useEffect(() => {
     if (startDate) {
       setOpenName("checkOut");
       dispatch(setActiveInput("checkOut"));
     }
-
-    if (endDate) {
-      setOpenName("addGuest");
-      dispatch(setActiveInput("guest"));
-    }
-  }, [curInput, region, endDate, startDate, dispatch]);
+  }, [startDate, dispatch]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>
