@@ -506,7 +506,28 @@ const MainFormContent = () => {
           }
         </div>
         <Modal.Window modalRef={modalRef} name="addGuest">
-          <div className="w-[26rem] h-[25rem]"></div>
+          <div className="w-[26rem] h-[25rem]">
+            <div className="py-8">
+              <div className="w-full justify-between px-8 flex items-center">
+                <div className="">
+                  <p>Adults</p>
+                  <p>Age 13 or above</p>
+                </div>
+                <div className="flex items-center justify-center">
+                  <button className="w-3 h-3 flex px-5 py-5 m-5 items-center justify-center rounded-full bg-grey-dim">
+                    -
+                  </button>
+                  <p>4</p>
+                  <button className="w-3 h-3 flex px-5 py-5 m-5 items-center justify-center rounded-full bg-grey-dim">
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="className"></div>
+              <div className="className"></div>
+              <div className="className"></div>
+            </div>
+          </div>
         </Modal.Window>
       </Modal>
     </div>
