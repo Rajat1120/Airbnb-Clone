@@ -485,6 +485,9 @@ const MainFormContent = () => {
           </Modal.Open>
           {
             <div
+              onClick={() => {
+                data && dispatch(setActiveInput(""));
+              }}
               className={`hover:bg-dark-pink  ${
                 data ? "w-[8rem] z-50" : "w-[3rem] z-50 "
               } hover:cursor-pointer flex items-center justify-${
