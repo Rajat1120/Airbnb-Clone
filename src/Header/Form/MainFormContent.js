@@ -32,6 +32,8 @@ const MainFormContent = () => {
 
   const region = useSelector((store) => store.form.region);
 
+  const dateOption = useSelector((state) => state.form.dateOption);
+
   const dispatch = useDispatch();
 
   const modalRef = useRef();

@@ -1,11 +1,17 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const CheckInOption = () => {
-  const [dateOption, setDateOption] = useState("dates");
+  const [, setDateOption] = useState("dates");
+
+  const dateOption = useSelector((state) => state.form.dateOption);
+
+  const dispatch = useDispatch();
+
   return (
     <div className="flex gap-3 bg-shadow-gray rounded-full my-7 h-11 justify-center items-center w-[20rem]  ">
       <span
-        onClick={() => setDateOption("dates")}
+        onClick={() => dispatch(setDateOption("dates"))}
         className={`rounded-full text-sm font-medium  flex  text-zinc-700  justify-center items-center h-9 w-[6rem] ${
           dateOption === "dates"
             ? "bg-white"
@@ -15,7 +21,7 @@ const CheckInOption = () => {
         Dates
       </span>
       <span
-        onClick={() => setDateOption("months")}
+        onClick={() => dispatch(setDateOption("months"))}
         className={`rounded-full text-zinc-700 flex text-sm font-medium justify-center items-center h-9 w-[6rem] ${
           dateOption === "months"
             ? "bg-white   "
@@ -26,7 +32,7 @@ const CheckInOption = () => {
         Months
       </span>
       <span
-        onClick={() => setDateOption("flexible")}
+        onClick={() => dispatch(setDateOption("flexible"))}
         className={`rounded-full  text-zinc-700  text-sm font-medium flex justify-center items-center h-9 w-[6rem] ${
           dateOption === "flexible"
             ? "bg-white"

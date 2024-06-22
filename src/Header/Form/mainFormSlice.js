@@ -1,6 +1,6 @@
 // src/features/exampleSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { format } from "date-fns";
+import { format, setDate } from "date-fns";
 import { set } from "date-fns";
 
 let formState = {
@@ -10,6 +10,7 @@ let formState = {
   selectedStartDate: null,
   selectedEndDate: null,
   region: "all",
+  dateOption: "dates",
 };
 
 const formSlice = createSlice({
@@ -34,6 +35,9 @@ const formSlice = createSlice({
     setRegion(state, action) {
       state.region = action.payload;
     },
+    setDateOption(state, action) {
+      state.dateOption = action.payload;
+    },
   },
 });
 
@@ -44,5 +48,6 @@ export const {
   setSelectedEndDate,
   setSelectedStartDate,
   setRegion,
+  setDateOption,
 } = formSlice.actions;
 export default formSlice.reducer;
