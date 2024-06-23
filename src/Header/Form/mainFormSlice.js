@@ -11,6 +11,10 @@ let formState = {
   selectedEndDate: null,
   region: "all",
   dateOption: "dates",
+  adultCount: 0,
+  childCount: 0,
+  infantCount: 0,
+  petsCount: 0,
 };
 
 const formSlice = createSlice({
@@ -38,6 +42,18 @@ const formSlice = createSlice({
     setDateOption(state, action) {
       state.dateOption = action.payload;
     },
+    setAdultCount(state, action) {
+      state.adultCount = action.payload;
+    },
+    setChildCount(state, action) {
+      state.childCount = action.payload;
+    },
+    setInfantCount(state, action) {
+      state.infantCount = action.payload;
+    },
+    setPetsCount(state, action) {
+      state.petsCount = action.payload;
+    },
   },
 });
 
@@ -49,5 +65,9 @@ export const {
   setSelectedStartDate,
   setRegion,
   setDateOption,
+  setAdultCount,
+  setChildCount,
+  setInfantCount,
+  setPetsCount,
 } = formSlice.actions;
 export default formSlice.reducer;

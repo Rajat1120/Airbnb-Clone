@@ -99,6 +99,10 @@ module.exports = {
           justifyContent: "center",
           alignItems: "center",
         },
+        ".cursor-disable": {
+          opacity: "40%",
+          cursor: "not-allowed",
+        },
       };
 
       addUtilities(newUtilities);
