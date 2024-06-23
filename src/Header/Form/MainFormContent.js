@@ -520,7 +520,7 @@ const MainFormContent = () => {
                     -
                   </button>
                   <p>4</p>
-                  <button className="w-3 h-3 flex px-5 py-5 m-5 items-center justify-center rounded-full bg-grey-dim">
+                  <button className="w-3 h-3  px-5 py-5 m-5 flex-center  rounded-full bg-grey-dim">
                     +
                   </button>
                 </div>

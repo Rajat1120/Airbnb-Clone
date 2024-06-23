@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
@@ -14,13 +15,7 @@ module.exports = {
         AddGuestShadow: "-5px 0px 5px 0px #CFCFD1",
         checkOutShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
         checkInShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
-
         destinationShadow: "5px 0px 5px 0px #CFCFD1",
-
-        /*  "inset-shadow": {
-          "-10px-0px-9px-1px": "#EFEFEF",
-          "10px-0px-10px-1px": "#EFEFEF",
-        }, */
       },
       colors: {
         pink: "#ff385c",
@@ -34,7 +29,6 @@ module.exports = {
       gridTemplateColumns: {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",
       },
-      backFaceVisibility: ["hidden"],
       keyframes: {
         moveUp: {
           "0%": { transform: "translateY(0rem)" },
@@ -50,20 +44,18 @@ module.exports = {
         },
         moveDownHouse: {
           "0%": { transform: "translateY(-5rem)" },
-          "100%": { transform: "translateY( 0rem)" },
+          "100%": { transform: "translateY(0rem)" },
         },
-
         moveAfterUp: {
           "0%": { transform: "translateY(9rem)" },
           "100%": { transform: "translateY(4.5rem)" },
         },
         moveAfterDown: {
-          "0%": { transform: "translateY( 4.5rem)" },
+          "0%": { transform: "translateY(4.5rem)" },
           "100%": { transform: "translateY(9.9rem)" },
         },
         slideInLeft: {
           "0%": { transform: "translateX(-3.2rem)", opacity: "1" },
-
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
         slideInRight: {
@@ -72,20 +64,20 @@ module.exports = {
         },
       },
       animation: {
-        moveUp: "moveUp 0.2s  forwards ",
-        moveDown: "moveDown 0.2s   forwards ",
-        moveUpHouse: "moveUpHouse 0.2s  forwards ",
-        moveDownHouse: "moveDownHouse   0.2s forwards  ",
-        moveAfterUp: "moveAfterUp 0.2s forwards ",
-        moveAfterDown: "moveAfterDown 0.2s forwards ",
-        slideInLeft: "slideInLeft 0.3s ease-in-out forwards ",
-        slideInRight: "slideInRight 0.3s ease-in-out forwards ",
+        moveUp: "moveUp 0.2s forwards",
+        moveDown: "moveDown 0.2s forwards",
+        moveUpHouse: "moveUpHouse 0.2s forwards",
+        moveDownHouse: "moveDownHouse 0.2s forwards",
+        moveAfterUp: "moveAfterUp 0.2s forwards",
+        moveAfterDown: "moveAfterDown 0.2s forwards",
+        slideInLeft: "slideInLeft 0.3s ease-in-out forwards",
+        slideInRight: "slideInRight 0.3s ease-in-out forwards",
       },
     },
   },
   plugins: [
     plugin(function ({ addUtilities }) {
-      const newStyle = {
+      const newUtilities = {
         ".border-blur": {
           "border-left-width": "10px",
           "border-right-width": "10px",
@@ -94,21 +86,22 @@ module.exports = {
           "border-right-style": "inset",
           "backdrop-filter": "blur(20px)",
           position: "absolute",
-          // top: "0",
-          // bottom: "0",
           left: "0",
           right: "0",
-          /*  "border-image":
-            "linear-gradient(to right, rgba(255, 255, 255, 0), #e5e7eb, rgba(255, 255, 255, 0)) 1", */
         },
         ".remove-scrollbar": {
           "::-webkit-scrollbar": {
             display: "none", // Hides the scrollbar in WebKit browsers
           },
         },
+        ".flex-center": {
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        },
       };
 
-      addUtilities(newStyle);
+      addUtilities(newUtilities);
     }),
   ],
 };
