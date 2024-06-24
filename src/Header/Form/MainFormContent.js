@@ -181,11 +181,15 @@ const MainFormContent = () => {
                   <div className="text-xs font-medium">Where</div>
                   <input
                     type="text"
-                    className={`w-[10.62rem]  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                    className={`w-[10.62rem] 4 ${
+                      region === "all" ? "" : "placeholder:font-medium"
+                    }  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "destination" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
                     id="destination"
-                    placeholder="Search destinations"
+                    placeholder={
+                      region === "all" ? "Search Destinations" : region
+                    }
                   />
                 </div>
               </label>
