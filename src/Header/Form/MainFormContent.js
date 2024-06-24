@@ -71,10 +71,8 @@ const MainFormContent = () => {
 
   const formattedStartDate = startDate
     ? format(new Date(startDate), "dd MMM")
-    : "Add dates";
-  const formattedEndDate = endDate
-    ? format(new Date(endDate), "dd MMM")
-    : "Add dates";
+    : "";
+  const formattedEndDate = endDate ? format(new Date(endDate), "dd MMM") : "";
 
   useEffect(() => {
     setStartDateToShow(formattedStartDate);
@@ -379,15 +377,15 @@ const MainFormContent = () => {
                     <p className="text-xs  font-medium">Check in</p>
                     <p
                       className={`${
-                        startDateToShow === "Add dates"
-                          ? "font-extralight text-sm"
+                        startDateToShow === "" || !data
+                          ? "font-extralight text-[0.9rem]"
                           : "text-sm font-medium"
                       }`}
                     >
-                      {startDateToShow}
+                      {startDateToShow && data ? startDateToShow : "Add dates"}
                     </p>
                   </div>
-                  {startDateToShow !== "Add dates" && data === "checkIn" && (
+                  {startDateToShow !== "" && data === "checkIn" && (
                     <div
                       onClick={(e) => handleCrossClick(e)}
                       className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
@@ -454,15 +452,15 @@ const MainFormContent = () => {
                     <p className="text-xs  font-medium">Check out</p>
                     <p
                       className={`${
-                        EndDateToShow === "Add dates"
-                          ? "font-extralight text-sm"
+                        EndDateToShow === "" || !data
+                          ? "font-extralight text-[0.9rem]"
                           : "text-sm font-medium"
                       }`}
                     >
-                      {EndDateToShow}
+                      {EndDateToShow && data ? EndDateToShow : "Add dates"}
                     </p>
                   </div>
-                  {EndDateToShow !== "Add dates" && data === "checkOut" && (
+                  {EndDateToShow !== "" && data === "checkOut" && (
                     <div
                       onClick={(e) => handleCrossClick(e)}
                       className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
