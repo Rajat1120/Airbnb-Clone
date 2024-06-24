@@ -26,12 +26,13 @@ import Calendar from "../../Utils/Calendar";
 import CheckInOption from "./DatesOption";
 import { format } from "date-fns";
 import { current } from "@reduxjs/toolkit";
+import { da } from "date-fns/locale";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
   const [startDateToShow, setStartDateToShow] = useState(null);
   const [EndDateToShow, setEndDateToShow] = useState(null);
-
+  const [destination, setDestination] = useState(null);
   const data = useSelector((store) => store.form.curSelectInput);
 
   const region = useSelector((store) => store.form.region);
@@ -50,6 +51,20 @@ const MainFormContent = () => {
   const checkInRef = useRef();
   const checkOutRef = useRef();
   const addGuestRef = useRef();
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      console.log("ran");
+      const length = inputRef.current.value.length;
+      inputRef.current.setSelectionRange(length, length);
+      inputRef.current.focus();
+    }
+
+    if (data !== "destination") {
+      inputRef.current.blur();
+    }
+  }, [region, data]);
 
   const startDate = useSelector((store) => store.form.selectedStartDate);
   const endDate = useSelector((store) => store.form.selectedEndDate);
@@ -137,6 +152,7 @@ const MainFormContent = () => {
 
   function handleRegion(region) {
     dispatch(setRegion(region));
+    setDestination("");
     dispatch(setActiveInput("checkIn"));
   }
 
@@ -180,15 +196,20 @@ const MainFormContent = () => {
                 <div className="">
                   <div className="text-xs font-medium">Where</div>
                   <input
+                    ref={inputRef}
+                    onChange={(e) => {
+                      dispatch(setRegion("all"));
+                      setDestination(e.target.value);
+                    }}
                     type="text"
-                    className={`w-[10.62rem] 4 ${
-                      region === "all" ? "" : "placeholder:font-medium"
-                    }  outline-none focus:outline-none h[2rem] placeholder:text-sm ${
-                      data && data !== "destination" ? "bg-shadow-gray" : ""
-                    } placeholder:font-extralight placeholder:text-black`}
+                    className={`w-[10.62rem] 4 text-sm font-medium"
+                      outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                        data && data !== "destination" ? "bg-shadow-gray" : ""
+                      } placeholder:font-extralight placeholder:text-black`}
                     id="destination"
-                    placeholder={
-                      region === "all" ? "Search Destinations" : region
+                    placeholder="Search Destinations"
+                    value={
+                      destination ? destination : region !== "all" ? region : ""
                     }
                   />
                 </div>
@@ -225,7 +246,11 @@ const MainFormContent = () => {
                       src={Europe}
                       alt=""
                     />
-                    <p className="text-[0.85rem] w-[6.9rem] self-start  font-[300] mt-2 ml-4">
+                    <p
+                      className={` text-[0.85rem] ${
+                        region === "Europe" ? "font-medium" : ""
+                      } w-[6.9rem] self-start  font-[300] mt-2 ml-4`}
+                    >
                       Europe
                     </p>
                   </div>
@@ -238,12 +263,16 @@ const MainFormContent = () => {
                       src={Thiland}
                       alt=""
                     />
-                    <p className="text-[0.85rem] w-[6.9rem] self-start  font-[300] mt-2 ml-4">
+                    <p
+                      className={` text-[0.85rem] ${
+                        region === "Thiland" ? "font-medium" : ""
+                      } w-[6.9rem] self-start  font-[300] mt-2 ml-4 `}
+                    >
                       Thailand
                     </p>
                   </div>
                   <div
-                    onClick={() => handleRegion("SouthAsia")}
+                    onClick={() => handleRegion("Southeast Asia")}
                     className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
                   >
                     <img
@@ -251,12 +280,16 @@ const MainFormContent = () => {
                       src={SouthEastAsia}
                       alt=""
                     />
-                    <p className="text-[0.85rem] w-[6.9rem] self-start  font-[300] mt-2 ml-4">
+                    <p
+                      className={`text-[0.85rem] w-[6.9rem]   font-[300] mt-2 ml-4" ${
+                        region === "SouthAsia" ? "font-medium" : ""
+                      }`}
+                    >
                       Southeast Asia
                     </p>
                   </div>
                   <div
-                    onClick={() => handleRegion("UAE")}
+                    onClick={() => handleRegion("United Arab Emirates")}
                     className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
                   >
                     <img
@@ -264,7 +297,11 @@ const MainFormContent = () => {
                       src={UnitedArabEmirates}
                       alt=""
                     />
-                    <p className="text-[0.85rem] w-[6.9rem] self-start truncate font-[300] mt-2 ml-4">
+                    <p
+                      className={` ${
+                        region === "United Arab Emirates" ? "font-medium" : ""
+                      } text-[0.85rem] w-[6.9rem] self-start truncate font-[300] mt-2 ml-4`}
+                    >
                       United Arab Emirates
                     </p>
                   </div>
@@ -277,7 +314,11 @@ const MainFormContent = () => {
                       src={MiddleEast}
                       alt=""
                     />
-                    <p className="text-[0.85rem] w-[6.9rem] self-start  font-[300] mt-2 ml-4">
+                    <p
+                      className={` text-[0.85rem] ${
+                        region === "MiddleEast" ? "font-medium" : ""
+                      } w-[6.9rem] self-start  font-[300] mt-2 ml-4 `}
+                    >
                       Middle East
                     </p>
                   </div>
