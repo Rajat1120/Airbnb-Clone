@@ -36,6 +36,7 @@ const MainFormContent = () => {
   const data = useSelector((store) => store.form.curSelectInput);
 
   const region = useSelector((store) => store.form.region);
+  console.log(region);
   const adultCount = useSelector((store) => store.form.adultCount);
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
@@ -136,6 +137,8 @@ const MainFormContent = () => {
     e.stopPropagation();
     console.log("run");
     dispatch(setActiveInput(""));
+    dispatch(setRegion("all"));
+    setDestination(null);
     dispatch(setSelectedStartDate(null));
     dispatch(setSelectedEndDate(null));
   }
@@ -191,25 +194,41 @@ const MainFormContent = () => {
                 
                 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
-                <div className="">
-                  <div className="text-xs font-medium">Where</div>
-                  <input
-                    ref={inputRef}
-                    onChange={(e) => {
-                      dispatch(setRegion("all"));
-                      setDestination(e.target.value);
-                    }}
-                    type="text"
-                    className={`w-[10.62rem] 4 text-sm font-medium"
+                <div className="flex justify-between items-center">
+                  <div>
+                    <div className="text-xs font-medium">Where</div>
+                    <input
+                      ref={inputRef}
+                      onChange={(e) => {
+                        dispatch(setRegion("all"));
+                        setDestination(e.target.value);
+                      }}
+                      type="text"
+                      className={`w-[10.62rem] 4 text-sm font-medium"
                       outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                         data && data !== "destination" ? "bg-shadow-gray" : ""
                       } placeholder:font-extralight placeholder:text-black`}
-                    id="destination"
-                    placeholder="Search Destinations"
-                    value={
-                      destination ? destination : region !== "all" ? region : ""
-                    }
-                  />
+                      id="destination"
+                      placeholder="Search Destinations"
+                      value={
+                        destination
+                          ? destination
+                          : region !== "all"
+                          ? region
+                          : ""
+                      }
+                    />
+                  </div>
+                  {region !== "all" || destination ? (
+                    <div
+                      onClick={(e) => handleCrossClick(e)}
+                      className="w-[1.5rem] mr-[-1rem] self-center justify- flex justify-center  items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
+                    >
+                      <img src={cross} alt="" />
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </label>
             </div>
