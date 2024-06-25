@@ -56,7 +56,6 @@ const MainFormContent = () => {
 
   useEffect(() => {
     if (inputRef.current) {
-      console.log("ran");
       const length = inputRef.current.value.length;
       inputRef.current.setSelectionRange(length, length);
       inputRef.current.focus();
@@ -219,7 +218,8 @@ const MainFormContent = () => {
                       }
                     />
                   </div>
-                  {region !== "all" || destination ? (
+                  {(region !== "all" || destination) &&
+                  data === "destination" ? (
                     <div
                       onClick={(e) => handleCrossClick(e)}
                       className="w-[1.5rem] mr-[-1rem] self-center justify- flex justify-center  items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
