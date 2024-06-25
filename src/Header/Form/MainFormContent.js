@@ -47,7 +47,9 @@ const MainFormContent = () => {
   const dispatch = useDispatch();
 
   const modalRef = useRef();
-  const resetRef = useRef();
+  const checkInResetRef = useRef();
+  const checkOutResetRef = useRef();
+  const addGuestResetRef = useRef();
   const buttonRef = useRef();
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -418,7 +420,7 @@ const MainFormContent = () => {
                   </div>
                   {startDateToShow !== "" && data === "checkIn" && (
                     <div
-                      ref={resetRef}
+                      ref={checkInResetRef}
                       onClick={(e) => handleCrossClick(e, "checkIn")}
                       className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
@@ -429,7 +431,11 @@ const MainFormContent = () => {
               </div>
             </div>
           </Modal.Open>
-          <Modal.Window resetRef={resetRef} modalRef={modalRef} name="checkIn">
+          <Modal.Window
+            resetRef={checkInResetRef}
+            modalRef={modalRef}
+            name="checkIn"
+          >
             <div className="flex flex-col justify-center items-center ">
               <CheckInOption></CheckInOption>
               <Calendar></Calendar>
@@ -494,6 +500,7 @@ const MainFormContent = () => {
                   </div>
                   {EndDateToShow !== "" && data === "checkOut" && (
                     <div
+                      ref={checkOutResetRef}
                       onClick={(e) => handleCrossClick(e, "checkOut")}
                       className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
@@ -504,7 +511,11 @@ const MainFormContent = () => {
               </div>
             </div>
           </Modal.Open>
-          <Modal.Window modalRef={modalRef} name="checkOut">
+          <Modal.Window
+            resetRef={checkOutResetRef}
+            modalRef={modalRef}
+            name="checkOut"
+          >
             <div className="flex flex-col justify-center items-center ">
               <CheckInOption></CheckInOption>
               <Calendar></Calendar>
@@ -572,6 +583,7 @@ const MainFormContent = () => {
                 {(adultCount || childCount || infantCount || petCount) &&
                 data === "addGuest" ? (
                   <div
+                    ref={addGuestResetRef}
                     onClick={(e) => handleCrossClick(e, "guest")}
                     className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                   >
@@ -604,7 +616,11 @@ const MainFormContent = () => {
             </div>
           }
         </div>
-        <Modal.Window modalRef={modalRef} name="addGuest">
+        <Modal.Window
+          resetRef={addGuestResetRef}
+          modalRef={modalRef}
+          name="addGuest"
+        >
           <div className="w-[26rem]  flex-center h-[25rem]">
             <div className="py-6 flex-center flex-col ">
               <div className="flex w-[22rem] flex-center flex-col">

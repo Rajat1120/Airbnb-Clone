@@ -82,8 +82,7 @@ function Window({ children, name, modalRef, resetRef }) {
         if (
           ref?.current &&
           !ref.current?.contains(e.target) &&
-          resetRef?.current &&
-          !resetRef.current?.contains(e.target)
+          (!resetRef?.current || !resetRef.current?.contains(e.target))
         ) {
           close();
         }
