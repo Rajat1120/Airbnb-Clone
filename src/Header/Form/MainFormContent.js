@@ -210,10 +210,12 @@ const MainFormContent = () => {
                       id="destination"
                       placeholder="Search Destinations"
                       value={
-                        destination
+                        data
                           ? destination
-                          : region !== "all"
-                          ? region
+                            ? destination
+                            : region !== "all"
+                            ? region
+                            : ""
                           : ""
                       }
                     />
