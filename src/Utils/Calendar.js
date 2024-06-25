@@ -205,16 +205,18 @@ const Calendar = () => {
   };
 
   const onDateClick = (day) => {
-    if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
+    if (!selectedStartDate) {
       dispatch(setSelectedStartDate(day));
       dispatch(setSelectedEndDate(null));
-    } else if (
-      selectedStartDate &&
-      !selectedEndDate &&
-      day >= selectedStartDate
-    ) {
+    } else if (selectedStartDate && !selectedEndDate) {
       dispatch(setSelectedEndDate(day));
-    } else {
+    } else if (selectedStartDate && selectedEndDate && day > selectedEndDate) {
+      dispatch(setSelectedEndDate(day));
+    } else if (
+      selectedEndDate &&
+      selectedStartDate &&
+      day < selectedStartDate
+    ) {
       dispatch(setSelectedStartDate(day));
       dispatch(setSelectedEndDate(null));
     }
