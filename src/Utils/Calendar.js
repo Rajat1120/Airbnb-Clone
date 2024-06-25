@@ -138,6 +138,7 @@ const Calendar = () => {
 
         let onClickHandler = () =>
           onDateClick(isPastDate ? undefined : cloneDay);
+
         if (
           selectedStartDate &&
           selectedEndDate &&
@@ -150,17 +151,20 @@ const Calendar = () => {
             isSameDay(day, selectedStartDate) &&
             isSameMonth(day, monthStart)
           ) {
-            cellClass = "bg-black text-white rounded-full"; // Start date
+            cellClass =
+              "  halfRightColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0   "; // Start date
           } else if (
             isSameDay(day, selectedEndDate) &&
             isSameMonth(day, monthStart)
           ) {
-            cellClass = "bg-black text-white rounded-full"; // End date
+            cellClass =
+              "halfLeftColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0  "; // End date
           } else if (!isSameMonth(day, monthStart)) {
-            cellClass = "bg-white cursor-default text-white";
+            cellClass = "bg-white cursor-pointer text-white";
             onClickHandler = null; // Disable onClick for dates outside the current month
           } else {
-            cellClass = "bg-shadow-gray-light text-black"; // Interval dates
+            cellClass =
+              "bg-shadow-gray-light  text-black  hover:before:content-[''] hover:before:w-full hover:before:h-full hover:before:rounded-full hover:before:border-[1.5px] hover:before:border-black hover:before:absolute hover:top-0 hover:before:left-0 hove:before:right-0 hove:before:bottom-0  ";
           }
         } else if (
           isSameDay(day, selectedStartDate) &&
@@ -183,14 +187,16 @@ const Calendar = () => {
         }
 
         days.push(
-          <div
-            className={`h-[3rem] w-[3rem] flex items-center justify-center ${
-              isPastDate ? "" : "cursor-pointer"
-            } ${cellClass}`}
-            key={cloneDay}
-            onClick={onClickHandler}
-          >
-            <span className="text-sm font-medium">{formattedDate}</span>
+          <div className="relative h-[3rem]  w-[3rem] flex items-center justify-center">
+            <div
+              className={`h-[3rem]  w-[3rem] flex items-center justify-center ${
+                isPastDate ? "" : "cursor-pointer"
+              } ${cellClass}`}
+              key={cloneDay}
+              onClick={onClickHandler}
+            >
+              <span className="text-sm z-20 font-medium">{formattedDate}</span>
+            </div>
           </div>
         );
         day = addDays(day, 1);
@@ -202,7 +208,7 @@ const Calendar = () => {
       );
       days = [];
     }
-    return <div>{rows}</div>;
+    return <div className="">{rows}</div>;
   };
 
   const onDateClick = (day) => {
@@ -227,6 +233,24 @@ const Calendar = () => {
       dispatch(setSelectedEndDate(null));
     } else if (selectedStartDate && selectedEndDate && day > selectedEndDate) {
       dispatch(setSelectedEndDate(day));
+    } else if (
+      selectedStartDate &&
+      selectedEndDate &&
+      isWithinInterval(day, {
+        start: selectedStartDate,
+        end: selectedEndDate,
+      }) &&
+      day > selectedStartDate
+    ) {
+      dispatch(setSelectedEndDate(day));
+    } else if (
+      selectedStartDate &&
+      selectedEndDate &&
+      isSameDay(day, selectedStartDate)
+    ) {
+      // If both start and end dates are selected and the user clicks on the start date,
+      // set the end date to the start date as well.
+      dispatch(setSelectedEndDate(selectedStartDate));
     }
   };
 
