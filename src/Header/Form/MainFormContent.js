@@ -239,9 +239,7 @@ const MainFormContent = () => {
                     >
                       <img src={cross} alt="" />
                     </div>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </div>
               </label>
             </div>
@@ -549,22 +547,35 @@ const MainFormContent = () => {
                 htmlFor="addGuest"
                 onClick={(e) => handleInputField(e.target, "addGuest")}
                 className={`${
-                  data ? "w-[12.2rem] before:z-10 " : "w-[14.2rem]"
+                  data
+                    ? "w-[12.2rem] flex items-center before:z-10 "
+                    : "w-[14.2rem]"
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "addGuest" ? "" : "before:hover:bg-gray-300 "}
-              
+              justify-between
                before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
-                <div className="text-xs font-medium">Who</div>
-                <div
-                  className={`w-[5.62rem] outline-none focus:outline-none h[2rem] 
-                      ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
-                   `}
-                >
-                  <p className="text-sm mt-[2px] font-extralight text-black ">
-                    Add guest
-                  </p>
+                <div className="flex flex-col justify-center items-start">
+                  <div className="text-xs font-medium">Who</div>
+                  <div
+                    className={`w-[5.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
+                    ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
+                    `}
+                  >
+                    <p className="text-sm mt-[2px] font-extralight text-black ">
+                      Add guest
+                    </p>
+                  </div>
                 </div>
+                {(adultCount || childCount || infantCount || petCount) &&
+                data === "addGuest" ? (
+                  <div
+                    onClick={(e) => handleCrossClick(e, "guest")}
+                    className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
+                  >
+                    <img src={cross} alt="" />
+                  </div>
+                ) : null}
                 <div />
               </div>
             </div>
