@@ -22,6 +22,7 @@ import {
 } from "../Header/Form/mainFormSlice";
 
 const Calendar = () => {
+  const selectedInput = useSelector((store) => store.form.curSelectInput);
   const [animationDirection, setAnimationDirection] = useState("");
   const [uniqueKey, setUniqueKey] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -210,8 +211,13 @@ const Calendar = () => {
       dispatch(setSelectedEndDate(null));
     } else if (selectedStartDate && !selectedEndDate) {
       dispatch(setSelectedEndDate(day));
-    } else if (selectedStartDate && selectedEndDate && day > selectedEndDate) {
-      dispatch(setSelectedEndDate(day));
+    } else if (
+      selectedStartDate &&
+      selectedEndDate &&
+      selectedInput === "checkIn"
+    ) {
+      dispatch(setSelectedStartDate(day));
+      dispatch(setSelectedEndDate(null));
     } else if (
       selectedEndDate &&
       selectedStartDate &&
@@ -219,6 +225,8 @@ const Calendar = () => {
     ) {
       dispatch(setSelectedStartDate(day));
       dispatch(setSelectedEndDate(null));
+    } else if (selectedStartDate && selectedEndDate && day > selectedEndDate) {
+      dispatch(setSelectedEndDate(day));
     }
   };
 
