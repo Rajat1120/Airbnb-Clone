@@ -628,9 +628,9 @@ const MainFormContent = () => {
                     </button>
                     <p className="w-3 flex-center font-light">
                       {adultCount}
-                      <p className="text-sm ">
+                      <span className="text-sm ">
                         {adultCount === 16 ? "+" : ""}
-                      </p>{" "}
+                      </span>{" "}
                     </p>
                     <button
                       disabled={adultCount + childCount === 16}
