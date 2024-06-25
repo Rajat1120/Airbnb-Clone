@@ -132,14 +132,25 @@ const MainFormContent = () => {
     return () => document.removeEventListener("click", handleClick);
   }, []); */
 
-  function handleCrossClick(e) {
+  function handleCrossClick(e, inputField) {
     e.stopPropagation();
-    console.log("run");
-    dispatch(setActiveInput(""));
-    dispatch(setRegion("all"));
-    setDestination(null);
-    dispatch(setSelectedStartDate(null));
-    dispatch(setSelectedEndDate(null));
+
+    // dispatch(setActiveInput(""));
+    if (inputField === "destination") {
+      dispatch(setRegion("all"));
+      setDestination(null);
+    }
+    if (inputField === "checkIn" || inputField === "checkOut") {
+      dispatch(setSelectedStartDate(null));
+      dispatch(setSelectedEndDate(null));
+    }
+
+    if (inputField === "guest") {
+      dispatch(setAdultCount(0));
+      dispatch(setChildCount(0));
+      dispatch(setInfantCount(0));
+      dispatch(setPetsCount(0));
+    }
   }
 
   function handleInputField(target, input) {
@@ -223,7 +234,7 @@ const MainFormContent = () => {
                   {(region !== "all" || destination) &&
                   data === "destination" ? (
                     <div
-                      onClick={(e) => handleCrossClick(e)}
+                      onClick={(e) => handleCrossClick(e, "destination")}
                       className="w-[1.5rem] mr-[-1rem] self-center justify- flex justify-center  items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
                       <img src={cross} alt="" />
@@ -408,7 +419,7 @@ const MainFormContent = () => {
                   </div>
                   {startDateToShow !== "" && data === "checkIn" && (
                     <div
-                      onClick={(e) => handleCrossClick(e)}
+                      onClick={(e) => handleCrossClick(e, "checkIn")}
                       className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
                       <img src={cross} alt="" />
@@ -483,7 +494,7 @@ const MainFormContent = () => {
                   </div>
                   {EndDateToShow !== "" && data === "checkOut" && (
                     <div
-                      onClick={(e) => handleCrossClick(e)}
+                      onClick={(e) => handleCrossClick(e, "checkOut")}
                       className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
                       <img src={cross} alt="" />
