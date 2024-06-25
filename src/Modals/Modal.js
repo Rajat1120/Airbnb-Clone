@@ -69,7 +69,7 @@ function Open({ children, opens: opensWindowName }) {
   });
 }
 
-function Window({ children, name, modalRef }) {
+function Window({ children, name, modalRef, resetRef }) {
   const { openName, close } = useContext(modalContext);
 
   const data = useSelector((store) => store.form.curSelectInput);
@@ -79,7 +79,12 @@ function Window({ children, name, modalRef }) {
   useEffect(
     function () {
       function handleClick(e) {
-        if (ref?.current && !ref.current?.contains(e.target)) {
+        if (
+          ref?.current &&
+          !ref.current?.contains(e.target) &&
+          resetRef?.current &&
+          !resetRef.current?.contains(e.target)
+        ) {
           close();
         }
       }
