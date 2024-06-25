@@ -36,7 +36,7 @@ const MainFormContent = () => {
   const data = useSelector((store) => store.form.curSelectInput);
 
   const region = useSelector((store) => store.form.region);
-  console.log(region);
+
   const adultCount = useSelector((store) => store.form.adultCount);
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
@@ -44,7 +44,6 @@ const MainFormContent = () => {
 
   const dateOption = useSelector((state) => state.form.dateOption);
 
-  console.log("adultCount", adultCount);
   const dispatch = useDispatch();
 
   const modalRef = useRef();
@@ -85,6 +84,7 @@ const MainFormContent = () => {
     function () {
       function handleClick(e) {
         // if user click outside the form and open modal minimize the active input field
+
         if (
           modalRef?.current &&
           !modalRef.current?.contains(e.target) &&
