@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAdultCount,
@@ -8,11 +8,24 @@ import {
 } from "../mainFormSlice";
 
 const AddGuest = () => {
+  const [Disable, setDisable] = useState(false);
+
   const dispatch = useDispatch();
   const adultCount = useSelector((store) => store.form.adultCount);
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
   const petCount = useSelector((store) => store.form.petsCount);
+
+  useEffect(() => {
+    if (adultCount > 0 && infantCount + childCount + petCount === 0) {
+      setDisable(false);
+    } else if (adultCount > 1 && infantCount + childCount + petCount > 0) {
+      setDisable(false);
+    } else if (adultCount === 0 || infantCount + childCount + petCount > 0) {
+      setDisable(true);
+    }
+  }, [adultCount, childCount, infantCount, petCount]);
+
   return (
     <div className="w-[26rem]  flex-center h-[25rem]">
       <div className="py-6 flex-center flex-col ">
@@ -24,17 +37,13 @@ const AddGuest = () => {
             </div>
             <div className="flex items-center justify-center">
               <button
-                disabled={
-                  adultCount === 0 || infantCount + childCount + petCount > 0
-                }
+                disabled={Disable}
                 onClick={() => {
                   let count = adultCount - 1;
                   dispatch(setAdultCount(count));
                 }}
                 className={`w-8 h-8  m-4 items-center justify-center ${
-                  adultCount === 0 || infantCount + childCount + petCount > 0
-                    ? "cursor-disable"
-                    : ""
+                  Disable ? "cursor-disable" : ""
                 } rounded-full bg-white border-[1px] border-grey`}
               >
                 -

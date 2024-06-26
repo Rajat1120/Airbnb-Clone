@@ -30,6 +30,10 @@ const MainFormContent = () => {
   const [startDateToShow, setStartDateToShow] = useState(null);
   const [EndDateToShow, setEndDateToShow] = useState(null);
   const [destination, setDestination] = useState(null);
+  const [guestPlural, setGuestPlural] = useState("");
+  const [petPlural, setPetPlural] = useState("");
+  const [extraGuest, setExtraGuest] = useState("");
+
   const data = useSelector((store) => store.form.curSelectInput);
 
   const region = useSelector((store) => store.form.region);
@@ -39,6 +43,32 @@ const MainFormContent = () => {
   const petCount = useSelector((store) => store.form.petsCount);
 
   const dateOption = useSelector((state) => state.form.dateOption);
+
+  useEffect(() => {
+    console.log(petPlural);
+    if (childCount + adultCount === 1 && petCount + infantCount === 0) {
+      setGuestPlural("");
+    } else if (childCount + adultCount > 1 && petCount + infantCount === 0) {
+      setGuestPlural("s");
+    } else if (childCount + adultCount > 1 && petCount + infantCount > 0) {
+      setGuestPlural("s,");
+    } else if (childCount + adultCount === 1 && petCount + infantCount > 0) {
+      setGuestPlural(",");
+    }
+    if (petCount > 1) {
+      setPetPlural("s");
+    } else if (petCount <= 1) {
+      setPetPlural("");
+    }
+
+    if (infantCount > 0) {
+      setExtraGuest(`${infantCount} infant`);
+    }
+
+    if (petCount > 0 && infantCount === 0) {
+      setExtraGuest(`${petCount} pet${petPlural}`);
+    }
+  }, [adultCount, childCount, infantCount, petCount, petPlural]);
 
   const dispatch = useDispatch();
 
@@ -449,17 +479,27 @@ const MainFormContent = () => {
                 } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "addGuest" ? "" : "before:hover:bg-gray-300 "}
               justify-between
-               before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
+               before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[1.5rem] cursor-pointer`}
               >
                 <div className="flex flex-col justify-center items-start">
                   <div className="text-xs font-medium">Who</div>
                   <div
-                    className={`w-[5.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
+                    className={`w-[6.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
                     ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
                     `}
                   >
-                    <p className="text-sm mt-[2px] font-extralight text-black ">
-                      Add guest
+                    <p
+                      className={`text-sm mt-[2px] truncate ${
+                        adultCount + childCount > 0 && data === "addGuest"
+                          ? "font-medium"
+                          : "font-extralight"
+                      } font-extralight text-black `}
+                    >
+                      {adultCount + childCount > 0 && data === "addGuest"
+                        ? `${adultCount + childCount} guest${guestPlural} ${
+                            petCount + infantCount > 0 ? extraGuest : ""
+                          }`
+                        : "Add Guest"}
                     </p>
                   </div>
                 </div>
