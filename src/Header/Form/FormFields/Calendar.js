@@ -12,14 +12,14 @@ import {
   subMonths,
   isWithinInterval,
 } from "date-fns";
-import arrowRight from "../data/Icons svg/arrow-right.svg";
-import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import arrowRight from "../../../data/Icons svg/arrow-right.svg";
+import arrowLeft from "../../../data/Icons svg/arrow-left.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentMonth,
   setSelectedEndDate,
   setSelectedStartDate,
-} from "../Header/Form/mainFormSlice";
+} from "../../Form/mainFormSlice";
 
 const Calendar = () => {
   const selectedInput = useSelector((store) => store.form.curSelectInput);

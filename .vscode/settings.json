@@ -1,0 +1,41 @@
+{
+  "runTerminalCommand.commands": [
+    {
+      "command": "git rscl",
+      "name": "Reset clean"
+    },
+    {
+      "command": "npm start",
+      "name": "start react"
+    },
+
+    {
+      "command": "ng g c ",
+      "name": "Generate Component"
+    },
+    {
+      "command": "tsc {resource}",
+      "auto": true
+    },
+    {
+      "command": "dotnet run",
+      "auto": true,
+      "group": ".NET Core"
+    },
+    {
+      "command": "dotnet add page -n ",
+      "group": ".NET Core"
+    },
+    {
+      "command": "dotnet watch run",
+      "auto": true,
+      "preserve": true,
+      "group": ".NET Core"
+    },
+    {
+      "command": "dotnet add package {clipboard}",
+      "auto": true,
+      "group": ".NET Core"
+    }
+  ]
+}

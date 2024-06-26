@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import Modal from "../../Modals/Modal";
-import Europe from "../../data/Continents/europe.jpg";
-import MiddleEast from "../../data/Continents/Middle-East.jpg";
-import world from "../../data/Continents/world.jpg";
-import UnitedArabEmirates from "../../data/Continents/UAE.jpg";
-import Thiland from "../../data/Continents/thisland.jpg";
-import SouthEastAsia from "../../data/Continents/southEash.jpg";
+
 import cross from "../../data/Icons svg/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,11 +17,13 @@ import {
   setSelectedEndDate,
   setSelectedStartDate,
 } from "./mainFormSlice";
-import Calendar from "../../Utils/Calendar";
+import Calendar from "../../Header/Form/FormFields/Calendar";
 import CheckInOption from "./DatesOption";
 import { format } from "date-fns";
 import { current } from "@reduxjs/toolkit";
 import { da } from "date-fns/locale";
+import AddGuest from "./FormFields/AddGuest";
+import Destination from "./FormFields/Destination";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -36,7 +33,6 @@ const MainFormContent = () => {
   const data = useSelector((store) => store.form.curSelectInput);
 
   const region = useSelector((store) => store.form.region);
-
   const adultCount = useSelector((store) => store.form.adultCount);
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
@@ -164,12 +160,6 @@ const MainFormContent = () => {
     }
   }
 
-  function handleRegion(region) {
-    dispatch(setRegion(region));
-    setDestination("");
-    dispatch(setActiveInput("checkIn"));
-  }
-
   function handleDestinationField(input) {
     if (input === "destination") {
       dispatch(setActiveInput("destination"));
@@ -248,114 +238,7 @@ const MainFormContent = () => {
             </div>
           </Modal.Open>
           <Modal.Window modalRef={modalRef} name="destination">
-            <div className="h-full pt-[2rem] px-[1.5rem] shadow-2xl rounded-[2rem] justify-center  w-full  pb-[1.5rem] bg-white">
-              <div className="flex flex-col justify-center items-center">
-                <p className="flex mb-3  text-sm font-medium ml-[1rem] w-full justify-self-start items-center ">
-                  Search by region
-                </p>
-                <div className="grid grid-cols-3 gap-4">
-                  <div
-                    onClick={() => handleRegion("all")}
-                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
-                  >
-                    <img
-                      className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
-                      src={world}
-                      alt=""
-                    />
-
-                    <p className="text-[0.85rem] w-[6.9rem] self-start  font-[300] mt-2 ml-4">
-                      I'm flexible
-                    </p>
-                  </div>
-                  <div
-                    onClick={() => handleRegion("Europe")}
-                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
-                  >
-                    <img
-                      className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
-                      src={Europe}
-                      alt=""
-                    />
-                    <p
-                      className={` text-[0.85rem] ${
-                        region === "Europe" ? "font-medium" : ""
-                      } w-[6.9rem] self-start  font-[300] mt-2 ml-4`}
-                    >
-                      Europe
-                    </p>
-                  </div>
-                  <div
-                    onClick={() => handleRegion("Thiland")}
-                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
-                  >
-                    <img
-                      className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
-                      src={Thiland}
-                      alt=""
-                    />
-                    <p
-                      className={` text-[0.85rem] ${
-                        region === "Thiland" ? "font-medium" : ""
-                      } w-[6.9rem] self-start  font-[300] mt-2 ml-4 `}
-                    >
-                      Thailand
-                    </p>
-                  </div>
-                  <div
-                    onClick={() => handleRegion("Southeast Asia")}
-                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
-                  >
-                    <img
-                      className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
-                      src={SouthEastAsia}
-                      alt=""
-                    />
-                    <p
-                      className={`text-[0.85rem] w-[6.9rem]   font-[300] mt-2 ml-4" ${
-                        region === "SouthAsia" ? "font-medium" : ""
-                      }`}
-                    >
-                      Southeast Asia
-                    </p>
-                  </div>
-                  <div
-                    onClick={() => handleRegion("United Arab Emirates")}
-                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
-                  >
-                    <img
-                      className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
-                      src={UnitedArabEmirates}
-                      alt=""
-                    />
-                    <p
-                      className={` ${
-                        region === "United Arab Emirates" ? "font-medium" : ""
-                      } text-[0.85rem] w-[6.9rem] self-start truncate font-[300] mt-2 ml-4`}
-                    >
-                      United Arab Emirates
-                    </p>
-                  </div>
-                  <div
-                    onClick={() => handleRegion("MiddleEast")}
-                    className="w-[7.8rem] flex justify-center flex-col items-center rounded-2xl hover:bg-shadow-gray  h-[9.5rem] "
-                  >
-                    <img
-                      className="rounded-[1rem] hover:cursor-pointer mt-2  max-w-[6.8rem]  border-[0.1rem]"
-                      src={MiddleEast}
-                      alt=""
-                    />
-                    <p
-                      className={` text-[0.85rem] ${
-                        region === "MiddleEast" ? "font-medium" : ""
-                      } w-[6.9rem] self-start  font-[300] mt-2 ml-4 `}
-                    >
-                      Middle East
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <Destination setDestination={setDestination}></Destination>
           </Modal.Window>
         </Modal>
       </div>
@@ -621,200 +504,7 @@ const MainFormContent = () => {
           modalRef={modalRef}
           name="addGuest"
         >
-          <div className="w-[26rem]  flex-center h-[25rem]">
-            <div className="py-6 flex-center flex-col ">
-              <div className="flex w-[22rem] flex-center flex-col">
-                <div className="w-full justify-between flex items-center">
-                  <div className="">
-                    <p>Adults</p>
-                    <p className="text-sm text-grey"> Age 13 or above</p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      disabled={
-                        adultCount === 0 ||
-                        infantCount + childCount + petCount > 0
-                      }
-                      onClick={() => {
-                        let count = adultCount - 1;
-                        dispatch(setAdultCount(count));
-                      }}
-                      className={`w-8 h-8  m-4 items-center justify-center ${
-                        adultCount === 0 ||
-                        infantCount + childCount + petCount > 0
-                          ? "cursor-disable"
-                          : ""
-                      } rounded-full bg-white border-[1px] border-grey`}
-                    >
-                      -
-                    </button>
-                    <p className="w-3 flex-center font-light">
-                      {adultCount}
-                      <span className="text-sm ">
-                        {adultCount === 16 ? "+" : ""}
-                      </span>{" "}
-                    </p>
-                    <button
-                      disabled={adultCount + childCount === 16}
-                      onClick={() => {
-                        let count = adultCount + 1;
-                        dispatch(setAdultCount(count));
-                      }}
-                      className={`w-8 h-8 flex ${
-                        adultCount + childCount === 16 ? "cursor-disable" : ""
-                      }   m-4 items-center  justify-center rounded-full bg-white border-[1px] border-grey`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
-              </div>
-              <div className="flex w-[22rem] flex-center flex-col">
-                <div className="w-full justify-between flex items-center">
-                  <div className="">
-                    <p>Children</p>
-                    <p className="text-sm text-grey"> Ages 2-12</p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      disabled={childCount === 0}
-                      onClick={() => {
-                        let count = childCount - 1;
-                        dispatch(setChildCount(count));
-                      }}
-                      className={` w-8 h-8  m-4 
-                        ${childCount === 0 ? "cursor-disable" : ""} 
-                        items-center justify-center rounded-full bg-white border-[1px] border-grey `}
-                    >
-                      -
-                    </button>
-                    <p className="w-3 flex-center font-light">{childCount}</p>
-                    <button
-                      disabled={childCount + adultCount === 16}
-                      onClick={() => {
-                        if (
-                          adultCount + childCount + infantCount + petCount ===
-                          0
-                        ) {
-                          let curAdultCount = adultCount + 1;
-                          dispatch(setAdultCount(curAdultCount));
-
-                          let curPetCount = childCount + 1;
-                          dispatch(setChildCount(curPetCount));
-                        } else {
-                          let curPetCount = childCount + 1;
-                          dispatch(setChildCount(curPetCount));
-                        }
-                      }}
-                      className={`w-8 h-8 flex  m-4 items-center ${
-                        childCount + adultCount === 16 ? "cursor-disable" : ""
-                      } justify-center rounded-full bg-white border-[1px] border-grey`}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
-              </div>
-              <div className="flex w-[22rem] flex-center flex-col">
-                <div className="w-full justify-between flex items-center">
-                  <div className="">
-                    <p>Infants</p>
-                    <p className="text-sm text-grey"> Under 2</p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      disabled={infantCount === 0}
-                      onClick={() => {
-                        let count = infantCount - 1;
-                        dispatch(setInfantCount(count));
-                      }}
-                      className={` w-8 h-8 ${
-                        infantCount === 0 ? "cursor-disable" : ""
-                      }  m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey`}
-                    >
-                      -
-                    </button>
-                    <p className="w-3 flex-center font-light">{infantCount}</p>
-                    <button
-                      disabled={infantCount === 5}
-                      onClick={() => {
-                        if (
-                          adultCount + childCount + infantCount + petCount ===
-                          0
-                        ) {
-                          let curAdultCount = adultCount + 1;
-                          dispatch(setAdultCount(curAdultCount));
-
-                          let curPetCount = infantCount + 1;
-                          dispatch(setInfantCount(curPetCount));
-                        } else {
-                          let curPetCount = infantCount + 1;
-                          dispatch(setInfantCount(curPetCount));
-                        }
-                      }}
-                      className={`w-8 ${
-                        infantCount === 5 ? "cursor-disable" : ""
-                      }  h-8 flex  m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey `}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-                <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
-              </div>
-              <div className="flex w-[22rem] flex-center flex-col">
-                <div className="w-full justify-between flex items-center">
-                  <div className="">
-                    <p>Pets</p>
-                    <p className="text-sm hover:cursor-pointer  font-medium text-grey">
-                      <u>Bringing a service animal ?</u>
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-center">
-                    <button
-                      disabled={petCount === 0}
-                      onClick={() => {
-                        let count = petCount - 1;
-                        dispatch(setPetsCount(count));
-                      }}
-                      className={` w-8 h-8  m-4 items-center justify-center 
-                    ${petCount === 0 ? "cursor-disable" : ""}
-                    rounded-full bg-white border-[1px] border-grey `}
-                    >
-                      -
-                    </button>
-                    <p className="w-3 flex-center font-light">{petCount}</p>
-                    <button
-                      disabled={petCount === 5}
-                      onClick={() => {
-                        if (
-                          adultCount + childCount + infantCount + petCount ===
-                          0
-                        ) {
-                          let curAdultCount = adultCount + 1;
-                          dispatch(setAdultCount(curAdultCount));
-
-                          let curPetCount = petCount + 1;
-                          dispatch(setPetsCount(curPetCount));
-                        } else {
-                          let curPetCount = petCount + 1;
-                          dispatch(setPetsCount(curPetCount));
-                        }
-                      }}
-                      className={` w-8 h-8 flex
-                        ${
-                          petCount === 5 ? "cursor-disable" : ""
-                        }  m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey `}
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AddGuest></AddGuest>
         </Modal.Window>
       </Modal>
     </div>
