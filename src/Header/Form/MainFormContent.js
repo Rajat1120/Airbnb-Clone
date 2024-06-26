@@ -631,13 +631,19 @@ const MainFormContent = () => {
                   </div>
                   <div className="flex items-center justify-center">
                     <button
-                      disabled={adultCount === 0}
+                      disabled={
+                        adultCount === 0 ||
+                        infantCount + childCount + petCount > 0
+                      }
                       onClick={() => {
                         let count = adultCount - 1;
                         dispatch(setAdultCount(count));
                       }}
                       className={`w-8 h-8  m-4 items-center justify-center ${
-                        adultCount === 0 ? "cursor-disable" : ""
+                        adultCount === 0 ||
+                        infantCount + childCount + petCount > 0
+                          ? "cursor-disable"
+                          : ""
                       } rounded-full bg-white border-[1px] border-grey`}
                     >
                       -
@@ -687,8 +693,19 @@ const MainFormContent = () => {
                     <button
                       disabled={childCount + adultCount === 16}
                       onClick={() => {
-                        let count = childCount + 1;
-                        dispatch(setChildCount(count));
+                        if (
+                          adultCount + childCount + infantCount + petCount ===
+                          0
+                        ) {
+                          let curAdultCount = adultCount + 1;
+                          dispatch(setAdultCount(curAdultCount));
+
+                          let curPetCount = childCount + 1;
+                          dispatch(setChildCount(curPetCount));
+                        } else {
+                          let curPetCount = childCount + 1;
+                          dispatch(setChildCount(curPetCount));
+                        }
                       }}
                       className={`w-8 h-8 flex  m-4 items-center ${
                         childCount + adultCount === 16 ? "cursor-disable" : ""
@@ -723,8 +740,19 @@ const MainFormContent = () => {
                     <button
                       disabled={infantCount === 5}
                       onClick={() => {
-                        let count = infantCount + 1;
-                        dispatch(setInfantCount(count));
+                        if (
+                          adultCount + childCount + infantCount + petCount ===
+                          0
+                        ) {
+                          let curAdultCount = adultCount + 1;
+                          dispatch(setAdultCount(curAdultCount));
+
+                          let curPetCount = infantCount + 1;
+                          dispatch(setInfantCount(curPetCount));
+                        } else {
+                          let curPetCount = infantCount + 1;
+                          dispatch(setInfantCount(curPetCount));
+                        }
                       }}
                       className={`w-8 ${
                         infantCount === 5 ? "cursor-disable" : ""
@@ -761,8 +789,19 @@ const MainFormContent = () => {
                     <button
                       disabled={petCount === 5}
                       onClick={() => {
-                        let count = petCount + 1;
-                        dispatch(setPetsCount(count));
+                        if (
+                          adultCount + childCount + infantCount + petCount ===
+                          0
+                        ) {
+                          let curAdultCount = adultCount + 1;
+                          dispatch(setAdultCount(curAdultCount));
+
+                          let curPetCount = petCount + 1;
+                          dispatch(setPetsCount(curPetCount));
+                        } else {
+                          let curPetCount = petCount + 1;
+                          dispatch(setPetsCount(curPetCount));
+                        }
                       }}
                       className={` w-8 h-8 flex
                         ${
