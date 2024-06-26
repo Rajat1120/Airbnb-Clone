@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setDateOption } from "./mainFormSlice";
 
 const CheckInOption = () => {
-  const [, setDateOption] = useState("dates");
-
   const dateOption = useSelector((state) => state.form.dateOption);
 
   const dispatch = useDispatch();
@@ -28,7 +27,6 @@ const CheckInOption = () => {
             : "cursor-pointer hover:bg-grey-dim"
         }`}
       >
-        {" "}
         Months
       </span>
       <span
