@@ -2,9 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import house1 from "../data/houseImg/house1.jpg";
 import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
+import { useDispatch, useSelector } from "react-redux";
+import { setStartScroll } from "./AppSlice";
 
-const House = ({ startScroll, setStartScroll }) => {
+const House = () => {
   let lastScrollPosition = useRef(window.scrollY);
+
+  const startScroll = useSelector((store) => store.app.startScroll);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -12,10 +18,10 @@ const House = ({ startScroll, setStartScroll }) => {
 
       if (currentScrollPosition > lastScrollPosition.current) {
         // Scrolling down (no change needed here)
-        setStartScroll(false); // Set)
+        dispatch(setStartScroll(false)); // Set)
       } else if (currentScrollPosition < 22) {
         // Scrolling up
-        setStartScroll(true);
+        dispatch(setStartScroll(true));
       }
 
       lastScrollPosition.current = currentScrollPosition;
@@ -26,7 +32,7 @@ const House = ({ startScroll, setStartScroll }) => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [startScroll, setStartScroll]);
+  }, [startScroll, dispatch]);
 
   useEffect(() => {}, [startScroll]);
 

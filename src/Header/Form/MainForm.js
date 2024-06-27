@@ -11,6 +11,7 @@ const MainForm = ({ startScroll }) => {
 
   useEffect(
     function () {
+      console.log("true");
       if (!startScroll) dispatch(setActiveInput(""));
     },
     [startScroll, dispatch]

@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import FilterHome from "./buttons/FilterHome";
 import arrow_left from "./../data/Icons svg/arrow-left.svg";
 import arrow_right from "./../data/Icons svg/arrow-right.svg";
+import { useSelector } from "react-redux";
 
 // import options from "../data/Options-Svg";
 
-const Options = ({ startScroll }) => {
+const Options = () => {
+  const startScroll = useSelector((store) => store.app.startScroll);
   // startScroll = false;
   function importAll(r) {
     return r.keys().map((item) => {

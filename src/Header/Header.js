@@ -6,8 +6,10 @@ import globe from "../data/globe.svg";
 import menu from "../data/Menu-Icon.svg";
 import person from "../data/person.svg";
 import MainForm from "./Form/MainForm";
+import { useSelector } from "react-redux";
 
-function Header({ startScroll }) {
+function Header() {
+  const startScroll = useSelector((store) => store.app.startScroll);
   const [onHover, setonHover] = useState("first");
   // startScroll = false;
   let classForAfter = `after:content-[''] after:w-full after:z-10  ${
