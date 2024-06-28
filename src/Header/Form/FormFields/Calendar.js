@@ -220,15 +220,16 @@ const Calendar = () => {
     ) {
       // If the input is "checkOut", and there is not start and end date, set the end date.
       dispatch(setSelectedEndDate(day));
+      dispatch(setActiveInput("checkIn"));
     } else if (
       // if end date is true and input is checkOut , set the start date
       selectedEndDate &&
-      selectedInput === "checkOut" &&
+      selectedInput === "checkIn" &&
       !selectedStartDate &&
       day < selectedEndDate
     ) {
       dispatch(setSelectedStartDate(day));
-      dispatch(setActiveInput("checkIn"));
+      dispatch(setActiveInput("checkOut"));
     } else if (!selectedStartDate) {
       // If no start date is selected, set the start date and clear the end date.
       dispatch(setSelectedStartDate(day));
