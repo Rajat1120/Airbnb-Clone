@@ -499,7 +499,7 @@ const MainFormContent = () => {
                         ? `${adultCount + childCount} guest${guestPlural} ${
                             petCount + infantCount > 0 ? extraGuest : ""
                           }`
-                        : "Add Guest"}
+                        : "Add guest"}
                     </p>
                   </div>
                 </div>
