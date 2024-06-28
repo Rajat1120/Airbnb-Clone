@@ -35,22 +35,13 @@ function Modal({ children }) {
 
   const curInput = useSelector((store) => store.form.curSelectInput);
   const region = useSelector((store) => store.form.region);
-  const startDate = useSelector((store) => store.form.selectedStartDate);
-  const endDate = useSelector((store) => store.form.selectedEndDate);
 
   useEffect(() => {
     if (!curInput || region) {
       close();
       setOpenName(curInput);
     }
-  }, [curInput, region]);
-
-  useEffect(() => {
-    if (startDate) {
-      setOpenName("checkOut");
-      dispatch(setActiveInput("checkOut"));
-    }
-  }, [startDate, dispatch]);
+  }, [curInput, dispatch, region]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>

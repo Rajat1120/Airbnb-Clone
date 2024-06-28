@@ -16,6 +16,7 @@ import arrowRight from "../../../data/Icons svg/arrow-right.svg";
 import arrowLeft from "../../../data/Icons svg/arrow-left.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setActiveInput,
   setCurrentMonth,
   setSelectedEndDate,
   setSelectedStartDate,
@@ -212,45 +213,55 @@ const Calendar = () => {
   };
 
   const onDateClick = (day) => {
-    if (!selectedStartDate) {
-      dispatch(setSelectedStartDate(day));
-      dispatch(setSelectedEndDate(null));
-    } else if (selectedStartDate && !selectedEndDate) {
+    if (
+      selectedInput === "checkOut" &&
+      !selectedEndDate &&
+      !selectedStartDate
+    ) {
+      // If the input is "checkOut", and there is not start and end date, set the end date.
       dispatch(setSelectedEndDate(day));
     } else if (
-      selectedStartDate &&
+      // if end date is true and input is checkOut , set the start date
       selectedEndDate &&
-      selectedInput === "checkIn"
+      selectedInput === "checkOut" &&
+      !selectedStartDate &&
+      day < selectedEndDate
     ) {
       dispatch(setSelectedStartDate(day));
-      dispatch(setSelectedEndDate(null));
-    } else if (
-      selectedEndDate &&
-      selectedStartDate &&
-      day < selectedStartDate
-    ) {
+      dispatch(setActiveInput("checkIn"));
+    } else if (!selectedStartDate) {
+      // If no start date is selected, set the start date and clear the end date.
       dispatch(setSelectedStartDate(day));
       dispatch(setSelectedEndDate(null));
-    } else if (selectedStartDate && selectedEndDate && day > selectedEndDate) {
+      dispatch(setActiveInput("checkOut"));
+    } else if (day < selectedStartDate) {
+      // If a start date is selected and the new date is before it, reset the start date.
+      dispatch(setSelectedStartDate(day));
+      dispatch(setSelectedEndDate(null));
+      dispatch(setActiveInput("checkIn"));
+    } else if (!selectedEndDate) {
+      // If a start date is selected but no end date, set the end date.
       dispatch(setSelectedEndDate(day));
-    } else if (
-      selectedStartDate &&
-      selectedEndDate &&
-      isWithinInterval(day, {
-        start: selectedStartDate,
-        end: selectedEndDate,
-      }) &&
-      day > selectedStartDate
-    ) {
+      dispatch(setActiveInput("checkOut"));
+    } else if (selectedInput === "checkIn") {
+      // If both dates are selected and input is "checkIn", reset the dates.
+      dispatch(setSelectedStartDate(day));
+      dispatch(setSelectedEndDate(null));
+      dispatch(setActiveInput("checkOut"));
+    } else if (day > selectedEndDate) {
+      // If the new date is after the end date, set it as the new end date.
       dispatch(setSelectedEndDate(day));
+      dispatch(setActiveInput("checkOut"));
     } else if (
-      selectedStartDate &&
-      selectedEndDate &&
-      isSameDay(day, selectedStartDate)
+      isWithinInterval(day, { start: selectedStartDate, end: selectedEndDate })
     ) {
-      // If both start and end dates are selected and the user clicks on the start date,
-      // set the end date to the start date as well.
+      // If the new date is within the selected interval, set it as the end date.
+      dispatch(setSelectedEndDate(day));
+      dispatch(setActiveInput("checkOut"));
+    } else if (isSameDay(day, selectedStartDate)) {
+      // If the new date is the same as the start date, set the end date to the start date.
       dispatch(setSelectedEndDate(selectedStartDate));
+      dispatch(setActiveInput("checkOut"));
     }
   };
 
