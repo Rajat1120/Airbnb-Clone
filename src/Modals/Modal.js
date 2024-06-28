@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
 import { setActiveInput, setCurrentMonth } from "../Header/Form/mainFormSlice";
 
-const modalContext = createContext();
+export const modalContext = createContext();
 
 let modalStye = {
   checkIn:
@@ -111,3 +111,5 @@ Modal.Open = Open;
 Modal.Window = Window;
 
 export default Modal;
+
+export { Open, Window };
