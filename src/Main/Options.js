@@ -103,21 +103,13 @@ const Options = () => {
     require.context("../data/Options-Svg", false, /\.svg$/)
   );
 
-  //${!startScroll ? "animate-moveUp" : ""}
-
   return (
     <div
-      className={` bg-white  ${
-        !startScroll
-          ? " animate-moveUp absolute top-[10rem] "
-          : "animate-moveDown absolute top-[5rem] "
+      className={` bg-white  transition-transform duration-[0.3s] ease-in-out ${
+        !startScroll ? "-translate-y-[5.9rem]" : ""
       }     justify-self-center `}
     >
-      <div
-        className={`h-[80px] ${
-          startScroll ? "mt-4 mb-1" : "mt-0 mb-0"
-        } flex     `}
-      >
+      <div className={`h-[80px]  mt-3 flex     `}>
         <div
           className={
             "w-[920px] flex relative ml-[2rem]   items-center  rounded-lg overflow-hidden"

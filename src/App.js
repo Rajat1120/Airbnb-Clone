@@ -10,6 +10,8 @@ export default function App() {
     <div className="px-[40px]">
       <div className="fixed top-0">
         <Header></Header>
+      </div>
+      <div className="fixed top-[10rem]">
         <Options></Options>
       </div>
 

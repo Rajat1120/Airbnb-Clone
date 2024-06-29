@@ -38,11 +38,9 @@ const House = () => {
 
   return (
     <div
-      className={` absolute   top-[17rem] overflow-scroll   ${
-        !startScroll
-          ? "animate-moveUpHouse -z-50  "
-          : "animate-moveDownHouse -z-50"
-      }`}
+      className={` absolute  transition-transform duration-[0.3s] ease-in-out   top-[17rem] overflow-scroll   ${
+        !startScroll ? "-translate-y-[6rem] -z-30" : ""
+      } `}
     >
       <div className=" grid gap-x-6 ml-4 fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (

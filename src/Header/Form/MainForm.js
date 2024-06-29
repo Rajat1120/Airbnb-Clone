@@ -20,13 +20,13 @@ const MainForm = ({ startScroll }) => {
   const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
-    "translate-y-[-5.5rem] backface-hidden border-[3px]  duration-300 scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem] backface-hidden border-[3px]  scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
-  let onScrollBack = `translate-y-[0.2rem] backface-hidden border-[1.5px] duration-300 scale-100 self-center  w-[53rem] h-[4rem]
+  let onScrollBack = `translate-y-[0.2rem] backface-hidden border-[1.5px] scale-100 self-center  w-[53rem] h-[4rem]
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
    `;
 
-  let classForForm = ` border-gray-250 flex ${
+  let classForForm = ` transition-transform duration-[0.3s] ease-in-out border-gray-250 flex ${
     !startScroll ? onScrollProperty : onScrollBack
   }  mb-5   rounded-full ${
     !startScroll ? "" : data ? styleForBefore : ""

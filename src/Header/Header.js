@@ -10,19 +10,14 @@ import { useSelector } from "react-redux";
 
 function Header() {
   const startScroll = useSelector((store) => store.app.startScroll);
-  const [onHover, setonHover] = useState("first");
-  // startScroll = false;
-  let classForAfter = `after:content-[''] after:w-full after:z-10  ${
-    !startScroll
-      ? " after:animate-moveAfterUp   "
-      : " after:animate-moveAfterDown  "
-  }  ${
-    !startScroll ? "after:bg-grey-light" : " h-[10rem]  after:bg-grey-dim"
-  } after:h-[0.6px]`;
+
+  let classForAfter = `after:content-[''] ${
+    !startScroll ? " after:-translate-y-[5.9rem]" : ""
+  } after:transition-transform after:duration-[0.3s] after:ease-in-out after:w-full after:z-10 after:bg-grey-dim after:fixed after:top-[10rem]  after:h-[1px]`;
 
   return (
     <div
-      className={` ${classForAfter} after:mt-2 flex flex-col  relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} after:mt-2 flex flex-col items-center  relative  bg-white   after:absolute  `}
     >
       <div className="grid grid-cols-3  px-10 ">
         <div className="w-8 ">
@@ -36,8 +31,8 @@ function Header() {
           </a>
         </div>
         <div
-          className={`flex h-20 ${
-            !startScroll ? "-translate-y-20 duration-300 " : ""
+          className={`flex h-20 transition-transform duration-[0.3s] ease-in-out ${
+            !startScroll ? "-translate-y-20 " : ""
           } justify-center  items-center px-6`}
         >
           <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">

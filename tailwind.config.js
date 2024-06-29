@@ -30,30 +30,6 @@ module.exports = {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",
       },
       keyframes: {
-        moveUp: {
-          "0%": { transform: "translateY(0rem)" },
-          "100%": { transform: "translateY(-5rem)" },
-        },
-        moveDown: {
-          "0%": { transform: "translateY(0rem)" },
-          "100%": { transform: "translateY(5rem)" },
-        },
-        moveUpHouse: {
-          "0%": { transform: "translateY(0rem)" },
-          "100%": { transform: "translateY(-5rem)" },
-        },
-        moveDownHouse: {
-          "0%": { transform: "translateY(-5rem)" },
-          "100%": { transform: "translateY(0rem)" },
-        },
-        moveAfterUp: {
-          "0%": { transform: "translateY(9rem)" },
-          "100%": { transform: "translateY(4.5rem)" },
-        },
-        moveAfterDown: {
-          "0%": { transform: "translateY(4.5rem)" },
-          "100%": { transform: "translateY(9.9rem)" },
-        },
         slideInLeft: {
           "0%": { transform: "translateX(-3.2rem)", opacity: "1" },
           "100%": { transform: "translateX(0)", opacity: "1" },
@@ -64,12 +40,6 @@ module.exports = {
         },
       },
       animation: {
-        moveUp: "moveUp 0.2s forwards",
-        moveDown: "moveDown 0.2s forwards",
-        moveUpHouse: "moveUpHouse 0.2s forwards",
-        moveDownHouse: "moveDownHouse 0.2s forwards",
-        moveAfterUp: "moveAfterUp 0.2s forwards",
-        moveAfterDown: "moveAfterDown 0.2s forwards",
         slideInLeft: "slideInLeft 0.3s ease-in-out forwards",
         slideInRight: "slideInRight 0.3s ease-in-out forwards",
       },
