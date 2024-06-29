@@ -490,12 +490,12 @@ const MainFormContent = () => {
                   >
                     <p
                       className={`text-sm mt-[2px] truncate ${
-                        adultCount + childCount > 0 && data === "addGuest"
+                        adultCount + childCount > 0 && data
                           ? "font-medium"
                           : "font-extralight"
                       } font-extralight text-black `}
                     >
-                      {adultCount + childCount > 0 && data === "addGuest"
+                      {adultCount + childCount > 0 && data
                         ? `${adultCount + childCount} guest${guestPlural} ${
                             petCount + infantCount > 0 ? extraGuest : ""
                           }`
