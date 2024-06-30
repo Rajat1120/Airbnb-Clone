@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const CircularSlider = () => {
   const [currentDot, setCurrentDot] = useState(2);
+  const [onHover, setOnHover] = useState(false);
 
   let NumOfMonths = currentDot;
 
@@ -22,6 +23,8 @@ const CircularSlider = () => {
             {[...Array(dotCount)].map((_, index) => (
               <div
                 key={index}
+                onMouseEnter={() => setOnHover(index)}
+                onMouseLeave={() => setOnHover("")}
                 className="absolute flex items-center justify-center bg-transparent rounded-full cursor-pointer"
                 style={{
                   width: "5rem",
@@ -32,7 +35,11 @@ const CircularSlider = () => {
                 }}
                 onClick={() => handleClick(index)}
               >
-                <div className="h-2 w-2 bg-black rounded-full"></div>
+                <div
+                  className={`h-2 w-2 ${
+                    onHover === index ? "bg-black scale-150" : "bg-[#4d4d4d]"
+                  }  rounded-full`}
+                ></div>
               </div>
             ))}
           </div>
