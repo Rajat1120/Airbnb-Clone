@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 const CircularSlider = () => {
+  const [currentDot, setCurrentDot] = useState(2);
+
+  const dotCount = 12;
+
+  const handleClick = (index) => {
+    setCurrentDot(index);
+  };
+
   return (
     <div className="h-[25rem] flex flex-col items-center justify-center">
       <p>When's your trip?</p>
@@ -9,18 +17,35 @@ const CircularSlider = () => {
           {/* Container for the dots */}
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Dots */}
-            {[...Array(12)].map((_, index) => (
+            {[...Array(dotCount)].map((_, index) => (
               <div
                 key={index}
-                className="absolute bg-black rounded-full"
+                className="absolute flex items-center justify-center bg-transparent rounded-full cursor-pointer"
                 style={{
-                  width: "5px",
-                  height: "5px",
-                  transform: `rotate(${index * 30}deg) translate(0, -7rem)`,
+                  width: "5rem",
+                  height: "5rem",
+                  transform: `rotate(${
+                    index * (360 / dotCount)
+                  }deg) translate(0, -7rem)`,
                 }}
-              ></div>
+                onClick={() => handleClick(index)}
+              >
+                <div className="h-2 w-2 bg-black rounded-full"></div>
+              </div>
             ))}
           </div>
+
+          <div
+            className="absolute bg-pink rounded-full"
+            style={{
+              width: "36px",
+              height: "36px",
+              transition: "transform 0.2s ease",
+              transform: `rotate(${
+                currentDot === 0 ? 360 : currentDot * (360 / dotCount)
+              }deg) translate(0, -7rem)`,
+            }}
+          ></div>
           <div className="h-[10.62rem] bg-white rounded-[50%] shadow-sliderShadow2 w-[10.62rem]"></div>
         </div>
       </div>
