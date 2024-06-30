@@ -24,6 +24,7 @@ import { current } from "@reduxjs/toolkit";
 import { da } from "date-fns/locale";
 import AddGuest from "./FormFields/AddGuest";
 import Destination from "./FormFields/Destination";
+import CircularSlider from "./CircularSlider";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -431,7 +432,8 @@ const MainFormContent = () => {
           >
             <div className="flex flex-col justify-center items-center ">
               <CheckInOption></CheckInOption>
-              <Calendar></Calendar>
+              {dateOption === "dates" && <Calendar></Calendar>}
+              {dateOption === "months" && <CircularSlider></CircularSlider>}
             </div>
           </Modal.Window>
         </Modal>
