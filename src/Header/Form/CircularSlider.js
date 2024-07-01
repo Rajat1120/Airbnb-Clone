@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const CircularSlider = () => {
   const [currentDot, setCurrentDot] = useState(2);
   const [onHover, setOnHover] = useState(false);
-
+  console.log(currentDot);
   let NumOfMonths = currentDot;
 
   const dotCount = 12;
@@ -38,6 +38,10 @@ const CircularSlider = () => {
                 <div
                   className={`h-2 w-2 ${
                     onHover === index ? "bg-black scale-150" : "bg-[#4d4d4d]"
+                  } ${
+                    currentDot === 0
+                      ? "bg-dark-pink"
+                      : index > 0 && index <= currentDot - 1 && "bg-dark-pink"
                   }  rounded-full`}
                 ></div>
               </div>
