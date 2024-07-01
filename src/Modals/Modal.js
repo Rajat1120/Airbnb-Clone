@@ -9,7 +9,11 @@ import React, {
 
 import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
-import { setActiveInput, setCurrentMonth } from "../Header/Form/mainFormSlice";
+import {
+  setActiveInput,
+  setCurrentMonth,
+  setOpenName,
+} from "../Header/Form/mainFormSlice";
 
 export const modalContext = createContext();
 
@@ -28,14 +32,13 @@ let modalStye = {
     "fixed top-[20%] left-[52%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
 };
 function Modal({ children }) {
-  const [openName, setOpenName] = useState("");
-
+  // const [openName, setOpenName] = useState("");
+  const openName = useSelector((store) => store.form.openName);
+  const dispatch = useDispatch();
   const close = () => {
-    setOpenName("");
+    dispatch(setOpenName(""));
   };
   const open = setOpenName;
-
-  const dispatch = useDispatch();
 
   const curInput = useSelector((store) => store.form.curSelectInput);
   const region = useSelector((store) => store.form.region);
@@ -44,25 +47,25 @@ function Modal({ children }) {
   useEffect(() => {
     if (!curInput || region) {
       close();
-      setOpenName(curInput);
+      dispatch(setOpenName(curInput));
     }
   }, [curInput, dispatch, region]);
 
   useEffect(() => {
     if (dateOption) {
       if (dateOption === "dates") {
-        setOpenName("checkIn");
+        dispatch(setOpenName("checkIn"));
       } else if (dateOption === "month") {
-        setOpenName("month");
+        dispatch(setOpenName("month"));
       } else {
-        setOpenName("flexible");
+        dispatch(setOpenName("flexible"));
       }
     }
 
     return () => {
-      setOpenName("");
+      // dispatch(setOpenName(""));
     };
-  }, [dateOption]);
+  }, [dateOption, dispatch]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>

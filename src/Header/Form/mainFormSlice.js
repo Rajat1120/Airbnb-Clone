@@ -15,6 +15,7 @@ let formState = {
   childCount: 0,
   infantCount: 0,
   petsCount: 0,
+  openName: "",
 };
 
 const formSlice = createSlice({
@@ -23,6 +24,9 @@ const formSlice = createSlice({
   reducers: {
     setActiveInput: (state, action) => {
       state.curSelectInput = action.payload;
+    },
+    setOpenName: (state, action) => {
+      state.openName = action.payload;
     },
     setSearchEl: (state, action) => {
       state.search = action.payload;
@@ -69,5 +73,6 @@ export const {
   setChildCount,
   setInfantCount,
   setPetsCount,
+  setOpenName,
 } = formSlice.actions;
 export default formSlice.reducer;
