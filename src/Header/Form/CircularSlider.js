@@ -1,8 +1,13 @@
 import React, { useState } from "react";
+import Modal from "../../Modals/Modal"; // Adjust the import path if necessary
+import Calendar from "./FormFields/Calendar";
+import CalendarModal from "./CalendarModal";
 
 const CircularSlider = () => {
   const [currentDot, setCurrentDot] = useState(2);
   const [onHover, setOnHover] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
+
   console.log(currentDot);
   let NumOfMonths = currentDot;
 
@@ -10,6 +15,14 @@ const CircularSlider = () => {
 
   const handleClick = (index) => {
     setCurrentDot(index);
+  };
+
+  const handleEditClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -74,8 +87,16 @@ const CircularSlider = () => {
       <div className="mb-6">
         <p>
           Starting on 1 August .{" "}
-          <span className="font-semibold cursor-pointer underline">Edit </span>
+          <span
+            className="font-semibold cursor-pointer underline"
+            onClick={handleEditClick}
+          >
+            Edit
+          </span>
         </p>
+        <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <Calendar></Calendar>
+        </CalendarModal>
       </div>
     </div>
   );
