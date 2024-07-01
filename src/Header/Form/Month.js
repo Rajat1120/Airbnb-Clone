@@ -24,11 +24,14 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
             className={`w-[17.3rem] h-[3.85rem] hover:before:content-[''] before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full  ${
               curInput === "month"
                 ? "rounded-full bg-white"
-                : "before:hover:bg-gray-300 "
+                : "before:hover:bg-[#c0c0c0] "
             }  before:hover:opacity-40  flex items-center justify-center`}
             onClick={handleClick}
           >
-            Month
+            <div className="flex flex-col w-[14.8rem] items-start justify-center">
+              <p className="text-xs font-medium">When</p>
+              <p className="text-sm font-medium ">Aug 1 - oct 1</p>
+            </div>
           </div>
         </div>
       </Modal.Open>

@@ -19,7 +19,7 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
             className={`w-[17.3rem] h-[3.85rem] hover:before:content-[''] before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full  ${
               curInput === "flexible"
                 ? "rounded-full bg-white"
-                : "before:hover:bg-gray-300 "
+                : "before:hover:bg-[#c0c0c0] "
             }  before:hover:opacity-40  flex items-center justify-center`}
             onClick={(e) => handleInputField(e.target, "flexible")}
           >
