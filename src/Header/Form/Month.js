@@ -16,14 +16,16 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
       <Modal.Open opens="month">
         <div
           className={`flex justify-center  items-center ${
-            curInput === "month" ? "shadow-month rounded-full" : ""
+            curInput === "month" ? "shadow-checkInShadow rounded-full" : ""
           } `}
           ref={monthRef}
         >
           <div
-            className={`w-[17.3rem] ${
-              curInput === "month" ? "bg-white" : "bg-slate-500"
-            } flex items-center justify-center`}
+            className={`w-[17.3rem] h-[3.85rem] hover:before:content-[''] before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full  ${
+              curInput === "month"
+                ? "rounded-full bg-white"
+                : "before:hover:bg-gray-300 "
+            }  before:hover:opacity-40  flex items-center justify-center`}
             onClick={handleClick}
           >
             Month

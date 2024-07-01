@@ -306,12 +306,14 @@ const MainFormContent = () => {
                   onClick={(e) => handleInputField(e.target, "checkIn")}
                   className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
 
-                   ${data === "checkIn" ? "" : "before:hover:bg-gray-300 "}
+                   ${
+                     data === "checkIn"
+                       ? "rounded-full bg-white"
+                       : "before:hover:bg-gray-300 "
+                   }
                   
                   before:hover:opacity-40 
-               ${
-                 data === "checkIn" ? "rounded-full bg-white" : ""
-               } flex-col flex justify-center items-center 
+                flex-col flex justify-center items-center 
                h-[3.85rem] cursor-pointer`}
                 >
                   <div
