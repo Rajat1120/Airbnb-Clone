@@ -52,9 +52,6 @@ function Modal({ children }) {
 }
 
 function Open({ children, opens: opensWindowName }) {
-  const openName = useSelector((store) => store.form.openName);
-  const { open } = useContext(modalContext);
-
   const dispatch = useDispatch();
 
   return cloneElement(children, {

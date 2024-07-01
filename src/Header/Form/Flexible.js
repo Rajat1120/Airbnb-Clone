@@ -3,11 +3,14 @@ import Modal from "../../Modals/Modal";
 import CheckInOption from "./DatesOption";
 import CircularSlider from "./CircularSlider";
 
-const Flexible = ({ modalRef, handleInputField }) => {
+const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
   return (
     <Modal>
       <Modal.Open opens="flexible">
-        <div className=" flex justify-center bg-slate-500  items-center">
+        <div
+          ref={flexibleRef}
+          className=" flex justify-center bg-slate-500  items-center"
+        >
           <div
             className="w-[17.3rem] flex items-center justify-center"
             onClick={(e) => handleInputField(e.target, "flexible")}

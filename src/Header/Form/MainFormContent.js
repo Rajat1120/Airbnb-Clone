@@ -84,6 +84,7 @@ const MainFormContent = () => {
   const checkInRef = useRef();
   const checkOutRef = useRef();
   const addGuestRef = useRef();
+  const flexibleRef = useRef();
   const monthRef = useRef();
   const inputRef = useRef(null);
 
@@ -123,7 +124,9 @@ const MainFormContent = () => {
           !buttonRef.current?.contains(e.target) &&
           !checkInRef.current?.contains(e.target) &&
           !checkOutRef.current?.contains(e.target) &&
-          !addGuestRef.current?.contains(e.target)
+          !addGuestRef.current?.contains(e.target) &&
+          !monthRef.current?.contains(e.target) &&
+          !flexibleRef.current?.contains(e.target)
         ) {
           dispatch(setActiveInput(""));
           dispatch(setOpenName(""));
@@ -174,6 +177,12 @@ const MainFormContent = () => {
       dispatch(setPetsCount(0));
     }
   }
+
+  useEffect(() => {
+    if (!data) {
+      dispatch(setOpenName(""));
+    }
+  }, [data, dispatch]);
 
   function handleInputField(target, input) {
     if (data === input) {
@@ -381,6 +390,7 @@ const MainFormContent = () => {
         )}
         {dateOption === "flexible" && (
           <Flexible
+            flexibleRef={flexibleRef}
             handleInputField={handleInputField}
             modalRef={modalRef}
           ></Flexible>

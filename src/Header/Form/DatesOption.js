@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDateOption, setOpenName } from "./mainFormSlice";
+import { setActiveInput, setDateOption, setOpenName } from "./mainFormSlice";
 
 const CheckInOption = () => {
   const dateOption = useSelector((state) => state.form.dateOption);
@@ -13,6 +13,7 @@ const CheckInOption = () => {
         onClick={() => {
           dispatch(setDateOption("dates"));
           dispatch(setOpenName("checkIn"));
+          dispatch(setActiveInput("checkOut"));
         }}
         className={`rounded-full text-sm font-medium  flex  text-zinc-700  justify-center items-center h-9 w-[6rem] ${
           dateOption === "dates"
@@ -26,6 +27,7 @@ const CheckInOption = () => {
         onClick={() => {
           dispatch(setDateOption("month"));
           dispatch(setOpenName("month"));
+          dispatch(setActiveInput("month"));
         }}
         className={`rounded-full text-zinc-700 flex text-sm font-medium justify-center items-center h-9 w-[6rem] ${
           dateOption === "month"
@@ -40,6 +42,7 @@ const CheckInOption = () => {
           dispatch(setDateOption("flexible"));
 
           dispatch(setOpenName("flexible"));
+          dispatch(setActiveInput("flexible"));
         }}
         className={`rounded-full  text-zinc-700  text-sm font-medium flex justify-center items-center h-9 w-[6rem] ${
           dateOption === "flexible"
