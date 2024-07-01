@@ -61,7 +61,7 @@ const CircularSlider = () => {
           ></div>
           <div className="h-[10.62rem] flex items-center justify-center bg-white rounded-[50%] shadow-sliderShadow2 w-[10.62rem]">
             <span className="flex  flex-col items-center justify-center">
-              <p className="text-[6rem] h-[7rem] mb-2 font-semibold p-0 m-0">
+              <p className="text-[6rem] h-[7rem] mb-2 font-bold p-0 m-0">
                 {currentDot === 0 ? 12 : NumOfMonths}
               </p>{" "}
               <p className="mb-6 font-bold text-lg">

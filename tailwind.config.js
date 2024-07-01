@@ -6,7 +6,15 @@ module.exports = {
   content: ["./src/**/*.{html,js}"],
   theme: {
     fontFamily: {
-      sans: ["Poppins"],
+      sans: [
+        "Airbnb Cereal VF",
+        "Circular",
+        "-apple-system",
+        "BlinkMacSystemFont",
+        "Roboto",
+        "Helvetica Neue",
+        "sans-serif",
+      ],
     },
     extend: {
       boxShadow: {
