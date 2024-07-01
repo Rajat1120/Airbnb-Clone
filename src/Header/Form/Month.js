@@ -15,7 +15,7 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
             className="w-[17.3rem] flex items-center justify-center"
             onClick={(e) => handleInputField(e.target, "month")}
           >
-            Hello
+            Month
           </div>
         </div>
       </Modal.Open>

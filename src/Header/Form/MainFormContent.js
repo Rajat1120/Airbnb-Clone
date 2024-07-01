@@ -118,15 +118,10 @@ const MainFormContent = () => {
         // if user click outside the form and open modal, minimize the active input field
 
         if (
-          modalRef?.current &&
           !modalRef.current?.contains(e.target) &&
-          buttonRef?.current &&
           !buttonRef.current?.contains(e.target) &&
-          checkInRef?.current &&
           !checkInRef.current?.contains(e.target) &&
-          checkOutRef?.current &&
           !checkOutRef.current?.contains(e.target) &&
-          addGuestRef?.current &&
           !addGuestRef.current?.contains(e.target)
         ) {
           dispatch(setActiveInput(""));
@@ -276,6 +271,7 @@ const MainFormContent = () => {
           </Modal.Window>
         </Modal>
       </div>
+
       <div
         className={`w-[0.05rem] ${
           data
@@ -289,8 +285,9 @@ const MainFormContent = () => {
         ${data === "destination" || data === "checkIn" ? "hidden" : ""}
         `}
       ></div>
+
       <div className="flex justify-center items-center">
-        {dateOption === "dates" && (
+        {(dateOption === "dates" || dateOption === "") && (
           <Modal>
             <Modal.Open opens="checkIn">
               <div
@@ -370,7 +367,7 @@ const MainFormContent = () => {
             handleInputField={handleInputField}
           ></Month>
         )}
-        {dateOption === "dates" && (
+        {(dateOption === "dates" || dateOption === "") && (
           <div
             className={`w-[0.05rem] ${
               data
@@ -393,7 +390,7 @@ const MainFormContent = () => {
             modalRef={modalRef}
           ></Flexible>
         )}
-        {dateOption === "dates" && (
+        {(dateOption === "dates" || dateOption === "") && (
           <Modal>
             <Modal.Open opens="checkOut">
               <div
