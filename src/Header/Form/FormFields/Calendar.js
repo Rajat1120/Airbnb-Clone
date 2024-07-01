@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   format,
   startOfMonth,
@@ -33,6 +34,23 @@ const Calendar = () => {
     (store) => store.form.selectedStartDate
   );
   const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
+
+  const formattedStartDate = selectedStartDate
+    ? format(selectedStartDate, "MMM d")
+    : "";
+
+  console.log(formattedStartDate);
+
+  const addDaysToStartDate = (daysToAdd) => {
+    if (!selectedStartDate) {
+      return "No start date selected";
+    }
+
+    const newDate = addMonths(selectedStartDate, daysToAdd);
+    return format(newDate, "MMM d");
+  };
+
+  console.log(addDaysToStartDate(3));
 
   const dispatch = useDispatch();
 
