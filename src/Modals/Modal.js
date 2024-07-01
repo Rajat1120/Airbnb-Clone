@@ -40,32 +40,9 @@ function Modal({ children }) {
   };
   const open = setOpenName;
 
-  const curInput = useSelector((store) => store.form.curSelectInput);
-  const region = useSelector((store) => store.form.region);
+  console.log(openName);
+
   const dateOption = useSelector((state) => state.form.dateOption);
-
-  useEffect(() => {
-    if (!curInput || region) {
-      close();
-      dispatch(setOpenName(curInput));
-    }
-  }, [curInput, dispatch, region]);
-
-  useEffect(() => {
-    if (dateOption) {
-      if (dateOption === "dates") {
-        dispatch(setOpenName("checkIn"));
-      } else if (dateOption === "month") {
-        dispatch(setOpenName("month"));
-      } else {
-        dispatch(setOpenName("flexible"));
-      }
-    }
-
-    return () => {
-      // dispatch(setOpenName(""));
-    };
-  }, [dateOption, dispatch]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>
@@ -75,11 +52,14 @@ function Modal({ children }) {
 }
 
 function Open({ children, opens: opensWindowName }) {
+  const openName = useSelector((store) => store.form.openName);
   const { open } = useContext(modalContext);
+
+  const dispatch = useDispatch();
 
   return cloneElement(children, {
     onClick: () => {
-      open(opensWindowName);
+      dispatch(setOpenName(opensWindowName));
     },
   });
 }

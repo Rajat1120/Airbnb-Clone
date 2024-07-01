@@ -14,7 +14,7 @@ const MainForm = ({ startScroll }) => {
       if (!startScroll) {
         dispatch(setActiveInput(""));
       } else {
-        // dispatch(setOpenName(""));
+        dispatch(setOpenName(""));
       }
     },
     [startScroll, dispatch]

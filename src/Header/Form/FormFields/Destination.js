@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveInput, setRegion } from "../mainFormSlice";
+import { setActiveInput, setOpenName, setRegion } from "../mainFormSlice";
 import Europe from "../../../data/Continents/europe.jpg";
 import MiddleEast from "../../../data/Continents/Middle-East.jpg";
 import world from "../../../data/Continents/world.jpg";
@@ -10,11 +10,20 @@ import SouthEastAsia from "../../../data/Continents/southEash.jpg";
 
 const Destination = ({ setDestination }) => {
   const dispatch = useDispatch();
+
   const region = useSelector((store) => store.form.region);
+  const dateOption = useSelector((store) => store.form.dateOption);
   function handleRegion(region) {
     dispatch(setRegion(region));
     setDestination("");
     dispatch(setActiveInput("checkIn"));
+    if (dateOption === "dates") {
+      dispatch(setOpenName("checkIn"));
+    } else if (dateOption === "month") {
+      dispatch(setOpenName("month"));
+    } else {
+      dispatch(setOpenName("flexible"));
+    }
   }
 
   return (

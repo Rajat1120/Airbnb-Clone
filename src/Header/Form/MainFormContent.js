@@ -11,6 +11,7 @@ import {
   setChildCount,
   setCurrentMonth,
   setInfantCount,
+  setOpenName,
   setPetsCount,
   setRegion,
   setSearchEl,
@@ -125,6 +126,7 @@ const MainFormContent = () => {
           !addGuestRef.current?.contains(e.target)
         ) {
           dispatch(setActiveInput(""));
+          dispatch(setOpenName(""));
           setHoverInput(null);
         }
 
@@ -152,14 +154,6 @@ const MainFormContent = () => {
     [dispatch, startDate, endDate]
   );
 
-  /*  useEffect(() => {
-    function handleClick(e) {
-      console.log("Click detected on:", e.target);
-    }
-    document.addEventListener("click", handleClick);
-    return () => document.removeEventListener("click", handleClick);
-  }, []); */
-
   function handleCrossClick(e, inputField) {
     e.stopPropagation();
 
@@ -184,6 +178,7 @@ const MainFormContent = () => {
   function handleInputField(target, input) {
     if (data === input) {
       dispatch(setActiveInput(""));
+      // dispatch(setOpenName(""));
     } else {
       dispatch(setActiveInput(input));
     }
