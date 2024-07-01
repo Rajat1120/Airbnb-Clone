@@ -13,7 +13,7 @@ const CircularSlider = () => {
   };
 
   return (
-    <div className="h-[25rem] flex flex-col items-center justify-center">
+    <div className="h-[28rem] flex flex-col items-center justify-center">
       <p>When's your trip?</p>
       <div className="h-[23rem] relative flex items-center justify-center w-[23rem]">
         <div className="h-[18.12rem] flex items-center justify-center bg-[#E6E6E6] bg-clip-border rounded-[50%] w-[18.12rem] shadow-sliderShadow relative">
@@ -70,6 +70,12 @@ const CircularSlider = () => {
             </span>
           </div>
         </div>
+      </div>
+      <div className="mb-6">
+        <p>
+          Starting on 1 August .{" "}
+          <span className="font-semibold cursor-pointer underline">Edit </span>
+        </p>
       </div>
     </div>
   );
