@@ -22,7 +22,7 @@ const CheckInOption = () => {
       <span
         onClick={() => dispatch(setDateOption("month"))}
         className={`rounded-full text-zinc-700 flex text-sm font-medium justify-center items-center h-9 w-[6rem] ${
-          dateOption === "months"
+          dateOption === "month"
             ? "bg-white   "
             : "cursor-pointer hover:bg-grey-dim"
         }`}
