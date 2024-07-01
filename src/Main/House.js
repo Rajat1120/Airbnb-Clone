@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import house1 from "../data/houseImg/house1.jpg";
+
 import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,7 +51,9 @@ const House = () => {
             <div className="w-[302px]  h-[286px]">
               <img
                 className="rounded-[20px] w-full h-full object-cover "
-                src={house1}
+                src={
+                  "https://a0.muscache.com/im/pictures/miso/Hosting-549210539001854746/original/91024f9e-6497-4c36-80e1-d859cab61034.jpeg?im_w=1200"
+                }
                 alt=""
               />
             </div>
