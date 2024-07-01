@@ -102,12 +102,13 @@ const Calendar = () => {
     let startDate = startOfWeek(currentMonth);
 
     for (let i = 0; i < 7; i++) {
+      const day = addDays(startDate, i);
       days.push(
         <div
           className="flex w-[3rem] justify-center text-xs text-center "
-          key={i}
+          key={format(day, "yyyy-MM-dd")}
         >
-          {format(addDays(startDate, i), dateFormat)}
+          {format(day, dateFormat)}
         </div>
       );
     }
@@ -188,12 +189,15 @@ const Calendar = () => {
         }
 
         days.push(
-          <div className="relative h-[3rem]  w-[3rem] flex items-center justify-center">
+          <div
+            key={day.toString()}
+            className="relative h-[3rem]   w-[3rem] flex items-center justify-center"
+          >
             <div
               className={`h-[3rem]  w-[3rem] flex items-center justify-center ${
                 isPastDate ? "" : "cursor-pointer"
               } ${cellClass}`}
-              key={cloneDay}
+              key={day.toString()}
               onClick={onClickHandler}
             >
               <span className="text-sm z-20 font-medium">{formattedDate}</span>
@@ -203,7 +207,10 @@ const Calendar = () => {
         day = addDays(day, 1);
       }
       rows.push(
-        <div className="flex mb-[2px] items-center justify-center" key={day}>
+        <div
+          className="flex mb-[2px] items-center justify-center"
+          key={day.toString()}
+        >
           {days}
         </div>
       );

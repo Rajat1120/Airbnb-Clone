@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import MainFormContent from "./MainFormContent";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { setActiveInput } from "./mainFormSlice";
+import { setActiveInput, setOpenName } from "./mainFormSlice";
 
 const MainForm = ({ startScroll }) => {
   const data = useSelector((store) => store.form.curSelectInput);
@@ -11,8 +11,11 @@ const MainForm = ({ startScroll }) => {
 
   useEffect(
     function () {
-      console.log("true");
-      if (!startScroll) dispatch(setActiveInput(""));
+      if (!startScroll) {
+        dispatch(setActiveInput(""));
+      } else {
+        // dispatch(setOpenName(""));
+      }
     },
     [startScroll, dispatch]
   );
