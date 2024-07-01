@@ -25,6 +25,8 @@ import { da } from "date-fns/locale";
 import AddGuest from "./FormFields/AddGuest";
 import Destination from "./FormFields/Destination";
 import CircularSlider from "./CircularSlider";
+import Month from "./Month";
+import Flexible from "./Flexible";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -81,6 +83,7 @@ const MainFormContent = () => {
   const checkInRef = useRef();
   const checkOutRef = useRef();
   const addGuestRef = useRef();
+  const monthRef = useRef();
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -112,7 +115,7 @@ const MainFormContent = () => {
   useEffect(
     function () {
       function handleClick(e) {
-        // if user click outside the form and open modal minimize the active input field
+        // if user click outside the form and open modal, minimize the active input field
 
         if (
           modalRef?.current &&
@@ -287,19 +290,20 @@ const MainFormContent = () => {
         `}
       ></div>
       <div className="flex justify-center items-center">
-        <Modal>
-          <Modal.Open opens="checkIn">
-            <div
-              ref={checkInRef}
-              onMouseEnter={() => setHoverInput("checkIn")}
-              onMouseLeave={() => setHoverInput(null)}
-              className={`flex ${
-                data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
-              } justify-center  items-center`}
-            >
+        {dateOption === "dates" && (
+          <Modal>
+            <Modal.Open opens="checkIn">
               <div
-                onClick={(e) => handleInputField(e.target, "checkIn")}
-                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
+                ref={checkInRef}
+                onMouseEnter={() => setHoverInput("checkIn")}
+                onMouseLeave={() => setHoverInput(null)}
+                className={`flex ${
+                  data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
+                } justify-center  items-center`}
+              >
+                <div
+                  onClick={(e) => handleInputField(e.target, "checkIn")}
+                  className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
 
                    ${data === "checkIn" ? "" : "before:hover:bg-gray-300 "}
                   
@@ -308,135 +312,158 @@ const MainFormContent = () => {
                  data === "checkIn" ? "rounded-full bg-white" : ""
                } flex-col flex justify-center items-center 
                h-[3.85rem] cursor-pointer`}
-              >
-                <div
-                  className={`w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
-                    data && data !== "checkIn" ? "bg-shadow-gray" : ""
-                  } placeholder:font-extralight placeholder:text-black`}
                 >
                   <div
-                    className={` flex flex-col justify-center items-start ${
-                      startDateToShow && data === "checkIn"
-                        ? "ml-[-0.5rem]"
-                        : ""
-                    }`}
+                    className={`w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
+                      data && data !== "checkIn" ? "bg-shadow-gray" : ""
+                    } placeholder:font-extralight placeholder:text-black`}
                   >
-                    <p className="text-xs  font-medium">Check in</p>
-                    <p
-                      className={`${
-                        startDateToShow === "" || !data
-                          ? "font-extralight text-[0.9rem]"
-                          : "text-sm font-medium"
+                    <div
+                      className={` flex flex-col justify-center items-start ${
+                        startDateToShow && data === "checkIn"
+                          ? "ml-[-0.5rem]"
+                          : ""
                       }`}
                     >
-                      {startDateToShow && data ? startDateToShow : "Add dates"}
-                    </p>
-                  </div>
-                  {startDateToShow !== "" && data === "checkIn" && (
-                    <div
-                      ref={checkInResetRef}
-                      onClick={(e) => handleCrossClick(e, "checkIn")}
-                      className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
-                    >
-                      <img src={cross} alt="" />
+                      <p className="text-xs  font-medium">Check in</p>
+                      <p
+                        className={`${
+                          startDateToShow === "" || !data
+                            ? "font-extralight text-[0.9rem]"
+                            : "text-sm font-medium"
+                        }`}
+                      >
+                        {startDateToShow && data
+                          ? startDateToShow
+                          : "Add dates"}
+                      </p>
                     </div>
-                  )}
+                    {startDateToShow !== "" && data === "checkIn" && (
+                      <div
+                        ref={checkInResetRef}
+                        onClick={(e) => handleCrossClick(e, "checkIn")}
+                        className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
+                      >
+                        <img src={cross} alt="" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Modal.Open>
-          <Modal.Window
-            resetRef={checkInResetRef}
+            </Modal.Open>
+            <Modal.Window
+              resetRef={checkInResetRef}
+              modalRef={modalRef}
+              name="checkIn"
+            >
+              <div className="flex flex-col justify-center items-center ">
+                <CheckInOption></CheckInOption>
+                <Calendar></Calendar>
+              </div>
+            </Modal.Window>
+          </Modal>
+        )}
+        {dateOption === "month" && (
+          <Month
+            monthRef={monthRef}
             modalRef={modalRef}
-            name="checkIn"
-          >
-            <div className="flex flex-col justify-center items-center ">
-              <CheckInOption></CheckInOption>
-              <Calendar></Calendar>
-            </div>
-          </Modal.Window>
-        </Modal>
-        <div
-          className={`w-[0.05rem] ${
-            data
-              ? hoverInput === "checkOut" || hoverInput === "checkIn"
-                ? "bg-shadow-gray"
+            handleInputField={handleInputField}
+          ></Month>
+        )}
+        {dateOption === "dates" && (
+          <div
+            className={`w-[0.05rem] ${
+              data
+                ? hoverInput === "checkOut" || hoverInput === "checkIn"
+                  ? "bg-shadow-gray"
+                  : " bg-gray-300"
+                : hoverInput === "checkOut" || hoverInput === "checkIn"
+                ? "bg-white"
                 : " bg-gray-300"
-              : hoverInput === "checkOut" || hoverInput === "checkIn"
-              ? "bg-white"
-              : " bg-gray-300"
-          }
+            }
           
           h-[2rem]
           ${data === "checkOut" || data === "checkIn" ? "hidden" : ""}
           `}
-        ></div>
-        <Modal>
-          <Modal.Open opens="checkOut">
-            <div
-              ref={checkOutRef}
-              onMouseEnter={() => setHoverInput("checkOut")}
-              onMouseLeave={() => setHoverInput(null)}
-              className={`flex ${
-                data === "checkOut" ? "shadow-checkOutShadow rounded-full" : ""
-              } justify-center  items-center`}
-            >
+          ></div>
+        )}
+        {dateOption === "flexible" && (
+          <Flexible
+            handleInputField={handleInputField}
+            modalRef={modalRef}
+          ></Flexible>
+        )}
+        {dateOption === "dates" && (
+          <Modal>
+            <Modal.Open opens="checkOut">
               <div
-                onClick={(e) => {
-                  handleInputField(e.target, "checkOut");
-                }}
-                className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
+                ref={checkOutRef}
+                onMouseEnter={() => setHoverInput("checkOut")}
+                onMouseLeave={() => setHoverInput(null)}
+                className={`flex ${
+                  data === "checkOut"
+                    ? "shadow-checkOutShadow rounded-full"
+                    : ""
+                } justify-center  items-center`}
+              >
+                <div
+                  onClick={(e) => {
+                    handleInputField(e.target, "checkOut");
+                  }}
+                  className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
                    ${data === "checkOut" ? "" : "before:hover:bg-gray-300 "}
                   before:hover:opacity-40 
                ${data === "checkOut" ? "rounded-full bg-white" : ""}
                h-[3.85rem] flex-col flex justify-center items-center  cursor-pointer`}
-              >
-                <div
-                  className={`w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
-                    data && data !== "checkOut" ? "bg-shadow-gray" : ""
-                  } placeholder:font-extralight placeholder:text-black`}
                 >
                   <div
-                    className={` flex flex-col justify-center items-start ${
-                      EndDateToShow && data === "checkOut" ? "ml-[-0.5rem]" : ""
-                    }`}
+                    className={`w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                      data && data !== "checkOut" ? "bg-shadow-gray" : ""
+                    } placeholder:font-extralight placeholder:text-black`}
                   >
-                    <p className="text-xs  font-medium">Check out</p>
-                    <p
-                      className={`${
-                        EndDateToShow === "" || !data
-                          ? "font-extralight text-[0.9rem]"
-                          : "text-sm font-medium"
+                    <div
+                      className={` flex flex-col justify-center items-start ${
+                        EndDateToShow && data === "checkOut"
+                          ? "ml-[-0.5rem]"
+                          : ""
                       }`}
                     >
-                      {EndDateToShow && data ? EndDateToShow : "Add dates"}
-                    </p>
-                  </div>
-                  {EndDateToShow !== "" && data === "checkOut" && (
-                    <div
-                      ref={checkOutResetRef}
-                      onClick={(e) => handleCrossClick(e, "checkOut")}
-                      className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
-                    >
-                      <img src={cross} alt="" />
+                      <p className="text-xs  font-medium">Check out</p>
+                      <p
+                        className={`${
+                          EndDateToShow === "" || !data
+                            ? "font-extralight text-[0.9rem]"
+                            : "text-sm font-medium"
+                        }`}
+                      >
+                        {EndDateToShow && data ? EndDateToShow : "Add dates"}
+                      </p>
                     </div>
-                  )}
+                    {EndDateToShow !== "" && data === "checkOut" && (
+                      <div
+                        ref={checkOutResetRef}
+                        onClick={(e) => handleCrossClick(e, "checkOut")}
+                        className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
+                      >
+                        <img src={cross} alt="" />
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Modal.Open>
-          <Modal.Window
-            resetRef={checkOutResetRef}
-            modalRef={modalRef}
-            name="checkOut"
-          >
-            <div className="flex flex-col justify-center items-center ">
-              <CheckInOption></CheckInOption>
-              {dateOption === "dates" && <Calendar></Calendar>}
-              {dateOption === "months" && <CircularSlider></CircularSlider>}
-            </div>
-          </Modal.Window>
-        </Modal>
+            </Modal.Open>
+            <Modal.Window
+              resetRef={checkOutResetRef}
+              modalRef={modalRef}
+              name="checkOut"
+            >
+              <div className="flex flex-col justify-center items-center ">
+                <CheckInOption></CheckInOption>
+                <Calendar></Calendar>
+              </div>
+            </Modal.Window>
+          </Modal>
+        )}
       </div>
 
       <div

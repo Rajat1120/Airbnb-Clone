@@ -16,6 +16,10 @@ export const modalContext = createContext();
 let modalStye = {
   checkIn:
     " fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
+  month:
+    " fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
+  flexible:
+    " fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
   destination:
     "fixed top-[20%] left-[22%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem] ",
   checkOut:
@@ -35,6 +39,7 @@ function Modal({ children }) {
 
   const curInput = useSelector((store) => store.form.curSelectInput);
   const region = useSelector((store) => store.form.region);
+  const dateOption = useSelector((state) => state.form.dateOption);
 
   useEffect(() => {
     if (!curInput || region) {
@@ -42,6 +47,22 @@ function Modal({ children }) {
       setOpenName(curInput);
     }
   }, [curInput, dispatch, region]);
+
+  useEffect(() => {
+    if (dateOption) {
+      if (dateOption === "dates") {
+        setOpenName("checkIn");
+      } else if (dateOption === "month") {
+        setOpenName("month");
+      } else {
+        setOpenName("flexible");
+      }
+    }
+
+    return () => {
+      setOpenName("");
+    };
+  }, [dateOption]);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>
