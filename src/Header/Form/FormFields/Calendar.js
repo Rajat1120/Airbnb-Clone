@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveInput,
   setCurrentMonth,
+  setSelectMonthStartDate,
   setSelectedEndDate,
   setSelectedStartDate,
 } from "../../Form/mainFormSlice";
@@ -244,7 +245,7 @@ const Calendar = () => {
   };
 
   const onCalendarModalDateClick = (day) => {
-    dispatch(setSelectedStartDate(day));
+    dispatch(setSelectMonthStartDate(day));
   };
 
   const onDateClick = (day) => {
