@@ -40,8 +40,19 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={ref} className="bg-white p-6 rounded-md shadow-md z-50">
+      <div
+        ref={ref}
+        className="bg-white p-6 flex flex-col items-center justify-center rounded-md shadow-md z-50"
+      >
         {children}
+        <div className="flex w-full items-center justify-end">
+          <p
+            onClick={() => onClose()}
+            className="w-28  cursor-pointer h-12 flex items-center justify-center rounded-[0.5rem] bg-black text-white"
+          >
+            Apply
+          </p>
+        </div>
       </div>
     </div>,
     document.body
