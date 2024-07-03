@@ -22,6 +22,7 @@ import {
   setSelectMonthStartDate,
   setSelectedEndDate,
   setSelectedStartDate,
+  setStartDurationDate,
 } from "../../Form/mainFormSlice";
 
 const Calendar = () => {
@@ -245,7 +246,7 @@ const Calendar = () => {
   };
 
   const onCalendarModalDateClick = (day) => {
-    dispatch(setSelectMonthStartDate(day));
+    dispatch(setStartDurationDate(day));
   };
 
   const onDateClick = (day) => {

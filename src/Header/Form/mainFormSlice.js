@@ -8,7 +8,7 @@ let formState = {
   search: false,
   currentMonth: new Date(),
   selectedStartDate: null,
-  selectMonthStartDate: null,
+  startDurationDate: null,
   selectedEndDate: null,
   region: "all",
   dateOption: "",
@@ -63,8 +63,8 @@ const formSlice = createSlice({
     setCalendarModalOpen(state, action) {
       state.isCalendarModalOpen = action.payload;
     },
-    setSelectMonthStartDate(state, action) {
-      state.selectMonthStartDate = action.payload;
+    setStartDurationDate(state, action) {
+      state.startDurationDate = action.payload;
     },
   },
 });
@@ -83,6 +83,6 @@ export const {
   setPetsCount,
   setOpenName,
   setCalendarModalOpen,
-  setSelectMonthStartDate,
+  setStartDurationDate,
 } = formSlice.actions;
 export default formSlice.reducer;
