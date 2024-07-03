@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveInput,
   setCurrentMonth,
-  setSelectMonthStartDate,
   setSelectedEndDate,
   setSelectedStartDate,
   setStartDurationDate,
@@ -41,12 +40,6 @@ const Calendar = () => {
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
-
-  const formattedStartDate = startDurationDate
-    ? format(startDurationDate, "MMM d")
-    : "";
-
-  console.log(formattedStartDate);
 
   const addDaysToStartDate = (daysToAdd) => {
     if (!startDurationDate) {

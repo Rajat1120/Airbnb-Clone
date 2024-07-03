@@ -3,8 +3,16 @@ import Modal from "../../Modals/Modal";
 import CheckInOption from "./DatesOption";
 import CircularSlider from "./CircularSlider";
 import { useSelector } from "react-redux";
+import { format } from "date-fns";
 
 const Month = ({ modalRef, handleInputField, monthRef }) => {
+  const startDurationDate = useSelector(
+    (store) => store.form.startDurationDate
+  );
+
+  const formattedStartDate = startDurationDate
+    ? format(startDurationDate, "MMM d")
+    : "";
   const handleClick = (e) => {
     handleInputField(e.target, "month");
   };
@@ -30,7 +38,9 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
           >
             <div className="flex flex-col w-[14.8rem] items-start justify-center">
               <p className="text-xs font-medium">When</p>
-              <p className="text-sm font-medium ">Aug 1 - oct 1</p>
+              <p className="text-sm font-medium ">
+                {formattedStartDate} - oct 1
+              </p>
             </div>
           </div>
         </div>
