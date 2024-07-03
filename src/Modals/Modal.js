@@ -40,7 +40,7 @@ function Modal({ children }) {
   };
   const open = setOpenName;
 
-  console.log(openName);
+  // console.log(openName);
 
   const dateOption = useSelector((state) => state.form.dateOption);
 
@@ -65,13 +65,15 @@ function Window({ children, name, modalRef, resetRef }) {
   const { openName, close } = useContext(modalContext);
 
   const data = useSelector((store) => store.form.curSelectInput);
-
+  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
   const ref = useRef();
 
   useEffect(
     function () {
       function handleClick(e) {
-        if (
+        if (isModalOpen) {
+          return;
+        } else if (
           ref?.current &&
           !ref.current?.contains(e.target) &&
           (!resetRef?.current || !resetRef.current?.contains(e.target))

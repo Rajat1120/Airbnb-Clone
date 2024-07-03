@@ -29,6 +29,8 @@ const Calendar = () => {
   const [uniqueKey, setUniqueKey] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
 
+  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+
   const currentMonth = useSelector((store) => store.form.currentMonth);
   const selectedStartDate = useSelector(
     (store) => store.form.selectedStartDate
@@ -50,7 +52,7 @@ const Calendar = () => {
     return format(newDate, "MMM d");
   };
 
-  console.log(addDaysToStartDate(3));
+  // console.log(addDaysToStartDate(3));
 
   const dispatch = useDispatch();
 
@@ -156,9 +158,13 @@ const Calendar = () => {
         const isPastDate =
           isSameMonth(day, monthStart) && day < today.setHours(0, 0, 0, 0);
 
-        let onClickHandler = () =>
-          onDateClick(isPastDate ? undefined : cloneDay);
-
+        let onClickHandler = () => {
+          if (isModalOpen) {
+            onCalendarModalDateClick(cloneDay);
+          } else {
+            onDateClick(isPastDate ? undefined : cloneDay);
+          }
+        };
         if (
           selectedStartDate &&
           selectedEndDate &&
@@ -235,6 +241,10 @@ const Calendar = () => {
       days = [];
     }
     return <div className="">{rows}</div>;
+  };
+
+  const onCalendarModalDateClick = (day) => {
+    dispatch(setSelectedStartDate(day));
   };
 
   const onDateClick = (day) => {

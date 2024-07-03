@@ -86,6 +86,7 @@ const MainFormContent = () => {
   const addGuestRef = useRef();
   const flexibleRef = useRef();
   const monthRef = useRef();
+
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -113,13 +114,17 @@ const MainFormContent = () => {
     setEndDateToShow(formattedEndDate);
   }, [formattedStartDate, formattedEndDate, startDate, endDate]);
 
+  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+
   // to minimize the form input fields, on clicking outside of the form
   useEffect(
     function () {
       function handleClick(e) {
         // if user click outside the form and open modal, minimize the active input field
 
-        if (
+        if (isModalOpen) {
+          return;
+        } else if (
           !modalRef.current?.contains(e.target) &&
           !buttonRef.current?.contains(e.target) &&
           !checkInRef.current?.contains(e.target) &&
@@ -154,7 +159,7 @@ const MainFormContent = () => {
 
       return () => document.removeEventListener("click", handleClick, true);
     },
-    [dispatch, startDate, endDate]
+    [dispatch, startDate, isModalOpen, endDate]
   );
 
   function handleCrossClick(e, inputField) {

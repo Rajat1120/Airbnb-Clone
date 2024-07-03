@@ -16,6 +16,7 @@ let formState = {
   infantCount: 0,
   petsCount: 0,
   openName: "",
+  isCalendarModalOpen: false,
 };
 
 const formSlice = createSlice({
@@ -58,6 +59,9 @@ const formSlice = createSlice({
     setPetsCount(state, action) {
       state.petsCount = action.payload;
     },
+    setCalendarModalOpen(state, action) {
+      state.isCalendarModalOpen = action.payload;
+    },
   },
 });
 
@@ -74,5 +78,6 @@ export const {
   setInfantCount,
   setPetsCount,
   setOpenName,
+  setCalendarModalOpen,
 } = formSlice.actions;
 export default formSlice.reducer;

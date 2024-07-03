@@ -1,28 +1,33 @@
 import React, { useState } from "react";
-import Modal from "../../Modals/Modal"; // Adjust the import path if necessary
-import Calendar from "./FormFields/Calendar";
 import CalendarModal from "./CalendarModal";
+import Calendar from "./FormFields/Calendar";
+import { useDispatch, useSelector } from "react-redux";
+import { setCalendarModalOpen } from "./mainFormSlice";
 
 const CircularSlider = () => {
   const [currentDot, setCurrentDot] = useState(2);
   const [onHover, setOnHover] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
 
-  console.log(currentDot);
+  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+
+  console.log(isModalOpen);
   let NumOfMonths = currentDot;
 
   const dotCount = 12;
+
+  const dispatch = useDispatch();
 
   const handleClick = (index) => {
     setCurrentDot(index);
   };
 
   const handleEditClick = () => {
-    setIsModalOpen(true);
+    dispatch(setCalendarModalOpen(true));
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    console.log("true");
+    dispatch(setCalendarModalOpen(false));
   };
 
   return (
@@ -95,7 +100,7 @@ const CircularSlider = () => {
           </span>
         </p>
         <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <Calendar></Calendar>
+          <Calendar />
         </CalendarModal>
       </div>
     </div>
