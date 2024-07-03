@@ -38,19 +38,22 @@ const Calendar = () => {
     (store) => store.form.selectedStartDate
   );
   const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
+  const startDurationDate = useSelector(
+    (store) => store.form.startDurationDate
+  );
 
-  const formattedStartDate = selectedStartDate
-    ? format(selectedStartDate, "MMM d")
+  const formattedStartDate = startDurationDate
+    ? format(startDurationDate, "MMM d")
     : "";
 
   console.log(formattedStartDate);
 
   const addDaysToStartDate = (daysToAdd) => {
-    if (!selectedStartDate) {
+    if (!startDurationDate) {
       return "No start date selected";
     }
 
-    const newDate = addMonths(selectedStartDate, daysToAdd);
+    const newDate = addMonths(startDurationDate, daysToAdd);
     return format(newDate, "MMM d");
   };
 
@@ -167,53 +170,65 @@ const Calendar = () => {
             onDateClick(isPastDate ? undefined : cloneDay);
           }
         };
-        if (
-          selectedStartDate &&
-          selectedEndDate &&
-          isWithinInterval(day, {
-            start: selectedStartDate,
-            end: selectedEndDate,
-          })
-        ) {
+
+        if (isModalOpen) {
           if (
+            isSameDay(day, startDurationDate) &&
+            isSameMonth(day, monthStart)
+          ) {
+            cellClass = "bg-black text-white rounded-full";
+          } else {
+            cellClass =
+              "bg-white text-black hover:rounded-full hover:border-[1.5px] hover:border-black";
+          }
+        } else {
+          if (
+            selectedStartDate &&
+            selectedEndDate &&
+            isWithinInterval(day, {
+              start: selectedStartDate,
+              end: selectedEndDate,
+            })
+          ) {
+            if (
+              isSameDay(day, selectedStartDate) &&
+              isSameMonth(day, monthStart)
+            ) {
+              cellClass =
+                "  halfRightColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0   "; // Start date
+            } else if (
+              isSameDay(day, selectedEndDate) &&
+              isSameMonth(day, monthStart)
+            ) {
+              cellClass =
+                "halfLeftColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0  "; // End date
+            } else if (!isSameMonth(day, monthStart)) {
+              cellClass = "bg-white cursor-pointer text-white";
+              onClickHandler = null; // Disable onClick for dates outside the current month
+            } else {
+              cellClass =
+                "bg-shadow-gray-light  text-black  hover:before:content-[''] hover:before:w-full hover:before:h-full hover:before:rounded-full hover:before:border-[1.5px] hover:before:border-black hover:before:absolute hover:top-0 hover:before:left-0 hove:before:right-0 hove:before:bottom-0  ";
+            }
+          } else if (
             isSameDay(day, selectedStartDate) &&
             isSameMonth(day, monthStart)
           ) {
-            cellClass =
-              "  halfRightColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0   "; // Start date
+            cellClass = "bg-black text-white rounded-full"; // Start date
           } else if (
             isSameDay(day, selectedEndDate) &&
             isSameMonth(day, monthStart)
           ) {
-            cellClass =
-              "halfLeftColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0  "; // End date
+            cellClass = "bg-black text-white rounded-full"; // End date
           } else if (!isSameMonth(day, monthStart)) {
-            cellClass = "bg-white cursor-pointer text-white";
+            cellClass = "bg-white text-white";
             onClickHandler = null; // Disable onClick for dates outside the current month
+          } else if (isPastDate) {
+            cellClass = "bg-white text-gray-300"; // Apply a faded style for past dates
           } else {
             cellClass =
-              "bg-shadow-gray-light  text-black  hover:before:content-[''] hover:before:w-full hover:before:h-full hover:before:rounded-full hover:before:border-[1.5px] hover:before:border-black hover:before:absolute hover:top-0 hover:before:left-0 hove:before:right-0 hove:before:bottom-0  ";
+              "bg-white text-black hover:rounded-full hover:border-[1.5px] hover:border-black";
           }
-        } else if (
-          isSameDay(day, selectedStartDate) &&
-          isSameMonth(day, monthStart)
-        ) {
-          cellClass = "bg-black text-white rounded-full"; // Start date
-        } else if (
-          isSameDay(day, selectedEndDate) &&
-          isSameMonth(day, monthStart)
-        ) {
-          cellClass = "bg-black text-white rounded-full"; // End date
-        } else if (!isSameMonth(day, monthStart)) {
-          cellClass = "bg-white text-white";
-          onClickHandler = null; // Disable onClick for dates outside the current month
-        } else if (isPastDate) {
-          cellClass = "bg-white text-gray-300"; // Apply a faded style for past dates
-        } else {
-          cellClass =
-            "bg-white text-black hover:rounded-full hover:border-[1.5px] hover:border-black";
         }
-
         days.push(
           <div
             key={day.toString()}
