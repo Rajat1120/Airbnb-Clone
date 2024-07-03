@@ -17,7 +17,7 @@ function Header() {
 
   return (
     <div
-      className={` ${classForAfter} after:mt-2 flex flex-col items-center  relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
       <div className="grid grid-cols-3  px-10 ">
         <div className="w-8 ">

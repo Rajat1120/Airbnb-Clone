@@ -35,7 +35,7 @@ const MainForm = ({ startScroll }) => {
     !startScroll ? "" : data ? styleForBefore : ""
   }  absolute    `;
   return (
-    <div className="flex   flex-col">
+    <div className="flex items-center  flex-col">
       <div className={classForForm}>
         {!startScroll ? (
           <div
