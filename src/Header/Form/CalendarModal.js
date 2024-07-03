@@ -1,8 +1,19 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 
 const CalendarModal = ({ isOpen, onClose, children }) => {
+  const [visible, setVisible] = useState(false);
   const ref = useRef();
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        setVisible(true);
+      }, 10); // Small delay to ensure transition is noticeable
+    } else {
+      setVisible(false);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -16,39 +27,36 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
     };
   }, [isOpen]);
 
-  useEffect(
-    function () {
-      function handleClick(e) {
-        if (ref?.current && !ref.current?.contains(e.target)) {
-          console.log("true");
-          onClose();
-        }
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        onClose();
       }
+    };
 
-      document.addEventListener("click", handleClick, true);
+    document.addEventListener("click", handleClick, true);
 
-      return () => document.removeEventListener("click", handleClick, true);
-    },
-    [onClose]
-  );
+    return () => {
+      document.removeEventListener("click", handleClick, true);
+    };
+  }, [onClose]);
 
   if (!isOpen) return null;
-
-  /*   const handleModalClick = (e) => {
-    e.stopPropagation(); // Prevent click event from propagating to the overlay
-  }; */
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
         ref={ref}
-        className="bg-white p-6 flex flex-col items-center justify-center rounded-md shadow-md z-50"
+        className={`bg-white ${
+          visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
+        } transition-all fixed p-6 rounded-2xl duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
       >
         {children}
+        <div className="h-1 m-10 bg-grey-light w-full"></div>
         <div className="flex w-full items-center justify-end">
           <p
-            onClick={() => onClose()}
-            className="w-28  cursor-pointer h-12 flex items-center justify-center rounded-[0.5rem] bg-black text-white"
+            onClick={onClose}
+            className="w-28 cursor-pointer h-12 flex items-center justify-center rounded-lg bg-black text-white"
           >
             Apply
           </p>
