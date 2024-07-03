@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
+import cross from "../../data/Icons svg/cross.svg";
 
 const CalendarModal = ({ isOpen, onClose, children }) => {
   const [visible, setVisible] = useState(false);
@@ -49,10 +50,21 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
         ref={ref}
         className={`bg-white ${
           visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
-        } transition-all fixed p-6 rounded-2xl duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
+        } transition-all fixed p-6 rounded-[2rem] duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
       >
-        {children}
-        <div className="h-1 m-10 bg-grey-light w-full"></div>
+        <div className="w-full items-center justify-center flex pb-2 mb-3 ">
+          <button
+            onClick={onClose}
+            className="w-6 h-6 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
+          >
+            <img src={cross} alt="" />
+          </button>
+          <p className="w-[100%] text-xl font-medium justify-center flex items-center">
+            Choose a start date
+          </p>
+        </div>
+        <div className="h-[24rem]">{children}</div>
+        <div className="h-[2px] m-4 bg-grey-light w-full"></div>
         <div className="flex w-full items-center justify-end">
           <p
             onClick={onClose}
