@@ -32,6 +32,7 @@ const Calendar = () => {
   const [isFirstRender, setIsFirstRender] = useState(true);
 
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+  const curInput = useSelector((store) => store.form.curSelectInput);
 
   const currentMonth = useSelector((store) => store.form.currentMonth);
   const selectedStartDate = useSelector(
@@ -387,7 +388,9 @@ const Calendar = () => {
         </div>
       </div>
       <div className="w-full flex justify-start items-center">
-        <AddDays></AddDays>
+        {(curInput === "checkIn" || curInput === "checkOut") && (
+          <AddDays></AddDays>
+        )}
       </div>
     </div>
   );
