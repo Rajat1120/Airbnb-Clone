@@ -109,12 +109,11 @@ const Options = () => {
         className={`h-[5rem]  py-6 flex  justify-between w-full items-center `}
       >
         <div
-          className={"w-[59.5rem] flex relative    items-center  rounded-lg "}
+          className={
+            "w-[59.5rem] flex relative    items-center overflow-scroll  rounded-lg "
+          }
         >
-          <div
-            ref={optionsRef}
-            className="flex-center inset-shadow   w-[970px]  "
-          >
+          <div ref={optionsRef} className="flex-center inset-shadow     ">
             <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
