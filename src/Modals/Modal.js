@@ -19,17 +19,17 @@ export const modalContext = createContext();
 
 let modalStye = {
   checkIn:
-    " fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
+    " fixed top-[20%] z-10 left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
   month:
-    " fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
+    " fixed top-[20%] z-10 left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
   flexible:
-    " fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
+    " fixed top-[20%] z-10 left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
   destination:
-    "fixed top-[20%] left-[22%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem] ",
+    "fixed top-[20%] z-10 left-[22%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem] ",
   checkOut:
-    "  fixed top-[20%] left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
+    "  fixed top-[20%] z-10 left-[22%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
   addGuest:
-    "fixed top-[20%] left-[52%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
+    "fixed top-[20%] z-10 left-[52%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
 };
 function Modal({ children }) {
   // const [openName, setOpenName] = useState("");
