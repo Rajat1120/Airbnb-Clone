@@ -11,7 +11,7 @@ let formState = {
   startDurationDate: null,
   selectedEndDate: null,
   region: "all",
-  dateOption: "",
+  dateOption: "dates",
   adultCount: 0,
   childCount: 0,
   infantCount: 0,
