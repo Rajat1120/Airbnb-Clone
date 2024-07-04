@@ -23,6 +23,7 @@ import {
   setSelectedStartDate,
   setStartDurationDate,
 } from "../../Form/mainFormSlice";
+import AddDays from "../AddDays";
 
 const Calendar = () => {
   const selectedInput = useSelector((store) => store.form.curSelectInput);
@@ -384,6 +385,9 @@ const Calendar = () => {
           {renderDays()}
           <div>{renderCells(addMonths(currentMonth, 1))}</div>
         </div>
+      </div>
+      <div className="w-full flex justify-start items-center">
+        <AddDays></AddDays>
       </div>
     </div>
   );
