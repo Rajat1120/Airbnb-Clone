@@ -7,13 +7,16 @@ import { useSelector } from "react-redux";
 // import options from "../data/Options-Svg";
 
 const Options = () => {
-  const startScroll = useSelector((store) => store.app.startScroll);
   // startScroll = false;
   function importAll(r) {
     return r.keys().map((item) => {
       return { key: item.slice(1, -4), svg: r(item) };
     });
   }
+
+  const options = importAll(
+    require.context("../data/Options-Svg", false, /\.svg$/)
+  );
 
   const optionsRef = useRef(null);
   const rightScrollBtnRef = useRef(null);
@@ -22,26 +25,28 @@ const Options = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
+    const optionRef = options.current;
     const handleScroll = () => {
-      if (optionsRef.current) {
-        setScrollPosition(optionsRef.current.scrollLeft);
+      if (optionRef) {
+        setScrollPosition(optionRef.scrollLeft);
       }
     };
 
-    if (optionsRef.current) {
-      optionsRef.current.addEventListener("scroll", handleScroll);
+    if (optionRef) {
+      optionRef.addEventListener("scroll", handleScroll);
     }
 
     return () => {
-      if (optionsRef.current) {
-        optionsRef.current.removeEventListener("scroll", handleScroll);
+      if (optionRef) {
+        optionRef.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [options]);
 
   // scroll btn right
 
   useEffect(() => {
+    let rightScrollBtn = rightScrollBtnRef.current;
     function handleScrollRightBtn() {
       const newPosition = scrollPosition + 750;
       optionsRef.current.scrollTo({
@@ -51,16 +56,13 @@ const Options = () => {
       setScrollPosition(newPosition);
     }
 
-    if (rightScrollBtnRef.current) {
-      rightScrollBtnRef.current.addEventListener("click", handleScrollRightBtn);
+    if (rightScrollBtn) {
+      rightScrollBtn.addEventListener("click", handleScrollRightBtn);
     }
 
     return () => {
-      if (rightScrollBtnRef.current) {
-        rightScrollBtnRef.current.removeEventListener(
-          "click",
-          handleScrollRightBtn
-        );
+      if (rightScrollBtn) {
+        rightScrollBtn.removeEventListener("click", handleScrollRightBtn);
       }
     };
   }, [scrollPosition]);
@@ -68,6 +70,7 @@ const Options = () => {
   // scroll btn left
 
   useEffect(() => {
+    let leftScrollButtonRef = leftScrollBtnRef.current;
     function handleScrollLeftBtn() {
       const newPosition = scrollPosition - 750;
       optionsRef.current.scrollTo({
@@ -77,31 +80,24 @@ const Options = () => {
       setScrollPosition(newPosition);
     }
 
-    if (leftScrollBtnRef.current) {
-      leftScrollBtnRef.current.addEventListener("click", handleScrollLeftBtn);
+    if (leftScrollButtonRef) {
+      leftScrollButtonRef.addEventListener("click", handleScrollLeftBtn);
     }
 
     return () => {
-      if (leftScrollBtnRef.current) {
-        leftScrollBtnRef.current.removeEventListener(
-          "click",
-          handleScrollLeftBtn
-        );
+      if (leftScrollButtonRef) {
+        leftScrollButtonRef.removeEventListener("click", handleScrollLeftBtn);
       }
     };
   }, [scrollPosition]);
 
   let btnLeftClassName = ` absolute  ${
     scrollPosition === 0 ? "hidden" : ""
-  }  top-[25%]  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
+  }  top-[25%] left-0  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
 
   let btnRightClassName = `absolute ${
     scrollPosition === 1543.5 ? "hidden" : ""
   } top-[25%] z-100 right-0 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
-
-  const options = importAll(
-    require.context("../data/Options-Svg", false, /\.svg$/)
-  );
 
   return (
     <div className={` bg-white    justify-self-center `}>
@@ -113,7 +109,7 @@ const Options = () => {
             "w-[59.5rem] flex relative    items-center overflow-scroll  rounded-lg "
           }
         >
-          <div ref={optionsRef} className="flex-center inset-shadow     ">
+          <div ref={optionsRef} className="flex-center inset-shadow  w-full   ">
             <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
