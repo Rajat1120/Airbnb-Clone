@@ -12,12 +12,12 @@ function Header() {
   const startScroll = useSelector((store) => store.app.startScroll);
 
   let classForAfter = `after:content-[''] ${
-    !startScroll ? " after:-translate-y-[5.9rem]" : ""
-  } after:transition-transform after:duration-[0.3s] after:ease-in-out after:w-full after:z-10 after:bg-grey-dim after:fixed after:top-[10rem]  after:h-[1px]`;
+    !startScroll ? " after:-translate-y-[5.4rem]" : ""
+  } after:transition-transform after:duration-[0.3s] after:ease-in-out after:w-full after:z-10 after:bg-grey-dim after:fixed after:top-[9.5rem]  after:h-[1px]`;
 
   return (
     <div
-      className={` ${classForAfter} after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
       <div className="grid grid-cols-3  px-10 ">
         <div className="w-8 ">

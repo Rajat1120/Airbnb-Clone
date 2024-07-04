@@ -93,7 +93,7 @@ const Options = () => {
 
   let btnLeftClassName = ` absolute  ${
     scrollPosition === 0 ? "hidden" : ""
-  }  top-[25%] left-1 z-50 bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-2`;
+  }  top-[25%]  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
 
   let btnRightClassName = `absolute ${
     scrollPosition === 1543.5 ? "hidden" : ""
@@ -104,35 +104,37 @@ const Options = () => {
   );
 
   return (
-    <div
-      className={` bg-white  transition-transform duration-[0.3s] ease-in-out ${
-        !startScroll ? "-translate-y-[5.9rem]" : ""
-      }     justify-self-center `}
-    >
-      <div className={`h-[80px]  mt-3 flex     `}>
+    <div className={` bg-white    justify-self-center `}>
+      <div
+        className={`h-[5rem]  py-6 flex  justify-between w-full items-center `}
+      >
         <div
-          className={
-            "w-[920px] flex relative ml-[2rem]   items-center  rounded-lg overflow-hidden"
-          }
+          className={"w-[59.5rem] flex relative    items-center  rounded-lg "}
         >
           <div
             ref={optionsRef}
-            className="flex inset-shadow   overflow-scroll w-[970px] justify-evenly "
+            className="flex-center inset-shadow   w-[970px]  "
           >
             <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
-            {options.map((item) => {
-              return (
-                <div
-                  key={item.key}
-                  className="opacity-60 hover:opacity-100 cursor-pointer  flex px-4 space-y-2 h-[48px] my-[12px] py-[4px]  flex-col justify-center "
-                >
-                  <img src={item.svg} className="h-6 cursor-pointer " alt="" />
-                  <p className="text-xs cursor-pointer  ">Trending</p>
-                </div>
-              );
-            })}
+            <div className=" flex-center w-[56rem]  overflow-scroll ">
+              {options.map((item) => {
+                return (
+                  <div
+                    key={item.key}
+                    className="opacity-60 hover:opacity-100 cursor-pointer  flex px-6 space-y-2 h-[48px] my-[12px] py-[4px]  flex-col justify-center "
+                  >
+                    <img
+                      src={item.svg}
+                      className="h-6 cursor-pointer "
+                      alt=""
+                    />
+                    <p className="text-xs cursor-pointer  ">Trending</p>
+                  </div>
+                );
+              })}
+            </div>
             <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
