@@ -23,9 +23,9 @@ const Options = () => {
   const leftScrollBtnRef = useRef();
 
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  console.log(scrollPosition);
   useEffect(() => {
-    const optionRef = options.current;
+    const optionRef = optionsRef.current;
     const handleScroll = () => {
       if (optionRef) {
         setScrollPosition(optionRef.scrollLeft);
@@ -96,8 +96,8 @@ const Options = () => {
   }  top-[25%] left-0  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition === 1543.5 ? "hidden" : ""
-  } top-[25%] z-100 right-0 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
+    scrollPosition === 983.5 ? "hidden" : ""
+  } top-[25%] z-100 right-2 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
 
   return (
     <div className={` bg-white    justify-self-center `}>
@@ -106,14 +106,17 @@ const Options = () => {
       >
         <div
           className={
-            "w-[59.5rem] flex relative    items-center overflow-scroll  rounded-lg "
+            "w-[60.5rem] flex relative    items-center overflow-scroll  rounded-lg "
           }
         >
-          <div ref={optionsRef} className="flex-center inset-shadow  w-full   ">
+          <div className="flex-center inset-shadow  w-full   ">
             <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
-            <div className=" flex-center w-[56rem]  overflow-scroll ">
+            <div
+              ref={optionsRef}
+              className=" flex-center w-[54rem]  overflow-scroll "
+            >
               {options.map((item) => {
                 return (
                   <div

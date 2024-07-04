@@ -17,8 +17,8 @@ export default function App() {
 
       <div
         className={`  transition-all duration-[0.3s] ease-in-out flex-center  fixed   w-full z-10 bg-white  ${
-          !startScroll ? "-translate-y-[5.9rem]" : ""
-        }   top-[10.6rem]  `}
+          !startScroll ? "-translate-y-[5.9rem] shadow-md" : ""
+        }   top-[10.6rem] flex-center  `}
       >
         <Options></Options>
       </div>
