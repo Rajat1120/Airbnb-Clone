@@ -14,7 +14,7 @@ export default function App() {
       <div
         className={` fixed  transition-all duration-[0.3s] ease-in-out ${
           !startScroll ? "h-[9.7rem]" : "h-[12rem]"
-        } bg-white  -z-[20] w-full flex items-start justify-center top-0 `}
+        } bg-white  w-full flex items-start justify-center top-0 `}
       >
         <Header></Header>
       </div>
