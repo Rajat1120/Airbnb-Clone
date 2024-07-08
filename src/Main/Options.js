@@ -91,13 +91,13 @@ const Options = () => {
     };
   }, [scrollPosition]);
 
-  let btnLeftClassName = ` absolute  ${
+  let btnLeftClassName = ` absolute z-30  ${
     scrollPosition < 65 ? "hidden" : ""
   }  top-[25%] left-0  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition > 1854.5 ? "hidden" : ""
-  } top-[25%] z-100 right-2 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
+    scrollPosition > 1770.5 ? "hidden" : ""
+  } top-[25%] z-30 right-2 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
 
   return (
     <div className={` bg-white    justify-self-center `}>
@@ -135,9 +135,15 @@ const Options = () => {
             <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
+            {scrollPosition > 65 && (
+              <div className="w-10 h-16 absolute z-10 left-0 bg-white border-r-[0.8rem] border-white "></div>
+            )}
             <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
+            {scrollPosition < 1770.5 && (
+              <div className="w-10 h-16 absolute z-10 right-0 bg-white border-r-[0.8rem] border-white "></div>
+            )}
           </div>
         </div>
         <FilterHome></FilterHome>
