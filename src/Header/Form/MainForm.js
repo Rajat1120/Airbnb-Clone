@@ -23,7 +23,7 @@ const MainForm = ({ startScroll }) => {
   const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
-    "translate-y-[-5.5rem] backface-hidden border-[3px]  scale-50 self-center  w-[45rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem] backface-hidden border-[3px]  scale-50 self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack = `translate-y-[0.2rem] backface-hidden border-[1.5px] scale-100 self-center  w-[53rem] h-[4rem]
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
@@ -35,7 +35,7 @@ const MainForm = ({ startScroll }) => {
     !startScroll ? "" : data ? styleForBefore : ""
   }  absolute    `;
   return (
-    <div className="flex items-center  flex-col">
+    <div className="flex items-center   flex-col">
       <div className={classForForm}>
         {!startScroll ? (
           <div
@@ -43,7 +43,7 @@ const MainForm = ({ startScroll }) => {
               startScroll ? "hidden" : ""
             } flex items-center justify-center h-[6rem] px-[3rem]`}
           >
-            <span className="flex w-[58rem] items-center mb-3 self-center  justify-around">
+            <span className="flex w-[50rem] gap-8 items-center mb-3 self-center  justify-center">
               <button className="text-[1.8rem] h-[6rem]  font-normal ">
                 Anywhere
               </button>
@@ -52,7 +52,7 @@ const MainForm = ({ startScroll }) => {
                 Any week
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
-              <button className="text-3xl w-[18rem] gap-10 flex items-center  justify-center h-[6rem]">
+              <button className="text-3xl w-[18rem]  gap-6 flex items-center  justify-start h-[6rem]">
                 <p className="text-gray-400 font-light">Add guest</p>
                 <div className="w-[4rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[4rem]">
                   <img className="scale-125" src={searchIcon} alt="" />
