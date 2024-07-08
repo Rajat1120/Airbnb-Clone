@@ -11,7 +11,11 @@ export default function App() {
   const startScroll = useSelector((store) => store.app.startScroll);
   return (
     <div className="flex-center relative">
-      <div className="fixed w-full flex-center top-0">
+      <div
+        className={` fixed  transition-all duration-[0.3s] ease-in-out ${
+          !startScroll ? "h-[9.7rem]" : "h-[12rem]"
+        } bg-white  -z-[20] w-full flex items-start justify-center top-0 `}
+      >
         <Header></Header>
       </div>
 
