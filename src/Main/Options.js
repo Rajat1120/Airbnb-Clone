@@ -92,21 +92,21 @@ const Options = () => {
   }, [scrollPosition]);
 
   let btnLeftClassName = ` absolute  ${
-    scrollPosition === 0 ? "hidden" : ""
+    scrollPosition < 65 ? "hidden" : ""
   }  top-[25%] left-0  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition === 983.5 ? "hidden" : ""
+    scrollPosition > 1854.5 ? "hidden" : ""
   } top-[25%] z-100 right-2 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
 
   return (
     <div className={` bg-white    justify-self-center `}>
       <div
-        className={`h-[5rem]  py-6 flex  justify-between w-full items-center `}
+        className={`h-[5rem] justify-center py-6 flex w-full items-center gap-2 `}
       >
         <div
           className={
-            "w-[60.5rem] flex relative    items-center overflow-scroll  rounded-lg "
+            "w-[59.5rem] flex relative    items-center overflow-scroll  rounded-lg "
           }
         >
           <div className="flex-center inset-shadow  w-full   ">
@@ -115,13 +115,15 @@ const Options = () => {
             </button>
             <div
               ref={optionsRef}
-              className=" flex items-center  w-[54rem]  overflow-scroll "
+              className=" flex items-center  w-[60rem]  overflow-scroll "
             >
               {options.map((item, i) => {
                 return (
                   <div
                     key={item.key}
-                    className="opacity-60 hover:opacity-100 cursor-pointer  flex px-6 space-y-2 h-[48px] my-[12px] py-[4px]  flex-col justify-center "
+                    className={`opacity-60 hover:opacity-100 cursor-pointer  flex ${
+                      i === 0 ? "pr-6" : "px-6"
+                    } space-y-2 h-[48px] my-[12px] py-[4px]  flex-col justify-center `}
                   >
                     <img
                       src={item.svg}
