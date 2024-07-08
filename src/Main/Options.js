@@ -115,9 +115,9 @@ const Options = () => {
             </button>
             <div
               ref={optionsRef}
-              className=" flex-center w-[54rem]  overflow-scroll "
+              className=" flex items-center  w-[54rem]  overflow-scroll "
             >
-              {options.map((item) => {
+              {options.map((item, i) => {
                 return (
                   <div
                     key={item.key}
@@ -128,7 +128,7 @@ const Options = () => {
                       className="h-6 cursor-pointer "
                       alt=""
                     />
-                    <p className="text-xs cursor-pointer  ">Trending</p>
+                    <p className="text-xs cursor-pointer  ">Trending </p>
                   </div>
                 );
               })}
