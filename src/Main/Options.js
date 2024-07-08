@@ -110,9 +110,6 @@ const Options = () => {
           }
         >
           <div className="flex-center inset-shadow  w-full   ">
-            <button ref={leftScrollBtnRef} className={btnLeftClassName}>
-              <img src={arrow_left} className="h-6 " alt="" />
-            </button>
             <div
               ref={optionsRef}
               className=" flex items-center  w-[60rem]  overflow-scroll "
@@ -135,6 +132,9 @@ const Options = () => {
                 );
               })}
             </div>
+            <button ref={leftScrollBtnRef} className={btnLeftClassName}>
+              <img src={arrow_left} className="h-6 " alt="" />
+            </button>
             <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
