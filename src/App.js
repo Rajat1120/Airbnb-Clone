@@ -27,7 +27,7 @@ export default function App() {
         <Options></Options>
       </div>
 
-      <div className="mt-[17rem] flex justify-center items-center ">
+      <div className="mt-[12rem]   flex justify-center items-center ">
         <House></House>
       </div>
 

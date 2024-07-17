@@ -90,14 +90,15 @@ const Options = () => {
       }
     };
   }, [scrollPosition]);
+ 
 
   let btnLeftClassName = ` absolute z-30  ${
-    scrollPosition < 65 ? "hidden" : ""
-  }  top-[25%] left-0  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-2`;
+    scrollPosition < 65  ? "hidden" : "flex-center"
+  }  top-[25%] left-0 h-9 hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition > 1770.5 ? "hidden" : ""
-  } top-[25%] z-30 right-2 bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-2`;
+    scrollPosition > 1770.5 ? "hidden" : "flex-center"
+  } top-[25%] z-30 right-2 h-9  w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-[1px]`;
 
   return (
     <div className={` bg-white    justify-self-center `}>
@@ -136,13 +137,13 @@ const Options = () => {
               <img src={arrow_left} className="h-6 " alt="" />
             </button>
             {scrollPosition > 65 && (
-              <div className="w-10 h-16 absolute z-10 left-0 bg-white border-r-[0.8rem] border-white "></div>
+              <div className="w-12 h-16 absolute z-10 left-0 bg-white border-r-[0.8rem] border-white "></div>
             )}
             <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
             {scrollPosition < 1770.5 && (
-              <div className="w-10 h-16 absolute z-10 right-0 bg-white border-r-[0.8rem] border-white "></div>
+              <div className="w-12 h-16 absolute z-10 right-0 bg-white border-r-[0.8rem] border-white "></div>
             )}
           </div>
         </div>

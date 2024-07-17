@@ -38,19 +38,19 @@ const House = () => {
 
   return (
     <div
-      className={` absolute  transition-transform duration-[0.3s] ease-in-out   top-[17rem] overflow-scroll   ${
+      className={` absolute flex-center  transition-transform  duration-[0.3s] ease-in-out w-full   top-[17rem] overflow-scroll   ${
         !startScroll ? "-translate-y-[6rem] -z-30" : ""
       } `}
     >
-      <div className=" grid gap-x-6 ml-4 fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
+      <div className=" grid gap-x-10   fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (
           <div
             key={item.id}
-            className="w-[280px] h-[386px] flex gap-y-4 items-center justify-center flex-col "
+            className="w-[290px] ml-2 h-[408px] flex gap-y-4 items-center justify-center flex-col "
           >
-            <div className="w-[302px]  h-[286px]">
+            <div className="w-[321px] flex-center  h-[330px]">
               <img
-                className="rounded-[20px] w-full h-full object-cover "
+                className="rounded-[20px] flex-center w-full h-full object-fill "
                 src={
                   "https://a0.muscache.com/im/pictures/miso/Hosting-549210539001854746/original/91024f9e-6497-4c36-80e1-d859cab61034.jpeg?im_w=1200"
                 }
