@@ -31,7 +31,7 @@ function Header() {
           </a>
         </div>
         <div
-          className={`flex h-20 transition-transform duration-[0.3s] ease-in-out ${
+          className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
             !startScroll ? "-translate-y-20 " : ""
           } justify-center  items-center px-6`}
         >
@@ -43,17 +43,15 @@ function Header() {
             Experiences
           </p>
 
-          <p className="w-[12rem] h-[2.5rem] text-center hover:bg-gray-100 rounded-full  hover:text-slate-600  flex items-center justify-center  text-grey font-light ">
-            Online Experiences
-          </p>
+          
         </div>
-        <div className="h-20 flex items-center mr-10 justify-end ">
+        <div className="h-20 flex w-[30rem] -ml-8 items-center  justify-end ">
           <a href="#">
-            <p className="text-sm h-[2.5rem] mr-[-0.4rem] flex items-center justify-center rounded-full hover:bg-gray-100  w-[10rem] font-[450]; ">
+            <p className="text-sm h-[2.5rem] mr-[-0.4rem] flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
               Airbnb your home
             </p>
           </a>
-          <button className=" h-[3rem] mr-[-0.3rem]  flex items-center justify-center rounded-full hover:bg-gray-100  w-[3rem] ">
+          <button className=" h-[3rem] mr-[-0.3rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light w-[3rem] ">
             <img className="scale-[0.4] w-[100%]" src={globe} alt="" />
           </button>
 

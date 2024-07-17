@@ -34,6 +34,7 @@ module.exports = {
         "dark-pink": "#e63253",
         grey: "#717171;",
         "grey-light": "#B3B3B3",
+        "grey-light-50": "#cacaca",
         "grey-dim": "#DBDBDB",
         "shadow-gray": "#e6e6e6",
         "shadow-gray-light": "#f5f5f5",
