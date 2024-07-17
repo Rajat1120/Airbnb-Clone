@@ -107,7 +107,7 @@ const Options = () => {
       >
         <div
           className={
-            "w-[59.5rem] flex relative    items-center overflow-scroll  rounded-lg "
+            "w-[63.5rem] flex relative    items-center overflow-scroll  rounded-lg "
           }
         >
           <div className="flex-center inset-shadow  w-full   ">

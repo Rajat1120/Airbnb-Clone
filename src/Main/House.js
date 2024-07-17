@@ -57,7 +57,7 @@ const House = () => {
                 alt=""
               />
             </div>
-            <div className="flex w-[302px] justify-between  items-start ">
+            <div className="flex w-[320px] justify-between  items-start ">
               <div className="">
                 <p className="  text-ellipsis overflow-hidden  font-normal">
                   {item.location}
