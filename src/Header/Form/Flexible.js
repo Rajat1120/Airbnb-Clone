@@ -7,12 +7,13 @@ import arrow_left from "../../data/Icons svg/arrow-left.svg";
 import arrow_right from "../../data/Icons svg/arrow-right.svg";
 import { addMonths, format } from 'date-fns';
 import { useDispatch, useSelector } from "react-redux";
-import { setMonths } from "./mainFormSlice";
+import { setMonths, setStayDuration } from "./mainFormSlice";
 
 const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
    const [scrollPosition, setScrollPosition] = useState(0);
   const curInput = useSelector((store) => store.form.curSelectInput);
   const curSelectedMonths = useSelector((store) => store.form.months);
+  const stayDuration = useSelector((store) => store.form.stayDuration);
   const dispatch = useDispatch()
   let monthRef = useRef()
   let rightScrollBtnRef = useRef()
@@ -32,6 +33,10 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
   }
 
   let result = getNext12Months()
+
+  let selectedMonthsName = curSelectedMonths.map(index => result[index])
+
+  console.log(selectedMonthsName);
 
 
 
@@ -101,6 +106,8 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
     };
   }, [scrollPosition]);
 
+ 
+
 
     let btnLeftClassName = `absolute ${scrollPosition < 1 ? "hidden" : "flex-center" } top-[72%] left-5 h-8 w-8  bg-white z-30 rounded-[50%] hover:scale-110 hidden hover:drop-shadow-md border-[1px] border-grey-dim-light `;
 
@@ -123,8 +130,13 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
             }  before:hover:opacity-40  flex items-center justify-center`}
             onClick={(e) => handleInputField(e.target, "flexible")}
           >
-            flexible
+            <div className="flex text-sm font-medium items-start justify-center w-[15rem] flex-col ">
+              <span>When</span>
+              <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap w-[15rem]" >
+        { curSelectedMonths.length > 0 ? `${ stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${selectedMonthsName.length === 1 ? selectedMonthsName[0].month : selectedMonthsName.map(item => item.month.substring(0,3)).join(", ")}` : ` Any ${stayDuration}`}
+              </span>
           </div>
+            </div>
         </div>
       </Modal.Open>
       <Modal.Window modalRef={modalRef} name="flexible">
@@ -133,9 +145,9 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
           <div className="w-full mt-4 flex-col flex items-center">
             <span className="text-lg font-medium">How long would you like to stay?</span>
             <div className="flex items-center my-5 gap-x-2">
-              <span className="py-2 text-sm  font-extralight px-4 border-[1px] border-grey-light rounded-full">Weekend</span>
-              <span className="py-2 text-sm font-extralight px-4 border-[1px] border-grey-light rounded-full">Week</span>
-              <span className="py-2 text-sm font-extralight px-4 border-[1px] border-grey-light rounded-full">Month</span>
+              <span onClick={() => dispatch(setStayDuration("weekend"))} className={` py-2 text-sm ${stayDuration === "weekend" ? "border-[2px] border-black" : "border-[1px]  border-grey-light"} transform transition-transform duration-100 active:scale-95 font-extralight px-4  hover:border-black rounded-full `}>Weekend</span>
+              <span onClick={() => dispatch(setStayDuration("week"))} className={` py-2 text-sm ${stayDuration === "week" ? "border-[2px] border-black" : "border-[1px]  border-grey-light"} transform transition-transform duration-100 active:scale-95 font-extralight px-4 border-[1px] hover:border-black rounded-full `}>Week</span>
+              <span onClick={() => dispatch(setStayDuration("month"))} className={` py-2 text-sm ${stayDuration === "month" ? "border-[2px] border-black" : "border-[1px]  border-grey-light"} transform transition-transform duration-100 active:scale-95 font-extralight px-4 border-[1px] hover:border-black rounded-full `}>Month</span>
             </div>
           </div>
           <div className="w-full  max-w-[65rem] mb-12 flex flex-col items-center">
