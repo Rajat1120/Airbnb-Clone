@@ -167,7 +167,7 @@ const renderHeader = (
 
         let onClickHandler = () => {
           if (isModalOpen) {
-            onCalendarModalDateClick(cloneDay);
+            onCalendarModalDateClick(cloneDay + 1);
           } else {
             onDateClick(isPastDate ? undefined : cloneDay);
           }

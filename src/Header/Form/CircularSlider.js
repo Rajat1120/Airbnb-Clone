@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import CalendarModal from "./CalendarModal";
 import Calendar from "./FormFields/Calendar";
 import { useDispatch, useSelector } from "react-redux";
-import { setCalendarModalOpen } from "./mainFormSlice";
-
+import { setCalendarModalOpen, setCurrentDot } from "./mainFormSlice";
+import { format } from 'date-fns';
 const CircularSlider = () => {
-  const [currentDot, setCurrentDot] = useState(2);
+  
   const [onHover, setOnHover] = useState(false);
 
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+  const currentDot = useSelector((store) => store.form.curDot);
+  const startDurationDate = useSelector((store) => store.form.startDurationDate);
+  const formatDate = format(startDurationDate, 'EEE, MMM d');
 
   console.log(isModalOpen);
   let NumOfMonths = currentDot;
@@ -18,7 +21,7 @@ const CircularSlider = () => {
   const dispatch = useDispatch();
 
   const handleClick = (index) => {
-    setCurrentDot(index);
+    dispatch(setCurrentDot(index));
   };
 
   const handleEditClick = () => {
@@ -91,7 +94,7 @@ const CircularSlider = () => {
       </div>
       <div className="mb-6">
         <p>
-          Starting on 1 August .{" "}
+          Starting on {formatDate} {" "}
           <span
             className="font-semibold cursor-pointer underline"
             onClick={handleEditClick}

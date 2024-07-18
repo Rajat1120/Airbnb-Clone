@@ -8,11 +8,12 @@ let formState = {
   search: false,
   currentMonth: new Date(),
   selectedStartDate: null,
-  startDurationDate: null,
+  startDurationDate: new Date(),
   selectedEndDate: null,
   region: "all",
   dateOption: "dates",
   adultCount: 0,
+  curDot: 2,
   childCount: 0,
   infantCount: 0,
   petsCount: 0,
@@ -79,6 +80,9 @@ const formSlice = createSlice({
     setStayDuration(state, action){ 
       state.stayDuration = action.payload;
 
+    },
+    setCurrentDot(state, action){
+      state.curDot = action.payload;
     }
   },
 });
@@ -99,6 +103,6 @@ export const {
   setCalendarModalOpen,
   setStartDurationDate,
   setStayDuration,
-  setMonths
-} = formSlice.actions;
+  setMonths,
+setCurrentDot} = formSlice.actions;
 export default formSlice.reducer;
