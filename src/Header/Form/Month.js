@@ -9,6 +9,7 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
+    const curSelectedInput = useSelector((store) => store.form.curSelectInput);
 
   const currentDot = useSelector((store) => store.form.curDot);
 
@@ -19,7 +20,7 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
   let endDate = addMonths(formattedStartDate, currentDot)
 
   const formatEndDate = format(endDate, "MMM d")
-  
+
   const handleClick = (e) => {
     handleInputField(e.target, "month");
   };
@@ -45,9 +46,9 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
           >
             <div className="flex flex-col w-[14.8rem] items-start justify-center">
               <p className="text-xs font-medium">When</p>
-              <p className="text-sm font-medium ">
+            {curSelectedInput === "month" ?  <p className="text-sm font-medium ">
                 {formattedStartDate} - {formatEndDate}
-              </p>
+              </p> :  <span className="text-sm font-thin" >Any time</span>}
             </div>
           </div>
         </div>

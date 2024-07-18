@@ -13,6 +13,7 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
    const [scrollPosition, setScrollPosition] = useState(0);
   const curInput = useSelector((store) => store.form.curSelectInput);
   const curSelectedMonths = useSelector((store) => store.form.months);
+  const curSelectedInput = useSelector((store) => store.form.curSelectInput);
   const stayDuration = useSelector((store) => store.form.stayDuration);
   const dispatch = useDispatch()
   let monthRef = useRef()
@@ -131,9 +132,9 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
             onClick={(e) => handleInputField(e.target, "flexible")}
           >
             <div className="flex text-sm font-medium items-start justify-center w-[15rem] flex-col ">
-              <span>When</span>
+              <span className="text-xs font-medium"  >When</span>
               <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap w-[15rem]" >
-        { curSelectedMonths.length > 0 ? `${ stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${selectedMonthsName.length === 1 ? selectedMonthsName[0].month : selectedMonthsName.map(item => item.month.substring(0,3)).join(", ")}` : ` Any ${stayDuration}`}
+        {curSelectedInput === "flexible" ? ( curSelectedMonths.length > 0 ? `${ stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${selectedMonthsName.length === 1 ? selectedMonthsName[0].month : selectedMonthsName.map(item => item.month.substring(0,3)).join(", ")}` : ` Any ${stayDuration}`) : <span className="text-sm font-thin" >Any time</span>}
               </span>
           </div>
             </div>
