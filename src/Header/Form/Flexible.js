@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../../Modals/Modal";
 import CheckInOption from "./DatesOption";
 import monthSvg from "../../data/Icons svg/month.svg"
-
+import arrow_left from "../../data/Icons svg/arrow-left.svg";
+import arrow_right from "../../data/Icons svg/arrow-right.svg";
 import { addMonths, format } from 'date-fns';
 import { useSelector } from "react-redux";
 
 const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
+   const [scrollPosition, setScrollPosition] = useState(0);
   const curInput = useSelector((store) => store.form.curSelectInput);
 
   function getNext12Months() {
@@ -21,22 +23,23 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
     }
     
     return months;
-}
+  }
 
-let result  = getNext12Months()
-
-
+  let result = getNext12Months()
 
 
+    let btnLeftClassName = ` absolute z-30   top-[25%] left-0 h-9 hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
+
+  let btnRightClassName = `absolute  top-[25%] z-30 right-2 h-9  w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-[1px]`;
 
   return (
     <Modal>
       <Modal.Open opens="flexible">
         <div
           ref={flexibleRef}
-          className={` flex justify-center   items-center ${
+          className={`flex justify-center items-center ${
             curInput === "flexible" ? "shadow-checkInShadow rounded-full" : ""
-          } `}
+          }`}
         >
           <div
             className={`w-[17.3rem] h-[3.85rem] hover:before:content-[''] before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full  ${
@@ -51,24 +54,40 @@ let result  = getNext12Months()
         </div>
       </Modal.Open>
       <Modal.Window modalRef={modalRef} name="flexible">
-        <div className="flex flex-col w-full  justify-center items-center ">
+        <div className="flex flex-col w-full justify-center items-center">
           <CheckInOption></CheckInOption>
-          <div className="w-full flex-col flex-center">
-            <span className="text-xl" >How long would you like to stay?</span>
-            <div className="flex-center my-5 gap-x-2" >
-              <span className="py-2 font-extralight px-4 border-[1px] border-grey-light rounded-full" >Weekend</span>
-              <span className="py-2 font-extralight px-4 border-[1px] border-grey-light rounded-full" > Week</span>
-              <span className="py-2 font-extralight px-4 border-[1px] border-grey-light rounded-full" > Month</span>
+          <div className="w-full mt-4 flex-col flex items-center">
+            <span className="text-xl">How long would you like to stay?</span>
+            <div className="flex items-center my-5 gap-x-2">
+              <span className="py-2 font-extralight px-4 border-[1px] border-grey-light rounded-full">Weekend</span>
+              <span className="py-2 font-extralight px-4 border-[1px] border-grey-light rounded-full">Week</span>
+              <span className="py-2 font-extralight px-4 border-[1px] border-grey-light rounded-full">Month</span>
             </div>
           </div>
-          <div className="w-[65rem] overflow-scroll overflow-x-auto  flex-center flex-col" >
-            <span>When do you want to go?</span>
-            <div className="w-[60rem] gap-x-2 overflow-x-auto flex overflow-scroll" >
-            {result.map((item) => {
-              return <div className="w-[20rem] border-[1px] border-grey-dim h-28" >
-                <div><img src={monthSvg} alt="" /></div>
+          <div className="w-full max-w-[65rem] mb-10 flex flex-col items-center">
+            <span className="text-xl mt-10 mb-6" >When do you want to go?</span>
+            <div className="w-full overflow-x-auto">
+              <div className="inline-flex gap-x-2 pb-4">
+                {result.map((item, index) => (
+                  <div key={index} className={`flex-shrink-0 rounded-2xl flex-center flex-col ${index === 0 ? "ml-9" : ""}  w-[7.5rem] border-[1px] border-grey-dim h-[8.5rem]`}>
+                    <div  className="" ><img className="w-10 h-10"  src={monthSvg} alt="" /></div>
+                   <span>
+
+                     {item.month} 
+                   </span>
+                   <span>
+
+                   {item.year}
+                   </span>
+                  </div>
+                ))}
               </div>
-            })}
+              <button  className={btnLeftClassName}>
+              <img src={arrow_left} className="h-6 " alt="" />
+            </button>
+             <button  className={btnRightClassName}>
+              <img src={arrow_right} className="h-6 " alt="" />
+            </button>
             </div>
           </div>
         </div>
