@@ -17,6 +17,8 @@ let formState = {
   infantCount: 0,
   petsCount: 0,
   openName: "",
+  stayDuration: "week",
+  months: [],
   isCalendarModalOpen: false,
 };
 
@@ -66,6 +68,18 @@ const formSlice = createSlice({
     setStartDurationDate(state, action) {
       state.startDurationDate = action.payload;
     },
+    setMonths(state, action){
+      if(state.months.includes(action.payload)){
+        state.months = state.months.filter((month) => month !== action.payload);
+      }else{
+
+        state.months.push(action.payload)
+      }
+    },
+    setStayDuration(state, action){ 
+      state.stayDuration = action.payload;
+
+    }
   },
 });
 
@@ -84,5 +98,7 @@ export const {
   setOpenName,
   setCalendarModalOpen,
   setStartDurationDate,
+  setStayDuration,
+  setMonths
 } = formSlice.actions;
 export default formSlice.reducer;

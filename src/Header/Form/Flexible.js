@@ -2,14 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import Modal from "../../Modals/Modal";
 import CheckInOption from "./DatesOption";
 import monthSvg from "../../data/Icons svg/month.svg"
+import monthSelected from "../../data/Icons svg/month-checked.svg"
 import arrow_left from "../../data/Icons svg/arrow-left.svg";
 import arrow_right from "../../data/Icons svg/arrow-right.svg";
 import { addMonths, format } from 'date-fns';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setMonths } from "./mainFormSlice";
 
 const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
    const [scrollPosition, setScrollPosition] = useState(0);
   const curInput = useSelector((store) => store.form.curSelectInput);
+  const curSelectedMonths = useSelector((store) => store.form.months);
+  const dispatch = useDispatch()
   let monthRef = useRef()
   let rightScrollBtnRef = useRef()
   let leftScrollBtnRef = useRef()
@@ -71,6 +75,8 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
       }
     };
   }, [scrollPosition]);
+
+ 
 
 
    useEffect(() => {
@@ -137,8 +143,8 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
             <div ref={monthRef} className="w-full  overflow-x-auto">
               <div  className="inline-flex gap-x-2 pb-4">
                 {result.map((item, index) => (
-                  <div key={index} className={`flex-shrink-0 rounded-2xl flex-center flex-col ${index === 0 ? "ml-10" : ""} ${index === 11 ? "mr-10" : ""}  w-[7.5rem] border-[1px] border-grey-dim hover:border-black h-[8.5rem]`}>
-                    <div  className="" ><img className="w-10 h-10"  src={monthSvg} alt="" /></div>
+                  <div onClick={() => dispatch(setMonths(index))} key={index} className={`flex-shrink-0 ${curSelectedMonths.includes(index) ? " border-black bg-shadow-gray-light border-[2px]" : "border-grey-dim border-[1px] "} rounded-2xl flex-center flex-col ${index === 0 ? "ml-10" : ""} ${index === 11 ? "mr-10" : ""}  w-[7.5rem]   hover:border-black h-[8.5rem]`}>
+                    <div  className="" ><img className="w-10 h-10"  src={curSelectedMonths.includes(index) ? monthSelected : monthSvg} alt="" /></div>
                    <span className="text-sm font-medium"  > 
 
                      {item.month} 
