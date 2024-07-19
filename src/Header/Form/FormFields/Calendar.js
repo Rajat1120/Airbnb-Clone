@@ -137,7 +137,10 @@ const renderHeader = (
             isSameMonth(day, monthStart)
           ) {
             cellClass = "bg-black text-white rounded-full";
-          } else {
+          }else if (!isSameMonth(day, monthStart)) {
+              cellClass = "bg-white cursor-pointer text-white";
+              onClickHandler = null; // Disable onClick for dates outside the current month
+            } else {
             cellClass =
               "bg-white text-black hover:rounded-full hover:border-[1.5px] hover:border-black";
           }

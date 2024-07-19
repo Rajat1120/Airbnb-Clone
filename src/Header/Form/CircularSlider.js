@@ -92,7 +92,7 @@ const CircularSlider = () => {
           </div>
         </div>
       </div>
-      <div className="mb-6">
+      <div className="mb-6 ">
         <p>
           Starting on {formatDate} {" "}
           <span
@@ -103,7 +103,10 @@ const CircularSlider = () => {
           </span>
         </p>
         <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <div className="w-[53rem]" >
+
           <Calendar />
+          </div>
         </CalendarModal>
       </div>
     </div>
