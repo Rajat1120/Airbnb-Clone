@@ -4,15 +4,20 @@ import cross from "../../data/Icons svg/cross.svg";
 
 const CalendarModal = ({ isOpen, onClose, children }) => {
   const [visible, setVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false)
   const ref = useRef();
 
   useEffect(() => {
     if (isOpen) {
+      setShouldRender(true)
       setTimeout(() => {
         setVisible(true);
-      }, 10); // Small delay to ensure transition is noticeable
+      }, 50); // Small delay to ensure transition is noticeable
     } else {
       setVisible(false);
+      setTimeout(() => {
+        setShouldRender(false)
+      }, 200)
     }
   }, [isOpen]);
 
@@ -42,7 +47,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
     };
   }, [onClose]);
 
-  if (!isOpen) return null;
+  if (!shouldRender) return null;
 
   return ReactDOM.createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
