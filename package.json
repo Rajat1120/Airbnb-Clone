@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@jest/globals": "^29.7.0",
+    "@react-spring/web": "^9.7.3",
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/react": "^15.0.6",
     "@testing-library/user-event": "^13.5.0",

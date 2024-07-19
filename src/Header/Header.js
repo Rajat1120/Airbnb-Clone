@@ -8,7 +8,7 @@ import person from "../data/person.svg";
 import MainForm from "./Form/MainForm";
 import { useSelector } from "react-redux";
 
-function Header() {
+function Header({ headerRef }) {
   const startScroll = useSelector((store) => store.app.startScroll);
 
   let classForAfter = `after:content-[''] ${
@@ -42,8 +42,6 @@ function Header() {
           <p className="h-[2.5rem] flex items-center justify-center hover:bg-gray-100 hover:text-slate-600 rounded-full text-center w-[8rem] text-grey font-light">
             Experiences
           </p>
-
-          
         </div>
         <div className="h-20 flex w-[30rem] -ml-8 items-center  justify-end ">
           <a href="#">
@@ -63,7 +61,7 @@ function Header() {
           </div>
         </div>
       </div>
-      {<MainForm startScroll={startScroll}></MainForm>}
+      {<MainForm headerRef={headerRef} startScroll={startScroll}></MainForm>}
     </div>
   );
 }

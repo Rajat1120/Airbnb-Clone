@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
 import { useDispatch, useSelector } from "react-redux";
-import { setStartScroll } from "./AppSlice";
+import { setMinimize, setStartScroll } from "./AppSlice";
 
 const House = () => {
   let lastScrollPosition = useRef(window.scrollY);
@@ -15,6 +15,10 @@ const House = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollPosition = window.scrollY;
+
+      setTimeout(() => {
+        dispatch(setMinimize(false));
+      }, 350);
 
       if (currentScrollPosition > lastScrollPosition.current) {
         // Scrolling down (no change needed here)

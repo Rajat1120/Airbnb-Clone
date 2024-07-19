@@ -90,11 +90,10 @@ const Options = () => {
       }
     };
   }, [scrollPosition]);
- 
 
   let btnLeftClassName = ` absolute z-30  ${
-    scrollPosition < 65  ? "hidden" : "flex-center"
-  }  top-[25%] left-0 h-9 hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
+    scrollPosition < 65 ? "hidden" : "flex-center"
+  }  top-[25%] left-0 h-9  hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
 
   let btnRightClassName = `absolute ${
     scrollPosition > 1770.5 ? "hidden" : "flex-center"

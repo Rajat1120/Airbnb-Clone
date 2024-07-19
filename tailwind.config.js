@@ -51,10 +51,20 @@ module.exports = {
           "0%": { transform: "translateX(3.2rem)", opacity: "1" },
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
+        expand: {
+          "0%": { height: "0rem" },
+          "100%": { height: "5rem" },
+        },
+        collapse: {
+          "0%": { height: "5rem" },
+          "100%": { height: "0rem" },
+        },
       },
       animation: {
         slideInLeft: "slideInLeft 0.3s ease-in-out forwards",
         slideInRight: "slideInRight 0.3s ease-in-out forwards",
+        expand: "expand 0.3s ease-in-out forwards",
+        collapse: "collapse 0.3s  ease-in-out forwards",
       },
     },
   },

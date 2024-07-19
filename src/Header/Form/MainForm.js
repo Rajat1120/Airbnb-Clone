@@ -1,11 +1,41 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainFormContent from "./MainFormContent";
+import ReactDOM from "react-dom";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveInput, setOpenName } from "./mainFormSlice";
+import { setMinimize } from "../../Main/AppSlice";
+import Header from "../Header";
 
-const MainForm = ({ startScroll }) => {
+const MainForm = ({ startScroll, headerRef }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   const data = useSelector((store) => store.form.curSelectInput);
+
+  let ref = useRef();
+
+  useEffect(() => {
+    if (startScroll) {
+      setTimeout(() => {
+        setIsScrolling(true);
+      }, 700);
+    } else {
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, 700);
+    }
+  }, [startScroll]);
+
+  const minimize = useSelector((store) => store.app.minimize);
+  useEffect(() => {
+    if (minimize) {
+      setIsVisible(true);
+    } else {
+      setTimeout(() => {
+        setIsVisible(false);
+      }, 300);
+    }
+  }, [minimize]);
 
   const dispatch = useDispatch();
 
@@ -20,12 +50,44 @@ const MainForm = ({ startScroll }) => {
     [startScroll, dispatch]
   );
 
+  const Modal = () => {
+    useEffect(() => {
+      function handleClick(e) {
+        if (headerRef?.current && !headerRef.current?.contains(e.target)) {
+          dispatch(setMinimize(false));
+        }
+      }
+
+      document.addEventListener("click", handleClick, true);
+      return () => document.removeEventListener("click", handleClick, true);
+    }, []);
+
+    return ReactDOM.createPortal(
+      <>
+        <div
+          className={`fixed top-0  opacity-40 z-20 w-full h-${
+            minimize ? "full" : "0"
+          } bg-black`}
+        ></div>
+        {/*    <div
+          ref={ref}
+          className={` bg-white ${
+            minimize ? "animate-expand" : "animate-collapse "
+          } overflow-hidden fixed z-50 top-[4.7rem] w-full `}
+        >
+          <div className="p-4">Content here</div>
+        </div> */}
+      </>,
+      document.body
+    );
+  };
+
   const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
-    "translate-y-[-5.5rem] backface-hidden border-[3px]  scale-50 self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem]  border-[3px]  scale-50 self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
-  let onScrollBack = `translate-y-[0.2rem] backface-hidden border-[1.5px] scale-100 self-center  w-[53rem] h-[4rem]
+  let onScrollBack = `translate-y-[0.2rem]  border-[1.5px] scale-100 self-center  w-[53rem] h-[4rem]
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
    `;
 
@@ -37,14 +99,17 @@ const MainForm = ({ startScroll }) => {
   return (
     <div className="flex items-center   flex-col">
       <div className={classForForm}>
-        {!startScroll ? (
+        {!startScroll && !minimize ? (
           <div
             className={`w-[48rem] ${
               startScroll ? "hidden" : ""
             } flex items-center justify-center h-[6rem] px-[3rem]`}
           >
             <span className="flex w-[50rem] gap-8 items-center mb-3 self-center  justify-center">
-              <button className="text-[1.8rem] h-[6rem]  font-normal ">
+              <button
+                onClick={() => dispatch(setMinimize(true))}
+                className="text-[1.8rem] h-[6rem]  font-normal "
+              >
                 Anywhere
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
@@ -64,6 +129,7 @@ const MainForm = ({ startScroll }) => {
           <MainFormContent></MainFormContent>
         )}
       </div>
+      {isVisible && <Modal></Modal>}
     </div>
   );
 };
