@@ -2,7 +2,7 @@ import React from "react";
 
 const AddDays = () => {
   return (
-    <div className="w-full flex space-x-3 items-center justify-start px-10 py-8">
+    <div className="w-full flex space-x-3 items-center justify-start px-10 py-6">
       <button className="w-[6rem] text-xs  h-8 rounded-full border-[1px]  border-grey-dim">
         Exact dates
       </button>
