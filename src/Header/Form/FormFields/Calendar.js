@@ -79,45 +79,11 @@ const renderHeader = (
 
     return (
       <div className="flex mb-5 justify-center items-center py-2">
-        {showLeftButton ? (
-          <div
-            className={`flex items-center cursor-pointer justify-center hover:rounded-full h-[2rem] ${
-              isCurrentMonth ? "cursor-not-allowed opacity-20" : ""
-            } w-[2rem] hover:bg-shadow-gray-light`}
-            onClick={!isCurrentMonth ? prevMonth : undefined}
-          >
-            <img
-              src={arrowLeft}
-              alt="Previous Month"
-              className="text-lg font-semibold"
-            />
-          </div>
-        ) : (
-          <div className="h-[2rem] w-[2rem]"></div>
-        )}
-        <div className={` flex items-center justify-center flex-grow text-base font-medium ${
-            !isFirstRender && animationDirection === "slideInLeft"
-              ? "animate-slideInLeft"
-              : !isFirstRender && animationDirection === "slideInRight"
-              ? "animate-slideInRight"
-              : ""
-          }`} >
+        
+        <div className={` flex items-center justify-center flex-grow text-base font-medium `} >
           <span>{format(currentMonth, dateFormat)}</span>
         </div>
-        {showRightButton ? (
-          <div
-            className="flex items-center h-[2rem] w-[2rem] hover:rounded-full hover:bg-shadow-gray-light justify-center"
-            onClick={nextMonth}
-          >
-            <img
-              src={arrowRight}
-              alt="Next Month"
-              className="text-lg font-semibold"
-            />
-          </div>
-        ) : (
-          <div className="h-[2rem] w-[2rem]"></div>
-        )}
+     
       </div>
     );
   };
@@ -320,79 +286,28 @@ const renderHeader = (
     }
   };
 
-  const nextMonth = () => {
-    setAnimationDirection(""); // Reset animation
-    setTimeout(() => {
-      setAnimationDirection("slideInRight");
-      dispatch(setCurrentMonth(addMonths(addMonths(currentMonth, 1))));
-      setUniqueKey((prevKey) => prevKey + 1);
-    }, 0);
-  };
 
-  const prevMonth = () => {
-    setAnimationDirection(""); // Reset animation
-    setTimeout(() => {
-      setAnimationDirection("slideInLeft");
-      dispatch(setCurrentMonth(subMonths(currentMonth, 1)));
-      setUniqueKey((prevKey) => prevKey + 1);
-    }, 0);
-  };
-
-  const nextMonthRight = () => {
-    setAnimationDirection(""); // Reset animation
-    setTimeout(() => {
-      setAnimationDirection("slideInRight");
-      dispatch(setCurrentMonth(addMonths(currentMonth, 1)));
-      setUniqueKey((prevKey) => prevKey + 1);
-    }, 0);
-  };
-
-  const prevMonthLeft = () => {
-    setAnimationDirection(""); // Reset animation
-    setTimeout(() => {
-      setAnimationDirection("slideInLeft");
-      dispatch(setCurrentMonth(subMonths(currentMonth, 1)));
-      setUniqueKey((prevKey) => prevKey + 1);
-    }, 0);
-  };
 
  return (
-    <div className="flex flex-col justify-center">
-      <div className="flex  justify-self-center">
-        <div
-          key={`${uniqueKey}-current`}
-          className={`max-w-md justify-center items-center w-[25rem] mx-1 rounded-lg`}
-        >
-          {renderHeader(currentMonth, nextMonth, prevMonth, true, false)}
-          {renderDays()}
-          <div className={`${
-            !isFirstRender && animationDirection === "slideInLeft"
-              ? "animate-slideInLeft"
-              : !isFirstRender && animationDirection === "slideInRight"
-              ? "animate-slideInRight"
-              : ""
-          }`}>{renderCells(currentMonth)}</div>
+    <div className="flex flex-col w-full h-auto justify-center">
+      <div className="absolute top-[9rem] left-[2.2rem]" > {renderDays()}</div>
+      <div className="absolute top-[9rem] right-[2.2rem]" > {renderDays()}</div>
+      <div className="overflow-x-scroll w-full " >
+
+      <div className="inline-flex  gap-x-8">
+        
+      {Array.from({ length: 12 }).map((item,index) =>  {
+        return <div
+          key={`${index}-current`}
+          className={`max-w-md flex-shrink-0 justify-center items-center w-[25rem] mx-1 rounded-lg`}
+          >
+          {renderHeader(addMonths(currentMonth, index))}
+         
+          <div className={``}>{renderCells(addMonths(currentMonth, index))}</div>
         </div>
-        <div
-          key={`${uniqueKey}-next`}
-          className={`max-w-md w-[25rem] mx-1 rounded-lg`}
-        >
-          {renderHeader(
-            addMonths(currentMonth, 1),
-            nextMonthRight,
-            prevMonthLeft,
-            false,
-            true
-          )}
-          {renderDays()}
-          <div className={`${
-            !isFirstRender && animationDirection === "slideInLeft"
-              ? "animate-slideInLeft"
-              : !isFirstRender && animationDirection === "slideInRight"
-              ? "animate-slideInRight"
-              : ""
-          }`}>{renderCells(addMonths(currentMonth, 1))}</div>
+      }) }
         </div>
+        
       </div>
       <div className="w-full flex justify-start items-center">
         {(curInput === "checkIn" || curInput === "checkOut") && (
