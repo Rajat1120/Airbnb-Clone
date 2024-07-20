@@ -33,15 +33,12 @@ let modalStye = {
     "fixed top-[20%] z-10 left-[52%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
 };
 function Modal({ children }) {
-  // const [openName, setOpenName] = useState("");
   const openName = useSelector((store) => store.form.openName);
   const dispatch = useDispatch();
   const close = () => {
     dispatch(setOpenName(""));
   };
   const open = setOpenName;
-
-  // console.log(openName);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>
@@ -85,7 +82,7 @@ function Window({ children, name, modalRef, resetRef }) {
 
       return () => document.removeEventListener("click", handleClick, true);
     },
-    [close]
+    [close, isModalOpen]
   );
 
   if (name !== openName) return null;

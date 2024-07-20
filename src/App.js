@@ -21,6 +21,7 @@ export default function App() {
     <div className="flex-center relative">
       <div
         ref={headerRef}
+        id="header"
         className={` fixed ${
           minimize ? "z-50" : "z-10"
         }  transition-all duration-[0.3s] ease-in-out ${

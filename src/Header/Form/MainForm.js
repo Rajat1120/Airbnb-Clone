@@ -56,7 +56,7 @@ const MainForm = ({ startScroll, headerRef }) => {
 
   useEffect(() => {
     if (!openName) {
-      dispatch(dispatch(setMinimize(false)));
+      // dispatch(dispatch(setMinimize(false)));
     }
   }, [openName, dispatch]);
 
@@ -97,6 +97,21 @@ const MainForm = ({ startScroll, headerRef }) => {
   const Modal = () => {
     useEffect(() => {
       function handleClick(e) {
+        if (
+          !openName &&
+          headerRef?.current &&
+          !headerRef.current?.contains(e.target)
+        ) {
+          dispatch(setMinimize(false));
+        }
+      }
+
+      document.addEventListener("click", handleClick, false);
+      return () => document.removeEventListener("click", handleClick, false);
+    }, []);
+
+    useEffect(() => {
+      function handleClick(e) {
         console.log(checkOpenModal(e));
         if (
           headerRef?.current &&
@@ -114,7 +129,7 @@ const MainForm = ({ startScroll, headerRef }) => {
     return ReactDOM.createPortal(
       <>
         <div
-          className={`fixed top-0  opacity-40  w-full h-${
+          className={`fixed top-0 -z-10 opacity-40  w-full h-${
             minimize ? "full" : "0"
           } bg-black`}
         ></div>
