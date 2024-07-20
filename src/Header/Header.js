@@ -14,7 +14,7 @@ function Header({ headerRef }) {
   const minimize = useSelector((store) => store.app.minimize);
 
   let val1 = minimize
-    ? "after:translate-y-[6.8rem] "
+    ? "after:translate-y-[7rem] "
     : "after:translate-y-[1.8rem]";
 
   let classForAfter = `after:content-[''] ${
@@ -38,7 +38,9 @@ function Header({ headerRef }) {
         </div>
         <div
           className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
-            !startScroll ? "-translate-y-20 " : ""
+            !startScroll
+              ? `${minimize ? "translate-y-0" : "-translate-y-20"}  `
+              : ""
           } justify-center  items-center px-6`}
         >
           <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">

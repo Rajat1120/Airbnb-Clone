@@ -231,7 +231,11 @@ const MainFormContent = () => {
                 
                 ${data === "destination" ? "rounded-full bg-white" : ""} 
 
-                 ${data === "destination" ? "" : "before:hover:bg-grey-light-50 "}
+                 ${
+                   data === "destination"
+                     ? ""
+                     : "before:hover:bg-grey-light-50 "
+                 }
                 
                 before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
               >
@@ -364,7 +368,7 @@ const MainFormContent = () => {
               modalRef={modalRef}
               name="checkIn"
             >
-              <div className="flex flex-col justify-center items-center ">
+              <div className="flex  flex-col justify-center items-center ">
                 <CheckInOption></CheckInOption>
                 <Calendar></Calendar>
               </div>
@@ -420,7 +424,9 @@ const MainFormContent = () => {
                     handleInputField(e.target, "checkOut");
                   }}
                   className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
-                   ${data === "checkOut" ? "" : "before:hover:bg-grey-light-50 "}
+                   ${
+                     data === "checkOut" ? "" : "before:hover:bg-grey-light-50 "
+                   }
                   before:hover:opacity-40 
                ${data === "checkOut" ? "rounded-full bg-white" : ""}
                h-[3.85rem] flex-col flex justify-center items-center  cursor-pointer`}

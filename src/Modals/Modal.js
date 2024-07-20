@@ -14,6 +14,7 @@ import {
   setCurrentMonth,
   setOpenName,
 } from "../Header/Form/mainFormSlice";
+import { setMinimize } from "../Main/AppSlice";
 
 export const modalContext = createContext();
 
@@ -41,8 +42,6 @@ function Modal({ children }) {
   const open = setOpenName;
 
   // console.log(openName);
-
-  const dateOption = useSelector((state) => state.form.dateOption);
 
   return (
     <modalContext.Provider value={{ openName, close, open }}>
@@ -92,8 +91,8 @@ function Window({ children, name, modalRef, resetRef }) {
   if (name !== openName) return null;
 
   return createPortal(
-    <div className={`${modalStye[data]}`} ref={ref}>
-      <div className="bg-white shadow-2xl rounded-[2rem] " ref={modalRef}>
+    <div className={`${modalStye[data]}`} id="formModal" ref={ref}>
+      <div className="bg-white shadow-2xl rounded-[2rem] z-100 " ref={modalRef}>
         {cloneElement(children)}
       </div>
     </div>,

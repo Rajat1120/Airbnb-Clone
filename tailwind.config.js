@@ -53,10 +53,10 @@ module.exports = {
         },
         expand: {
           "0%": { height: "4.9rem" },
-          "100%": { height: "9.5rem" },
+          "100%": { height: "9.8rem" },
         },
         collapse: {
-          "0%": { height: "9.5rem" },
+          "0%": { height: "9.8rem" },
           "100%": { height: "4.9rem" },
         },
       },

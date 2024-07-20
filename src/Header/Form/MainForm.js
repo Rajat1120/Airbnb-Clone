@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setActiveInput, setOpenName } from "./mainFormSlice";
 import { setMinimize } from "../../Main/AppSlice";
 import Header from "../Header";
+import { useModalRef } from "../../Modals/Modal";
 
 const MainForm = ({ startScroll, headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -27,6 +28,8 @@ const MainForm = ({ startScroll, headerRef }) => {
   }, [startScroll]);
 
   const minimize = useSelector((store) => store.app.minimize);
+  const openName = useSelector((store) => store.form.openName);
+
   useEffect(() => {
     if (minimize) {
       setIsVisible(true);
@@ -50,10 +53,24 @@ const MainForm = ({ startScroll, headerRef }) => {
     [startScroll, dispatch]
   );
 
+  function checkOpenModal(e) {
+    const modalElement = document.getElementById("formModal");
+    if (openName) {
+      return !modalElement?.contains(e.target);
+    } else {
+      return true;
+    }
+  }
+
   const Modal = () => {
     useEffect(() => {
       function handleClick(e) {
-        if (headerRef?.current && !headerRef.current?.contains(e.target)) {
+        console.log(checkOpenModal(e));
+        if (
+          headerRef?.current &&
+          !headerRef.current?.contains(e.target) &&
+          checkOpenModal(e)
+        ) {
           dispatch(setMinimize(false));
         }
       }
@@ -65,7 +82,7 @@ const MainForm = ({ startScroll, headerRef }) => {
     return ReactDOM.createPortal(
       <>
         <div
-          className={`fixed top-0  opacity-40 z-20 w-full h-${
+          className={`fixed top-0  opacity-40  w-full h-${
             minimize ? "full" : "0"
           } bg-black`}
         ></div>
@@ -91,8 +108,10 @@ const MainForm = ({ startScroll, headerRef }) => {
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
    `;
 
+  let animateForm = minimize ? onScrollBack : onScrollProperty;
+
   let classForForm = ` transition-transform duration-[0.3s] ease-in-out border-gray-250 flex ${
-    !startScroll ? onScrollProperty : onScrollBack
+    !startScroll ? `${animateForm}` : onScrollBack
   }  mb-5   rounded-full ${
     !startScroll ? "" : data ? styleForBefore : ""
   }  absolute    `;
@@ -107,7 +126,11 @@ const MainForm = ({ startScroll, headerRef }) => {
           >
             <span className="flex w-[50rem] gap-8 items-center mb-3 self-center  justify-center">
               <button
-                onClick={() => dispatch(setMinimize(true))}
+                onClick={() => {
+                  dispatch(setMinimize(true));
+                  /* dispatch(setActiveInput("destination"));
+                  dispatch(setOpenName("destination")); */
+                }}
                 className="text-[1.8rem] h-[6rem]  font-normal "
               >
                 Anywhere

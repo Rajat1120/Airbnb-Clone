@@ -27,7 +27,7 @@ const Destination = ({ setDestination }) => {
   }
 
   return (
-    <div className="h-full pt-[2rem] px-[1.5rem] shadow-2xl rounded-[2rem] justify-center  w-full  pb-[1.5rem] bg-white">
+    <div className="h-full pt-[2rem] px-[1.5rem] shadow-2xl rounded-[2rem] justify-center  z-50 w-full  pb-[1.5rem] bg-white">
       <div className="flex flex-col justify-center items-center">
         <p className="flex mb-3  text-sm font-medium ml-[1rem] w-full justify-self-start items-center ">
           Search by region
