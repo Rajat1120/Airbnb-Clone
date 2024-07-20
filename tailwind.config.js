@@ -63,8 +63,8 @@ module.exports = {
       animation: {
         slideInLeft: "slideInLeft 0.3s ease-in-out forwards",
         slideInRight: "slideInRight 0.3s ease-in-out forwards",
-        expand: "expand 0.3s ease-in-out forwards",
-        collapse: "collapse 0.3s  ease-in-out forwards",
+        expand: "expand 0.2s ease-in-out forwards",
+        collapse: "collapse 0.2s  ease-in-out forwards",
       },
     },
   },

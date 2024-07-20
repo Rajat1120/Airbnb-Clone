@@ -14,12 +14,12 @@ function Header({ headerRef }) {
   const minimize = useSelector((store) => store.app.minimize);
 
   let val1 = minimize
-    ? "after:translate-y-[6.5rem] "
+    ? "after:translate-y-[6.8rem] "
     : "after:translate-y-[1.8rem]";
 
   let classForAfter = `after:content-[''] ${
     !startScroll ? ` ${val1}` : "after:translate-y-[7.5rem]"
-  } after:transition-transform after:duration-[0.3s] after:ease-in-out after:w-full after:z-50 after:bg-grey-dim   after:h-[1px]`;
+  } after:transition-transform after:duration-[0.2s] after:ease-in-out after:w-full after:z-50 after:bg-grey-dim   after:h-[1px]`;
 
   return (
     <div
