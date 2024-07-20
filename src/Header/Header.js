@@ -11,9 +11,15 @@ import { useSelector } from "react-redux";
 function Header({ headerRef }) {
   const startScroll = useSelector((store) => store.app.startScroll);
 
+  const minimize = useSelector((store) => store.app.minimize);
+
+  let val1 = minimize
+    ? "after:translate-y-[6.5rem] "
+    : "after:translate-y-[1.8rem]";
+
   let classForAfter = `after:content-[''] ${
-    !startScroll ? " after:-translate-y-[5.4rem]" : ""
-  } after:transition-transform after:duration-[0.3s] after:ease-in-out after:w-full after:z-10 after:bg-grey-dim after:fixed after:top-[9.5rem]  after:h-[1px]`;
+    !startScroll ? ` ${val1}` : "after:translate-y-[7.5rem]"
+  } after:transition-transform after:duration-[0.3s] after:ease-in-out after:w-full after:z-50 after:bg-grey-dim   after:h-[1px]`;
 
   return (
     <div

@@ -93,7 +93,7 @@ function Window({ children, name, modalRef, resetRef }) {
 
   return createPortal(
     <div className={`${modalStye[data]}`} ref={ref}>
-      <div className="bg-white shadow-2xl rounded-[2rem]" ref={modalRef}>
+      <div className="bg-white shadow-2xl rounded-[2rem] " ref={modalRef}>
         {cloneElement(children)}
       </div>
     </div>,

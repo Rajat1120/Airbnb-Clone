@@ -52,12 +52,12 @@ module.exports = {
           "100%": { transform: "translateX(0)", opacity: "1" },
         },
         expand: {
-          "0%": { height: "0rem" },
-          "100%": { height: "5rem" },
+          "0%": { height: "4.9rem" },
+          "100%": { height: "9.5rem" },
         },
         collapse: {
-          "0%": { height: "5rem" },
-          "100%": { height: "0rem" },
+          "0%": { height: "9.5rem" },
+          "100%": { height: "4.9rem" },
         },
       },
       animation: {
