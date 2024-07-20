@@ -11,6 +11,7 @@ import { useModalRef } from "../../Modals/Modal";
 const MainForm = ({ startScroll, headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
+  const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
 
   let ref = useRef();
@@ -52,6 +53,37 @@ const MainForm = ({ startScroll, headerRef }) => {
     },
     [startScroll, dispatch]
   );
+
+  useEffect(() => {
+    if (!openName) {
+      dispatch(dispatch(setMinimize(false)));
+    }
+  }, [openName, dispatch]);
+
+  useEffect(() => {
+    if (button === "anywhere") {
+      if (isVisible) {
+        setTimeout(() => {
+          dispatch(setActiveInput("destination"));
+          dispatch(setOpenName("destination"));
+        }, 200);
+      }
+    } else if (button === "week") {
+      if (isVisible) {
+        setTimeout(() => {
+          dispatch(setActiveInput("checkIn"));
+          dispatch(setOpenName("checkIn"));
+        }, 200);
+      }
+    } else if (button === "guest") {
+      if (isVisible) {
+        setTimeout(() => {
+          dispatch(setActiveInput("addGuest"));
+          dispatch(setOpenName("addGuest"));
+        }, 200);
+      }
+    }
+  }, [button, dispatch, isVisible]);
 
   function checkOpenModal(e) {
     const modalElement = document.getElementById("formModal");
@@ -128,19 +160,30 @@ const MainForm = ({ startScroll, headerRef }) => {
               <button
                 onClick={() => {
                   dispatch(setMinimize(true));
-                  /* dispatch(setActiveInput("destination"));
-                  dispatch(setOpenName("destination")); */
+                  setButton("anywhere");
                 }}
                 className="text-[1.8rem] h-[6rem]  font-normal "
               >
                 Anywhere
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
-              <button className="text-[1.8rem] h-[6rem] font-normal ">
+              <button
+                onClick={() => {
+                  dispatch(setMinimize(true));
+                  setButton("week");
+                }}
+                className="text-[1.8rem] h-[6rem] font-normal "
+              >
                 Any week
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
-              <button className="text-3xl w-[18rem]  gap-6 flex items-center  justify-start h-[6rem]">
+              <button
+                onClick={() => {
+                  dispatch(setMinimize(true));
+                  setButton("guest");
+                }}
+                className="text-3xl w-[18rem]  gap-6 flex items-center  justify-start h-[6rem]"
+              >
                 <p className="text-gray-400 font-light">Add guest</p>
                 <div className="w-[4rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[4rem]">
                   <img className="scale-125" src={searchIcon} alt="" />
