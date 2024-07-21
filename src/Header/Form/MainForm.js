@@ -13,6 +13,7 @@ const MainForm = ({ startScroll, headerRef }) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
+  const dateOption = useSelector((store) => store.form.dateOption);
   const isCalendarModalOpen = useSelector(
     (store) => store.form.isCalendarModalOpen
   );
@@ -74,8 +75,13 @@ const MainForm = ({ startScroll, headerRef }) => {
     } else if (button === "week") {
       if (isVisible) {
         setTimeout(() => {
-          dispatch(setActiveInput("checkIn"));
-          dispatch(setOpenName("checkIn"));
+          if (dateOption === "dates") {
+            dispatch(setActiveInput("checkIn"));
+            dispatch(setOpenName("checkIn"));
+          } else {
+            dispatch(setActiveInput(dateOption));
+            dispatch(setOpenName(dateOption));
+          }
         }, 200);
       }
     } else if (button === "guest") {
