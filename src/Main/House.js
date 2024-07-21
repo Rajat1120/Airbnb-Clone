@@ -4,6 +4,7 @@ import star from "../data/Extra/star-rate.svg";
 import { houses } from "../data/JsonData/HouseDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
+import { setActiveInput } from "../Header/Form/mainFormSlice";
 
 const House = () => {
   let lastScrollPosition = useRef(window.scrollY);
@@ -18,6 +19,7 @@ const House = () => {
 
       setTimeout(() => {
         dispatch(setMinimize(false));
+        dispatch(setActiveInput(""));
       }, 350);
 
       if (currentScrollPosition > lastScrollPosition.current) {

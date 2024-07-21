@@ -13,6 +13,9 @@ const MainForm = ({ startScroll, headerRef }) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
+  const isCalendarModalOpen = useSelector(
+    (store) => store.form.isCalendarModalOpen
+  );
 
   let ref = useRef();
 
@@ -87,7 +90,10 @@ const MainForm = ({ startScroll, headerRef }) => {
 
   function checkOpenModal(e) {
     const modalElement = document.getElementById("formModal");
-    if (openName) {
+    const calendarElement = document.getElementById("calendar");
+    if (openName && isCalendarModalOpen) {
+      return !calendarElement?.contains(e.target);
+    } else if (openName) {
       return !modalElement?.contains(e.target);
     } else {
       return true;
@@ -97,7 +103,9 @@ const MainForm = ({ startScroll, headerRef }) => {
   const Modal = () => {
     useEffect(() => {
       function handleClick(e) {
-        if (
+        if (isCalendarModalOpen) {
+          return;
+        } else if (
           !openName &&
           headerRef?.current &&
           !headerRef.current?.contains(e.target)

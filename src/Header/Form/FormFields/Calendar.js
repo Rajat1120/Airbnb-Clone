@@ -27,15 +27,14 @@ import AddDays from "../AddDays";
 
 const Calendar = () => {
   const selectedInput = useSelector((store) => store.form.curSelectInput);
-  const [scrollPosition, setScrollPosition] = useState(0)
+  const [scrollPosition, setScrollPosition] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
-   const scrollContainerRef = useRef(null);
+  const scrollContainerRef = useRef(null);
 
-const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const monthWidth = 440; // Width of each month component
   const scrollSpeed = 200;
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
-
 
   const currentMonth = useSelector((store) => store.form.currentMonth);
   const selectedStartDate = useSelector(
@@ -45,8 +44,6 @@ const [currentIndex, setCurrentIndex] = useState(0);
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
-
-
 
   // console.log(addDaysToStartDate(3));
 
@@ -59,26 +56,19 @@ const [currentIndex, setCurrentIndex] = useState(0);
     }
   }, [isFirstRender]);
 
-const renderHeader = (
-    currentMonth,
-   
-  ) => {
+  const renderHeader = (currentMonth) => {
     const dateFormat = "MMMM yyyy";
-  
-
-  
 
     return (
       <div className="flex mb-5 justify-center items-center py-2">
-        
-        <div className={` flex items-center justify-center flex-grow text-base font-medium `} >
+        <div
+          className={` flex items-center justify-center flex-grow text-base font-medium `}
+        >
           <span>{format(currentMonth, dateFormat)}</span>
         </div>
-     
       </div>
     );
   };
-
 
   const renderDays = () => {
     const dateFormat = "eee";
@@ -106,7 +96,7 @@ const renderHeader = (
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
     const today = new Date();
-      let rowCount = 0;
+    let rowCount = 0;
 
     const dateFormat = "d";
     const rows = [];
@@ -137,10 +127,10 @@ const renderHeader = (
             isSameMonth(day, monthStart)
           ) {
             cellClass = "bg-black text-white rounded-full";
-          }else if (!isSameMonth(day, monthStart)) {
-              cellClass = "bg-white cursor-pointer text-white";
-              onClickHandler = null; // Disable onClick for dates outside the current month
-            } else {
+          } else if (!isSameMonth(day, monthStart)) {
+            cellClass = "bg-white cursor-pointer text-white";
+            onClickHandler = null; // Disable onClick for dates outside the current month
+          } else {
             cellClass =
               "bg-white text-black hover:rounded-full hover:border-[1.5px] hover:border-black";
           }
@@ -218,13 +208,11 @@ const renderHeader = (
           {days}
         </div>
       );
-       rowCount++;
+      rowCount++;
       days = [];
     }
     return <div className="">{rows}</div>;
   };
-
-  
 
   const onCalendarModalDateClick = (day) => {
     dispatch(setStartDurationDate(day));
@@ -284,95 +272,95 @@ const renderHeader = (
     }
   };
 
-   const handleScroll = (direction) => {
+  const handleScroll = (direction) => {
     const container = scrollContainerRef.current;
     const maxIndex = 20; // Assuming 12 months are rendered
 
-    if (direction === 'left' && currentIndex > 0) {
-      setCurrentIndex(prevIndex => prevIndex - 1);
-    } else if (direction === 'right' && currentIndex < maxIndex) {
-      setCurrentIndex(prevIndex => prevIndex + 1);
+    if (direction === "left" && currentIndex > 0) {
+      setCurrentIndex((prevIndex) => prevIndex - 1);
+    } else if (direction === "right" && currentIndex < maxIndex) {
+      setCurrentIndex((prevIndex) => prevIndex + 1);
     }
   };
-   
-
-
 
   // Prevent default scroll behavior
   useEffect(() => {
     const preventDefault = (e) => e.preventDefault();
     const container = scrollContainerRef.current;
-    
-    container.addEventListener('wheel', preventDefault, { passive: false });
-    container.addEventListener('touchmove', preventDefault, { passive: false });
+
+    container.addEventListener("wheel", preventDefault, { passive: false });
+    container.addEventListener("touchmove", preventDefault, { passive: false });
 
     return () => {
-      container.removeEventListener('wheel', preventDefault);
-      container.removeEventListener('touchmove', preventDefault);
+      container.removeEventListener("wheel", preventDefault);
+      container.removeEventListener("touchmove", preventDefault);
     };
   }, []);
 
   console.log(currentIndex);
 
   useEffect(() => {
-   
-    if(currentIndex >= 0 && currentIndex <= 20){
-
-      setScrollPosition( monthWidth * currentIndex)
+    if (currentIndex >= 0 && currentIndex <= 20) {
+      setScrollPosition(monthWidth * currentIndex);
     }
-  
-  }, [currentIndex])
+  }, [currentIndex]);
 
-
-
-
- return (
+  return (
     <div className="flex w-full flex-col justify-center relative">
-      <div className="absolute top-[3.2rem] left-[2.2rem]" >
-         {renderDays()}
-      </div>
-      <div  className="absolute right-[2.2rem] top-[3.2rem]" >
-         {renderDays()}
-      </div>
-      <button 
-       disabled = {currentIndex === 0}
-        className={` absolute ${currentIndex === 0 ? "opacity-30 cursor-not-allowed" : "hover:bg-gray-100"} left-8 top-2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
-        onClick={() => handleScroll('left')}
+      <div className="absolute top-[3.2rem] left-[2.2rem]">{renderDays()}</div>
+      <div className="absolute right-[2.2rem] top-[3.2rem]">{renderDays()}</div>
+      <button
+        disabled={currentIndex === 0}
+        className={` absolute ${
+          currentIndex === 0
+            ? "opacity-30 cursor-not-allowed"
+            : "hover:bg-gray-100"
+        } left-8 top-2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
+        onClick={() => handleScroll("left")}
       >
-       <img src={arrowLeft} alt="" />
+        <img src={arrowLeft} alt="" />
       </button>
-      <button 
-      disabled = {currentIndex === 20}
-        className={` absolute ${currentIndex === 20 ? "opacity-30 cursor-not-allowed" : " hover:bg-gray-100"} right-8 top-2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
-        onClick={() => handleScroll('right')}
+      <button
+        disabled={currentIndex === 20}
+        className={` absolute ${
+          currentIndex === 20
+            ? "opacity-30 cursor-not-allowed"
+            : " hover:bg-gray-100"
+        } right-8 top-2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
+        onClick={() => handleScroll("right")}
       >
-       <img src={arrowRight} alt="" />
+        <img src={arrowRight} alt="" />
       </button>
-      <div 
+      <div
         ref={scrollContainerRef}
         className="overflow-x-hidden w-full scrollbar-hide"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        <div 
-        style={{ 
+        <div
+          style={{
             transition: `transform ${scrollSpeed}ms ease-out`,
-            transform: `translateX(-${ scrollPosition }px)`
+            transform: `translateX(-${scrollPosition}px)`,
           }}
-        className="inline-flex gap-x-8">
+          className="inline-flex gap-x-8"
+        >
           {Array.from({ length: 23 }, (_, index) => (
             <div
               key={`${index}-current`}
               className="max-w-md  flex-shrink-0  justify-center items-center w-[25rem] mx-1 rounded-lg"
             >
               {renderHeader(addMonths(currentMonth, index))}
-             
-              <div className="mt-10" >{renderCells(addMonths(currentMonth, index))}</div>
+
+              <div className="mt-10">
+                {renderCells(addMonths(currentMonth, index))}
+              </div>
             </div>
           ))}
         </div>
       </div>
       <div className="w-full flex justify-start items-center">
-        {(selectedInput === "checkIn" || selectedInput === "checkOut") && <AddDays />}
+        {(selectedInput === "checkIn" || selectedInput === "checkOut") && (
+          <AddDays />
+        )}
       </div>
     </div>
   );
