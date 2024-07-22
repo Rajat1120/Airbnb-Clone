@@ -3,15 +3,16 @@ import CalendarModal from "./CalendarModal";
 import Calendar from "./FormFields/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { setCalendarModalOpen, setCurrentDot } from "./mainFormSlice";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 const CircularSlider = () => {
-  
   const [onHover, setOnHover] = useState(false);
 
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
   const currentDot = useSelector((store) => store.form.curDot);
-  const startDurationDate = useSelector((store) => store.form.startDurationDate);
-  const formatDate = format(startDurationDate, 'EEE, MMM d');
+  const startDurationDate = useSelector(
+    (store) => store.form.startDurationDate
+  );
+  const formatDate = format(startDurationDate, "EEE, MMM d");
 
   console.log(isModalOpen);
   let NumOfMonths = currentDot;
@@ -38,7 +39,6 @@ const CircularSlider = () => {
       <p>When's your trip?</p>
       <div className="h-[23rem] relative flex items-center justify-center w-[23rem]">
         <div className="h-[18.12rem] flex items-center justify-center bg-[#E6E6E6] bg-clip-border rounded-[50%] w-[18.12rem] shadow-sliderShadow relative">
-          {/* Container for the dots */}
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Dots */}
             {[...Array(dotCount)].map((_, index) => (
@@ -94,7 +94,7 @@ const CircularSlider = () => {
       </div>
       <div className="mb-6 ">
         <p>
-          Starting on {formatDate} {" "}
+          Starting on {formatDate}{" "}
           <span
             className="font-semibold cursor-pointer underline"
             onClick={handleEditClick}
@@ -103,9 +103,8 @@ const CircularSlider = () => {
           </span>
         </p>
         <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <div className="w-[53rem]" >
-
-          <Calendar />
+          <div className="w-[53rem]">
+            <Calendar />
           </div>
         </CalendarModal>
       </div>

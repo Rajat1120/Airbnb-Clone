@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Modal from "../../Modals/Modal";
 import CheckInOption from "./DatesOption";
 import CircularSlider from "./CircularSlider";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { format, addMonths } from "date-fns";
+import { setTextForInputDuration } from "./mainFormSlice";
 
 const Month = ({ modalRef, handleInputField, monthRef }) => {
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
-    const curSelectedInput = useSelector((store) => store.form.curSelectInput);
+
+  const dispatch = useDispatch();
+  const curSelectedInput = useSelector((store) => store.form.curSelectInput);
 
   const currentDot = useSelector((store) => store.form.curDot);
 
@@ -17,9 +20,15 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
     ? format(startDurationDate, "MMM d")
     : "";
 
-  let endDate = addMonths(formattedStartDate, currentDot)
+  let endDate = addMonths(formattedStartDate, currentDot);
 
-  const formatEndDate = format(endDate, "MMM d")
+  const formatEndDate = format(endDate, "MMM d");
+
+  useEffect(() => {
+    let textToDisplay = `${formattedStartDate} - ${formatEndDate}`;
+
+    dispatch(setTextForInputDuration(textToDisplay));
+  }, [formatEndDate, dispatch, formattedStartDate]);
 
   const handleClick = (e) => {
     handleInputField(e.target, "month");
@@ -46,9 +55,13 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
           >
             <div className="flex flex-col w-[14.8rem] items-start justify-center">
               <p className="text-xs font-medium">When</p>
-            {curSelectedInput === "month" ?  <p className="text-sm font-medium ">
-                {formattedStartDate} - {formatEndDate}
-              </p> :  <span className="text-sm font-thin" >Any time</span>}
+              {curSelectedInput === "month" ? (
+                <p className="text-sm font-medium ">
+                  {formattedStartDate} - {formatEndDate}
+                </p>
+              ) : (
+                <span className="text-sm font-thin">Any time</span>
+              )}
             </div>
           </div>
         </div>

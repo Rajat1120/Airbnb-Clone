@@ -18,12 +18,16 @@ let formState = {
   displaySearch: null,
   infantCount: 0,
   petsCount: 0,
-
+  startDateToShow: null,
+  EndDateToShow: null,
   openName: "",
   stayDuration: "week",
   months: [],
   isCalendarModalOpen: false,
   destinationInputVal: "",
+  displaySearchWeek: "",
+  textForInputDuration: "",
+  textForFlexibleInput: "",
 };
 
 const formSlice = createSlice({
@@ -92,6 +96,21 @@ const formSlice = createSlice({
     setDestinationInputVal(state, action) {
       state.destinationInputVal = action.payload;
     },
+    setStartDateToShow(state, action) {
+      state.startDateToShow = action.payload;
+    },
+    setEndDateToShow(state, action) {
+      state.EndDateToShow = action.payload;
+    },
+    setDisplaySearchWeek(state, action) {
+      state.displaySearchWeek = action.payload;
+    },
+    setTextForInputDuration(state, action) {
+      state.textForInputDuration = action.payload;
+    },
+    setTextForFlexibleInput(state, action) {
+      state.textForFlexibleInput = action.payload;
+    },
   },
 });
 
@@ -100,9 +119,12 @@ export const {
   setSearchEl,
   setCurrentMonth,
   setSelectedEndDate,
-
+  setStartDateToShow,
+  setTextForInputDuration,
+  setEndDateToShow,
   setDisplaySearch,
   setSelectedStartDate,
+  setDisplaySearchWeek,
   setRegion,
   setDateOption,
   setAdultCount,
@@ -110,6 +132,7 @@ export const {
   setInfantCount,
   setPetsCount,
   setOpenName,
+  setTextForFlexibleInput,
   setCalendarModalOpen,
   setStartDurationDate,
   setDestinationInputVal,

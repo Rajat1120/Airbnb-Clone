@@ -11,11 +11,16 @@ import { useModalRef } from "../../Modals/Modal";
 const MainForm = ({ startScroll, headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [minimizeForm, setMinimizeForm] = useState(false);
-  const [isScrolling, setIsScrolling] = useState(false);
+  const [displayInputForWeek, setDisplayInputForWeek] = useState("");
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
   const dateOption = useSelector((store) => store.form.dateOption);
+  const startDateToShow = useSelector((store) => store.form.startDateToShow);
+  const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
   const displaySearch = useSelector((store) => store.form.displaySearch);
+  const displaySearchWeek = useSelector(
+    (store) => store.form.displaySearchWeek
+  );
   const curSelectInput = useSelector((store) => store.form.curSelectInput);
   const minimize = useSelector((store) => store.app.minimize);
   const openName = useSelector((store) => store.form.openName);
@@ -34,18 +39,6 @@ const MainForm = ({ startScroll, headerRef }) => {
       }, 200);
     }
   }, [minimize]);
-
-  useEffect(() => {
-    if (startScroll) {
-      setTimeout(() => {
-        setIsScrolling(true);
-      }, 700);
-    } else {
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, 700);
-    }
-  }, [startScroll]);
 
   useEffect(() => {
     if (minimize) {
@@ -221,7 +214,7 @@ const MainForm = ({ startScroll, headerRef }) => {
                 }}
                 className="text-[1.8rem] w-[12rem] h-[6rem] font-normal "
               >
-                Any week
+                {displaySearchWeek ? displaySearchWeek : "Any week"}
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
               <button

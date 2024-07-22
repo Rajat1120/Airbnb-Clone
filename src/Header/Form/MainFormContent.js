@@ -12,6 +12,8 @@ import {
   setCurrentMonth,
   setDestinationInputVal,
   setDisplaySearch,
+  setDisplaySearchWeek,
+  setEndDateToShow,
   setHitSearch,
   setInfantCount,
   setOpenName,
@@ -21,6 +23,8 @@ import {
   setSearchEl,
   setSelectedEndDate,
   setSelectedStartDate,
+  setStartDateToShow,
+  setTextForFlexibleInput,
 } from "./mainFormSlice";
 import Calendar from "../../Header/Form/FormFields/Calendar";
 import CheckInOption from "./DatesOption";
@@ -36,9 +40,7 @@ import { setMinimize } from "../../Main/AppSlice";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
-  const [startDateToShow, setStartDateToShow] = useState(null);
-  const [EndDateToShow, setEndDateToShow] = useState(null);
-  const [destination, setDestination] = useState(null);
+
   const [guestPlural, setGuestPlural] = useState("");
   const [petPlural, setPetPlural] = useState("");
   const [extraGuest, setExtraGuest] = useState("");
@@ -47,11 +49,19 @@ const MainFormContent = () => {
   const destinationInputVal = useSelector(
     (store) => store.form.destinationInputVal
   );
+  const startDateToShow = useSelector((store) => store.form.startDateToShow);
+  const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
+  const textForFlexibleInput = useSelector(
+    (store) => store.form.textForFlexibleInput
+  );
 
   const minimize = useSelector((store) => store.app.minimize);
   const startScroll = useSelector((store) => store.app.startScroll);
   const region = useSelector((store) => store.form.region);
   const adultCount = useSelector((store) => store.form.adultCount);
+  const textForInputDuration = useSelector(
+    (store) => store.form.textForInputDuration
+  );
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
   const petCount = useSelector((store) => store.form.petsCount);
@@ -120,9 +130,9 @@ const MainFormContent = () => {
   const formattedEndDate = endDate ? format(new Date(endDate), "dd MMM") : "";
 
   useEffect(() => {
-    setStartDateToShow(formattedStartDate);
-    setEndDateToShow(formattedEndDate);
-  }, [formattedStartDate, formattedEndDate, startDate, endDate]);
+    dispatch(setStartDateToShow(formattedStartDate));
+    dispatch(setEndDateToShow(formattedEndDate));
+  }, [formattedStartDate, dispatch, formattedEndDate, startDate, endDate]);
 
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
@@ -220,6 +230,27 @@ const MainFormContent = () => {
     } else {
       dispatch(setDisplaySearch(destinationInputVal));
     }
+
+    if (dateOption === "dates") {
+      if (startDateToShow && EndDateToShow) {
+        let inputText = `${startDateToShow} - ${EndDateToShow}`;
+        dispatch(setDisplaySearchWeek(inputText));
+      } else {
+        dispatch(setDisplaySearchWeek(""));
+      }
+    } else if (dateOption === "month") {
+      if (textForInputDuration) {
+        dispatch(setDisplaySearchWeek(textForInputDuration));
+      } else {
+        dispatch(setDisplaySearchWeek(""));
+      }
+    } else if (dateOption === "flexible") {
+      if (textForFlexibleInput) {
+        dispatch(setDisplaySearchWeek(textForFlexibleInput));
+      } else {
+        dispatch(setDisplaySearchWeek(""));
+      }
+    }
   }
 
   return (
@@ -304,7 +335,7 @@ const MainFormContent = () => {
             </div>
           </Modal.Open>
           <Modal.Window modalRef={modalRef} name="destination">
-            <Destination setDestination={setDestination}></Destination>
+            <Destination></Destination>
           </Modal.Window>
         </Modal>
       </div>
