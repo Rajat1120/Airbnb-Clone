@@ -11,6 +11,7 @@ import {
   setChildCount,
   setCurrentMonth,
   setDestinationInputVal,
+  setDisplayGuestInput,
   setDisplaySearch,
   setDisplaySearchWeek,
   setEndDateToShow,
@@ -25,6 +26,7 @@ import {
   setSelectedStartDate,
   setStartDateToShow,
   setTextForFlexibleInput,
+  setTextForGuestInput,
 } from "./mainFormSlice";
 import Calendar from "../../Header/Form/FormFields/Calendar";
 import CheckInOption from "./DatesOption";
@@ -51,6 +53,9 @@ const MainFormContent = () => {
   );
   const startDateToShow = useSelector((store) => store.form.startDateToShow);
   const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
+  const textForGuestInput = useSelector(
+    (store) => store.form.textForGuestInput
+  );
   const textForFlexibleInput = useSelector(
     (store) => store.form.textForFlexibleInput
   );
@@ -69,7 +74,6 @@ const MainFormContent = () => {
   const dateOption = useSelector((state) => state.form.dateOption);
 
   useEffect(() => {
-    console.log(petPlural);
     if (childCount + adultCount === 1 && petCount + infantCount === 0) {
       setGuestPlural("");
     } else if (childCount + adultCount > 1 && petCount + infantCount === 0) {
@@ -224,6 +228,28 @@ const MainFormContent = () => {
     }
   }
 
+  useEffect(() => {
+    let textForGuestInput = `${
+      adultCount + childCount > 0 && data
+        ? `${adultCount + childCount} guest${
+            adultCount + childCount >= 2 ? "s" : ""
+          }`
+        : "Add guest"
+    }`;
+
+    dispatch(setTextForGuestInput(textForGuestInput));
+  }, [
+    adultCount,
+    dispatch,
+    childCount,
+    data,
+    infantCount,
+    petCount,
+    petPlural,
+    extraGuest,
+    guestPlural,
+  ]);
+
   function handleSearch() {
     if (region !== "all") {
       dispatch(setDisplaySearch(region));
@@ -250,6 +276,10 @@ const MainFormContent = () => {
       } else {
         dispatch(setDisplaySearchWeek(""));
       }
+    }
+
+    if (textForGuestInput) {
+      dispatch(setDisplayGuestInput(textForGuestInput));
     }
   }
 

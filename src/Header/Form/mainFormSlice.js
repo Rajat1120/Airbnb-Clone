@@ -28,6 +28,8 @@ let formState = {
   displaySearchWeek: "",
   textForInputDuration: "",
   textForFlexibleInput: "",
+  textForGuestInput: "",
+  displayGuestInput: "",
 };
 
 const formSlice = createSlice({
@@ -111,6 +113,12 @@ const formSlice = createSlice({
     setTextForFlexibleInput(state, action) {
       state.textForFlexibleInput = action.payload;
     },
+    setTextForGuestInput(state, action) {
+      state.textForGuestInput = action.payload;
+    },
+    setDisplayGuestInput(state, action) {
+      state.displayGuestInput = action.payload;
+    },
   },
 });
 
@@ -125,6 +133,7 @@ export const {
   setDisplaySearch,
   setSelectedStartDate,
   setDisplaySearchWeek,
+  setTextForGuestInput,
   setRegion,
   setDateOption,
   setAdultCount,
@@ -139,5 +148,6 @@ export const {
   setStayDuration,
   setMonths,
   setCurrentDot,
+  setDisplayGuestInput,
 } = formSlice.actions;
 export default formSlice.reducer;

@@ -15,9 +15,11 @@ const MainForm = ({ startScroll, headerRef }) => {
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
   const dateOption = useSelector((store) => store.form.dateOption);
-  const startDateToShow = useSelector((store) => store.form.startDateToShow);
-  const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
+
   const displaySearch = useSelector((store) => store.form.displaySearch);
+  const displayGuestInput = useSelector(
+    (store) => store.form.displayGuestInput
+  );
   const displaySearchWeek = useSelector(
     (store) => store.form.displaySearchWeek
   );
@@ -226,9 +228,13 @@ const MainForm = ({ startScroll, headerRef }) => {
                     dispatch(setMinimize(true));
                     setButton("guest");
                   }}
-                  className="text-gray-400 flex-center h-[6rem] w-[12rem] font-light"
+                  className={` ${
+                    displayGuestInput
+                      ? "text-black font-normal"
+                      : "text-gray-400 font-light"
+                  }  flex-center h-[6rem] w-[12rem] `}
                 >
-                  Add guests
+                  {displayGuestInput ? displayGuestInput : "Add guests"}
                 </p>
                 <div
                   onClick={() => {
