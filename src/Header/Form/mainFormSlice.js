@@ -15,12 +15,15 @@ let formState = {
   adultCount: 0,
   curDot: 2,
   childCount: 0,
+  displaySearch: null,
   infantCount: 0,
   petsCount: 0,
+
   openName: "",
   stayDuration: "week",
   months: [],
   isCalendarModalOpen: false,
+  destinationInputVal: "",
 };
 
 const formSlice = createSlice({
@@ -69,21 +72,26 @@ const formSlice = createSlice({
     setStartDurationDate(state, action) {
       state.startDurationDate = action.payload;
     },
-    setMonths(state, action){
-      if(state.months.includes(action.payload)){
+    setMonths(state, action) {
+      if (state.months.includes(action.payload)) {
         state.months = state.months.filter((month) => month !== action.payload);
-      }else{
-
-        state.months.push(action.payload)
+      } else {
+        state.months.push(action.payload);
       }
     },
-    setStayDuration(state, action){ 
+    setStayDuration(state, action) {
       state.stayDuration = action.payload;
-
     },
-    setCurrentDot(state, action){
+    setCurrentDot(state, action) {
       state.curDot = action.payload;
-    }
+    },
+    setDisplaySearch(state, action) {
+      state.displaySearch = action.payload;
+    },
+
+    setDestinationInputVal(state, action) {
+      state.destinationInputVal = action.payload;
+    },
   },
 });
 
@@ -92,6 +100,8 @@ export const {
   setSearchEl,
   setCurrentMonth,
   setSelectedEndDate,
+
+  setDisplaySearch,
   setSelectedStartDate,
   setRegion,
   setDateOption,
@@ -102,7 +112,9 @@ export const {
   setOpenName,
   setCalendarModalOpen,
   setStartDurationDate,
+  setDestinationInputVal,
   setStayDuration,
   setMonths,
-setCurrentDot} = formSlice.actions;
+  setCurrentDot,
+} = formSlice.actions;
 export default formSlice.reducer;

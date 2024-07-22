@@ -1,6 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveInput, setOpenName, setRegion } from "../mainFormSlice";
+import {
+  setActiveInput,
+  setDestinationInputVal,
+  setOpenName,
+  setRegion,
+} from "../mainFormSlice";
 import Europe from "../../../data/Continents/europe.jpg";
 import MiddleEast from "../../../data/Continents/Middle-East.jpg";
 import world from "../../../data/Continents/world.jpg";
@@ -15,7 +20,7 @@ const Destination = ({ setDestination }) => {
   const dateOption = useSelector((store) => store.form.dateOption);
   function handleRegion(region) {
     dispatch(setRegion(region));
-    setDestination("");
+    dispatch(setDestinationInputVal(""));
     dispatch(setActiveInput("checkIn"));
     if (dateOption === "dates") {
       dispatch(setOpenName("checkIn"));

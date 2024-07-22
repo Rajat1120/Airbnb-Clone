@@ -10,9 +10,13 @@ import {
   setAdultCount,
   setChildCount,
   setCurrentMonth,
+  setDestinationInputVal,
+  setDisplaySearch,
+  setHitSearch,
   setInfantCount,
   setOpenName,
   setPetsCount,
+  setRecentSearch,
   setRegion,
   setSearchEl,
   setSelectedEndDate,
@@ -39,6 +43,10 @@ const MainFormContent = () => {
   const [extraGuest, setExtraGuest] = useState("");
 
   const data = useSelector((store) => store.form.curSelectInput);
+  const destinationInputVal = useSelector(
+    (store) => store.form.destinationInputVal
+  );
+
   const minimize = useSelector((store) => store.app.minimize);
   const startScroll = useSelector((store) => store.app.startScroll);
   const region = useSelector((store) => store.form.region);
@@ -169,7 +177,7 @@ const MainFormContent = () => {
     // dispatch(setActiveInput(""));
     if (inputField === "destination") {
       dispatch(setRegion("all"));
-      setDestination(null);
+      dispatch(setDestinationInputVal(null));
     }
     if (inputField === "checkIn" || inputField === "checkOut") {
       dispatch(setSelectedStartDate(null));
@@ -202,6 +210,14 @@ const MainFormContent = () => {
   function handleDestinationField(input) {
     if (input === "destination") {
       dispatch(setActiveInput("destination"));
+    }
+  }
+
+  function handleSearch() {
+    if (region !== "all") {
+      dispatch(setDisplaySearch(region));
+    } else {
+      dispatch(setDisplaySearch(destinationInputVal));
     }
   }
 
@@ -253,7 +269,7 @@ const MainFormContent = () => {
                       ref={inputRef}
                       onChange={(e) => {
                         dispatch(setRegion("all"));
-                        setDestination(e.target.value);
+                        dispatch(setDestinationInputVal(e.target.value));
                       }}
                       type="text"
                       className={`w-[10.62rem] 4 text-sm font-medium"
@@ -264,8 +280,8 @@ const MainFormContent = () => {
                       placeholder="Search Destinations"
                       value={
                         data
-                          ? destination
-                            ? destination
+                          ? destinationInputVal
+                            ? destinationInputVal
                             : region !== "all"
                             ? region
                             : ""
@@ -273,7 +289,7 @@ const MainFormContent = () => {
                       }
                     />
                   </div>
-                  {(region !== "all" || destination) &&
+                  {(region !== "all" || destinationInputVal) &&
                   data === "destination" ? (
                     <div
                       onClick={(e) => handleCrossClick(e, "destination")}
@@ -572,6 +588,7 @@ const MainFormContent = () => {
             <div
               onClick={() => {
                 data && dispatch(setActiveInput(""));
+                handleSearch();
               }}
               className={`hover:bg-dark-pink  ${
                 data ? "w-[8rem] z-50" : "w-[3rem] z-50 "

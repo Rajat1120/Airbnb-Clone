@@ -15,13 +15,13 @@ const MainForm = ({ startScroll, headerRef }) => {
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
   const dateOption = useSelector((store) => store.form.dateOption);
+  const displaySearch = useSelector((store) => store.form.displaySearch);
+  const curSelectInput = useSelector((store) => store.form.curSelectInput);
   const minimize = useSelector((store) => store.app.minimize);
   const openName = useSelector((store) => store.form.openName);
   const isCalendarModalOpen = useSelector(
     (store) => store.form.isCalendarModalOpen
   );
-
-  let ref = useRef();
 
   useEffect(() => {
     if (minimize) {
@@ -174,7 +174,7 @@ const MainForm = ({ startScroll, headerRef }) => {
 
   const styleForBefore = `before:content-[''] ${
     !startScroll
-      ? minimize
+      ? minimize && curSelectInput
         ? "before:animate-bgShadow"
         : "before:bg-white"
       : "before:bg-shadow-gray"
@@ -215,9 +215,11 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("anywhere");
                 }}
-                className="text-[1.8rem] h-[6rem] px-8 flex-center  font-normal "
+                className="text-[1.8rem] h-[6rem]  flex-center text-center w-[10rem] font-normal "
               >
-                Anywhere
+                <span className="w-full">
+                  {displaySearch ? displaySearch : "Anywhere"}
+                </span>
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
               <button
@@ -225,7 +227,7 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("week");
                 }}
-                className="text-[1.8rem] px-8 h-[6rem] font-normal "
+                className="text-[1.8rem] w-[12rem] h-[6rem] font-normal "
               >
                 Any week
               </button>
@@ -235,9 +237,9 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("guest");
                 }}
-                className={` text-3xl w-[20rem]  px-10 mr-[-2rem]  flex-center  gap-8 h-[6rem] `}
+                className={` text-3xl w-[20rem]   mr-[-2rem]  flex-center  gap-12 h-[6rem] `}
               >
-                <p className="text-gray-400 font-light">Add guest</p>
+                <p className="text-gray-400 font-light">Add guests</p>
                 <div
                   className={` w-[4rem] ${
                     minimize ? "scale-90" : ""
