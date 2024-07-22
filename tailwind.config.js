@@ -59,10 +59,7 @@ module.exports = {
           "0%": { height: "9.8rem" },
           "100%": { height: "4.9rem" },
         },
-        scaleModal: {
-          "0%": { transform: "scale(0.9) translateY(-1rem)" },
-          "100%": { transform: "scale(1) translateY(0rem)" },
-        },
+
         bgShadow: {
           "0%": { "background-color": "white" },
           "100%": { "background-color": "#e6e6e6" },
@@ -73,7 +70,7 @@ module.exports = {
         slideInRight: "slideInRight 0.3s ease-in-out forwards",
         expand: "expand 0.2s ease-in-out forwards",
         collapse: "collapse 0.2s  ease-in-out forwards",
-        scaleModal: "scaleModal 0.02s  ease-in-out forwards",
+
         bgShadow: "bgShadow 0.3s ease-in-out forwards",
       },
     },
