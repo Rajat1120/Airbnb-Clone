@@ -133,7 +133,6 @@ const MainForm = ({ startScroll, headerRef }) => {
 
     useEffect(() => {
       function handleClick(e) {
-        console.log(checkOpenModal(e));
         if (
           headerRef?.current &&
           !headerRef.current?.contains(e.target) &&

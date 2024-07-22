@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { format, addDays, subDays } from "date-fns";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import Modal from "../../Modals/Modal";
 
 import cross from "../../data/Icons svg/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setActiveElement,
   setActiveInput,
   setAdultCount,
   setChildCount,
@@ -15,27 +15,21 @@ import {
   setDisplaySearch,
   setDisplaySearchWeek,
   setEndDateToShow,
-  setHitSearch,
   setInfantCount,
   setOpenName,
   setPetsCount,
-  setRecentSearch,
   setRegion,
-  setSearchEl,
   setSelectedEndDate,
   setSelectedStartDate,
   setStartDateToShow,
-  setTextForFlexibleInput,
   setTextForGuestInput,
 } from "./mainFormSlice";
 import Calendar from "../../Header/Form/FormFields/Calendar";
 import CheckInOption from "./DatesOption";
-import { format } from "date-fns";
-import { current } from "@reduxjs/toolkit";
-import { da } from "date-fns/locale";
+
 import AddGuest from "./FormFields/AddGuest";
 import Destination from "./FormFields/Destination";
-import CircularSlider from "./CircularSlider";
+
 import Month from "./Month";
 import Flexible from "./Flexible";
 import { setMinimize } from "../../Main/AppSlice";
@@ -53,6 +47,11 @@ const MainFormContent = () => {
   );
   const startDateToShow = useSelector((store) => store.form.startDateToShow);
   const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
+  const selectedStartDate = useSelector(
+    (store) => store.form.selectedStartDate
+  );
+  const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
+
   const textForGuestInput = useSelector(
     (store) => store.form.textForGuestInput
   );
@@ -258,7 +257,19 @@ const MainFormContent = () => {
     }
 
     if (dateOption === "dates") {
-      if (startDateToShow && EndDateToShow) {
+      if (startDateToShow && !EndDateToShow) {
+        let endDate = addDays(selectedStartDate, 1);
+        dispatch(setSelectedEndDate(endDate));
+
+        let inputText = `${startDateToShow} - ${format(endDate, "dd MMM")}`;
+        dispatch(setDisplaySearchWeek(inputText));
+      } else if (!startDateToShow && EndDateToShow) {
+        let startDate = subDays(selectedEndDate, 1);
+        dispatch(setSelectedStartDate(startDate));
+
+        let inputText = `${format(startDate, "dd MMM")} - ${EndDateToShow}`;
+        dispatch(setDisplaySearchWeek(inputText));
+      } else if (startDateToShow && EndDateToShow) {
         let inputText = `${startDateToShow} - ${EndDateToShow}`;
         dispatch(setDisplaySearchWeek(inputText));
       } else {

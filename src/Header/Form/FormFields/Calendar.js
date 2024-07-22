@@ -297,8 +297,6 @@ const Calendar = () => {
     };
   }, []);
 
-  console.log(currentIndex);
-
   useEffect(() => {
     if (currentIndex >= 0 && currentIndex <= 20) {
       setScrollPosition(monthWidth * currentIndex);

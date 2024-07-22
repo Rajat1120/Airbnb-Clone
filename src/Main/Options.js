@@ -23,7 +23,7 @@ const Options = () => {
   const leftScrollBtnRef = useRef();
 
   const [scrollPosition, setScrollPosition] = useState(0);
-  console.log(scrollPosition);
+
   useEffect(() => {
     const optionRef = optionsRef.current;
     const handleScroll = () => {
