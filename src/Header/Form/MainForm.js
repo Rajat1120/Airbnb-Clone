@@ -172,7 +172,13 @@ const MainForm = ({ startScroll, headerRef }) => {
     );
   };
 
-  const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
+  const styleForBefore = `before:content-[''] ${
+    !startScroll
+      ? minimize
+        ? "before:animate-bgShadow"
+        : "before:bg-white"
+      : "before:bg-shadow-gray"
+  }   before:transition-all before:duration-[0.3s] before:rounded-full before:z-[2] ease-in-out  before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
     "translate-y-[-5.5rem]  border-[3px]  scale-[.5] self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
@@ -189,7 +195,7 @@ const MainForm = ({ startScroll, headerRef }) => {
     !startScroll ? `${animateForm}` : onScrollBack
   }  mb-5   rounded-full ${
     !startScroll ? "" : data ? styleForBefore : ""
-  }  absolute  flex-center  `;
+  }  absolute  flex-center ${minimize ? styleForBefore : ""} `;
   return (
     <div className="flex items-center   flex-col">
       <div className={classForForm}>
