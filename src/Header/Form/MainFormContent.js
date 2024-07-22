@@ -32,6 +32,7 @@ import Destination from "./FormFields/Destination";
 import CircularSlider from "./CircularSlider";
 import Month from "./Month";
 import Flexible from "./Flexible";
+import { setMinimize } from "../../Main/AppSlice";
 
 const MainFormContent = () => {
   const [hoverInput, setHoverInput] = useState(null);
@@ -589,6 +590,7 @@ const MainFormContent = () => {
               onClick={() => {
                 data && dispatch(setActiveInput(""));
                 handleSearch();
+                dispatch(setMinimize(false));
               }}
               className={`hover:bg-dark-pink  ${
                 data ? "w-[8rem] z-50" : "w-[3rem] z-50 "

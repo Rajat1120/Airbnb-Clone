@@ -159,14 +159,6 @@ const MainForm = ({ startScroll, headerRef }) => {
             minimize ? "full" : "0"
           } bg-black`}
         ></div>
-        {/*    <div
-          ref={ref}
-          className={` bg-white ${
-            minimize ? "animate-expand" : "animate-collapse "
-          } overflow-hidden fixed z-50 top-[4.7rem] w-full `}
-        >
-          <div className="p-4">Content here</div>
-        </div> */}
       </>,
       document.body
     );
@@ -215,9 +207,9 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("anywhere");
                 }}
-                className="text-[1.8rem] h-[6rem]  flex-center text-center w-[10rem] font-normal "
+                className="text-[1.8rem] h-[6rem]  flex-center text-center px-2  w-[10rem] font-normal "
               >
-                <span className="w-full">
+                <span className="w-full truncate text-ellipsis">
                   {displaySearch ? displaySearch : "Anywhere"}
                 </span>
               </button>
@@ -233,14 +225,23 @@ const MainForm = ({ startScroll, headerRef }) => {
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
               <button
-                onClick={() => {
-                  dispatch(setMinimize(true));
-                  setButton("guest");
-                }}
-                className={` text-3xl w-[20rem]   mr-[-2rem]  flex-center  gap-12 h-[6rem] `}
+                onClick={() => {}}
+                className={` text-3xl w-[20rem]   mr-[-2rem]  flex-center   h-[6rem] `}
               >
-                <p className="text-gray-400 font-light">Add guests</p>
+                <p
+                  onClick={() => {
+                    dispatch(setMinimize(true));
+                    setButton("guest");
+                  }}
+                  className="text-gray-400 flex-center h-[6rem] w-[12rem] font-light"
+                >
+                  Add guests
+                </p>
                 <div
+                  onClick={() => {
+                    dispatch(setMinimize(true));
+                    setButton("");
+                  }}
                   className={` w-[4rem] ${
                     minimize ? "scale-90" : ""
                   } flex items-center justify-center bg-pink justify-self-end transition-all duration-[0.2s]   rounded-full h-[4rem] `}
