@@ -10,15 +10,30 @@ import { useModalRef } from "../../Modals/Modal";
 
 const MainForm = ({ startScroll, headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [minimizeForm, setMinimizeForm] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
   const dateOption = useSelector((store) => store.form.dateOption);
+  const minimize = useSelector((store) => store.app.minimize);
+  const openName = useSelector((store) => store.form.openName);
   const isCalendarModalOpen = useSelector(
     (store) => store.form.isCalendarModalOpen
   );
 
   let ref = useRef();
+
+  useEffect(() => {
+    if (minimize) {
+      setTimeout(() => {
+        setMinimizeForm(true);
+      }, 200);
+    } else {
+      setTimeout(() => {
+        setMinimizeForm(false);
+      }, 200);
+    }
+  }, [minimize]);
 
   useEffect(() => {
     if (startScroll) {
@@ -31,9 +46,6 @@ const MainForm = ({ startScroll, headerRef }) => {
       }, 700);
     }
   }, [startScroll]);
-
-  const minimize = useSelector((store) => store.app.minimize);
-  const openName = useSelector((store) => store.form.openName);
 
   useEffect(() => {
     if (minimize) {
@@ -66,14 +78,14 @@ const MainForm = ({ startScroll, headerRef }) => {
 
   useEffect(() => {
     if (button === "anywhere") {
-      if (isVisible) {
+      if (minimize) {
         setTimeout(() => {
           dispatch(setActiveInput("destination"));
           dispatch(setOpenName("destination"));
-        }, 200);
+        }, 0);
       }
     } else if (button === "week") {
-      if (isVisible) {
+      if (minimize) {
         setTimeout(() => {
           if (dateOption === "dates") {
             dispatch(setActiveInput("checkIn"));
@@ -82,17 +94,17 @@ const MainForm = ({ startScroll, headerRef }) => {
             dispatch(setActiveInput(dateOption));
             dispatch(setOpenName(dateOption));
           }
-        }, 200);
+        }, 0);
       }
     } else if (button === "guest") {
-      if (isVisible) {
+      if (minimize) {
         setTimeout(() => {
           dispatch(setActiveInput("addGuest"));
           dispatch(setOpenName("addGuest"));
-        }, 200);
+        }, 0);
       }
     }
-  }, [button, dispatch, isVisible]);
+  }, [button, dispatch, minimize, isVisible, dateOption]);
 
   function checkOpenModal(e) {
     const modalElement = document.getElementById("formModal");
@@ -163,7 +175,7 @@ const MainForm = ({ startScroll, headerRef }) => {
   const styleForBefore = `before:content-['']  before:bg-shadow-gray before:rounded-full before:z-[2] before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
-    "translate-y-[-5.5rem]  border-[3px]  scale-50 self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem]  border-[3px]  scale-[.5] self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack = `translate-y-[0.2rem]  border-[1.5px] scale-100 self-center  w-[53rem] h-[4rem]
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
@@ -171,27 +183,33 @@ const MainForm = ({ startScroll, headerRef }) => {
 
   let animateForm = minimize ? onScrollBack : onScrollProperty;
 
-  let classForForm = ` transition-transform duration-[0.3s] ease-in-out border-gray-250 flex ${
+  let classForForm = ` transition-all ${
+    minimize ? "duration-[0.2s] " : "duration-[0.3s] "
+  } ease-in-out border-gray-250 flex ${
     !startScroll ? `${animateForm}` : onScrollBack
   }  mb-5   rounded-full ${
     !startScroll ? "" : data ? styleForBefore : ""
-  }  absolute    `;
+  }  absolute  flex-center  `;
   return (
     <div className="flex items-center   flex-col">
       <div className={classForForm}>
-        {!startScroll && !minimize ? (
+        {!startScroll && !minimizeForm ? (
           <div
-            className={`w-[48rem] ${
+            className={`w-[58rem] ${
               startScroll ? "hidden" : ""
-            } flex items-center justify-center h-[6rem] px-[3rem]`}
+            } flex-center  h-[6rem] `}
           >
-            <span className="flex w-[50rem] gap-8 items-center mb-3 self-center  justify-center">
+            <span
+              className={` flex-center  duration-[0.2s] ease-in-out  ${
+                minimize ? "opacity-50 w-[58rem]" : "w-[50rem]"
+              }  transition-all  `}
+            >
               <button
                 onClick={() => {
                   dispatch(setMinimize(true));
                   setButton("anywhere");
                 }}
-                className="text-[1.8rem] h-[6rem]  font-normal "
+                className="text-[1.8rem] h-[6rem] px-8 flex-center  font-normal "
               >
                 Anywhere
               </button>
@@ -201,7 +219,7 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("week");
                 }}
-                className="text-[1.8rem] h-[6rem] font-normal "
+                className="text-[1.8rem] px-8 h-[6rem] font-normal "
               >
                 Any week
               </button>
@@ -211,10 +229,14 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("guest");
                 }}
-                className="text-3xl w-[18rem]  gap-6 flex items-center  justify-start h-[6rem]"
+                className={` text-3xl w-[20rem]  px-10 mr-[-2rem]  flex-center  gap-8 h-[6rem] `}
               >
                 <p className="text-gray-400 font-light">Add guest</p>
-                <div className="w-[4rem] flex items-center justify-center bg-pink justify-self-end ml-3 rounded-full h-[4rem]">
+                <div
+                  className={` w-[4rem] ${
+                    minimize ? "scale-90" : ""
+                  } flex items-center justify-center bg-pink justify-self-end transition-all duration-[0.2s]   rounded-full h-[4rem] `}
+                >
                   <img className="scale-125" src={searchIcon} alt="" />
                 </div>
               </button>

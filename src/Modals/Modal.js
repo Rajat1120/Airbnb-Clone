@@ -18,20 +18,6 @@ import { setMinimize } from "../Main/AppSlice";
 
 export const modalContext = createContext();
 
-let modalStye = {
-  checkIn:
-    " fixed top-[20%] z-10 left-[21%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
-  month:
-    " fixed top-[20%] z-10 left-[21%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
-  flexible:
-    " fixed top-[20%] z-10 left-[21%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
-  destination:
-    "fixed top-[20%] z-10 left-[21%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem] ",
-  checkOut:
-    "  fixed top-[20%] z-10 left-[21%]  w-[53rem] bg-black bg-opacity-50 rounded-[2rem] ",
-  addGuest:
-    "fixed top-[20%] z-10 left-[52%]  w-[26rem] bg-black bg-opacity-50 rounded-[2rem]",
-};
 function Modal({ children }) {
   const openName = useSelector((store) => store.form.openName);
   const dispatch = useDispatch();
@@ -58,6 +44,29 @@ function Open({ children, opens: opensWindowName }) {
 }
 
 function Window({ children, name, modalRef, resetRef }) {
+  const minimize = useSelector((store) => store.app.minimize);
+
+  let modalStye = {
+    checkIn: ` fixed top-[20%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem] ${
+      minimize ? "animate-scaleModal" : ""
+    }  bg-black bg-opacity-50 rounded-[2rem] `,
+    month: `   fixed top-[20%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem] ${
+      minimize ? "animate-scaleModal" : ""
+    }  bg-black bg-opacity-50 rounded-[2rem]  `,
+    flexible: `   fixed top-[20%] w-[53rem] ${
+      minimize ? "animate-scaleModal" : ""
+    } z-10 left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  `,
+    destination: `  fixed top-[20%] z-10 left-[21%] transition-all duration-[0.2s] ${
+      minimize ? "animate-scaleModal" : ""
+    } bg-black bg-opacity-50 rounded-[2rem]  w-[26rem] `,
+    checkOut: `    fixed top-[20%] ${
+      minimize ? "animate-scaleModal" : ""
+    } z-10 w-[53rem] left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  `,
+    addGuest: `  fixed top-[20%]  z-10 left-[52%] transition-all duration-[0s] w-[26rem] ${
+      minimize ? "animate-scaleModal" : " "
+    } bg-black bg-opacity-50 rounded-[2rem] `,
+  };
+
   const { openName, close } = useContext(modalContext);
 
   const data = useSelector((store) => store.form.curSelectInput);

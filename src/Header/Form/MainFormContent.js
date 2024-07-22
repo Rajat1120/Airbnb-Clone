@@ -39,7 +39,8 @@ const MainFormContent = () => {
   const [extraGuest, setExtraGuest] = useState("");
 
   const data = useSelector((store) => store.form.curSelectInput);
-
+  const minimize = useSelector((store) => store.app.minimize);
+  const startScroll = useSelector((store) => store.app.startScroll);
   const region = useSelector((store) => store.form.region);
   const adultCount = useSelector((store) => store.form.adultCount);
   const childCount = useSelector((store) => store.form.childCount);
@@ -205,7 +206,13 @@ const MainFormContent = () => {
   }
 
   return (
-    <div className="flex z-20  justify-center  items-center">
+    <div
+      className={`flex z-20  justify-center ${
+        !minimize && !startScroll
+          ? "scale-[0.6] opacity-50"
+          : "scale-100 opacity-1"
+      }  items-center transition-all duration-[0.4s]`}
+    >
       <div>
         <Modal>
           <Modal.Open opens="destination">
