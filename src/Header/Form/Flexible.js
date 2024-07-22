@@ -41,8 +41,6 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
 
   let selectedMonthsName = curSelectedMonths.map((index) => result[index]);
 
-  console.log(selectedMonthsName);
-
   useEffect(() => {
     const month = monthRef.current;
     const handleScroll = () => {
@@ -108,21 +106,15 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
 
   useEffect(() => {
     let inputText = `${
-      curSelectedInput === "flexible" ? (
-        curSelectedMonths.length > 0 ? (
-          `${stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${
+      curSelectedMonths.length > 0
+        ? `${stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${
             selectedMonthsName.length === 1
               ? selectedMonthsName[0].month
               : selectedMonthsName
                   .map((item) => item.month.substring(0, 3))
                   .join(", ")
           }`
-        ) : (
-          ` Any ${stayDuration}`
-        )
-      ) : (
-        <span className="text-sm font-thin">Any time</span>
-      )
+        : ` Any ${stayDuration}`
     }`;
 
     dispatch(setTextForFlexibleInput(inputText));
