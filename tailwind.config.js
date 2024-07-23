@@ -7,8 +7,10 @@ module.exports = {
   theme: {
     fontFamily: {
       sans: [
-        "Airbnb Cereal VF",
         "Circular",
+        "Avenir Next Rounded",
+        "Brandon Grotesque",
+        "Airbnb Cereal VF",
         "-apple-system",
         "BlinkMacSystemFont",
         "Roboto",

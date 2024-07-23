@@ -7,11 +7,14 @@ import menu from "../data/Menu-Icon.svg";
 import person from "../data/person.svg";
 import MainForm from "./Form/MainForm";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router";
 
 function Header({ headerRef }) {
   const startScroll = useSelector((store) => store.app.startScroll);
 
   const minimize = useSelector((store) => store.app.minimize);
+
+  const location = useLocation();
 
   let val1 = minimize
     ? "after:translate-y-[7rem] after:opacity-0 "
@@ -25,12 +28,16 @@ function Header({ headerRef }) {
     <div
       className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
-      <div className="grid grid-cols-3  px-10 ">
+      <div
+        className={`grid grid-cols-3 ${
+          location.pathname === "/house" ? "w-[80%]" : ""
+        } px-20 `}
+      >
         <div className="w-8 ">
-          <a href="#">
+          <a href="/">
             <div className="flex h-20 items-center">
               <img className="mr-2  h-34 scale-[1.2] " src={icon} alt="like" />
-              <h1 className="text-xl  leading-8   text-pink text-start font-semibold">
+              <h1 className="text-2xl  leading-8   text-pink text-start font-semibold">
                 airbnb
               </h1>
             </div>
@@ -51,13 +58,13 @@ function Header({ headerRef }) {
             Experiences
           </p>
         </div>
-        <div className="h-20 flex w-[30rem] -ml-8 items-center  justify-end ">
+        <div className="h-20 flex w-[28rem]  items-center  justify-end ">
           <a href="#">
-            <p className="text-sm h-[2.5rem] mr-[-0.4rem] flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
+            <p className="text-sm h-[2.5rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
               Airbnb your home
             </p>
           </a>
-          <button className=" h-[3rem] mr-[-0.3rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light w-[3rem] ">
+          <button className=" h-[3rem]   flex items-center justify-center rounded-full hover:bg-shadow-gray-light w-[3rem] ">
             <img className="scale-[0.4] w-[100%]" src={globe} alt="" />
           </button>
 

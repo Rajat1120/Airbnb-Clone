@@ -5,6 +5,7 @@ import { houses } from "../data/JsonData/HouseDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
+import { Link } from "react-router-dom";
 
 const House = () => {
   let lastScrollPosition = useRef(window.scrollY);
@@ -50,38 +51,40 @@ const House = () => {
     >
       <div className=" grid gap-x-10   fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
         {houses.map((item) => (
-          <div
-            key={item.id}
-            className="w-[290px] ml-2 h-[408px] flex gap-y-4 items-center justify-center flex-col "
-          >
-            <div className="w-[321px] flex-center  h-[330px]">
-              <img
-                className="rounded-[20px] flex-center w-full h-full object-fill "
-                src={
-                  "https://a0.muscache.com/im/pictures/miso/Hosting-549210539001854746/original/91024f9e-6497-4c36-80e1-d859cab61034.jpeg?im_w=1200"
-                }
-                alt=""
-              />
-            </div>
-            <div className="flex w-[320px] justify-between  items-start ">
-              <div className="">
-                <p className="  text-ellipsis overflow-hidden  font-normal">
-                  {item.location}
-                </p>
-                <p className="text-gray-400 text-sm">
-                  {Math.floor(Math.random() * 20 + 200)} kilometers away
-                </p>
-                <p className="text-gray-400 text-sm">16-21 May</p>
-                <p className="inline">
-                  ${item.price_per_night}{" "}
-                  <span className="text-gray-500 inline"> night</span>
+          <a href="/house" target="_blank">
+            <div
+              key={item.id}
+              className="w-[290px] ml-2 h-[408px] flex gap-y-4 items-center justify-center flex-col "
+            >
+              <div className="w-[321px] flex-center  h-[330px]">
+                <img
+                  className="rounded-[20px] flex-center w-full h-full object-fill "
+                  src={
+                    "https://a0.muscache.com/im/pictures/miso/Hosting-549210539001854746/original/91024f9e-6497-4c36-80e1-d859cab61034.jpeg?im_w=1200"
+                  }
+                  alt=""
+                />
+              </div>
+              <div className="flex w-[320px] justify-between  items-start ">
+                <div className="">
+                  <p className="  text-ellipsis overflow-hidden  font-normal">
+                    {item.location}
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    {Math.floor(Math.random() * 20 + 200)} kilometers away
+                  </p>
+                  <p className="text-gray-400 text-sm">16-21 May</p>
+                  <p className="inline">
+                    ${item.price_per_night}{" "}
+                    <span className="text-gray-500 inline"> night</span>
+                  </p>
+                </div>
+                <p className="flex  justify-between items-center">
+                  <img src={star} className="w-5" alt="" /> 4.75
                 </p>
               </div>
-              <p className="flex  justify-between items-center">
-                <img src={star} className="w-5" alt="" /> 4.75
-              </p>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </div>
