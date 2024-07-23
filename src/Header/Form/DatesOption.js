@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveInput, setDateOption, setOpenName } from "./mainFormSlice";
 
@@ -13,7 +12,7 @@ const CheckInOption = () => {
         onClick={() => {
           dispatch(setDateOption("dates"));
           dispatch(setOpenName("checkIn"));
-          dispatch(setActiveInput("checkOut"));
+          dispatch(setActiveInput("checkIn"));
         }}
         className={`rounded-full text-sm font-medium  flex  text-zinc-700  justify-center items-center h-9 w-[6rem] ${
           dateOption === "dates"
@@ -50,7 +49,6 @@ const CheckInOption = () => {
             : "cursor-pointer hover:bg-grey-dim"
         }`}
       >
-        {" "}
         Flexible
       </span>
     </div>
