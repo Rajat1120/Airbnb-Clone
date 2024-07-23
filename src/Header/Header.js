@@ -29,8 +29,10 @@ function Header({ headerRef }) {
       className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
       <div
-        className={`grid grid-cols-3 ${
-          location.pathname === "/house" ? "w-[80%]" : ""
+        className={`grid grid-cols-3  ${
+          location.pathname === "/house"
+            ? "w-[calc(100%-10rem)] mx-auto"
+            : "w-full"
         } px-20 `}
       >
         <div className="w-8 ">
@@ -48,7 +50,7 @@ function Header({ headerRef }) {
             !startScroll
               ? `${minimize ? "translate-y-0" : "-translate-y-20"}  `
               : ""
-          } justify-center  items-center px-6`}
+          } justify-center  items-center `}
         >
           <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">
             Stays
@@ -58,7 +60,7 @@ function Header({ headerRef }) {
             Experiences
           </p>
         </div>
-        <div className="h-20 flex w-[28rem]  items-center  justify-end ">
+        <div className="h-20 flex   items-center  justify-end ">
           <a href="#">
             <p className="text-sm h-[2.5rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
               Airbnb your home
