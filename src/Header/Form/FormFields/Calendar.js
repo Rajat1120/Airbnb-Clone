@@ -60,7 +60,7 @@ const Calendar = () => {
     const dateFormat = "MMMM yyyy";
 
     return (
-      <div className="flex mb-5 justify-center items-center py-2">
+      <div className="flex pb-4 justify-center items-center py-2">
         <div
           className={` flex items-center justify-center flex-grow text-base font-medium `}
         >
@@ -305,15 +305,15 @@ const Calendar = () => {
 
   return (
     <div className="flex w-full flex-col justify-center relative">
-      <div className="absolute top-[3.2rem] left-[2.2rem]">{renderDays()}</div>
-      <div className="absolute right-[2.2rem] top-[3.2rem]">{renderDays()}</div>
+      <div className="absolute top-[3.4rem] left-[2.2rem]">{renderDays()}</div>
+      <div className="absolute right-[2.2rem] top-[3.4rem]">{renderDays()}</div>
       <button
         disabled={currentIndex === 0}
         className={` absolute ${
           currentIndex === 0
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
-        } left-8 top-2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
+        } left-8 top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
         <img src={arrowLeft} alt="" />
@@ -324,7 +324,7 @@ const Calendar = () => {
           currentIndex === 20
             ? "opacity-30 cursor-not-allowed"
             : " hover:bg-gray-100"
-        } right-8 top-2 transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
+        } right-8 top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
         <img src={arrowRight} alt="" />
@@ -344,7 +344,7 @@ const Calendar = () => {
           {Array.from({ length: 23 }, (_, index) => (
             <div
               key={`${index}-current`}
-              className="max-w-md  flex-shrink-0  justify-center items-center w-[25rem] mx-1 rounded-lg"
+              className="max-w-md    justify-center items-center w-[25rem] mx-1 rounded-lg"
             >
               {renderHeader(addMonths(currentMonth, index))}
 
