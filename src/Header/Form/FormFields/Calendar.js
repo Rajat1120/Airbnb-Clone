@@ -156,7 +156,7 @@ const Calendar = () => {
               cellClass =
                 "halfLeftColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0  "; // End date
             } else if (!isSameMonth(day, monthStart)) {
-              cellClass = "bg-white cursor-pointer text-white";
+              cellClass = "bg-white text-white hidden cursor-default";
               onClickHandler = null; // Disable onClick for dates outside the current month
             } else {
               cellClass =
@@ -173,13 +173,14 @@ const Calendar = () => {
           ) {
             cellClass = "bg-black text-white rounded-full"; // End date
           } else if (!isSameMonth(day, monthStart)) {
-            cellClass = "bg-white text-white";
+            cellClass = "bg-white text-white hidden cursor-default";
             onClickHandler = null; // Disable onClick for dates outside the current month
           } else if (isPastDate) {
-            cellClass = "bg-white text-gray-300"; // Apply a faded style for past dates
+            cellClass = "bg-white text-gray-300 cursor-default"; // Apply a faded style for past dates
+            onClickHandler = null;
           } else {
             cellClass =
-              "bg-white text-black hover:rounded-full hover:border-[1.5px] hover:border-black";
+              "bg-white text-black  hover:rounded-full hover:border-[1.5px] hover:border-black";
           }
         }
         days.push(
