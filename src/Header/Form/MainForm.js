@@ -167,7 +167,7 @@ const MainForm = ({ startScroll, headerRef }) => {
   }   before:transition-all before:duration-[0.3s] before:rounded-full before:z-[2] ease-in-out  before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
-    "translate-y-[-5.5rem]  border-[3px]  scale-[.5] self-center  w-[42.5rem] h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem]  border-[3px]  scale-[.5] self-center inline-block h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack = `translate-y-[0.2rem]  border-[1.5px] scale-100 self-center  w-[53rem] h-[4rem]
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
@@ -187,13 +187,11 @@ const MainForm = ({ startScroll, headerRef }) => {
       <div className={classForForm}>
         {!startScroll && !minimizeForm ? (
           <div
-            className={`w-[58rem] ${
-              startScroll ? "hidden" : ""
-            } flex-center  h-[6rem] `}
+            className={` ${startScroll ? "hidden" : ""} flex-center  h-[6rem] `}
           >
             <span
-              className={` flex-center  duration-[0.2s] ease-in-out  ${
-                minimize ? "opacity-50 w-[58rem]" : "w-[50rem]"
+              className={` flex-center p-4 gap-x-2 duration-[0.2s] ease-in-out  ${
+                minimize ? "opacity-50 " : "opacity-100"
               }  transition-all  `}
             >
               <button
@@ -201,9 +199,9 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("anywhere");
                 }}
-                className="text-[1.8rem] h-[6rem]  flex-center text-center px-2  w-[10rem] font-normal "
+                className="text-[1.8rem] h-[6rem]  flex-center text-center px-2  max-w-[30rem] min-w-[10rem] font-normal "
               >
-                <span className="w-full truncate text-ellipsis">
+                <span className="w-full ">
                   {displaySearch ? displaySearch : "Anywhere"}
                 </span>
               </button>
@@ -213,14 +211,16 @@ const MainForm = ({ startScroll, headerRef }) => {
                   dispatch(setMinimize(true));
                   setButton("week");
                 }}
-                className="text-[1.8rem] w-[12rem] h-[6rem] font-normal "
+                className="text-[1.8rem] flex-center px-4 h-[6rem]   "
               >
-                {displaySearchWeek ? displaySearchWeek : "Any week"}
+                <span className="max-w-[22rem] min-w-[9rem] text-ellipsis   font-normal overflow-hidden whitespace-nowrap ">
+                  {displaySearchWeek ? displaySearchWeek : "Any week"}
+                </span>
               </button>
               <div className="w-[0.2rem] h-[3rem] bg-gray-200"></div>
               <button
                 onClick={() => {}}
-                className={` text-3xl w-[20rem]   mr-[-2rem]  flex-center   h-[6rem] `}
+                className={` text-3xl    flex-center   h-[6rem] `}
               >
                 <p
                   onClick={() => {
@@ -231,7 +231,7 @@ const MainForm = ({ startScroll, headerRef }) => {
                     displayGuestInput
                       ? "text-black font-normal"
                       : "text-gray-400 font-light"
-                  }  flex-center h-[6rem] w-[12rem] `}
+                  }  flex-center h-[6rem] w-[11rem] `}
                 >
                   {displayGuestInput ? displayGuestInput : "Add guests"}
                 </p>
@@ -240,11 +240,9 @@ const MainForm = ({ startScroll, headerRef }) => {
                     dispatch(setMinimize(true));
                     setButton("");
                   }}
-                  className={` w-[4rem] ${
-                    minimize ? "scale-90" : ""
-                  } flex items-center justify-center bg-pink justify-self-end transition-all duration-[0.2s]   rounded-full h-[4rem] `}
+                  className={` w-[4rem]  flex items-center justify-center bg-pink justify-self-end transition-all duration-[0.2s]   rounded-full h-[4rem] `}
                 >
-                  <img className="scale-125" src={searchIcon} alt="" />
+                  <img className="scale-150" src={searchIcon} alt="" />
                 </div>
               </button>
             </span>
