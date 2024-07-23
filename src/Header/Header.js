@@ -10,11 +10,13 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 
 function Header({ headerRef }) {
-  const startScroll = useSelector((store) => store.app.startScroll);
+  const location = useLocation();
+  let onHouseDetailPage = location.pathname === "/house";
+
+  let sliceName = onHouseDetailPage ? "houseSlice" : "app";
+  const startScroll = useSelector((store) => store[sliceName]?.startScroll);
 
   const minimize = useSelector((store) => store.app.minimize);
-
-  const location = useLocation();
 
   let val1 = minimize
     ? "after:translate-y-[7rem] after:opacity-0 "
@@ -78,7 +80,7 @@ function Header({ headerRef }) {
           </div>
         </div>
       </div>
-      {<MainForm headerRef={headerRef} startScroll={startScroll}></MainForm>}
+      {<MainForm headerRef={headerRef}></MainForm>}
     </div>
   );
 }

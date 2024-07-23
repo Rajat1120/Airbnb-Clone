@@ -4,22 +4,27 @@ import ReactDOM from "react-dom";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveInput, setOpenName } from "./mainFormSlice";
-import { setMinimize } from "../../Main/AppSlice";
+import { setMinimize, setStartScroll } from "../../Main/AppSlice";
 import Header from "../Header";
 import { useModalRef } from "../../Modals/Modal";
+import { useLocation } from "react-router";
 
-const MainForm = ({ startScroll, headerRef }) => {
+const MainForm = ({ headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [minimizeForm, setMinimizeForm] = useState(false);
-  const [displayInputForWeek, setDisplayInputForWeek] = useState("");
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
   const dateOption = useSelector((store) => store.form.dateOption);
+  const location = useLocation();
+  let onHouseDetailPage = location.pathname === "/house";
+
+  let sliceName = onHouseDetailPage ? "houseSlice" : "app";
+  const startScroll = useSelector((store) => store[sliceName]?.startScroll);
 
   const displaySearch = useSelector((store) => store.form.displaySearch);
   const displayGuestInput = useSelector(
     (store) => store.form.displayGuestInput
   );
+  const dispatch = useDispatch();
   const displaySearchWeek = useSelector(
     (store) => store.form.displaySearchWeek
   );
@@ -31,16 +36,10 @@ const MainForm = ({ startScroll, headerRef }) => {
   );
 
   useEffect(() => {
-    if (minimize) {
-      setTimeout(() => {
-        setMinimizeForm(true);
-      }, 200);
-    } else {
-      setTimeout(() => {
-        setMinimizeForm(false);
-      }, 200);
+    if (location.pathname === "/house") {
+      dispatch(setStartScroll(false));
     }
-  }, [minimize]);
+  }, [dispatch, location.pathname]);
 
   useEffect(() => {
     if (minimize) {
@@ -51,8 +50,6 @@ const MainForm = ({ startScroll, headerRef }) => {
       }, 300);
     }
   }, [minimize]);
-
-  const dispatch = useDispatch();
 
   useEffect(
     function () {

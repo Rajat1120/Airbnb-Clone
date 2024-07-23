@@ -5,15 +5,14 @@ import { setStartScroll } from "../Main/AppSlice";
 import { useLocation } from "react-router";
 
 const HouseDetail = () => {
-  const startScroll = useSelector((store) => store.app.startScroll);
-
   const minimize = useSelector((store) => store.app.minimize);
   let headerRef = useRef();
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(setStartScroll(false));
-  }, [dispatch]);
+  const location = useLocation();
+  let onHouseDetailPage = location.pathname === "/house";
+  let sliceName = onHouseDetailPage ? "houseSlice" : "app";
+
+  const startScroll = useSelector((store) => store[sliceName]?.startScroll);
 
   let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
 
