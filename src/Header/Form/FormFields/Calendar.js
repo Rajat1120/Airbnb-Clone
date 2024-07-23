@@ -306,8 +306,8 @@ const Calendar = () => {
 
   return (
     <div className="flex w-full flex-col justify-center relative">
-      <div className="absolute top-[3.4rem] left-[2.2rem]">{renderDays()}</div>
-      <div className="absolute right-[2.2rem] top-[3.4rem]">{renderDays()}</div>
+      <div className="absolute top-[3.6rem] left-[2.2rem]">{renderDays()}</div>
+      <div className="absolute right-[2.2rem] top-[3.6rem]">{renderDays()}</div>
       <button
         disabled={currentIndex === 0}
         className={` absolute ${
