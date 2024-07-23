@@ -154,7 +154,7 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
             <div className="flex text-sm font-medium items-start justify-center w-[15rem] flex-col ">
               <span className="text-xs font-medium">When</span>
               <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap w-[15rem]">
-                {curSelectedInput === "flexible" ? (
+                {curSelectedInput ? (
                   curSelectedMonths.length > 0 ? (
                     `${
                       stayDuration.charAt(0).toUpperCase() +

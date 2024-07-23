@@ -55,7 +55,7 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
           >
             <div className="flex flex-col w-[14.8rem] items-start justify-center">
               <p className="text-xs font-medium">When</p>
-              {curSelectedInput === "month" ? (
+              {curSelectedInput ? (
                 <p className="text-sm font-medium ">
                   {formattedStartDate} - {formatEndDate}
                 </p>
