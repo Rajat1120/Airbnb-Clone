@@ -176,16 +176,20 @@ const MainForm = ({ startScroll, headerRef }) => {
   let animateForm = minimize ? onScrollBack : onScrollProperty;
 
   let classForForm = ` transition-all ${
+    !minimize ? (!startScroll ? "animate-formBlur" : "") : ""
+  } ${
     minimize ? "duration-[0.2s] " : "duration-[0.3s] "
   } ease-in-out border-gray-250 flex ${
-    !startScroll ? `${animateForm}` : onScrollBack
+    !startScroll ? `${animateForm} ` : onScrollBack
   }  mb-5   rounded-full ${
     !startScroll ? "" : data ? styleForBefore : ""
-  }  absolute  flex-center ${minimize ? styleForBefore : ""} `;
+  }  absolute ${!startScroll ? "" : ""} flex-center ${
+    minimize ? styleForBefore : ""
+  } `;
   return (
     <div className="flex items-center   flex-col">
       <div className={classForForm}>
-        {!startScroll && !minimizeForm ? (
+        {!startScroll && !minimize ? (
           <div
             className={` ${startScroll ? "hidden" : ""} flex-center  h-[6rem] `}
           >

@@ -64,6 +64,11 @@ module.exports = {
           "0%": { "background-color": "white" },
           "100%": { "background-color": "#e6e6e6" },
         },
+        formBlur: {
+          "0%": { opacity: 0 },
+
+          "100%": { opacity: 1 },
+        },
       },
       animation: {
         slideInLeft: "slideInLeft 0.3s ease-in-out forwards",
@@ -72,6 +77,7 @@ module.exports = {
         collapse: "collapse 0.2s  ease-in-out forwards",
 
         bgShadow: "bgShadow 0.3s ease-in-out forwards",
+        formBlur: "formBlur 0.3s ease-in-out forwards",
       },
     },
   },
