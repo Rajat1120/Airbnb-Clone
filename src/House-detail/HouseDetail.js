@@ -30,7 +30,7 @@ const HouseDetail = () => {
       >
         <Header headerRef={headerRef}></Header>
       </div>
-      <div>
+      <div className="flex-center flex-col">
         <div className="w-[calc(100%-20rem)] flex justify-between mx-auto">
           <h1 className="pt-6 text-[27px] font-[460]">
             Alsisar Haveli - A Heritage Home
@@ -40,7 +40,17 @@ const HouseDetail = () => {
             <span className="underline text-sm font-medium">save</span>
           </div>
         </div>
-        <div></div>
+        <div className=" w-[calc(100%-20rem)] px-auto  ">
+          <div className="  pt-6 ">
+            <div className="grid-areas h-[26.52rem] overflow-hidden rounded-xl">
+              <div className="bg-red-400 grid-area-image1"></div>
+              <div className=" bg-green-400 grid-area-image2 "></div>
+              <div className="bg-blue-400 grid-area-image3"></div>
+              <div className="bg-orange-400 grid-area-image4 "></div>
+              <div className="bg-pink grid-area-image5"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -20,4 +20,30 @@
   .halfLeftColor {
     background: linear-gradient(to left, transparent 50%, #f5f5f5 50%);
   }
+
+  .grid-areas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+    grid-template-areas:
+      "image1 image1 image2 image3"
+      "image1 image1 image4 image5";
+  }
+
+  .grid-area-image1 {
+    grid-area: image1;
+  }
+  .grid-area-image2 {
+    grid-area: image2;
+  }
+  .grid-area-image3 {
+    grid-area: image3;
+  }
+  .grid-area-image4 {
+    grid-area: image4;
+  }
+  .grid-area-image5 {
+    grid-area: image5;
+  }
 }
