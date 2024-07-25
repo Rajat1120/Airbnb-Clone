@@ -21,6 +21,14 @@
     background: linear-gradient(to left, transparent 50%, #f5f5f5 50%);
   }
 
+  .truncatePara {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+
   .grid-areas {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
