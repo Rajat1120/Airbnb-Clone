@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import showMore from "../data/Icons svg/arrow-right.svg";
+import HouseDescriptionModal from "./HouseDescriptionModal";
 
 const HouseDescription = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const paragraphRef = useRef(null);
 
   let maxLines = 4;
@@ -44,7 +46,10 @@ const HouseDescription = () => {
         </p>
         {isOverflowing && (
           <div className="w-full flex justify-start pb-10">
-            <button className="flex items-center">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center"
+            >
               <span className="underline font-medium ">Show more</span>
               <span>
                 <img className="h-6 w-6 " src={showMore} alt="" />
@@ -54,6 +59,12 @@ const HouseDescription = () => {
         )}
         <div className="h-[1px] bg-grey-dim"></div>
       </div>
+      <HouseDescriptionModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      >
+        <div className="w-[46rem] h-full ">{text}</div>
+      </HouseDescriptionModal>
     </div>
   );
 };
