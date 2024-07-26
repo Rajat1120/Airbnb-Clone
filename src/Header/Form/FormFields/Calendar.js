@@ -12,6 +12,7 @@ import {
   addMonths,
   subMonths,
   isWithinInterval,
+  isBefore,
 } from "date-fns";
 import arrowRight from "../../../data/Icons svg/arrow-right.svg";
 import arrowLeft from "../../../data/Icons svg/arrow-left.svg";
@@ -167,6 +168,14 @@ const Calendar = () => {
                 "bg-shadow-gray-light  text-black  hover:before:content-[''] hover:before:w-full hover:before:h-full hover:before:rounded-full hover:before:border-[1.5px] hover:before:border-black hover:before:absolute hover:top-0 hover:before:left-0 hove:before:right-0 hove:before:bottom-0  ";
             }
           } else if (
+            selectedStartDate &&
+            !selectedEndDate &&
+            onHouseDetailPage &&
+            isBefore(day, selectedStartDate)
+          ) {
+            cellClass = "bg-white text-gray-400 line-through !cursor-default"; // Disable selection of dates before
+            onClickHandler = null;
+          } else if (
             isSameDay(day, selectedStartDate) &&
             isSameMonth(day, monthStart)
           ) {
@@ -240,8 +249,12 @@ const Calendar = () => {
       !selectedStartDate
     ) {
       // If the input is "checkOut", and there is not start and end date, set the end date.
-      dispatch(setSelectedEndDate(day));
-      dispatch(setActiveInput("checkIn"));
+      if (onHouseDetailPage) {
+        dispatch(setSelectedStartDate(day));
+      } else {
+        dispatch(setSelectedEndDate(day));
+        dispatch(setActiveInput("checkIn"));
+      }
     } else if (
       // if end date is true and input is checkOut , set the start date
       selectedEndDate &&

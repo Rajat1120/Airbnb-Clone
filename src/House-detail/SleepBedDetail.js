@@ -16,7 +16,7 @@ import {
 } from "../Header/Form/mainFormSlice";
 import { useDispatch } from "react-redux";
 
-const SleepBed = () => {
+const SleepBedDetail = () => {
   const dispatch = useDispatch();
 
   return (
@@ -128,4 +128,4 @@ const SleepBed = () => {
   );
 };
 
-export default SleepBed;
+export default SleepBedDetail;

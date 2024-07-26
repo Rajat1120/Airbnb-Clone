@@ -6,7 +6,7 @@ import sharedSpace from "../../src/data/Icons svg/commonSpace.svg";
 import bathroom from "../../src/data/Icons svg/bathroom.svg";
 import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
 import HouseDescription from "./HouseDescription";
-import SleepBed from "./SleepBed";
+import SleepBed from "./SleepBedDetail";
 
 const MidMainCont = () => {
   return (
