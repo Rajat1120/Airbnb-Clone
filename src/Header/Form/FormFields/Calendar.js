@@ -316,14 +316,17 @@ const Calendar = () => {
     const preventDefault = (e) => e.preventDefault();
     const container = scrollContainerRef.current;
 
-    container.addEventListener("wheel", preventDefault, { passive: false });
-    container.addEventListener("touchmove", preventDefault, { passive: false });
-
+    if (!onHouseDetailPage) {
+      container.addEventListener("wheel", preventDefault, { passive: false });
+      container.addEventListener("touchmove", preventDefault, {
+        passive: false,
+      });
+    }
     return () => {
       container.removeEventListener("wheel", preventDefault);
       container.removeEventListener("touchmove", preventDefault);
     };
-  }, []);
+  }, [onHouseDetailPage]);
 
   useEffect(() => {
     if (currentIndex >= 0 && currentIndex <= 20) {
@@ -373,7 +376,7 @@ const Calendar = () => {
       </button>
       <div
         ref={scrollContainerRef}
-        className="overflow-x-hidden w-full scrollbar-hide"
+        className="overflow-x-hidden overflow-y-clip w-full scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <div
