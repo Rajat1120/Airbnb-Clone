@@ -8,7 +8,7 @@ const HouseDescription = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const paragraphRef = useRef(null);
 
-  let maxLines = 4;
+  let maxLines = 5;
 
   let text =
     " Step into the enchanting embrace of La Maison Du Desert. Bask in the hues of sunrise & sunset, tailored for rejuvenation. The interior is a seamless dance of kitchen, living room, bedroom, cocooning you in comfort. Outside, your private paradise awaits; immerse yourself in hot tub, embrace rustic charm w a cowboy tub, gather around the fire-pit, sizzle with excitement at the BBQ grill, and find joy in playful games. Your escape to serenity is calling; book La Maison Du Desert on Airbnb now.immerse yourself in hot tub, embrace rustic charm w a cowboy tub, gather around the fire-pit, sizzle with excitement at the BBQ grill, and find joy in playful games. Your escape to ";
@@ -35,7 +35,7 @@ const HouseDescription = () => {
 
   return (
     <div>
-      <div className="pt-8 h-64 flex flex-col  justify-between pb-11">
+      <div className="pt-8 h-64 flex flex-col  justify-center  pb-11 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
         <p className="flex-grow overflow-hidden relative">
           <span
             ref={paragraphRef}
@@ -45,7 +45,7 @@ const HouseDescription = () => {
           </span>
         </p>
         {isOverflowing && (
-          <div className="w-full flex justify-start pb-10">
+          <div className="w-full flex justify-start ">
             <button
               onClick={() => setIsModalOpen(true)}
               className="flex items-center"
@@ -57,7 +57,6 @@ const HouseDescription = () => {
             </button>
           </div>
         )}
-        <div className="h-[1px] bg-grey-dim"></div>
       </div>
       <HouseDescriptionModal
         isOpen={isModalOpen}

@@ -24,15 +24,17 @@ import {
   setStartDurationDate,
 } from "../../Form/mainFormSlice";
 import AddDays from "../AddDays";
+import { useLocation } from "react-router";
 
 const Calendar = () => {
   const selectedInput = useSelector((store) => store.form.curSelectInput);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
   const scrollContainerRef = useRef(null);
-
+  const location = useLocation();
+  let onHouseDetailPage = location.pathname === "/house";
   const [currentIndex, setCurrentIndex] = useState(0);
-  const monthWidth = 440; // Width of each month component
+  const monthWidth = onHouseDetailPage ? 344 : 440; // Width of each month component
   const scrollSpeed = 200;
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
@@ -79,7 +81,9 @@ const Calendar = () => {
       const day = addDays(startDate, i);
       days.push(
         <div
-          className="flex w-[3rem] justify-center text-xs text-center "
+          className={` flex ${
+            onHouseDetailPage ? "w-[2.8rem]" : "w-[3rem]"
+          } justify-center text-xs text-center `}
           key={format(day, "yyyy-MM-dd")}
         >
           {format(day, dateFormat)}
@@ -148,13 +152,13 @@ const Calendar = () => {
               isSameMonth(day, monthStart)
             ) {
               cellClass =
-                "  halfRightColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0   "; // Start date
+                "  halfRightColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hover:before:right-0 hover:before:bottom-0   "; // Start date
             } else if (
               isSameDay(day, selectedEndDate) &&
               isSameMonth(day, monthStart)
             ) {
               cellClass =
-                "halfLeftColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hove:before:right-0 hove:before:bottom-0  "; // End date
+                "halfLeftColor  text-white  before:bg-black before:content-[''] before:w-full before:h-full before:rounded-full before:border-[1.5px] before:border-black before:absolute top-0 before:left-0 hover:before:right-0 hover:before:bottom-0  "; // End date
             } else if (!isSameMonth(day, monthStart)) {
               cellClass = "bg-white text-white hidden cursor-default";
               onClickHandler = null; // Disable onClick for dates outside the current month
@@ -186,10 +190,18 @@ const Calendar = () => {
         days.push(
           <div
             key={day.toString()}
-            className="relative h-[3rem]   w-[3rem] flex items-center justify-center"
+            className={` relative ${
+              onHouseDetailPage
+                ? "h-[2.8rem]   w-[2.8rem]"
+                : "h-[3rem]   w-[3rem]"
+            }  flex items-center justify-center `}
           >
             <div
-              className={`h-[3rem]  w-[3rem] flex items-center justify-center ${
+              className={`${
+                onHouseDetailPage
+                  ? "h-[2.8rem]  w-[2.8rem]"
+                  : "h-[3rem]  w-[3rem]"
+              } flex items-center justify-center ${
                 isPastDate ? "" : "cursor-pointer"
               } ${cellClass}`}
               key={day.toString()}
@@ -203,7 +215,9 @@ const Calendar = () => {
       }
       rows.push(
         <div
-          className="flex mb-[2px] items-center justify-center"
+          className={`flex ${
+            onHouseDetailPage ? "" : "mb-[2px]"
+          } items-center justify-center`}
           key={day.toString()}
         >
           {days}
@@ -306,15 +320,29 @@ const Calendar = () => {
 
   return (
     <div className="flex w-full flex-col justify-center relative">
-      <div className="absolute top-[3.6rem] left-[2.2rem]">{renderDays()}</div>
-      <div className="absolute right-[2.2rem] top-[3.6rem]">{renderDays()}</div>
+      <div
+        className={`absolute top-[3.6rem] ${
+          onHouseDetailPage ? "left-[0.5rem]" : "left-[2.2rem]"
+        }`}
+      >
+        {renderDays()}
+      </div>
+      <div
+        className={`absolute  top-[3.6rem] ${
+          onHouseDetailPage ? "right-[2.1rem]" : "right-[2.2rem]"
+        }`}
+      >
+        {renderDays()}
+      </div>
       <button
         disabled={currentIndex === 0}
         className={` absolute ${
           currentIndex === 0
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
-        } left-8 top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
+        } ${
+          onHouseDetailPage ? "" : "left-8"
+        } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
         <img src={arrowLeft} alt="" />
@@ -340,12 +368,14 @@ const Calendar = () => {
             transition: `transform ${scrollSpeed}ms ease-out`,
             transform: `translateX(-${scrollPosition}px)`,
           }}
-          className="inline-flex gap-x-8"
+          className={`inline-flex ${onHouseDetailPage ? "gap-x-4" : "gap-x-8"}`}
         >
           {Array.from({ length: 23 }, (_, index) => (
             <div
               key={`${index}-current`}
-              className="max-w-md    justify-center items-center w-[25rem] mx-1 rounded-lg"
+              className={`max-w-md    justify-center items-center ${
+                onHouseDetailPage ? "w-[20rem] h-[20rem]" : "w-[25rem]"
+              } mx-1 rounded-lg`}
             >
               {renderHeader(addMonths(currentMonth, index))}
 
@@ -357,9 +387,8 @@ const Calendar = () => {
         </div>
       </div>
       <div className="w-full flex justify-start items-center">
-        {(selectedInput === "checkIn" || selectedInput === "checkOut") && (
-          <AddDays />
-        )}
+        {(selectedInput === "checkIn" || selectedInput === "checkOut") &&
+          !onHouseDetailPage && <AddDays />}
       </div>
     </div>
   );

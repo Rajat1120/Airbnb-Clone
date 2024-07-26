@@ -6,6 +6,7 @@ import sharedSpace from "../../src/data/Icons svg/commonSpace.svg";
 import bathroom from "../../src/data/Icons svg/bathroom.svg";
 import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
 import HouseDescription from "./HouseDescription";
+import SleepBed from "./SleepBed";
 
 const MidMainCont = () => {
   return (
@@ -97,6 +98,7 @@ const MidMainCont = () => {
           <div className="h-[1px] bg-grey-dim"></div>
         </div>
         <HouseDescription></HouseDescription>
+        <SleepBed></SleepBed>
         <div className=" ">
           <div className="pt-8 h-[58.75rem]">
             <div className="mb-6">
