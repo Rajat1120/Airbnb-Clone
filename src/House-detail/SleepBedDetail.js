@@ -14,10 +14,39 @@ import {
   setSelectedEndDate,
   setSelectedStartDate,
 } from "../Header/Form/mainFormSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, useStore } from "react-redux";
+import { differenceInCalendarDays, format } from "date-fns";
 
 const SleepBedDetail = () => {
   const dispatch = useDispatch();
+  const startDate = useSelector((store) => store.form.selectedStartDate);
+  const endDate = useSelector((store) => store.form.selectedEndDate);
+  let numOfNights = Math.abs(differenceInCalendarDays(startDate, endDate));
+
+  let formatStartDate = startDate && format(new Date(startDate), "dd MMM yyyy");
+  let formatEndDate = endDate && format(new Date(endDate), "dd MMM yyyy");
+
+  function calendarTitle() {
+    if (!startDate && !endDate) {
+      return "Select check-In date";
+    } else if (startDate && !endDate) {
+      return "Select checkout date";
+    } else {
+      return `${numOfNights} nights in New Delhi`;
+    }
+  }
+
+  const DateRange = ({ startDate, endDate }) => {
+    return (
+      <>
+        <span className="text-sm text-gray-500 font-light">{startDate}</span>
+        <span className="flex-center">-</span>
+        <span className="text-sm text-gray-500 font-light">{endDate}</span>
+      </>
+    );
+  };
+
+  // Usage:
 
   return (
     <div>
@@ -96,18 +125,20 @@ const SleepBedDetail = () => {
       </div>
       <div className="py-12 h-[32.37rem]">
         <div className="flex flex-col">
-          <h3 className="text-2xl leading-6 font-medium ">
-            5 nights in New Delhi
-          </h3>
+          <h3 className="text-2xl leading-6 font-medium ">{calendarTitle()}</h3>
           <div className="h-9 flex pt-2  items-start">
             <div className="flex-center gap-1">
-              <span className="text-sm text-gray-500  font-light">
-                10 Aug 2024
-              </span>{" "}
-              <span className="flex-center">-</span>
-              <span className="text-sm text-gray-500  font-light">
-                15 Aug 2024
-              </span>
+              {startDate && endDate ? (
+                <DateRange
+                  startDate={formatStartDate}
+                  endDate={formatEndDate}
+                ></DateRange>
+              ) : (
+                <span className="text-sm font-light text-grey">
+                  {" "}
+                  Add your travel dates for exact pricing
+                </span>
+              )}
             </div>
           </div>
           <div className="w-full flex  flex-col pt-4 justify-center items-center ">
