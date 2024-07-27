@@ -26,6 +26,7 @@ module.exports = {
         checkOutShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
         checkInShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
         destinationShadow: "5px 0px 5px 0px #CFCFD1",
+        priceCardShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)",
         sliderShadow:
           "0 -5px 5px rgba(0,0,0,0.2),0 5px 5px #ffffff,inset 0 -20px 30px #ffffffe5,inset 0 10px 20px rgba(0,0,0,0.2)",
         sliderShadow2:
@@ -40,6 +41,7 @@ module.exports = {
         "grey-dim": "#DBDBDB",
         "shadow-gray": "#e6e6e6",
         "shadow-gray-light": "#f5f5f5",
+        "border-color": "#b0b0b0",
       },
       gridTemplateColumns: {
         "four-col": "repeat(4, minmax(10rem,18.87rem))",

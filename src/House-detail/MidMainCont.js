@@ -7,6 +7,8 @@ import bathroom from "../../src/data/Icons svg/bathroom.svg";
 import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
 import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
+import arrowDown from "../data/Icons svg/arrowDown.svg";
+import arrowUp from "../data/Icons svg/arrowUpword.svg";
 
 const MidMainCont = () => {
   return (
@@ -101,8 +103,70 @@ const MidMainCont = () => {
         <SleepBed></SleepBed>
       </div>
       <div className="w-[26.32rem]">
-        <div className="py-8 flex justify-end">
-          <div className="w-[23.14rem] border-[1px] rounded-xl border-grey-dim h-[27.81rem]"></div>
+        <div className="pt-8 flex justify-end">
+          <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
+            <div className="">
+              <span className="mb-6 flex items-end gap-2 text-2xl">
+                $16,530{" "}
+                <span className="text-base font-light flex items-end">
+                  night
+                </span>
+              </span>
+              <div className="mb-4 cursor-pointer border-[1px] border-border-color rounded-lg h-28">
+                <div className="w-full h-1/2 flex   border-b-[1px] border-border-color">
+                  <div className="w-1/2 h-full border-r-[1px] border-border-color flex justify-center flex-col ">
+                    <div className="flex items-start justify-center flex-col pl-3">
+                      <span className="text-[10px] font-semibold">
+                        CHECK-IN
+                      </span>
+                      <span className="text-sm font-light">10/16/2024</span>
+                    </div>
+                  </div>
+                  <div className="w-1/2 h-full flex items-center ">
+                    <div className="flex items-start justify-center flex-col pl-3">
+                      <span className="text-[10px] font-semibold">
+                        CHECKOUT
+                      </span>
+                      <span className="text-sm font-light">10/24/2024</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex  w-full h-1/2 items-center">
+                  <div className="flex px-3 w-full items-center justify-between">
+                    <div className="flex items-start justify-center flex-col">
+                      <span className="text-[10px] font-semibold">GUESTS</span>
+                      <span className="text-sm font-light">2 guests</span>
+                    </div>
+                    <div className="h-4 w-4">
+                      <img className="h-full w-full" src={arrowUp} alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="w-full rounded-lg flex-center bg-dark-pink h-12">
+                <span className="text-white">Reserve</span>
+              </div>
+            </div>
+            <div className="w-full flex-center mt-2">
+              <span className="text-sm pt-2 font-light">
+                You won't be charged yet
+              </span>
+            </div>
+            <div className="w-full mt-6">
+              <div className="flex h-[20px] w-full justify-between">
+                <span className="font-light">$16.250 x 8 nights</span>
+                <span className="font-light">$125,657 </span>
+              </div>
+              <div className="flex pt-4 justify-between">
+                <span className="font-light">Airbnb service fee</span>
+                <span className="font-light">$1256</span>
+              </div>
+              <div className="h-11 pt-6 flex justify-between items-center mt-6 border-t-[1px]  border-grey-dim">
+                <span className="font-medium">Total before taxes</span>
+                <span className="font-medium">$125,678</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
