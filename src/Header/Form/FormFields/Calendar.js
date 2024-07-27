@@ -35,7 +35,7 @@ const Calendar = () => {
   const location = useLocation();
   let onHouseDetailPage = location.pathname === "/house";
   const [currentIndex, setCurrentIndex] = useState(0);
-  const monthWidth = onHouseDetailPage ? 344 : 440; // Width of each month component
+  const monthWidth = onHouseDetailPage ? 340 : 440; // Width of each month component
   const scrollSpeed = 200;
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
@@ -83,7 +83,7 @@ const Calendar = () => {
       days.push(
         <div
           className={` flex ${
-            onHouseDetailPage ? "w-[2.8rem]" : "w-[3rem]"
+            onHouseDetailPage ? "w-[2.62rem]" : "w-[3rem]"
           } justify-center text-xs text-center `}
           key={format(day, "yyyy-MM-dd")}
         >
@@ -201,14 +201,14 @@ const Calendar = () => {
             key={day.toString()}
             className={` relative ${
               onHouseDetailPage
-                ? "h-[2.8rem]   w-[2.8rem]"
+                ? "h-[2.62rem]   w-[2.62rem]"
                 : "h-[3rem]   w-[3rem]"
             }  flex items-center justify-center `}
           >
             <div
               className={`${
                 onHouseDetailPage
-                  ? "h-[2.8rem]  w-[2.8rem]"
+                  ? "h-[2.62rem]  w-[2.62rem]"
                   : "h-[3rem]  w-[3rem]"
               } flex items-center justify-center ${
                 isPastDate ? "" : "cursor-pointer"
@@ -338,14 +338,14 @@ const Calendar = () => {
     <div className="flex w-full flex-col justify-center relative">
       <div
         className={`absolute top-[3.6rem] ${
-          onHouseDetailPage ? "left-[0.5rem]" : "left-[2.2rem]"
+          onHouseDetailPage ? "left-[1rem]" : "left-[2.2rem]"
         }`}
       >
         {renderDays()}
       </div>
       <div
         className={`absolute  top-[3.6rem] ${
-          onHouseDetailPage ? "right-[2.1rem]" : "right-[2.2rem]"
+          onHouseDetailPage ? "right-[0.1rem]" : "right-[2.2rem]"
         }`}
       >
         {renderDays()}
@@ -357,7 +357,7 @@ const Calendar = () => {
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
         } ${
-          onHouseDetailPage ? "" : "left-8"
+          onHouseDetailPage ? "left-2" : "left-8"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
@@ -369,7 +369,9 @@ const Calendar = () => {
           currentIndex === 20
             ? "opacity-30 cursor-not-allowed"
             : " hover:bg-gray-100"
-        } right-8 top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
+        } ${
+          onHouseDetailPage ? "right-0" : "right-8"
+        } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
         <img src={arrowRight} alt="" />
@@ -384,13 +386,13 @@ const Calendar = () => {
             transition: `transform ${scrollSpeed}ms ease-out`,
             transform: `translateX(-${scrollPosition}px)`,
           }}
-          className={`inline-flex ${onHouseDetailPage ? "gap-x-4" : "gap-x-8"}`}
+          className={`inline-flex ${onHouseDetailPage ? "gap-x-3" : "gap-x-8"}`}
         >
           {Array.from({ length: 23 }, (_, index) => (
             <div
               key={`${index}-current`}
               className={`max-w-md    justify-center items-center ${
-                onHouseDetailPage ? "w-[20rem] h-[20rem]" : "w-[25rem]"
+                onHouseDetailPage ? "w-[20rem] h-[20.5rem]" : "w-[25rem]"
               } mx-1 rounded-lg`}
             >
               {renderHeader(addMonths(currentMonth, index))}

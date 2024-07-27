@@ -56,10 +56,10 @@ const SleepBedDetail = () => {
             Where you'll sleep
           </h3>
           <div className="flex justify-center gap-4">
-            <div className="h-[16.79rem] w-1/2 flex flex-col ">
+            <div className="h-[16.79rem] w-1/2 flex justify-center flex-col ">
               <div className="h-[13.25rem] flex items-center justify-center w-full">
                 <img
-                  className="rounded-xl object-cover "
+                  className="rounded-xl object-cover  w-full h-full"
                   src="https://a0.muscache.com/im/pictures/miso/Hosting-42007752/original/a8fa5fcf-b463-4c8c-97b9-545639aab2ce.jpeg?im_w=720"
                   alt=""
                 />
@@ -69,11 +69,11 @@ const SleepBedDetail = () => {
                 <span className="text-sm font-light">1 queen bed</span>
               </div>
             </div>
-            <div className="h-[16.79rem] w-1/2 flex flex-col ">
-              <div className="h-[13.25rem] flex items-center justify-center w-full">
+            <div className="h-[16.79rem] w-1/2 flex justify-center  flex-col ">
+              <div className="h-[13.25rem] flex  items-center justify-center w-full">
                 <img
-                  className="rounded-xl object-cover "
-                  src="https://a0.muscache.com/im/pictures/miso/Hosting-42007752/original/a8fa5fcf-b463-4c8c-97b9-545639aab2ce.jpeg?im_w=720"
+                  className="rounded-xl object-cover w-full h-full "
+                  src="https://a0.muscache.com/im/pictures/miso/Hosting-883346939488583081/original/6a2fa4b6-5eba-40e3-8f72-654d13366cdf.jpeg?im_w=960"
                   alt=""
                 />
               </div>
@@ -164,7 +164,7 @@ const SleepBedDetail = () => {
               dispatch(setSelectedStartDate(null));
               dispatch(setSelectedEndDate(null));
             }}
-            className="w-full cursor-pointer flex items-center justify-end pr-10"
+            className="w-full cursor-pointer flex items-center justify-end pr-4 "
           >
             <span className="underline text-sm font-medium">Clear dates</span>
           </div>

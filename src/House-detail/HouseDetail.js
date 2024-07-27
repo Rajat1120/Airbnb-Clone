@@ -5,6 +5,7 @@ import { setStartScroll } from "../Main/AppSlice";
 import { useLocation } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
+import BottomMainCont from "./BottomMainCont";
 
 const HouseDetail = () => {
   const minimize = useSelector((store) => store.app.minimize);
@@ -34,6 +35,7 @@ const HouseDetail = () => {
       </div>
       <TopMainCont></TopMainCont>
       <MidMainCont></MidMainCont>
+      <BottomMainCont></BottomMainCont>
     </div>
   );
 };
