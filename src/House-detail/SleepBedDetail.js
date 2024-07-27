@@ -55,17 +55,32 @@ const SleepBedDetail = () => {
           <h3 className="text-2xl leading-6 font-medium pb-6">
             Where you'll sleep
           </h3>
-          <div className="h-[16.79rem] flex flex-col ">
-            <div className="h-56 flex items-center justify-center w-80">
-              <img
-                className="rounded-xl"
-                src="https://a0.muscache.com/im/pictures/miso/Hosting-42007752/original/a8fa5fcf-b463-4c8c-97b9-545639aab2ce.jpeg?im_w=720"
-                alt=""
-              />
+          <div className="flex justify-center gap-4">
+            <div className="h-[16.79rem] w-1/2 flex flex-col ">
+              <div className="h-[13.25rem] flex items-center justify-center w-full">
+                <img
+                  className="rounded-xl object-cover "
+                  src="https://a0.muscache.com/im/pictures/miso/Hosting-42007752/original/a8fa5fcf-b463-4c8c-97b9-545639aab2ce.jpeg?im_w=720"
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="mt-4 font-medium">Bedroom 1</span>
+                <span className="text-sm font-light">1 queen bed</span>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <span className="mt-4 font-medium">Bedroom</span>
-              <span className="text-sm font-light">1 queen bed</span>
+            <div className="h-[16.79rem] w-1/2 flex flex-col ">
+              <div className="h-[13.25rem] flex items-center justify-center w-full">
+                <img
+                  className="rounded-xl object-cover "
+                  src="https://a0.muscache.com/im/pictures/miso/Hosting-42007752/original/a8fa5fcf-b463-4c8c-97b9-545639aab2ce.jpeg?im_w=720"
+                  alt=""
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="mt-4 font-medium">Bedroom 2</span>
+                <span className="text-sm font-light">1 queen bed</span>
+              </div>
             </div>
           </div>
         </div>

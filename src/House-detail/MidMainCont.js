@@ -10,7 +10,7 @@ import SleepBed from "./SleepBedDetail";
 
 const MidMainCont = () => {
   return (
-    <div className="w-[calc(100%-10em)] mx-auto flex justify-center px-[5rem] h-[198.59rem] ">
+    <div className="w-[calc(100%-10rem)] mx-auto flex justify-center px-[5rem] max-h-[198.59rem] ">
       <div className="w-[43.83rem]">
         <div className="py-8">
           <h1 className=" text-[25px]   font-[460]">Room in Theog, India</h1>
