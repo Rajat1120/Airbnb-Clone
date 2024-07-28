@@ -45,12 +45,12 @@ function Open({ children, opens: opensWindowName }) {
 
 function Window({ children, name, modalRef, resetRef }) {
   let modalStye = {
-    checkIn: ` fixed top-[20%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem]   bg-black bg-opacity-50 rounded-[2rem] `,
-    month: `   fixed top-[20%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem]   bg-black bg-opacity-50 rounded-[2rem]  `,
-    flexible: `   fixed top-[20%] w-[53rem]  z-10 left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  `,
-    destination: `  fixed top-[20%] z-10 left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  w-[26rem] `,
-    checkOut: `    fixed top-[20%]  z-10 w-[53rem] left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  `,
-    addGuest: `  fixed top-[20%]  z-10 left-[52%] transition-all duration-[0s] w-[26rem]  bg-black bg-opacity-50 rounded-[2rem] `,
+    checkIn: ` fixed top-[20.5%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem]   bg-black bg-opacity-50 rounded-[2rem] `,
+    month: `   fixed top-[20.5%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem]   bg-black bg-opacity-50 rounded-[2rem]  `,
+    flexible: `   fixed top-[20.5%] w-[53rem]  z-10 left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  `,
+    destination: `  fixed top-[20.5%] z-10 left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  w-[26rem] `,
+    checkOut: `    fixed top-[20.5%]  z-10 w-[53rem] left-[21%] transition-all duration-[0.2s]  bg-black bg-opacity-50 rounded-[2rem]  `,
+    addGuest: `  fixed top-[20.5%]  z-10 left-[52%] transition-all duration-[0s] w-[26rem]  bg-black bg-opacity-50 rounded-[2rem] `,
   };
 
   const { openName, close } = useContext(modalContext);
@@ -84,7 +84,10 @@ function Window({ children, name, modalRef, resetRef }) {
 
   return createPortal(
     <div className={`${modalStye[data]}`} id="formModal" ref={ref}>
-      <div className="bg-white shadow-2xl rounded-[2rem] z-100 " ref={modalRef}>
+      <div
+        className="bg-white shadow-priceCardShadow  rounded-[2rem]  z-50 "
+        ref={modalRef}
+      >
         {cloneElement(children)}
       </div>
     </div>,

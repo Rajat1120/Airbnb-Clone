@@ -27,6 +27,7 @@ module.exports = {
         checkInShadow: "5px 0px 5px 0px #CFCFD1, -5px 0px 5px 0px #CFCFD1",
         destinationShadow: "5px 0px 5px 0px #CFCFD1",
         priceCardShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)",
+        modalShadow: "0px 6px 12px rgba(0,0,0,0.15)",
         sliderShadow:
           "0 -5px 5px rgba(0,0,0,0.2),0 5px 5px #ffffff,inset 0 -20px 30px #ffffffe5,inset 0 10px 20px rgba(0,0,0,0.2)",
         sliderShadow2:
@@ -57,11 +58,11 @@ module.exports = {
         },
         expand: {
           "0%": { height: "4.9rem" },
-          "100%": { height: "9.8rem" },
+          "100%": { height: "11rem" },
         },
         collapse: {
           "0%": { height: "9.8rem" },
-          "100%": { height: "4.9rem" },
+          "100%": { height: "4.9rem", "z-index": "-10" },
         },
 
         bgShadow: {
