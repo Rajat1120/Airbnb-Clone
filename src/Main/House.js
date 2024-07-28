@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router";
 
 const House = () => {
   let lastScrollPosition = useRef(window.scrollY);
-
+  const location = useLocation();
+  let onHouseDetailPage = location.pathname === "/house";
   const startScroll = useSelector((store) => store.app.startScroll);
 
   const dispatch = useDispatch();

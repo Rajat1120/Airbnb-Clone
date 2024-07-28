@@ -74,7 +74,7 @@ const MainForm = ({ headerRef }) => {
         setTimeout(() => {
           dispatch(setActiveInput("destination"));
           dispatch(setOpenName("destination"));
-        }, 0);
+        }, 200);
       }
     } else if (button === "week") {
       if (minimize) {
@@ -86,14 +86,14 @@ const MainForm = ({ headerRef }) => {
             dispatch(setActiveInput(dateOption));
             dispatch(setOpenName(dateOption));
           }
-        }, 0);
+        }, 200);
       }
     } else if (button === "guest") {
       if (minimize) {
         setTimeout(() => {
           dispatch(setActiveInput("addGuest"));
           dispatch(setOpenName("addGuest"));
-        }, 0);
+        }, 200);
       }
     }
   }, [button, dispatch, minimize, isVisible, dateOption]);

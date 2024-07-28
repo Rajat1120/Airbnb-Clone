@@ -1,18 +1,18 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../Header/Header";
-import { setStartScroll } from "../Main/AppSlice";
+import { setMinimize, setStartScroll } from "../Main/AppSlice";
 import { useLocation } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
 import BottomMainCont from "./BottomMainCont";
 
 const HouseDetail = () => {
+  const location = useLocation();
+  let onHouseDetailPage = location.pathname === "/house";
   const minimize = useSelector((store) => store.app.minimize);
   let headerRef = useRef();
 
-  const location = useLocation();
-  let onHouseDetailPage = location.pathname === "/house";
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
 
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
@@ -20,6 +20,26 @@ const HouseDetail = () => {
   let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
 
   let animateHeaderClass2 = minimize ? "animate-collapse" : "h-[11rem]";
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPosition = window.scrollY;
+
+      if (currentScrollPosition < 18) {
+        // Scrolling up
+        setTimeout(() => {
+          dispatch(setMinimize(false));
+        }, 200);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [dispatch]);
+
   return (
     <div className="">
       <div
