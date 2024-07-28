@@ -8,6 +8,9 @@ import { useSelector } from "react-redux";
 
 const Options = () => {
   // startScroll = false;
+
+  const minimize = useSelector((store) => store.app.minimize);
+
   function importAll(r) {
     return r.keys().map((item) => {
       return { key: item.slice(1, -4), svg: r(item) };
@@ -100,7 +103,9 @@ const Options = () => {
   } top-[25%] z-30 right-2 h-9  w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-[1px]`;
 
   return (
-    <div className={` bg-white    justify-self-center `}>
+    <div
+      className={` bg-white ${minimize ? "hidden" : ""}   justify-self-center `}
+    >
       <div
         className={`h-[5rem] justify-center py-6 flex w-full items-center gap-2 `}
       >

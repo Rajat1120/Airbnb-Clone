@@ -29,6 +29,10 @@
     line-clamp: 5;
   }
 
+  .addBorder {
+    border: 2px solid black;
+  }
+
   .grid-areas {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
