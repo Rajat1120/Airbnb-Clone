@@ -71,27 +71,29 @@ const MainForm = ({ headerRef }) => {
   useEffect(() => {
     if (button === "anywhere") {
       if (minimize) {
+        dispatch(setActiveInput("destination"));
         setTimeout(() => {
-          dispatch(setActiveInput("destination"));
           dispatch(setOpenName("destination"));
         }, 200);
       }
     } else if (button === "week") {
       if (minimize) {
-        setTimeout(() => {
-          if (dateOption === "dates") {
-            dispatch(setActiveInput("checkIn"));
+        if (dateOption === "dates") {
+          dispatch(setActiveInput("checkIn"));
+          setTimeout(() => {
             dispatch(setOpenName("checkIn"));
-          } else {
-            dispatch(setActiveInput(dateOption));
+          }, 200);
+        } else {
+          dispatch(setActiveInput(dateOption));
+          setTimeout(() => {
             dispatch(setOpenName(dateOption));
-          }
-        }, 200);
+          }, 200);
+        }
       }
     } else if (button === "guest") {
       if (minimize) {
+        dispatch(setActiveInput("addGuest"));
         setTimeout(() => {
-          dispatch(setActiveInput("addGuest"));
           dispatch(setOpenName("addGuest"));
         }, 200);
       }
