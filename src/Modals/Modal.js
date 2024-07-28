@@ -15,6 +15,7 @@ import {
   setOpenName,
 } from "../Header/Form/mainFormSlice";
 import { setMinimize } from "../Main/AppSlice";
+import AddDays from "../Header/Form/AddDays";
 
 export const modalContext = createContext();
 
@@ -44,6 +45,7 @@ function Open({ children, opens: opensWindowName }) {
 }
 
 function Window({ children, name, modalRef, resetRef }) {
+  const selectedInput = useSelector((store) => store.form.curSelectInput);
   let modalStye = {
     checkIn: ` fixed top-[20.5%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem]   bg-black bg-opacity-50 rounded-[2rem] `,
     month: `   fixed top-[20.5%] z-10 left-[21%] transition-all duration-[0.2s] w-[53rem]   bg-black bg-opacity-50 rounded-[2rem]  `,
@@ -89,6 +91,11 @@ function Window({ children, name, modalRef, resetRef }) {
         ref={modalRef}
       >
         {cloneElement(children)}
+        <div className="w-full flex justify-start items-center">
+          {(selectedInput === "checkIn" || selectedInput === "checkOut") && (
+            <AddDays />
+          )}
+        </div>
       </div>
     </div>,
     document.body
