@@ -41,11 +41,11 @@ const HouseDetail = () => {
   }, [dispatch]);
 
   return (
-    <div className="">
+    <div className="relative">
       <div
         ref={headerRef}
         id="header"
-        className={`  ${
+        className={`   ${
           minimize ? "z-50" : "z-10"
         }  transition-all duration-[0.3s] ease-in-out ${
           !startScroll ? `${animateHeaderClass1}` : `${animateHeaderClass2}`
@@ -53,9 +53,12 @@ const HouseDetail = () => {
       >
         <Header headerRef={headerRef}></Header>
       </div>
-      <TopMainCont></TopMainCont>
-      <MidMainCont></MidMainCont>
-      <BottomMainCont></BottomMainCont>
+
+      <div className={` ${minimize ? " absolute top-20 -z-10" : ""}  w-full`}>
+        <TopMainCont></TopMainCont>
+        <MidMainCont></MidMainCont>
+        <BottomMainCont></BottomMainCont>
+      </div>
     </div>
   );
 };
