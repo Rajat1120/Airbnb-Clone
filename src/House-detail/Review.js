@@ -9,8 +9,43 @@ import location from "../data/Icons svg/location.svg";
 import value from "../data/Icons svg/value.svg";
 
 const Review = () => {
+  let totalCards = 5;
+  let guestFavourite = true;
   return (
     <div className="py-12 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim  w-full ]">
+      {/* Guest favourite */}
+      {guestFavourite && (
+        <div className="h-[13.38rem] mt-4 mb-16 flex flex-col justify-between items-center">
+          <div className="h-[8.25rem] items-start flex w-[23.86rem] ">
+            <img
+              className="h-full"
+              src="https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/78b7687c-5acf-4ef8-a5ea-eda732ae3b2f.png"
+              alt=""
+            />
+            <span className=" h-full w-[196px] flex items-start justify-center">
+              <span className=" text-[5rem] h-full font-bold leading-[4rem] ">
+                4.90
+              </span>
+            </span>
+            <img
+              className="h-full"
+              src="https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/b4005b30-79ff-4287-860c-67829ecd7412.png"
+              alt=""
+            />
+          </div>
+          <div className="pb-2 h-[1.62rem] flex-center   w-[10.21rem]">
+            <span className="text-xl font-medium"> Guest favourite</span>
+          </div>
+          <div className="w-[23.75rem] flex-center h-12 ">
+            <span className="text-center leading-6 font-extralight text-grey  w-full px-2 text-lg">
+              One of the most loved homes on Airbnb based on ratings, reviews
+              and reliability
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* reviews count section */}
       <div className="pb-12 mb-12 border-b-[1px] border-grey-dim w-full">
         <div className="h-[1.87rem] mb-10 flex items-center  w-full">
           <div className="flex items-center gap-x-2 ">
@@ -139,10 +174,18 @@ const Review = () => {
           </div>
         </div>
       </div>
+      {/* reviews section */}
       <div className="grid w-full max-h-[38.87rem]  grid-cols-2">
-        {Array.from({ length: 2 }).map((_, index) => (
-          <div key={index} className="h-[14rem]  px-2 mr-[5.91rem] ">
-            <div className="mb-10 overflow-hidden  min-h-[6.62rem] max-h-[11.40rem] ">
+        {Array.from({ length: totalCards }).map((_, index) => (
+          <div
+            key={index}
+            className="min-h-[10rem] max-h-[14rem]  px-2 mr-[5.91rem] "
+          >
+            <div
+              className={` ${
+                index < totalCards - 2 ? "mb-10" : ""
+              } mb-10 overflow-hidden  min-h-[6.62rem] max-h-[11.40rem] `}
+            >
               <div className="h-[4.8rem] flex flex-col justify-between mb-1">
                 <div className="h-12 gap-2 flex items-center ">
                   <img
