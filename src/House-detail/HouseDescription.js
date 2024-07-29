@@ -19,10 +19,8 @@ const HouseDescription = () => {
 
     const lineHeight = parseInt(window.getComputedStyle(paragraph).lineHeight);
     const maxHeight = lineHeight * maxLines;
-    console.log(maxHeight);
 
     if (paragraph.scrollHeight > maxHeight) {
-      console.log(paragraph.scrollHeight);
       setIsOverflowing(true);
       paragraph.style.maxHeight = `${maxHeight}px`;
       paragraph.classList.add("truncatePara");

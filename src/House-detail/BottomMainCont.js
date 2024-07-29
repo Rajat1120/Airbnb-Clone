@@ -1,10 +1,12 @@
 import React from "react";
 import star from "../../src/data/Icons svg/star.svg";
 import Review from "./Review";
+import Map from "./Map";
 const BottomMainCont = () => {
   return (
     <div className="w-[calc(100%-10rem)] mx-auto px-[5rem] flex flex-col items-center max-h-[72rem]">
       <Review></Review>
+      <Map></Map>
       <div className="flex w-full justify-start">
         <div className="pt-8 h-[20.75rem]">
           <div className="mb-6">
