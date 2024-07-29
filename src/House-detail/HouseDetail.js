@@ -59,6 +59,7 @@ const HouseDetail = () => {
         <MidMainCont></MidMainCont>
         <BottomMainCont></BottomMainCont>
       </div>
+      <footer className="w-full h-[20rem]"></footer>
     </div>
   );
 };
