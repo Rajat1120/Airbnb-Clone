@@ -1,7 +1,7 @@
 import React from "react";
 import share from "../../src/data/Icons svg/shareIcon.svg";
 import heart from "../../src/data/Icons svg/heart.svg";
-
+import dots from "../data/Icons svg/dots.svg";
 const TopMainCont = () => {
   return (
     <div className="flex-center flex-col">
@@ -20,7 +20,7 @@ const TopMainCont = () => {
           </span>
         </div>
       </div>
-      <div className=" w-[calc(100%-20rem)] px-auto  ">
+      <div className=" w-[calc(100%-20rem)]  px-auto  ">
         <div className="  pt-6 ">
           <div className="grid-areas h-[25rem] overflow-hidden rounded-xl">
             <div className=" relative grid-area-image1">
@@ -33,7 +33,12 @@ const TopMainCont = () => {
             <div className=" bg-green-400 grid-area-image2 "></div>
             <div className="bg-blue-400 grid-area-image3"></div>
             <div className="bg-orange-400 grid-area-image4 "></div>
-            <div className="bg-pink grid-area-image5"></div>
+            <div className="bg-pink relative grid-area-image5">
+              <div className="flex-center cursor-pointer w-[10rem] h-9 bg-white absolute top-32 left-20 gap-x-2   rounded-md border-[1px] border-black  ">
+                <img src={dots} className="w-4 h-4" alt="" />
+                <span className="text-sm font-medium">Show all photos</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
