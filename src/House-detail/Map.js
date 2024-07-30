@@ -30,7 +30,10 @@ const Map = () => {
   }, [text, maxLines]);
 
   return (
-    <div className="w-full relative after:content-[''] after:absolute after:bottom-0  after:w-full after:h-[1px]  after:bg-grey-dim">
+    <div
+      id="Location"
+      className="w-full relative scroll-mt-20 after:content-[''] after:absolute after:bottom-0  after:w-full after:h-[1px]  after:bg-grey-dim"
+    >
       <div className="max-h-[50rem] w-full py-12">
         <div className="pb-6 w-full flex justify-start">
           <span className="w-full text-2xl font-medium">Where you’ll be</span>

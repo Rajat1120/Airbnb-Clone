@@ -12,7 +12,10 @@ const Review = () => {
   let totalCards = 5;
   let guestFavourite = true;
   return (
-    <div className="py-12 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim  w-full ]">
+    <div
+      id="Reviews"
+      className="py-12 scroll-mt-16 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim  w-full ]"
+    >
       {/* Guest favourite */}
       {guestFavourite && (
         <div className="h-[13.38rem] mt-4 mb-16 flex flex-col justify-between items-center">

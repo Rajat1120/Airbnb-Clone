@@ -28,6 +28,7 @@ function Header({ headerRef }) {
 
   return (
     <div
+      id="header"
       className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
       <div

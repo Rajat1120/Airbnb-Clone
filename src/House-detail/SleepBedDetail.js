@@ -85,7 +85,10 @@ const SleepBedDetail = () => {
           </div>
         </div>
       </div>
-      <div className="py-12 h-[21.13rem] relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+      <div
+        id="Amenities"
+        className="py-12 scroll-mt-20 h-[21.13rem] relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim"
+      >
         <div>
           <h3 className="text-2xl leading-6 font-medium pb-6">
             What this place offers

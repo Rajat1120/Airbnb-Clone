@@ -103,7 +103,7 @@ const MidMainCont = () => {
         <SleepBed></SleepBed>
       </div>
       <div className="w-[26.32rem]  max-h-[125.59rem]">
-        <div className="pt-8 flex justify-end sticky top-12">
+        <div className="pt-8 flex justify-end sticky top-20">
           <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
             <div className="">
               <span className="mb-6 flex items-end gap-2 text-2xl">

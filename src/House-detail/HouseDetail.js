@@ -7,6 +7,7 @@ import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
 import BottomMainCont from "./BottomMainCont";
 import Footer from "./Footer";
+import NavBar from "./NavBar";
 
 const HouseDetail = () => {
   const location = useLocation();
@@ -54,13 +55,14 @@ const HouseDetail = () => {
       >
         <Header headerRef={headerRef}></Header>
       </div>
+      <NavBar></NavBar>
 
       <div className={` ${minimize ? " absolute top-20 -z-10" : ""}  w-full`}>
         <TopMainCont></TopMainCont>
         <MidMainCont></MidMainCont>
         <BottomMainCont></BottomMainCont>
+        <Footer></Footer>
       </div>
-      <Footer></Footer>
     </div>
   );
 };
