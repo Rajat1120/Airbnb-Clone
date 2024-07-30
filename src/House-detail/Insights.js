@@ -2,7 +2,7 @@ import React from "react";
 
 const Insights = () => {
   return (
-    <div className="w-full flex flex-col h-[16.62rem] py-12 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+    <div className="w-full flex flex-col h-[16.62rem] py-12 ">
       <span className="text-2xl block pb-6 font-medium">Things to know</span>
       <div className="w-full flex h-full">
         <div className="w-[30%] mr-8 flex flex-col justify-between  h-full">

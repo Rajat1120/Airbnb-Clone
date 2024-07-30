@@ -6,6 +6,7 @@ import { useLocation } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
 import BottomMainCont from "./BottomMainCont";
+import Footer from "./Footer";
 
 const HouseDetail = () => {
   const location = useLocation();
@@ -59,7 +60,7 @@ const HouseDetail = () => {
         <MidMainCont></MidMainCont>
         <BottomMainCont></BottomMainCont>
       </div>
-      <footer className="w-full h-[20rem]"></footer>
+      <Footer></Footer>
     </div>
   );
 };
