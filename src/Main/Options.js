@@ -19,7 +19,8 @@ const Options = () => {
   const optionsRef = useRef(null);
   const rightScrollBtnRef = useRef(null);
   const leftScrollBtnRef = useRef();
-
+  const totalScrollWidth = optionsRef?.current?.scrollWidth - 935;
+  // console.log(totalScrollWidth);
   useEffect(() => {
     if (optionsRef?.current) {
       setContainerScrollWidth(Math.abs(optionsRef?.current?.scrollWidth / 4));
@@ -27,7 +28,7 @@ const Options = () => {
   }, []);
 
   useEffect(() => {
-    const optionRef = optionsRef.current;
+    const optionRef = optionsRef?.current;
 
     const handleScroll = () => {
       if (optionRef) {
@@ -99,7 +100,7 @@ const Options = () => {
   }  top-[30%] left-1 h-9  hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition > 2290 ? "hidden" : "flex-center"
+    scrollPosition > totalScrollWidth ? "hidden" : "flex-center"
   } top-[30%] z-50 right-4 h-9  w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-[1px]`;
 
   return (
@@ -109,26 +110,26 @@ const Options = () => {
       } z-10  justify-self-center w-[calc(100%-10rem)] mx-auto `}
     >
       <div
-        className={`h-[5rem] justify-center py-6 flex w-full items-center   `}
+        className={`h-[5rem]  py-6 flex w-full items-center justify-between  `}
       >
         <div
           className={
-            "w-[63.5rem] flex relative    items-center overflow-scroll  rounded-lg "
+            " w-full flex relative    items-center overflow-scroll  rounded-lg "
           }
         >
-          <div className="flex-center inset-shadow  w-full   ">
+          <div className="flex items-center justify-start inset-shadow  w-full   ">
             <div
               id="options"
               ref={optionsRef}
-              className=" flex items-center space-x-9 justify-center h-24  w-[60rem]  overflow-scroll "
+              className=" flex items-center  space-x-9 justify-start h-24  w-[56rem]  overflow-x-auto"
             >
               {options.map((item, i) => {
                 return (
                   <div
                     key={i}
                     className={`opacity-75 hover:opacity-100 cursor-pointer flex-center mr-0   ${
-                      i === 0 ? "pr-9" : ""
-                    }  h-16 my-[12px] border-b-2 border-white py-[4px]  hover:border-grey-light-50  `}
+                      i === 0 ? "pl-2" : ""
+                    }  h-16 my-[12px] border-b-2 border-white py-[4px]  hover:border-grey-light-50 w-full  `}
                   >
                     <div className="flex-col space-y-2 h-full items-center justify-center flex">
                       <img
@@ -153,7 +154,7 @@ const Options = () => {
             <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-6 " alt="" />
             </button>
-            {scrollPosition < 2400.5 && (
+            {scrollPosition < totalScrollWidth && (
               <div className="w-12 h-16 absolute z-10 right-0 bg-white border-r-[0.8rem] border-white "></div>
             )}
           </div>
