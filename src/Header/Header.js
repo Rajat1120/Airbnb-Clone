@@ -69,14 +69,14 @@ function Header({ headerRef }) {
               Airbnb your home
             </p>
           </a>
-          <button className=" h-[3rem]   flex items-center justify-center rounded-full hover:bg-shadow-gray-light w-[3rem] ">
-            <img className="scale-[0.4] w-[100%]" src={globe} alt="" />
+          <button className=" h-[2rem]   flex items-center justify-center rounded-full hover:bg-shadow-gray-light w-[2rem] ">
+            <img className="h-4 w-4" src={globe} alt="" />
           </button>
 
-          <div className=" py-[8px] pl-[14px] ml-[0.75rem] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey-light opacity-[0.7] ">
-            <button className="w-[56px] flex space-x-3">
-              <img src={menu} className=" ml-[-0.4rem] scale-[0.8]" alt="" />
-              <img src={person} className="scale-[1.5]" alt="" />
+          <div className=" py-[7px] pl-[14px] ml-[0.75rem] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey-light opacity-[0.7] ">
+            <button className="w-[3.8rem] items-center flex justify-between">
+              <img src={menu} className="  h-4 w-4 " alt="" />
+              <img src={person} className="h-8 opacity-80 w-8" alt="" />
             </button>
           </div>
         </div>

@@ -7,10 +7,12 @@ import key from "../data/Icons svg/key.svg";
 import msg from "../data/Icons svg/msg.svg";
 import location from "../data/Icons svg/location.svg";
 import value from "../data/Icons svg/value.svg";
+import OptionImgs from "../OptionsImgs";
 
 const Review = () => {
   let totalCards = 5;
   let guestFavourite = true;
+
   return (
     <div
       id="Reviews"
