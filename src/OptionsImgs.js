@@ -194,6 +194,10 @@ let arr = [
     iconName: "Vineyards",
   },
   {
+    link: "https://a0.muscache.com/pictures/48b55f09-f51c-4ff5-b2c6-7f6bd4d1e049.jpg",
+    iconName: "Minsus",
+  },
+  {
     link: "https://a0.muscache.com/pictures/251c0635-cc91-4ef7-bb13-1084d5229446.jpg",
     iconName: "Casas particulares",
   },
@@ -205,18 +209,12 @@ let arr = [
     link: "https://a0.muscache.com/pictures/e4b12c1b-409b-4cb6-a674-7c1284449f6e.jpg",
     iconName: "Cycladic homes",
   },
-  {
-    link: "https://a0.muscache.com/pictures/7ff6e4a1-51b4-4671-bc9a-6f523f196c61.jpg",
-    iconName: "Riads",
-  },
+
   {
     link: "https://a0.muscache.com/pictures/4759a0a7-96a8-4dcd-9490-ed785af6df14.jpg",
     iconName: "Yurts",
   },
-  {
-    link: "https://a0.muscache.com/pictures/48b55f09-f51c-4ff5-b2c6-7f6bd4d1e049.jpg",
-    iconName: "Minsus",
-  },
+
   {
     link: "https://a0.muscache.com/pictures/747b326c-cb8f-41cf-a7f9-809ab646e10c.jpg",
     iconName: "Shepherd's huts",
@@ -236,6 +234,10 @@ let arr = [
   {
     link: "https://a0.muscache.com/pictures/f60700bc-8ab5-424c-912b-6ef17abc479a.jpg",
     iconName: "Barns",
+  },
+  {
+    link: "https://a0.muscache.com/pictures/7ff6e4a1-51b4-4671-bc9a-6f523f196c61.jpg",
+    iconName: "Riads",
   },
   {
     link: "https://a0.muscache.com/pictures/33848f9e-8dd6-4777-b905-ed38342bacb9.jpg",

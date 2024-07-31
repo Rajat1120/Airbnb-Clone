@@ -4,7 +4,7 @@ import CheckInOption from "./DatesOption";
 import CircularSlider from "./CircularSlider";
 import { useDispatch, useSelector } from "react-redux";
 import { format, addMonths } from "date-fns";
-import { setTextForInputDuration } from "./mainFormSlice";
+import { setHoverInput, setTextForInputDuration } from "./mainFormSlice";
 
 const Month = ({ modalRef, handleInputField, monthRef }) => {
   const startDurationDate = useSelector(
@@ -40,6 +40,8 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
     <Modal>
       <Modal.Open opens="month">
         <div
+          onMouseEnter={() => dispatch(setHoverInput("month"))}
+          onMouseLeave={() => dispatch(setHoverInput(null))}
           className={`flex justify-center  items-center ${
             curInput === "month" ? "shadow-checkInShadow rounded-full" : ""
           } `}

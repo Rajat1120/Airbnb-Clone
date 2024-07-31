@@ -23,7 +23,7 @@ const Options = () => {
   // console.log(totalScrollWidth);
   useEffect(() => {
     if (optionsRef?.current) {
-      setContainerScrollWidth(Math.abs(optionsRef?.current?.scrollWidth / 4));
+      setContainerScrollWidth(Math.abs(optionsRef?.current?.scrollWidth / 8));
     }
   }, []);
 

@@ -8,6 +8,7 @@ import arrow_right from "../../data/Icons svg/arrow-right.svg";
 import { addMonths, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setHoverInput,
   setMonths,
   setStayDuration,
   setTextForFlexibleInput,
@@ -138,6 +139,8 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
     <Modal>
       <Modal.Open opens="flexible">
         <div
+          onMouseEnter={() => dispatch(setHoverInput("month"))}
+          onMouseLeave={() => dispatch(setHoverInput(null))}
           ref={flexibleRef}
           className={`flex justify-center items-center ${
             curInput === "flexible" ? "shadow-checkInShadow rounded-full" : ""

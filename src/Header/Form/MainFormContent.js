@@ -15,6 +15,7 @@ import {
   setDisplaySearch,
   setDisplaySearchWeek,
   setEndDateToShow,
+  setHoverInput,
   setInfantCount,
   setOpenName,
   setPetsCount,
@@ -35,8 +36,6 @@ import Flexible from "./Flexible";
 import { setMinimize } from "../../Main/AppSlice";
 
 const MainFormContent = () => {
-  const [hoverInput, setHoverInput] = useState(null);
-
   const [guestPlural, setGuestPlural] = useState("");
   const [petPlural, setPetPlural] = useState("");
   const [extraGuest, setExtraGuest] = useState("");
@@ -46,6 +45,7 @@ const MainFormContent = () => {
     (store) => store.form.destinationInputVal
   );
   const startDateToShow = useSelector((store) => store.form.startDateToShow);
+  const hoverInput = useSelector((store) => store.form.hoverInput);
   const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
   const selectedStartDate = useSelector(
     (store) => store.form.selectedStartDate
@@ -158,7 +158,7 @@ const MainFormContent = () => {
         ) {
           dispatch(setActiveInput(""));
           dispatch(setOpenName(""));
-          setHoverInput(null);
+          dispatch(setHoverInput(null));
         }
 
         // if user has selected the interval (both start and end date, do not reset the current month)
@@ -308,10 +308,11 @@ const MainFormContent = () => {
             <div
               ref={buttonRef}
               onMouseEnter={() => {
-                if (data !== "destination") setHoverInput("destination");
+                if (data !== "destination")
+                  dispatch(setHoverInput("destination"));
               }}
               onMouseLeave={() => {
-                if (data !== "destination") setHoverInput(null);
+                if (data !== "destination") dispatch(setHoverInput(null));
               }}
               className={`flex ${
                 data === "destination"
@@ -384,14 +385,27 @@ const MainFormContent = () => {
       <div
         className={`w-[0.05rem] ${
           data
-            ? hoverInput === "destination" || hoverInput === "checkIn"
+            ? hoverInput === "destination" ||
+              hoverInput === "checkIn" ||
+              hoverInput === "month" ||
+              hoverInput === "flexible"
               ? "bg-shadow-gray"
               : "bg-gray-300"
-            : hoverInput === "destination" || hoverInput === "checkIn"
+            : hoverInput === "destination" ||
+              hoverInput === "checkIn" ||
+              hoverInput === "month" ||
+              hoverInput === "flexible"
             ? "bg-white"
             : "bg-gray-300"
         } h-[2rem] 
-        ${data === "destination" || data === "checkIn" ? "hidden" : ""}
+        ${
+          data === "destination" ||
+          data === "checkIn" ||
+          data === "month" ||
+          data === "flexible"
+            ? "hidden"
+            : ""
+        }
         `}
       ></div>
 
@@ -401,8 +415,8 @@ const MainFormContent = () => {
             <Modal.Open opens="checkIn">
               <div
                 ref={checkInRef}
-                onMouseEnter={() => setHoverInput("checkIn")}
-                onMouseLeave={() => setHoverInput(null)}
+                onMouseEnter={() => dispatch(setHoverInput("checkIn"))}
+                onMouseLeave={() => dispatch(setHoverInput(null))}
                 className={`flex ${
                   data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
                 } justify-center  items-center`}
@@ -507,8 +521,8 @@ const MainFormContent = () => {
             <Modal.Open opens="checkOut">
               <div
                 ref={checkOutRef}
-                onMouseEnter={() => setHoverInput("checkOut")}
-                onMouseLeave={() => setHoverInput(null)}
+                onMouseEnter={() => dispatch(setHoverInput("checkOut"))}
+                onMouseLeave={() => dispatch(setHoverInput(null))}
                 className={`flex ${
                   data === "checkOut"
                     ? "shadow-checkOutShadow rounded-full"
@@ -580,14 +594,27 @@ const MainFormContent = () => {
       <div
         className={`w-[0.05rem] ${
           data
-            ? hoverInput === "checkOut" || hoverInput === "addGuest"
+            ? hoverInput === "checkOut" ||
+              hoverInput === "addGuest" ||
+              hoverInput === "month" ||
+              hoverInput === "flexible"
               ? "bg-shadow-gray"
               : "bg-grey-light-50 "
-            : hoverInput === "checkOut" || hoverInput === "addGuest"
+            : hoverInput === "checkOut" ||
+              hoverInput === "addGuest" ||
+              hoverInput === "month" ||
+              hoverInput === "flexible"
             ? "bg-white"
             : "bg-grey-light-50 "
         } h-[2rem]
-        ${data === "checkOut" || data === "addGuest" ? "hidden" : ""}
+        ${
+          data === "checkOut" ||
+          data === "addGuest" ||
+          data === "month" ||
+          data === "flexible"
+            ? "hidden"
+            : ""
+        }
         
         `}
       ></div>
@@ -596,10 +623,10 @@ const MainFormContent = () => {
         <div
           ref={addGuestRef}
           onMouseEnter={() => {
-            if (data !== "addGuest") setHoverInput("addGuest");
+            if (data !== "addGuest") dispatch(setHoverInput("addGuest"));
           }}
           onMouseLeave={() => {
-            if (data !== "addGuest") setHoverInput(null);
+            if (data !== "addGuest") dispatch(setHoverInput(null));
           }}
           className={`flex w-[17.7rem] ${
             data === "addGuest"

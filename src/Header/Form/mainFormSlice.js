@@ -14,6 +14,7 @@ let formState = {
   dateOption: "dates",
   adultCount: 0,
   curDot: 2,
+  hoverInput: null,
   childCount: 0,
   displaySearch: null,
   infantCount: 0,
@@ -119,6 +120,9 @@ const formSlice = createSlice({
     setDisplayGuestInput(state, action) {
       state.displayGuestInput = action.payload;
     },
+    setHoverInput(state, action) {
+      state.hoverInput = action.payload;
+    },
   },
 });
 
@@ -139,6 +143,7 @@ export const {
   setAdultCount,
   setChildCount,
   setInfantCount,
+  setHoverInput,
   setPetsCount,
   setOpenName,
   setTextForFlexibleInput,
