@@ -5,13 +5,10 @@ import { houses } from "../data/JsonData/HouseDetail";
 import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router";
 
 const House = () => {
   let lastScrollPosition = useRef(window.scrollY);
-  const location = useLocation();
-  let onHouseDetailPage = location.pathname === "/house";
+
   const startScroll = useSelector((store) => store.app.startScroll);
 
   const dispatch = useDispatch();
@@ -52,12 +49,9 @@ const House = () => {
       } `}
     >
       <div className=" grid gap-x-5  fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
-        {houses.map((item) => (
-          <a href="/house" target="_blank">
-            <div
-              key={item.id}
-              className="w-full   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col "
-            >
+        {houses.map((item, i) => (
+          <a key={i} href="/house" target="_blank">
+            <div className="w-full   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
               <div className="w-full flex-center  h-full">
                 <img
                   className="rounded-[20px] flex-center w-full h-full object-cover "

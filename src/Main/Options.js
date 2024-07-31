@@ -9,17 +9,22 @@ import optionImgs from "../OptionsImgs";
 const Options = () => {
   // startScroll = false;
 
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [containerScrollWidth, setContainerScrollWidth] = useState(0);
+
   const minimize = useSelector((store) => store.app.minimize);
 
   const options = optionImgs;
 
-  let optionsContainer = document.getElementById("options");
-  console.log(optionsContainer?.scrollWidth);
   const optionsRef = useRef(null);
   const rightScrollBtnRef = useRef(null);
   const leftScrollBtnRef = useRef();
 
-  const [scrollPosition, setScrollPosition] = useState(0);
+  useEffect(() => {
+    if (optionsRef?.current) {
+      setContainerScrollWidth(Math.abs(optionsRef?.current?.scrollWidth / 4));
+    }
+  }, []);
 
   useEffect(() => {
     const optionRef = optionsRef.current;
@@ -46,7 +51,7 @@ const Options = () => {
   useEffect(() => {
     let rightScrollBtn = rightScrollBtnRef.current;
     function handleScrollRightBtn() {
-      const newPosition = scrollPosition + 652;
+      const newPosition = scrollPosition + containerScrollWidth;
       optionsRef.current.scrollTo({
         left: newPosition,
         behavior: "smooth",
@@ -63,14 +68,14 @@ const Options = () => {
         rightScrollBtn.removeEventListener("click", handleScrollRightBtn);
       }
     };
-  }, [scrollPosition]);
+  }, [scrollPosition, containerScrollWidth]);
 
   // scroll btn left
 
   useEffect(() => {
     let leftScrollButtonRef = leftScrollBtnRef.current;
     function handleScrollLeftBtn() {
-      const newPosition = scrollPosition - 652;
+      const newPosition = scrollPosition - containerScrollWidth;
       optionsRef.current.scrollTo({
         left: newPosition,
         behavior: "smooth",
@@ -87,7 +92,7 @@ const Options = () => {
         leftScrollButtonRef.removeEventListener("click", handleScrollLeftBtn);
       }
     };
-  }, [scrollPosition]);
+  }, [scrollPosition, containerScrollWidth]);
 
   let btnLeftClassName = ` absolute z-30  ${
     scrollPosition < 65 ? "hidden" : "flex-center"
@@ -120,7 +125,7 @@ const Options = () => {
               {options.map((item, i) => {
                 return (
                   <div
-                    key={item.key}
+                    key={i}
                     className={`opacity-75 hover:opacity-100 cursor-pointer flex-center mr-0   ${
                       i === 0 ? "pr-9" : ""
                     }  h-16 my-[12px] border-b-2 border-white py-[4px]  hover:border-grey-light-50  `}
