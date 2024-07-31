@@ -14,7 +14,7 @@ const Options = () => {
   const options = optionImgs;
 
   let optionsContainer = document.getElementById("options");
-
+  console.log(optionsContainer?.scrollWidth);
   const optionsRef = useRef(null);
   const rightScrollBtnRef = useRef(null);
   const leftScrollBtnRef = useRef();
@@ -23,6 +23,7 @@ const Options = () => {
 
   useEffect(() => {
     const optionRef = optionsRef.current;
+
     const handleScroll = () => {
       if (optionRef) {
         setScrollPosition(optionRef.scrollLeft);
@@ -45,7 +46,7 @@ const Options = () => {
   useEffect(() => {
     let rightScrollBtn = rightScrollBtnRef.current;
     function handleScrollRightBtn() {
-      const newPosition = scrollPosition + 700;
+      const newPosition = scrollPosition + 652;
       optionsRef.current.scrollTo({
         left: newPosition,
         behavior: "smooth",
@@ -69,7 +70,7 @@ const Options = () => {
   useEffect(() => {
     let leftScrollButtonRef = leftScrollBtnRef.current;
     function handleScrollLeftBtn() {
-      const newPosition = scrollPosition - 700;
+      const newPosition = scrollPosition - 652;
       optionsRef.current.scrollTo({
         left: newPosition,
         behavior: "smooth",
@@ -90,18 +91,20 @@ const Options = () => {
 
   let btnLeftClassName = ` absolute z-30  ${
     scrollPosition < 65 ? "hidden" : "flex-center"
-  }  top-[25%] left-1 h-9  hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
+  }  top-[30%] left-1 h-9  hidden  w-9  z-100 bg-white hover:scale-110 hover:drop-shadow-md  rounded-[50%] border-[1px] border-grey-dim`;
 
   let btnRightClassName = `absolute ${
-    scrollPosition > 2350 ? "hidden" : "flex-center"
-  } top-[25%] z-30 right-2 h-9  w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-[1px]`;
+    scrollPosition > 2290 ? "hidden" : "flex-center"
+  } top-[30%] z-50 right-4 h-9  w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md   rounded-[50%] border-[1px]`;
 
   return (
     <div
-      className={` bg-white ${minimize ? "hidden" : ""}   justify-self-center `}
+      className={` bg-white ${
+        minimize ? "hidden" : ""
+      } z-10  justify-self-center w-[calc(100%-10rem)] mx-auto `}
     >
       <div
-        className={`h-[5rem] justify-center py-6 flex w-full items-center gap-2 `}
+        className={`h-[5rem] justify-center py-6 flex w-full items-center   `}
       >
         <div
           className={
@@ -112,14 +115,14 @@ const Options = () => {
             <div
               id="options"
               ref={optionsRef}
-              className=" flex items-center space-x-10 justify-center h-24  w-[63rem]  overflow-scroll "
+              className=" flex items-center space-x-9 justify-center h-24  w-[60rem]  overflow-scroll "
             >
               {options.map((item, i) => {
                 return (
                   <div
                     key={item.key}
                     className={`opacity-75 hover:opacity-100 cursor-pointer flex-center mr-0   ${
-                      i === 0 ? "pr-6" : ""
+                      i === 0 ? "pr-9" : ""
                     }  h-16 my-[12px] border-b-2 border-white py-[4px]  hover:border-grey-light-50  `}
                   >
                     <div className="flex-col space-y-2 h-full items-center justify-center flex">
