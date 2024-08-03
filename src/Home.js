@@ -3,11 +3,26 @@ import Options from "./Main/Options";
 import styles from "./input.css";
 
 import House from "./Main/House";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useSelector } from "react-redux";
 
 export default function Home() {
+  /*   useEffect(() => {
+    getRooms().then((data) => {
+      if (Array.isArray(data)) {
+        // Filter out empty strings and clean up each URL
+        const cleanedArray = data[0].images
+          .filter((url) => url.trim() !== "")
+          .map((url) => url.trim().replace(/^{|}$/g, ""));
+
+        console.log(cleanedArray);
+      } else {
+        console.error("Data is not an array:", data);
+      }
+    });
+  }, []); */
+
   const startScroll = useSelector((store) => store.app.startScroll);
   const minimize = useSelector((store) => store.app.minimize);
   let headerRef = useRef();
