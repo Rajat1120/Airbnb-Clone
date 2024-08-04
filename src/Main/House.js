@@ -73,46 +73,51 @@ const House = () => {
       } `}
     >
       <div className=" grid gap-x-5  fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
-        {isLoading ? (
-          <div className="loader"></div>
-        ) : (
-          houses.map((item, i) => (
-            <a key={i} href="/house" target="_blank">
-              <div className="w-full   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
-                <div className="w-full flex items-center justify-start overflow-x-auto  h-full">
-                  {roomImages?.map((img, i) => (
-                    <img
-                      className="rounded-[20px] flex-center w-full h-full object-cover "
-                      src={roomImages[i]}
-                      alt=""
-                    />
-                  ))}
-                </div>
-                <div className="flex w-full justify-between  items-start ">
-                  <div className="">
-                    <p className="  text-ellipsis overflow-hidden text-[15px]  font-medium">
-                      {item.location}
-                    </p>
-                    <p className="font-light text-grey text-[15px]">
-                      {Math.floor(Math.random() * 20 + 200)} kilometers away
-                    </p>
-                    <p className="font-light text-grey text-[15px]">
-                      16-21 May
-                    </p>
-                    <p className="text-[15px] font-medium">
-                      ${item.price_per_night}{" "}
-                      <span className="font-light  text-[15px]"> night</span>
+        {isLoading
+          ? houses.map((item, i) => {
+              return (
+                <div
+                  key={i}
+                  className="loader w-full  h-[24.5rem] flex-center"
+                ></div>
+              );
+            })
+          : houses.map((item, i) => (
+              <a key={i} href="/house" target="_blank">
+                <div className="w-full   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
+                  <div className="w-full flex items-center justify-start overflow-x-auto  h-full">
+                    {roomImages?.map((img, i) => (
+                      <img
+                        className="rounded-[20px] flex-center w-full h-full object-cover "
+                        src={roomImages[i]}
+                        alt=""
+                      />
+                    ))}
+                  </div>
+                  <div className="flex w-full justify-between  items-start ">
+                    <div className="">
+                      <p className="  text-ellipsis overflow-hidden text-[15px]  font-medium">
+                        {item.location}
+                      </p>
+                      <p className="font-light text-grey text-[15px]">
+                        {Math.floor(Math.random() * 20 + 200)} kilometers away
+                      </p>
+                      <p className="font-light text-grey text-[15px]">
+                        16-21 May
+                      </p>
+                      <p className="text-[15px] font-medium">
+                        ${item.price_per_night}{" "}
+                        <span className="font-light  text-[15px]"> night</span>
+                      </p>
+                    </div>
+                    <p className="flex gap-x-1  justify-between items-center">
+                      <img src={star} className="w-[15px] h-[15px]" alt="" />{" "}
+                      <span className="font-light text-[15px]">4.75</span>
                     </p>
                   </div>
-                  <p className="flex gap-x-1  justify-between items-center">
-                    <img src={star} className="w-[15px] h-[15px]" alt="" />{" "}
-                    <span className="font-light text-[15px]">4.75</span>
-                  </p>
                 </div>
-              </div>
-            </a>
-          ))
-        )}
+              </a>
+            ))}
       </div>
     </div>
   );
