@@ -10,8 +10,6 @@ import { getRooms } from "../Services/apiRooms";
 const House = () => {
   const [roomImages, setRoomImages] = useState([]);
 
-  console.log(roomImages);
-
   const { isLoading, data, error } = useQuery({
     queryKey: ["room"],
     queryFn: getRooms,
@@ -20,6 +18,8 @@ const House = () => {
   useEffect(() => {
     if (data)
       if (Array.isArray(data)) {
+        console.log(data);
+
         // Filter out empty strings and clean up each URL
         const cleanedArray = data[0].images
           .filter((url) => url.trim() !== "")
@@ -82,22 +82,23 @@ const House = () => {
                 ></div>
               );
             })
-          : houses.map((item, i) => (
+          : data?.map((item, i) => (
               <a key={i} href="/house" target="_blank">
                 <div className="w-full   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
                   <div className="w-full flex items-center justify-start overflow-x-auto  h-full">
-                    {roomImages?.map((img, i) => (
+                    {item.images?.map((img, i) => (
                       <img
                         className="rounded-[20px] flex-center w-full h-full object-cover "
-                        src={roomImages[i]}
+                        src={img}
+                        key={i}
                         alt=""
                       />
                     ))}
                   </div>
                   <div className="flex w-full justify-between  items-start ">
-                    <div className="">
-                      <p className="  text-ellipsis overflow-hidden text-[15px]  font-medium">
-                        {item.location}
+                    <div className="w-full">
+                      <p className="  text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%]  font-medium">
+                        {item["house-title"]}
                       </p>
                       <p className="font-light text-grey text-[15px]">
                         {Math.floor(Math.random() * 20 + 200)} kilometers away
@@ -106,12 +107,12 @@ const House = () => {
                         16-21 May
                       </p>
                       <p className="text-[15px] font-medium">
-                        ${item.price_per_night}{" "}
+                        ${item.price}
                         <span className="font-light  text-[15px]"> night</span>
                       </p>
                     </div>
                     <p className="flex gap-x-1  justify-between items-center">
-                      <img src={star} className="w-[15px] h-[15px]" alt="" />{" "}
+                      <img src={star} className="w-[15px] h-[15px]" alt="" />
                       <span className="font-light text-[15px]">4.75</span>
                     </p>
                   </div>
