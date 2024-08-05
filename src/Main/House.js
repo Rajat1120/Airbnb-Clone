@@ -64,7 +64,7 @@ const House = () => {
         !startScroll ? "-translate-y-[6rem] -z-30" : ""
       }`}
     >
-      <div className="grid gap-x-5 fixed-[50%] grid-cols-four-col justify-center items-center gap-y-8 grid-flow-row">
+      <div className="grid gap-x-5 fixed-[50%] grid-cols-four-col justify-center w-full items-center gap-y-8 grid-flow-row">
         {isLoading
           ? houses.map((item, i) => (
               <div

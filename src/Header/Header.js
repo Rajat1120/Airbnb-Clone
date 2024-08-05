@@ -33,9 +33,7 @@ function Header({ headerRef }) {
     >
       <div
         className={`grid grid-cols-3  ${
-          location.pathname === "/house"
-            ? "w-[calc(100%-10rem)] mx-auto"
-            : "w-full"
+          onHouseDetailPage ? "w-[calc(100%-10rem)] mx-auto" : "w-full"
         } px-20 `}
       >
         <div className="w-8 ">

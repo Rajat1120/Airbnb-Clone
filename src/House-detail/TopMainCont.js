@@ -3,9 +3,8 @@ import share from "../../src/data/Icons svg/shareIcon.svg";
 import heart from "../../src/data/Icons svg/heart.svg";
 import dots from "../data/Icons svg/dots.svg";
 import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
-import { getRoomInfo } from "../Services/apiRooms";
 import { useSelector } from "react-redux";
+
 const TopMainCont = () => {
   const { id } = useParams();
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
@@ -28,48 +27,26 @@ const TopMainCont = () => {
           </span>
         </div>
       </div>
-      <div className=" w-[calc(100%-20rem)]  px-auto  ">
-        <div className="  pt-6 ">
-          <div className="grid-areas h-[25rem] overflow-hidden rounded-xl">
-            <div className=" relative grid-area-image1">
-              <img
-                className="w-full h-full object-cover object-center   inset-0"
-                src={houseInfo?.images[0]}
-                alt=""
-              />
-            </div>
-            <div className="      grid-area-image2 ">
-              <img
-                className="w-full h-full object-cover object-center   inset-0"
-                src={houseInfo?.images[1]}
-                alt=""
-              />
-            </div>
-            <div className=" grid-area-image3">
-              <img
-                className="w-full h-full object-cover object-center   inset-0"
-                src={houseInfo?.images[2]}
-                alt=""
-              />
-            </div>
-            <div className=" grid-area-image4 ">
-              <img
-                className="w-full h-full object-cover object-center   inset-0"
-                src={houseInfo?.images[3]}
-                alt=""
-              />
-            </div>
-            <div className="     relative grid-area-image5">
-              <img
-                className="w-full h-full object-cover object-center   inset-0"
-                src={houseInfo?.images[4]}
-                alt=""
-              />
-              <div className="flex-center cursor-pointer w-[10rem] h-9 bg-white absolute top-32 left-20 gap-x-2   rounded-md border-[1px] border-black  ">
-                <img src={dots} className="w-4 h-4" alt="" />
-                <span className="text-sm font-medium">Show all photos</span>
+      <div className="w-[calc(100%-20rem)] px-auto">
+        <div className="pt-6">
+          <div className="grid-areas rounded-xl overflow-hidden">
+            {[1, 2, 3, 4, 5].map((index) => (
+              <div key={index} className={`grid-area-image${index} relative`}>
+                {houseInfo?.images[index - 1] && (
+                  <img
+                    src={houseInfo.images[index - 1]}
+                    alt={`House img ${index}`}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+                {index === 5 && (
+                  <div className="flex-center cursor-pointer w-[10rem] h-8 bg-white absolute bottom-5 right-5 gap-x-2 rounded-lg border-[1px] border-black">
+                    <img src={dots} className="!w-4 !h-4" alt="" />
+                    <span className="text-sm font-medium">Show all photos</span>
+                  </div>
+                )}
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

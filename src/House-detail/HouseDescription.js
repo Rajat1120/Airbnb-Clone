@@ -2,20 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 
 import showMore from "../data/Icons svg/arrow-right.svg";
 import HouseDescriptionModal from "./HouseDescriptionModal";
+import { useParams } from "react-router";
+import { useSelector } from "react-redux";
 
 const HouseDescription = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const paragraphRef = useRef(null);
+  const { id } = useParams();
+  const isLoading = useSelector((store) => store.houseDetail.isLoading);
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
 
   let maxLines = 5;
 
-  let text =
-    " Step into the enchanting embrace of La Maison Du Desert. Bask in the hues of sunrise & sunset, tailored for rejuvenation. The interior is a seamless dance of kitchen, living room, bedroom, cocooning you in comfort. Outside, your private paradise awaits; immerse yourself in hot tub, embrace rustic charm w a cowboy tub, gather around the fire-pit, sizzle with excitement at the BBQ grill, and find joy in playful games. Your escape to serenity is calling; book La Maison Du Desert on Airbnb now.immerse yourself in hot tub, embrace rustic charm w a cowboy tub, gather around the fire-pit, sizzle with excitement at the BBQ grill, and find joy in playful games. Your escape to ";
-
   useEffect(() => {
     const paragraph = paragraphRef.current;
-    if (!paragraph) return;
+    if (!paragraph || isLoading) return;
 
     const lineHeight = parseInt(window.getComputedStyle(paragraph).lineHeight);
     const maxHeight = lineHeight * maxLines;
@@ -29,7 +31,7 @@ const HouseDescription = () => {
       paragraph.style.maxHeight = "none";
       paragraph.classList.remove("truncatePara");
     }
-  }, [text, maxLines]);
+  }, [isLoading, maxLines]);
 
   return (
     <div>
@@ -39,7 +41,7 @@ const HouseDescription = () => {
             ref={paragraphRef}
             className="absolute  inset-0 overflow-hidden "
           >
-            {text}
+            {houseInfo?.house_description}
           </span>
         </p>
         {isOverflowing && (
@@ -60,7 +62,7 @@ const HouseDescription = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="w-[46rem] h-full ">{text}</div>
+        <div className="w-[46rem] h-full ">{houseInfo?.house_description}</div>
       </HouseDescriptionModal>
     </div>
   );

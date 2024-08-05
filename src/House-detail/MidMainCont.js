@@ -9,13 +9,21 @@ import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
 import arrowDown from "../data/Icons svg/arrowDown.svg";
 import arrowUp from "../data/Icons svg/arrowUpword.svg";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 const MidMainCont = () => {
+  const { id } = useParams();
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
+  const isLoading = useSelector((store) => store.houseDetail.isLoading);
+
   return (
     <div className="w-[calc(100%-10rem)] mx-auto flex justify-between px-[5rem] max-h-[198.59rem] relative after:content-[''] after:absolute after:bottom-0  after:w-[calc(100%-10rem)]  after:h-[1px]  after:bg-grey-dim ">
       <div className="w-[40.83rem]">
         <div className="py-8">
-          <h1 className=" text-[25px]   font-[460]">Room in Theog, India</h1>
+          <h1 className=" text-[25px]   font-[460]">
+            {isLoading ? "Loading" : houseInfo?.title_2}
+          </h1>
           <p className="flex items-center">
             <span className="font-light">1 queen bed</span>
             <span className="mx-2 flex items-center justify-center">
