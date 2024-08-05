@@ -2,18 +2,40 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../Header/Header";
 import { setMinimize, setStartScroll } from "../Main/AppSlice";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
 import BottomMainCont from "./BottomMainCont";
 import Footer from "./Footer";
 import NavBar from "./NavBar";
+import { getRoomInfo } from "../Services/apiRooms";
+import { useQuery } from "@tanstack/react-query";
+import { setHouseInfo, setIsLoading } from "./HouseDetailSlice";
 
 const HouseDetail = () => {
   const location = useLocation();
-  let onHouseDetailPage = location.pathname === "/house";
+  const { id } = useParams();
+  let onHouseDetailPage = location.pathname.includes("/house/");
+
+  const dispatch = useDispatch();
   const minimize = useSelector((store) => store.app.minimize);
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
+
+  console.log(houseInfo);
+
   let headerRef = useRef();
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["roomInfo", id],
+    queryFn: () => getRoomInfo(id),
+  });
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setHouseInfo({ ...houseInfo, [id]: data }));
+      dispatch(setIsLoading(false));
+    }
+  }, [data, houseInfo, dispatch, isLoading, id]);
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
 
@@ -22,7 +44,6 @@ const HouseDetail = () => {
   let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
 
   let animateHeaderClass2 = minimize ? "animate-collapse" : "h-[11rem]";
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleScroll = () => {

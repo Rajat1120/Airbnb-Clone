@@ -20,7 +20,7 @@ const MainForm = ({ headerRef }) => {
   const minimizeFormBtn = useSelector((store) => store.form.minimizeFormBtn);
   const dateOption = useSelector((store) => store.form.dateOption);
   const location = useLocation();
-  let onHouseDetailPage = location.pathname === "/house";
+  let onHouseDetailPage = location.pathname.includes("/house/");
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);

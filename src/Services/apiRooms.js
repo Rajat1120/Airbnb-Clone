@@ -12,3 +12,18 @@ export async function getRooms() {
     return data;
   }
 }
+
+export async function getRoomInfo(id) {
+  let { data, error } = await supabase
+    .from("Rooms")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    return null; // Handle error appropriately
+  } else {
+    return data;
+  }
+}

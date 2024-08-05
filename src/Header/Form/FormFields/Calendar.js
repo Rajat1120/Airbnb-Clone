@@ -32,7 +32,7 @@ const Calendar = () => {
   const scrollContainerRef = useRef(null);
   const minimize = useSelector((store) => store.app.minimize);
   const location = useLocation();
-  let onHouseDetailPage = location.pathname === "/house";
+  let onHouseDetailPage = location.pathname.includes("/house/");
   const [currentIndex, setCurrentIndex] = useState(0);
   const monthWidth = onHouseDetailPage && !minimize ? 340 : 440; // Width of each month component
   const scrollSpeed = 200;

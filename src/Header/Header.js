@@ -11,7 +11,7 @@ import { useLocation } from "react-router";
 
 function Header({ headerRef }) {
   const location = useLocation();
-  let onHouseDetailPage = location.pathname === "/house";
+  let onHouseDetailPage = location.pathname.includes("/house/");
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);

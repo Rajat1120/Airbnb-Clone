@@ -1,16 +1,25 @@
 // src/features/exampleSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { format, setDate } from "date-fns";
-import { set } from "date-fns";
 
 let HouseDetail = {
   startScroll: false,
+  houseInfo: {},
+  isLoading: true,
 };
 
 const HouseDetailSlice = createSlice({
   name: "HouseDetail",
   initialState: HouseDetail,
-  reducers: {},
+  reducers: {
+    setHouseInfo(state, action) {
+      state.houseInfo = { ...state.houseInfo, ...action.payload };
+    },
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+  },
 });
+
+export const { setHouseInfo, setIsLoading } = HouseDetailSlice.actions;
 
 export default HouseDetailSlice.reducer;

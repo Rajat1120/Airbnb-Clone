@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
 import { houses } from "../data/JsonData/HouseDetail";
+import { Link } from "react-router-dom";
 
 const House = () => {
   const imageWidth = 301.91;
@@ -74,7 +75,7 @@ const House = () => {
           : data?.map((item) => (
               <a
                 key={item.id}
-                href="/house"
+                href={`/house/${item.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -113,8 +114,8 @@ const House = () => {
                       />
                     ))}
                   </div>
-                  <div className="flex w-full justify-between items-start">
-                    <div className="w-full">
+                  <div className={`flex w-full justify-between items-start`}>
+                    <div className="w-[80%]">
                       <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
                         {item["house-title"]}
                       </p>
@@ -129,7 +130,7 @@ const House = () => {
                         <span className="font-light text-[15px]"> night</span>
                       </p>
                     </div>
-                    <p className="flex gap-x-1 justify-between items-center">
+                    <p className="flex gap-x-1 w-[20%] justify-end items-center">
                       <img src={star} className="w-[15px] h-[15px]" alt="" />
                       <span className="font-light text-[15px]">4.75</span>
                     </p>
