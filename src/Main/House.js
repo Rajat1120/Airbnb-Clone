@@ -1,83 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import star from "../data/Icons svg/star.svg";
-
-import { houses } from "../data/JsonData/HouseDetail";
+import arrow_right from "../data/Icons svg/arrow-right.svg";
+import arrow_left from "../data/Icons svg/arrow-left.svg";
+import { useQuery } from "@tanstack/react-query";
+import { getRooms } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
-import { useQuery } from "@tanstack/react-query";
-import { getRooms } from "../Services/apiRooms";
-import arrow_right from "../data/Icons svg/arrow-right.svg";
-import arrow_left from "../data/Icons svg/arrow-left.svg";
+import { houses } from "../data/JsonData/HouseDetail";
 
 const House = () => {
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [containerScrollWidth, setContainerScrollWidth] = useState({});
-  const rightScrollBtnRef = useRef(null);
-  let imageWidth = 301.91;
-  const leftScrollBtnRef = useRef(null);
+  const imageWidth = 301.91;
+  const houseImagesRefs = useRef({});
+
   const { isLoading, data, error } = useQuery({
     queryKey: ["room"],
     queryFn: getRooms,
   });
 
-  const houseImagesRef = useRef(null);
-
-  useEffect(() => {
-    if (houseImagesRef?.current && data) {
-      setContainerScrollWidth((curData) => {
-        const newData = { ...curData };
-        for (let i = 0; i < data.length; i++) {
-          newData[data[i]?.id] = Math.abs(
-            imageWidth * (data[i]?.images?.length || 0)
-          );
-        }
-        return newData;
-      });
-    }
-  }, [data, imageWidth]);
-
-  console.log(containerScrollWidth);
-
-  useEffect(() => {
-    const houseImgRef = houseImagesRef?.current;
-
-    const handleScroll = () => {
-      if (houseImgRef) {
-        setScrollPosition(houseImgRef.scrollLeft);
-      }
-    };
-
-    if (houseImgRef) {
-      houseImgRef.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (houseImgRef) {
-        houseImgRef.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
-
-  const handleScrollBtn = (e, direction) => {
+  const handleScrollBtn = (e, direction, itemId) => {
     e.preventDefault();
     e.stopPropagation();
-    const newPosition =
-      direction === "right"
-        ? scrollPosition + imageWidth
-        : scrollPosition - imageWidth;
-    houseImagesRef.current.scrollTo({
-      left: newPosition,
-      behavior: "smooth",
-    });
-    setScrollPosition(newPosition);
-    console.log(scrollPosition);
+    const container = houseImagesRefs.current[itemId];
+    if (container) {
+      const scrollAmount = direction === "right" ? imageWidth : -imageWidth;
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
   };
 
   let lastScrollPosition = useRef(window.scrollY);
-
   const startScroll = useSelector((store) => store.app.startScroll);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -90,10 +42,8 @@ const House = () => {
       }, 350);
 
       if (currentScrollPosition > lastScrollPosition.current) {
-        // Scrolling down (no change needed here)
-        dispatch(setStartScroll(false)); // Set)
+        dispatch(setStartScroll(false));
       } else if (currentScrollPosition < 22) {
-        // Scrolling up
         dispatch(setStartScroll(true));
       }
 
@@ -107,57 +57,65 @@ const House = () => {
     };
   }, [startScroll, dispatch]);
 
-  useEffect(() => {}, [startScroll]);
-
   return (
     <div
-      className={` absolute flex-center  transition-transform  duration-[0.3s] ease-in-out w-full px-20   top-[17rem] overflow-scroll   ${
+      className={`absolute flex-center transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
         !startScroll ? "-translate-y-[6rem] -z-30" : ""
-      } `}
+      }`}
     >
-      <div className=" grid gap-x-5  fixed-[50%] grid-cols-four-col justify-center items-center  gap-y-8  grid-flow-row">
+      <div className="grid gap-x-5 fixed-[50%] grid-cols-four-col justify-center items-center gap-y-8 grid-flow-row">
         {isLoading
-          ? houses.map((item, i) => {
-              return (
-                <div
-                  key={i}
-                  className="loader w-full  h-[24.5rem] flex-center"
-                ></div>
-              );
-            })
-          : data?.map((item, i) => (
-              <a key={item.id} href="/house" target="_blank">
-                <div className="w-full relative   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
+          ? houses.map((item, i) => (
+              <div
+                key={i}
+                className="loader w-full h-[24.5rem] flex-center"
+              ></div>
+            ))
+          : data?.map((item) => (
+              <a
+                key={item.id}
+                href="/house"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div className="w-full relative h-[24.5rem] flex gap-y-4 items-center justify-center flex-col">
                   <div
-                    ref={houseImagesRef}
-                    className="w-full  flex items-center justify-start overflow-x-auto  h-full"
+                    ref={(el) => (houseImagesRefs.current[item.id] = el)}
+                    className="w-full flex items-center justify-start overflow-x-auto h-full scroll-smooth"
+                    style={{
+                      scrollSnapType: "x mandatory",
+                      scrollBehavior: "smooth",
+                    }}
                   >
                     <button
-                      ref={leftScrollBtnRef}
-                      onClick={(e) => handleScrollBtn(e, "left")}
-                      className=" z-100 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center  rounded-[50%] border-[1px] left-2 border-grey-dim"
+                      onClick={(e) => handleScrollBtn(e, "left", item.id)}
+                      className="z-100 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
                     >
-                      <img src={arrow_left} alt="" />
+                      <img src={arrow_left} alt="Scroll left" />
                     </button>
                     <button
-                      ref={rightScrollBtnRef}
-                      onClick={(e) => handleScrollBtn(e, "right")}
-                      className=" z-100 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2  rounded-[50%] border-[1px] border-grey-dim"
+                      onClick={(e) => handleScrollBtn(e, "right", item.id)}
+                      className="z-100 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
                     >
-                      <img src={arrow_right} alt="" />
+                      <img src={arrow_right} alt="Scroll right" />
                     </button>
                     {item.images?.map((img, i) => (
                       <img
-                        className="rounded-[20px] flex-center w-full h-full object-cover "
+                        className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
                         src={img}
                         key={i}
                         alt=""
+                        style={{
+                          scrollSnapAlign: "start",
+                          flexShrink: 0,
+                          width: `${imageWidth}px`,
+                        }}
                       />
                     ))}
                   </div>
-                  <div className="flex w-full justify-between  items-start ">
+                  <div className="flex w-full justify-between items-start">
                     <div className="w-full">
-                      <p className="  text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%]  font-medium">
+                      <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
                         {item["house-title"]}
                       </p>
                       <p className="font-light text-grey text-[15px]">
@@ -168,10 +126,10 @@ const House = () => {
                       </p>
                       <p className="text-[15px] font-medium">
                         ${item.price}
-                        <span className="font-light  text-[15px]"> night</span>
+                        <span className="font-light text-[15px]"> night</span>
                       </p>
                     </div>
-                    <p className="flex gap-x-1  justify-between items-center">
+                    <p className="flex gap-x-1 justify-between items-center">
                       <img src={star} className="w-[15px] h-[15px]" alt="" />
                       <span className="font-light text-[15px]">4.75</span>
                     </p>
