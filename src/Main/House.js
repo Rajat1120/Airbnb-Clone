@@ -7,29 +7,72 @@ import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
 import { useQuery } from "@tanstack/react-query";
 import { getRooms } from "../Services/apiRooms";
-const House = () => {
-  const [roomImages, setRoomImages] = useState([]);
+import arrow_right from "../data/Icons svg/arrow-right.svg";
+import arrow_left from "../data/Icons svg/arrow-left.svg";
 
+const House = () => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [containerScrollWidth, setContainerScrollWidth] = useState({});
+  const rightScrollBtnRef = useRef(null);
+  let imageWidth = 301.91;
+  const leftScrollBtnRef = useRef(null);
   const { isLoading, data, error } = useQuery({
     queryKey: ["room"],
     queryFn: getRooms,
   });
 
+  const houseImagesRef = useRef(null);
+
   useEffect(() => {
-    if (data)
-      if (Array.isArray(data)) {
-        console.log(data);
+    if (houseImagesRef?.current && data) {
+      setContainerScrollWidth((curData) => {
+        const newData = { ...curData };
+        for (let i = 0; i < data.length; i++) {
+          newData[data[i]?.id] = Math.abs(
+            imageWidth * (data[i]?.images?.length || 0)
+          );
+        }
+        return newData;
+      });
+    }
+  }, [data, imageWidth]);
 
-        // Filter out empty strings and clean up each URL
-        const cleanedArray = data[0].images
-          .filter((url) => url.trim() !== "")
-          .map((url) => url.trim().replace(/^{|}$/g, ""));
+  console.log(containerScrollWidth);
 
-        setRoomImages(cleanedArray);
-      } else {
-        console.error("Data is not an array:", data);
+  useEffect(() => {
+    const houseImgRef = houseImagesRef?.current;
+
+    const handleScroll = () => {
+      if (houseImgRef) {
+        setScrollPosition(houseImgRef.scrollLeft);
       }
-  }, [data]);
+    };
+
+    if (houseImgRef) {
+      houseImgRef.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (houseImgRef) {
+        houseImgRef.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
+  const handleScrollBtn = (e, direction) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newPosition =
+      direction === "right"
+        ? scrollPosition + imageWidth
+        : scrollPosition - imageWidth;
+    houseImagesRef.current.scrollTo({
+      left: newPosition,
+      behavior: "smooth",
+    });
+    setScrollPosition(newPosition);
+    console.log(scrollPosition);
+  };
 
   let lastScrollPosition = useRef(window.scrollY);
 
@@ -83,9 +126,26 @@ const House = () => {
               );
             })
           : data?.map((item, i) => (
-              <a key={i} href="/house" target="_blank">
-                <div className="w-full   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
-                  <div className="w-full flex items-center justify-start overflow-x-auto  h-full">
+              <a key={item.id} href="/house" target="_blank">
+                <div className="w-full relative   h-[24.5rem] flex gap-y-4 items-center justify-center flex-col ">
+                  <div
+                    ref={houseImagesRef}
+                    className="w-full  flex items-center justify-start overflow-x-auto  h-full"
+                  >
+                    <button
+                      ref={leftScrollBtnRef}
+                      onClick={(e) => handleScrollBtn(e, "left")}
+                      className=" z-100 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center  rounded-[50%] border-[1px] left-2 border-grey-dim"
+                    >
+                      <img src={arrow_left} alt="" />
+                    </button>
+                    <button
+                      ref={rightScrollBtnRef}
+                      onClick={(e) => handleScrollBtn(e, "right")}
+                      className=" z-100 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2  rounded-[50%] border-[1px] border-grey-dim"
+                    >
+                      <img src={arrow_right} alt="" />
+                    </button>
                     {item.images?.map((img, i) => (
                       <img
                         className="rounded-[20px] flex-center w-full h-full object-cover "
