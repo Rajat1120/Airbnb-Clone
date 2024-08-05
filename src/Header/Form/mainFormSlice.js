@@ -16,6 +16,7 @@ let formState = {
   curDot: 2,
   hoverInput: null,
   childCount: 0,
+  minimizeFormBtn: "",
   displaySearch: null,
   infantCount: 0,
   petsCount: 0,
@@ -123,6 +124,9 @@ const formSlice = createSlice({
     setHoverInput(state, action) {
       state.hoverInput = action.payload;
     },
+    setMinimizeFormBtn(state, action) {
+      state.minimizeFormBtn = action.payload;
+    },
   },
 });
 
@@ -131,6 +135,7 @@ export const {
   setSearchEl,
   setCurrentMonth,
   setSelectedEndDate,
+  setMinimizeFormBtn,
   setStartDateToShow,
   setTextForInputDuration,
   setEndDateToShow,

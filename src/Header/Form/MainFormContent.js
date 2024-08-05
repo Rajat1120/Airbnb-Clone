@@ -17,6 +17,7 @@ import {
   setEndDateToShow,
   setHoverInput,
   setInfantCount,
+  setMinimizeFormBtn,
   setOpenName,
   setPetsCount,
   setRegion,
@@ -213,6 +214,7 @@ const MainFormContent = () => {
   }, [data, dispatch]);
 
   function handleInputField(target, input) {
+    dispatch(setMinimizeFormBtn(""));
     if (data === input) {
       dispatch(setActiveInput(""));
       // dispatch(setOpenName(""));

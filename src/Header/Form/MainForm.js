@@ -3,7 +3,11 @@ import MainFormContent from "./MainFormContent";
 import ReactDOM from "react-dom";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { setActiveInput, setOpenName } from "./mainFormSlice";
+import {
+  setActiveInput,
+  setMinimizeFormBtn,
+  setOpenName,
+} from "./mainFormSlice";
 import { setMinimize, setStartScroll } from "../../Main/AppSlice";
 import Header from "../Header";
 import { useModalRef } from "../../Modals/Modal";
@@ -13,6 +17,7 @@ const MainForm = ({ headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
+  const minimizeFormBtn = useSelector((store) => store.form.minimizeFormBtn);
   const dateOption = useSelector((store) => store.form.dateOption);
   const location = useLocation();
   let onHouseDetailPage = location.pathname === "/house";
@@ -69,14 +74,14 @@ const MainForm = ({ headerRef }) => {
   }, [openName, dispatch]);
 
   useEffect(() => {
-    if (button === "anywhere") {
+    if (minimizeFormBtn === "anywhere") {
       if (minimize) {
         dispatch(setActiveInput("destination"));
         setTimeout(() => {
           dispatch(setOpenName("destination"));
         }, 200);
       }
-    } else if (button === "week") {
+    } else if (minimizeFormBtn === "week") {
       if (minimize) {
         if (dateOption === "dates") {
           dispatch(setActiveInput("checkIn"));
@@ -90,7 +95,7 @@ const MainForm = ({ headerRef }) => {
           }, 200);
         }
       }
-    } else if (button === "guest") {
+    } else if (minimizeFormBtn === "guest") {
       if (minimize) {
         dispatch(setActiveInput("addGuest"));
         setTimeout(() => {
@@ -98,7 +103,7 @@ const MainForm = ({ headerRef }) => {
         }, 200);
       }
     }
-  }, [button, dispatch, minimize, isVisible, dateOption]);
+  }, [minimizeFormBtn, dispatch, minimize, isVisible, dateOption]);
 
   function checkOpenModal(e) {
     const modalElement = document.getElementById("formModal");
@@ -200,7 +205,7 @@ const MainForm = ({ headerRef }) => {
               <button
                 onClick={() => {
                   dispatch(setMinimize(true));
-                  setButton("anywhere");
+                  dispatch(setMinimizeFormBtn("anywhere"));
                 }}
                 className="text-[1.8rem] h-[6rem]  flex-center text-center px-2  max-w-[30rem] min-w-[10rem] font-normal "
               >
@@ -212,7 +217,7 @@ const MainForm = ({ headerRef }) => {
               <button
                 onClick={() => {
                   dispatch(setMinimize(true));
-                  setButton("week");
+                  dispatch(setMinimizeFormBtn("week"));
                 }}
                 className="text-[1.8rem] flex-center px-4 h-[6rem]   "
               >
@@ -228,7 +233,7 @@ const MainForm = ({ headerRef }) => {
                 <p
                   onClick={() => {
                     dispatch(setMinimize(true));
-                    setButton("guest");
+                    dispatch(setMinimizeFormBtn("guest"));
                   }}
                   className={` ${
                     displayGuestInput
