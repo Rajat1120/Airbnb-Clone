@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../Header/Header";
 import { setMinimize, setStartScroll } from "../Main/AppSlice";
@@ -42,7 +42,6 @@ const HouseDetail = () => {
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
 
   let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
-
   let animateHeaderClass2 = minimize ? "animate-collapse" : "h-[11rem]";
 
   useEffect(() => {
@@ -62,6 +61,14 @@ const HouseDetail = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [dispatch]);
+
+  // Prevent scroll restoration and ensure top scroll on mount/reload
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="relative">
