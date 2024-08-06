@@ -117,4 +117,18 @@
       linear-gradient(#ddd, #ddd) 0 3.2rem / 55% 1rem no-repeat,
       linear-gradient(#ddd, #ddd) 0 4.5rem / 40% 1rem no-repeat;
   }
+
+  .imgLoader {
+    background-color: #ddd;
+    animation: shimmer 1.5s linear infinite alternate;
+  }
+
+  @keyframes shimmer {
+    0% {
+      opacity: 40%;
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
 }

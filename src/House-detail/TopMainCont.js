@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 const TopMainCont = () => {
   const { id } = useParams();
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
+
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
 
   // Pre-define the grid layout
@@ -22,24 +23,38 @@ const TopMainCont = () => {
   return (
     <div className="flex-center flex-col">
       <div className="w-[calc(100%-20rem)] flex justify-between mx-auto">
-        <h1 className="pt-6 text-[27px] font-[460]">
-          {isLoading ? "Loading" : houseInfo?.title_1}
-        </h1>
-        <div className="pt-6 flex justify-between w-[10rem]">
-          <span className="underline w-[5.2rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
-            <img className="w-[1.2rem] h-[1.2rem] pt-1" src={share} alt="" />
-            <span className="h-[1.2rem]">Share</span>
-          </span>
-          <span className="underline w-[4.8rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
-            <img className="w-[1.2rem] h-[1.2rem] pt-1" src={heart} alt="" />
-            <span className="h-[1.2rem]">Save</span>
-          </span>
+        <div>
+          {isLoading ? (
+            <div className="pt-6 imgLoader text-[27px] w-96 h-5 mt-10 font-[460]"></div>
+          ) : (
+            <h1 className={` pt-6 text-[27px]  font-[460] `}>
+              {houseInfo?.title_1}
+            </h1>
+          )}
         </div>
+        {isLoading ? (
+          <div className="pt-6 w-[10rem] h-5"></div>
+        ) : (
+          <div className="pt-6 flex justify-between w-[10rem]">
+            <span className="underline w-[5.2rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
+              <img className="w-[1.2rem] h-[1.2rem] pt-1" src={share} alt="" />
+              <span className="h-[1.2rem]">Share</span>
+            </span>
+            <span className="underline w-[4.8rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
+              <img className="w-[1.2rem] h-[1.2rem] pt-1" src={heart} alt="" />
+              <span className="h-[1.2rem]">Save</span>
+            </span>
+          </div>
+        )}
       </div>
       <div className="w-[calc(100%-20rem)] px-auto">
         <div className="pt-6">
           {isLoading ? (
-            <div className="h-[25rem] w-full">Loading...</div>
+            <div className="grid-areas rounded-xl overflow-hidden  ">
+              {gridLayout.map((gridArea, index) => (
+                <div key={index} className={`${gridArea} imgLoader`}></div>
+              ))}
+            </div>
           ) : (
             <div className="grid-areas rounded-xl overflow-hidden">
               {gridLayout.map((gridArea, index) => (
