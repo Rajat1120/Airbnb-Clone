@@ -132,14 +132,14 @@ const MidMainCont = () => {
         <HouseDescription></HouseDescription>
         <SleepBed></SleepBed>
       </div>
-      <div className="w-[26.32rem]  max-h-[125.59rem]">
+      <div className="w-[26.32rem] ">
         {isLoading ? (
           <div className="">
             <div className="w-40 mt-8 ml-20 h-10 imgLoader"></div>
             <div className="w-80 mt-4 ml-20 h-10 imgLoader"></div>
           </div>
         ) : (
-          <div className="pt-8 flex justify-end sticky top-20">
+          <div className="pt-8 mb-20 flex justify-end sticky top-20">
             <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
               <div className="">
                 <span className="mb-6 flex items-end gap-2 text-2xl">

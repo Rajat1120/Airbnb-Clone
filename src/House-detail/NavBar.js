@@ -11,12 +11,6 @@ const NavBar = () => {
       } else {
         setShowNav(false);
       }
-
-      if (window.scrollY > 2280) {
-        setShowReserve(true);
-      } else {
-        setShowReserve(false);
-      }
     }
 
     window.addEventListener("scroll", handleScroll);
