@@ -5,6 +5,7 @@ let HouseDetail = {
   startScroll: false,
   houseInfo: {},
   isLoading: true,
+  isVisible: true,
 };
 
 const HouseDetailSlice = createSlice({
@@ -17,9 +18,13 @@ const HouseDetailSlice = createSlice({
     setIsLoading(state, action) {
       state.isLoading = action.payload;
     },
+    setIsVisible(state, action) {
+      state.isVisible = action.payload;
+    },
   },
 });
 
-export const { setHouseInfo, setIsLoading } = HouseDetailSlice.actions;
+export const { setHouseInfo, setIsLoading, setIsVisible } =
+  HouseDetailSlice.actions;
 
 export default HouseDetailSlice.reducer;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import star from "../../src/data/Icons svg/star.svg";
 import room from "../../src/data/Icons svg/roomIcon.svg";
@@ -7,15 +7,50 @@ import bathroom from "../../src/data/Icons svg/bathroom.svg";
 import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
 import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
-import arrowDown from "../data/Icons svg/arrowDown.svg";
 import arrowUp from "../data/Icons svg/arrowUpword.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { setIsVisible } from "./HouseDetailSlice";
 
 const MidMainCont = () => {
   const { id } = useParams();
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
+
+  const dispatch = useDispatch();
+
+  const elementRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        dispatch(setIsVisible(entry.isIntersecting));
+      },
+      {
+        root: null,
+        rootMargin: "-90px",
+        threshold: 0,
+      }
+    );
+
+    const handleScroll = () => {
+      if (elementRef.current) {
+        observer.observe(elementRef.current);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Initial call to handleScroll to start observing
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, [dispatch]);
 
   return (
     <div className="w-[calc(100%-10rem)] mx-auto flex justify-between px-[5rem] max-h-[198.59rem] relative after:content-[''] after:absolute after:bottom-0  after:w-[calc(100%-10rem)]  after:h-[1px]  after:bg-grey-dim ">
@@ -181,7 +216,10 @@ const MidMainCont = () => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full rounded-lg flex-center bg-dark-pink h-12">
+                <div
+                  ref={elementRef}
+                  className="w-full rounded-lg flex-center bg-dark-pink h-12"
+                >
                   <span className="text-white">Reserve</span>
                 </div>
               </div>

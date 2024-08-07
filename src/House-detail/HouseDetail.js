@@ -21,8 +21,6 @@ const HouseDetail = () => {
   const minimize = useSelector((store) => store.app.minimize);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
 
-  console.log(houseInfo);
-
   let headerRef = useRef();
 
   const { isLoading, data, error } = useQuery({

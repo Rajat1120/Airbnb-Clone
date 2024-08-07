@@ -83,7 +83,7 @@ const SleepBedDetail = () => {
                 </div>
                 <div className="flex flex-col">
                   <span className="mt-4 font-medium">Bedroom 1</span>
-                  <span className="text-sm font-light">1 queen bed</span>
+                  <span className="text-sm font-light">1 double bed</span>
                 </div>
               </div>
               {houseInfo?.sleep_bed_2_link && (
