@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import share from "../../src/data/Icons svg/shareIcon.svg";
 import heart from "../../src/data/Icons svg/heart.svg";
 import dots from "../data/Icons svg/dots.svg";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
+import ImageGalleryModal from "./ImageGalleryModal";
 
 const TopMainCont = () => {
   const { id } = useParams();
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
 
@@ -69,7 +71,10 @@ const TopMainCont = () => {
                       />
                     )}
                   {index === 4 && (
-                    <div className="flex-center cursor-pointer w-[10rem] h-8 bg-white absolute bottom-5 right-5 gap-x-2 rounded-lg border-[1px] border-black">
+                    <div
+                      onClick={() => setIsModalOpen(true)}
+                      className="flex-center cursor-pointer w-[10rem] h-8 bg-white absolute bottom-5 right-5 gap-x-2 rounded-lg border-[1px] border-black"
+                    >
                       <img src={dots} className="!w-4 !h-4" alt="" />
                       <span className="text-sm font-medium">
                         Show all photos
@@ -81,6 +86,12 @@ const TopMainCont = () => {
             </div>
           )}
         </div>
+        <ImageGalleryModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        >
+          {houseInfo?.images}
+        </ImageGalleryModal>
       </div>
     </div>
   );
