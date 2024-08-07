@@ -114,6 +114,13 @@ const House = () => {
                   onMouseEnter={() => setHoveredItem(item.id)}
                   onMouseLeave={() => setHoveredItem(null)}
                 >
+                  {item.guest_favorite && (
+                    <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
+                      <span className="text-sm font-medium">
+                        Guest favourite
+                      </span>
+                    </div>
+                  )}
                   <div
                     ref={(el) => (houseImagesRefs.current[item.id] = el)}
                     className="w-full flex items-center justify-start overflow-x-auto h-full scroll-smooth"
@@ -161,7 +168,7 @@ const House = () => {
                         {item["house-title"]}
                       </p>
                       <p className="font-light text-grey text-[15px]">
-                        {Math.floor(Math.random() * 20 + 200)} kilometers away
+                        {Math.ceil(item.price / 83 + 150)} kilometers away
                       </p>
                       <p className="font-light text-grey text-[15px]">
                         16-21 May
