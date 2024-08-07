@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import star from "../data/Icons svg/star.svg";
 import { useSelector } from "react-redux";
+
 const NavBar = () => {
   const [showNav, setShowNav] = useState(false);
-  const [showReserve, setShowReserve] = useState(false);
+
   const isVisible = useSelector((store) => store.houseDetail.isVisible);
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
 
   useEffect(() => {
     function handleScroll() {
@@ -75,7 +77,9 @@ const NavBar = () => {
           <div className="h-full gap-5 flex items-center">
             <div className="flex flex-col justify-center gap-y-1">
               <div className="flex items-end gap-x-1">
-                <span className="font-medium text-base">$16,530</span>
+                <span className="font-medium text-base">
+                  ${houseInfo?.price}
+                </span>
                 <span className="text-sm font-light">night</span>
               </div>
               <div className="flex gap-x-1 items-center">

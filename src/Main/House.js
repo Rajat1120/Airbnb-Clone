@@ -126,7 +126,7 @@ const House = () => {
                         16-21 May
                       </p>
                       <p className="text-[15px] font-medium">
-                        ${item.price}
+                        ${Math.ceil(item.price / 83)}
                         <span className="font-light text-[15px]"> night</span>
                       </p>
                     </div>

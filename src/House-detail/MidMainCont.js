@@ -13,9 +13,8 @@ import { useParams } from "react-router";
 import { setIsVisible } from "./HouseDetailSlice";
 
 const MidMainCont = () => {
-  const { id } = useParams();
-  const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
 
   const dispatch = useDispatch();
 
@@ -178,7 +177,7 @@ const MidMainCont = () => {
             <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
               <div className="">
                 <span className="mb-6 flex items-end gap-2 text-2xl">
-                  $16,530{" "}
+                  ${houseInfo?.price}
                   <span className="text-base font-light flex items-end">
                     night
                   </span>

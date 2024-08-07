@@ -1,4 +1,3 @@
-// src/features/exampleSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 let HouseDetail = {
@@ -13,7 +12,13 @@ const HouseDetailSlice = createSlice({
   initialState: HouseDetail,
   reducers: {
     setHouseInfo(state, action) {
-      state.houseInfo = { ...state.houseInfo, ...action.payload };
+      const updatedInfo = { ...state.houseInfo, ...action.payload };
+      if (updatedInfo.price && updatedInfo.country) {
+        if (updatedInfo.country === "United States") {
+          updatedInfo.price = Math.ceil(updatedInfo.price / 83);
+        }
+      }
+      state.houseInfo = updatedInfo;
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;

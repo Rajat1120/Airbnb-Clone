@@ -22,7 +22,6 @@ import { useParams } from "react-router";
 const SleepBedDetail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const isLoading = useSelector((store) => store.houseDetail.isLoading);
 
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
   const startDate = useSelector((store) => store.form.selectedStartDate);
