@@ -3,24 +3,27 @@ import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
 import { useQuery } from "@tanstack/react-query";
-import { getRooms } from "../Services/apiRooms";
+import { fetchRowsWithOptions, getRooms } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
 import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
-import { houses } from "../data/JsonData/HouseDetail";
-import { Link } from "react-router-dom";
 
 const House = () => {
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
   const [hoveredItem, setHoveredItem] = useState(null);
   const [scrollPositions, setScrollPositions] = useState({});
+  const selectedIcon = useSelector((store) => store.app.selectedIcon);
+  const selectedCountry = useSelector((store) => store.app.selectedCountry);
+  const city = useSelector((store) => store.app.city);
 
-  const { isLoading, data } = useQuery({
-    queryKey: ["room"],
-    queryFn: getRooms,
+  let houses = Array.from({ length: 50 });
+
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["iconFilter", selectedIcon],
+    queryFn: () => fetchRowsWithOptions(selectedIcon, selectedCountry, city),
+    enabled: !!selectedIcon, // This makes sure the query only runs when selectedIcon is set
   });
-
   const handleScrollBtn = (e, direction, itemId) => {
     e.preventDefault();
     e.stopPropagation();
