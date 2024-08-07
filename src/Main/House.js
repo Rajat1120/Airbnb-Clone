@@ -45,6 +45,20 @@ const House = () => {
     }
   };
 
+  // Initialize scroll positions for all items
+  useEffect(() => {
+    if (data) {
+      const initialScrollPositions = {};
+      data.forEach((item) => {
+        initialScrollPositions[item.id] = {
+          isAtStart: true,
+          isAtEnd: false,
+        };
+      });
+      setScrollPositions(initialScrollPositions);
+    }
+  }, [data]);
+
   let lastScrollPosition = useRef(window.scrollY);
   const startScroll = useSelector((store) => store.app.startScroll);
   const dispatch = useDispatch();
