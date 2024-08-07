@@ -90,7 +90,7 @@ const House = () => {
 
   return (
     <div
-      className={`absolute flex-center transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
+      className={`absolute pb-14 flex-center transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
         !startScroll ? "-translate-y-[6rem] -z-30" : ""
       }`}
     >

@@ -6,23 +6,9 @@ import House from "./Main/House";
 import { useEffect, useRef } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useSelector } from "react-redux";
+import Footer from "./Footer";
 
 export default function Home() {
-  /*   useEffect(() => {
-    getRooms().then((data) => {
-      if (Array.isArray(data)) {
-        // Filter out empty strings and clean up each URL
-        const cleanedArray = data[0].images
-          .filter((url) => url.trim() !== "")
-          .map((url) => url.trim().replace(/^{|}$/g, ""));
-
-        console.log(cleanedArray);
-      } else {
-        console.error("Data is not an array:", data);
-      }
-    });
-  }, []); */
-
   const startScroll = useSelector((store) => store.app.startScroll);
   const minimize = useSelector((store) => store.app.minimize);
   let headerRef = useRef();
@@ -32,7 +18,7 @@ export default function Home() {
   let animateHeaderClass2 = minimize ? "animate-collapse" : "h-[11rem]";
 
   return (
-    <div className="flex-center relative">
+    <div className="flex items-center  justify-center flex-col relative">
       <div
         ref={headerRef}
         id="header"
@@ -55,6 +41,9 @@ export default function Home() {
 
       <div className="mt-[12rem]   flex justify-center items-center ">
         <House></House>
+      </div>
+      <div className="w-full flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
+        <Footer></Footer>
       </div>
 
       <SpeedInsights></SpeedInsights>
