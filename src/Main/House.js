@@ -13,8 +13,10 @@ import { Link } from "react-router-dom";
 const House = () => {
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const [scrollPositions, setScrollPositions] = useState({});
 
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["room"],
     queryFn: getRooms,
   });
@@ -29,12 +31,26 @@ const House = () => {
     }
   };
 
+  const handleScroll = (itemId) => {
+    const container = houseImagesRefs.current[itemId];
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      setScrollPositions((prev) => ({
+        ...prev,
+        [itemId]: {
+          isAtStart: scrollLeft === 0,
+          isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
+        },
+      }));
+    }
+  };
+
   let lastScrollPosition = useRef(window.scrollY);
   const startScroll = useSelector((store) => store.app.startScroll);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleWindowScroll = () => {
       const currentScrollPosition = window.scrollY;
 
       setTimeout(() => {
@@ -51,10 +67,10 @@ const House = () => {
       lastScrollPosition.current = currentScrollPosition;
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleWindowScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleWindowScroll);
     };
   }, [startScroll, dispatch]);
 
@@ -79,7 +95,11 @@ const House = () => {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <div className="w-full relative h-[24.5rem] flex gap-y-4 items-center justify-center flex-col">
+                <div
+                  className="w-full relative h-[24.5rem] flex gap-y-4 items-center justify-center flex-col"
+                  onMouseEnter={() => setHoveredItem(item.id)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
                   <div
                     ref={(el) => (houseImagesRefs.current[item.id] = el)}
                     className="w-full flex items-center justify-start overflow-x-auto h-full scroll-smooth"
@@ -87,19 +107,26 @@ const House = () => {
                       scrollSnapType: "x mandatory",
                       scrollBehavior: "smooth",
                     }}
+                    onScroll={() => handleScroll(item.id)}
                   >
-                    <button
-                      onClick={(e) => handleScrollBtn(e, "left", item.id)}
-                      className="z-100 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
-                    >
-                      <img src={arrow_left} alt="Scroll left" />
-                    </button>
-                    <button
-                      onClick={(e) => handleScrollBtn(e, "right", item.id)}
-                      className="z-100 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
-                    >
-                      <img src={arrow_right} alt="Scroll right" />
-                    </button>
+                    {hoveredItem === item.id &&
+                      !scrollPositions[item.id]?.isAtStart && (
+                        <button
+                          onClick={(e) => handleScrollBtn(e, "left", item.id)}
+                          className="z-100 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
+                        >
+                          <img src={arrow_left} alt="Scroll left" />
+                        </button>
+                      )}
+                    {hoveredItem === item.id &&
+                      !scrollPositions[item.id]?.isAtEnd && (
+                        <button
+                          onClick={(e) => handleScrollBtn(e, "right", item.id)}
+                          className="z-100 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
+                        >
+                          <img src={arrow_right} alt="Scroll right" />
+                        </button>
+                      )}
                     {item.images?.map((img, i) => (
                       <img
                         className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
