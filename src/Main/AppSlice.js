@@ -4,7 +4,7 @@ let appState = {
   startScroll: true,
   minimize: false,
   filterData: {},
-  selectedIcon: "Amazing views",
+  selectedIcon: "",
   selectedCountry: "United States",
   isLoading: true,
   city: "",

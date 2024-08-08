@@ -12,6 +12,10 @@ const Options = () => {
   const [uniqueFilters, setUniqueFilters] = useState([]);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+  const dispatch = useDispatch();
+
+  const optionsRef = useRef(null);
+  const itemRefs = useRef([]);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
   const city = useSelector((store) => store.app.city);
   const minimize = useSelector((store) => store.app.minimize);
@@ -19,6 +23,10 @@ const Options = () => {
   const options = optionImgs.filter((item) =>
     uniqueFilters.includes(item?.iconName)
   );
+
+  useEffect(() => {
+    if (options.length) dispatch(setSelectedIcon(options[0].iconName));
+  }, [options, dispatch]);
 
   const { isLoading, data, error } = useQuery({
     queryKey: ["country", selectedCountry],
@@ -37,11 +45,6 @@ const Options = () => {
       setUniqueFilters(uniqueFilterValues);
     }
   }, [data]);
-
-  const dispatch = useDispatch();
-
-  const optionsRef = useRef(null);
-  const itemRefs = useRef([]);
 
   const handleScroll = () => {
     const container = optionsRef.current;
