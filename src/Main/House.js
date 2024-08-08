@@ -12,6 +12,7 @@ const House = () => {
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [hoveredItems, setHoveredItems] = useState([]);
   const [scrollPositions, setScrollPositions] = useState({});
   const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
@@ -114,7 +115,10 @@ const House = () => {
               >
                 <div
                   className="w-full relative h-[24.5rem] flex gap-y-4 items-center justify-center flex-col"
-                  onMouseEnter={() => setHoveredItem(item.id)}
+                  onMouseEnter={() => {
+                    setHoveredItem(item.id);
+                    setHoveredItems([...hoveredItems, item.id]);
+                  }}
                   onMouseLeave={() => setHoveredItem(null)}
                 >
                   {item.guest_favorite && (
@@ -151,19 +155,30 @@ const House = () => {
                           <img src={arrow_right} alt="Scroll right" />
                         </button>
                       )}
-                    {item.images?.map((img, i) => (
-                      <img
-                        className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
-                        src={img}
-                        key={i}
-                        alt=""
-                        style={{
-                          scrollSnapAlign: "start",
-                          flexShrink: 0,
-                          width: `${imageWidth}px`,
-                        }}
-                      />
-                    ))}
+                    <img
+                      className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
+                      src={item.images[0]}
+                      alt=""
+                      style={{
+                        scrollSnapAlign: "start",
+                        flexShrink: 0,
+                        width: `${imageWidth}px`,
+                      }}
+                    />
+                    {hoveredItems?.includes(item.id) &&
+                      item.images.slice(1).map((img, i) => (
+                        <img
+                          className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
+                          src={img}
+                          key={i}
+                          alt=""
+                          style={{
+                            scrollSnapAlign: "start",
+                            flexShrink: 0,
+                            width: `${imageWidth}px`,
+                          }}
+                        />
+                      ))}
                   </div>
                   <div className={`flex w-full justify-between items-start`}>
                     <div className="w-[80%]">
