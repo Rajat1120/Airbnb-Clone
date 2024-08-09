@@ -94,7 +94,7 @@ const House = () => {
 
   return (
     <div
-      className={`absolute pb-14 flex-center transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
+      className={`absolute pb-14 flex-center flex-col transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
         !startScroll ? "-translate-y-[6rem] -z-30" : ""
       }`}
     >
@@ -205,6 +205,17 @@ const House = () => {
               </a>
             ))}
       </div>
+      {!!data && (
+        <div className="w-full flex flex-col my-10 gap-y-2 justify-center items-center h-20">
+          <span className="text-lg font-medium">
+            {`Continue exploring ${selectedIcon} 
+          ${selectedIcon.endsWith("s") ? "" : "homes"}`}
+          </span>
+          <button className="bg-black text-white h-12 w-32 rounded-lg">
+            Show more
+          </button>
+        </div>
+      )}
     </div>
   );
 };
