@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
@@ -99,6 +99,10 @@ const House = () => {
       window.removeEventListener("scroll", handleWindowScroll);
     };
   }, [startScroll, dispatch]);
+
+  useLayoutEffect(() => {
+    if (!startScroll) window.scrollTo(0, 35);
+  }, [selectedIcon, startScroll]);
 
   return (
     <div

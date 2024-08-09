@@ -49,7 +49,7 @@ export async function fetchRowsWithOptions(option, country, city) {
   }
 
   // Limit the range of fetched rows
-  query = query.range(0, 500);
+  query = query.range(0, 15);
 
   const { data, error } = await query;
 
