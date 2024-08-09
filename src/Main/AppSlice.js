@@ -8,6 +8,9 @@ let appState = {
   selectedCountry: "United States",
   isLoading: true,
   city: "",
+  hoveredItem: null,
+  hoveredItems: [],
+  scrollPositions: {},
 };
 
 const AppSlice = createSlice({
@@ -36,6 +39,15 @@ const AppSlice = createSlice({
     setCity(state, action) {
       state.city = action.payload;
     },
+    setHoveredItem(state, action) {
+      state.hoveredItem = action.payload;
+    },
+    setHoveredItems(state, action) {
+      state.hoveredItems = action.payload;
+    },
+    setScrollPositions(state, action) {
+      state.scrollPositions = action.payload;
+    },
   },
 });
 
@@ -46,6 +58,10 @@ export const {
   setSelectedIcon,
   setIsLoading,
   setSelectedCountry,
+  setHoveredItem,
+  setHoveredItems,
+  setScrollPositions,
+  setCity,
 } = AppSlice.actions;
 
 export default AppSlice.reducer;

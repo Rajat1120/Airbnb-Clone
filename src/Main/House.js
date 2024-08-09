@@ -5,17 +5,25 @@ import arrow_left from "../data/Icons svg/arrow-left.svg";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRowsWithOptions, getRooms } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
-import { setMinimize, setStartScroll } from "./AppSlice";
+import {
+  setHoveredItem,
+  setHoveredItems,
+  setMinimize,
+  setScrollPositions,
+  setStartScroll,
+} from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
 
 const House = () => {
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
-  const [hoveredItem, setHoveredItem] = useState(null);
-  const [hoveredItems, setHoveredItems] = useState([]);
-  const [scrollPositions, setScrollPositions] = useState({});
+
   const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
+  const hoveredItem = useSelector((store) => store.app.hoveredItem);
+  const startScroll = useSelector((store) => store.app.startScroll);
+  const hoveredItems = useSelector((store) => store.app.hoveredItems);
+  const scrollPositions = useSelector((store) => store.app.scrollPositions);
   const city = useSelector((store) => store.app.city);
 
   let houses = Array.from({ length: 50 });
@@ -39,13 +47,15 @@ const House = () => {
     const container = houseImagesRefs.current[itemId];
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
-      setScrollPositions((prev) => ({
-        ...prev,
-        [itemId]: {
-          isAtStart: scrollLeft === 0,
-          isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
-        },
-      }));
+      dispatch(
+        setScrollPositions((prev) => ({
+          ...prev,
+          [itemId]: {
+            isAtStart: scrollLeft === 0,
+            isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
+          },
+        }))
+      );
     }
   };
 
@@ -64,7 +74,6 @@ const House = () => {
   }, [data]);
 
   let lastScrollPosition = useRef(window.scrollY);
-  const startScroll = useSelector((store) => store.app.startScroll);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -116,10 +125,10 @@ const House = () => {
                 <div
                   className="w-full relative h-[24.5rem] flex gap-y-4 items-center justify-center flex-col"
                   onMouseEnter={() => {
-                    setHoveredItem(item.id);
-                    setHoveredItems([...hoveredItems, item.id]);
+                    dispatch(setHoveredItem(item.id));
+                    dispatch(setHoveredItems([...hoveredItems, item.id]));
                   }}
-                  onMouseLeave={() => setHoveredItem(null)}
+                  onMouseLeave={() => dispatch(setHoveredItem(null))}
                 >
                   {item.guest_favorite && (
                     <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
