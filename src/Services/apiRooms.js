@@ -35,7 +35,13 @@ export async function getRoomInfo(id) {
   }
 }
 
-export async function fetchRowsWithOptions(option, country, city) {
+export async function fetchRowsWithOptions(
+  option,
+  country,
+  city,
+  start = 0,
+  end = 19
+) {
   let query = supabase.from("Rooms").select("*").like("filter", `%${option}%`);
 
   // Add country filter
@@ -49,7 +55,7 @@ export async function fetchRowsWithOptions(option, country, city) {
   }
 
   // Limit the range of fetched rows
-  query = query.range(0, 15);
+  query = query.range(start, end);
 
   const { data, error } = await query;
 

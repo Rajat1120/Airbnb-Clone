@@ -1,9 +1,15 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
-import { useQuery } from "@tanstack/react-query";
-import { fetchRowsWithOptions, getRooms } from "../Services/apiRooms";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { fetchRowsWithOptions } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setHoveredItem,
@@ -17,6 +23,7 @@ import { setActiveInput } from "../Header/Form/mainFormSlice";
 const House = () => {
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
+  const containerRef = useRef(null);
   const dispatch = useDispatch();
   const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
@@ -26,13 +33,28 @@ const House = () => {
   const scrollPositions = useSelector((store) => store.app.scrollPositions);
   const city = useSelector((store) => store.app.city);
 
-  let houses = Array.from({ length: 50 });
+  const [localScrollPositions, setLocalScrollPositions] = useState({});
 
-  const { isLoading, data, error } = useQuery({
-    queryKey: ["iconFilter", selectedIcon],
-    queryFn: () => fetchRowsWithOptions(selectedIcon, selectedCountry, city),
-    enabled: !!selectedIcon, // This makes sure the query only runs when selectedIcon is set
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useInfiniteQuery({
+      queryKey: ["iconFilter", selectedIcon, selectedCountry, city],
+      queryFn: ({ pageParam = 0 }) =>
+        fetchRowsWithOptions(
+          selectedIcon,
+          selectedCountry,
+          city,
+          pageParam * 20,
+          (pageParam + 1) * 20 - 1
+        ),
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.length < 20) return undefined;
+        return pages.length;
+      },
+      enabled: !!selectedIcon,
+    });
+
+  console.log(status);
+
   const handleScrollBtn = (e, direction, itemId) => {
     e.preventDefault();
     e.stopPropagation();
@@ -43,190 +65,203 @@ const House = () => {
     }
   };
 
-  const handleScroll = (itemId) => {
+  const handleScroll = useCallback((itemId) => {
     const container = houseImagesRefs.current[itemId];
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
-      dispatch(
-        setScrollPositions({
-          ...scrollPositions,
-          [itemId]: {
-            isAtStart: scrollLeft === 0,
-            isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
-          },
-        })
-      );
+      setLocalScrollPositions((prev) => ({
+        ...prev,
+        [itemId]: {
+          isAtStart: scrollLeft === 0,
+          isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
+        },
+      }));
     }
-  };
+  }, []);
 
   // Initialize scroll positions for all items
   useEffect(() => {
     if (data) {
       const initialScrollPositions = {};
-      data.forEach((item) => {
-        initialScrollPositions[item.id] = {
-          isAtStart: true,
-          isAtEnd: false,
-        };
+      data.pages.forEach((page) => {
+        page.forEach((item) => {
+          initialScrollPositions[item.id] = {
+            isAtStart: true,
+            isAtEnd: false,
+          };
+        });
       });
-      dispatch(setScrollPositions(initialScrollPositions));
+      setLocalScrollPositions(initialScrollPositions);
     }
-  }, [data, dispatch]);
+  }, [data]);
 
   let lastScrollPosition = useRef(window.scrollY);
 
-  useEffect(() => {
-    const handleWindowScroll = () => {
-      const currentScrollPosition = window.scrollY;
+  const handleWindowScroll = useCallback(() => {
+    const currentScrollPosition = window.scrollY;
 
-      setTimeout(() => {
-        dispatch(setMinimize(false));
-        dispatch(setActiveInput(""));
-      }, 350);
+    dispatch(setMinimize(false));
+    dispatch(setActiveInput(""));
 
-      if (currentScrollPosition > lastScrollPosition.current) {
-        dispatch(setStartScroll(false));
-      } else if (currentScrollPosition < 22) {
-        dispatch(setStartScroll(true));
+    if (currentScrollPosition > 0) {
+      dispatch(setStartScroll(false));
+    } else if (currentScrollPosition < 22) {
+      dispatch(setStartScroll(true));
+    }
+
+    // Check if we're near the bottom of the page
+    if (
+      containerRef.current &&
+      containerRef.current.getBoundingClientRect().bottom <=
+        window.innerHeight + 200
+    ) {
+      if (hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
       }
+    }
+  }, [dispatch, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-      lastScrollPosition.current = currentScrollPosition;
-    };
-
+  useEffect(() => {
     window.addEventListener("scroll", handleWindowScroll);
 
     return () => {
       window.removeEventListener("scroll", handleWindowScroll);
     };
-  }, [startScroll, dispatch]);
+  }, [handleWindowScroll]);
 
   useLayoutEffect(() => {
-    if (!startScroll) window.scrollTo(0, 35);
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!startScroll) window.scrollTo(0, 10);
   }, [selectedIcon, startScroll]);
 
   return (
     <div
-      className={`absolute pb-14 flex-center flex-col transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
-        !startScroll ? "-translate-y-[4.5rem] -z-30" : ""
+      className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[4rem] ${
+        !startScroll ? "-translate-y-[4.8rem] " : ""
       }`}
+      ref={containerRef}
     >
-      <div className="grid gap-x-5 fixed-[50%] grid-cols-four-col justify-center w-full items-center gap-y-8 grid-flow-row">
-        {isLoading
-          ? houses.map((item, i) => (
+      <div className="grid gap-x-5 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
+        {status === "pending"
+          ? Array.from({ length: 50 }).map((_, i) => (
               <div
                 key={i}
-                className="loader w-full h-[24.5rem] flex-center"
+                className="loader w-full h-[24rem] flex-center"
               ></div>
             ))
-          : data?.map((item) => (
-              <a
-                key={item.id}
-                href={`/house/${item.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div
-                  className="w-full relative h-[24.5rem] flex gap-y-4 items-center justify-center flex-col"
-                  onMouseEnter={() => {
-                    dispatch(setHoveredItem(item.id));
-                    dispatch(setHoveredItems([...hoveredItems, item.id]));
-                  }}
-                  onMouseLeave={() => dispatch(setHoveredItem(null))}
+          : data?.pages.flatMap((page) =>
+              page.map((item) => (
+                <a
+                  key={item.id}
+                  href={`/house/${item.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block h-[24.5rem]"
                 >
-                  {item.guest_favorite && (
-                    <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
-                      <span className="text-sm font-medium">
-                        Guest favourite
-                      </span>
-                    </div>
-                  )}
                   <div
-                    ref={(el) => (houseImagesRefs.current[item.id] = el)}
-                    className="w-full flex items-center justify-start overflow-x-auto h-full scroll-smooth"
-                    style={{
-                      scrollSnapType: "x mandatory",
-                      scrollBehavior: "smooth",
+                    className="w-full relative h-full  flex gap-y-4 items-center justify-center flex-col"
+                    onMouseEnter={() => {
+                      dispatch(setHoveredItem(item.id));
+                      dispatch(setHoveredItems([...hoveredItems, item.id]));
                     }}
-                    onScroll={() => handleScroll(item.id)}
+                    onMouseLeave={() => dispatch(setHoveredItem(null))}
                   >
-                    {hoveredItem === item.id &&
-                      !scrollPositions[item.id]?.isAtStart && (
-                        <button
-                          onClick={(e) => handleScrollBtn(e, "left", item.id)}
-                          className="z-100 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
-                        >
-                          <img src={arrow_left} alt="Scroll left" />
-                        </button>
-                      )}
-                    {hoveredItem === item.id &&
-                      !scrollPositions[item.id]?.isAtEnd && (
-                        <button
-                          onClick={(e) => handleScrollBtn(e, "right", item.id)}
-                          className="z-100 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
-                        >
-                          <img src={arrow_right} alt="Scroll right" />
-                        </button>
-                      )}
-                    <img
-                      className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
-                      src={item.images[0]}
-                      alt=""
+                    {item.guest_favorite && (
+                      <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
+                        <span className="text-sm font-medium">
+                          Guest favourite
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      ref={(el) => (houseImagesRefs.current[item.id] = el)}
+                      className="w-full flex items-center justify-start overflow-x-auto h-[75%] scroll-smooth"
                       style={{
-                        scrollSnapAlign: "start",
-                        flexShrink: 0,
-                        width: `${imageWidth}px`,
+                        scrollSnapType: "x mandatory",
+                        scrollBehavior: "smooth",
                       }}
-                    />
-                    {hoveredItems?.includes(item.id) &&
-                      item.images.slice(1).map((img, i) => (
-                        <img
-                          className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
-                          src={img}
-                          key={i}
-                          alt=""
-                          style={{
-                            scrollSnapAlign: "start",
-                            flexShrink: 0,
-                            width: `${imageWidth}px`,
-                          }}
-                        />
-                      ))}
-                  </div>
-                  <div className={`flex w-full justify-between items-start`}>
-                    <div className="w-[80%]">
-                      <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
-                        {item["house-title"]}
-                      </p>
-                      <p className="font-light text-grey text-[15px]">
-                        {Math.ceil(item.price / 83 + 150)} kilometers away
-                      </p>
-                      <p className="font-light text-grey text-[15px]">
-                        16-21 May
-                      </p>
-                      <p className="text-[15px] font-medium">
-                        ${Math.ceil(item.price / 83)}
-                        <span className="font-light text-[15px]"> night</span>
+                      onScroll={() => handleScroll(item.id)}
+                    >
+                      {hoveredItem === item.id &&
+                        !localScrollPositions[item.id]?.isAtStart && (
+                          <button
+                            onClick={(e) => handleScrollBtn(e, "left", item.id)}
+                            className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
+                          >
+                            <img src={arrow_left} alt="Scroll left" />
+                          </button>
+                        )}
+                      {hoveredItem === item.id &&
+                        !localScrollPositions[item.id]?.isAtEnd && (
+                          <button
+                            onClick={(e) =>
+                              handleScrollBtn(e, "right", item.id)
+                            }
+                            className="z-10 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
+                          >
+                            <img src={arrow_right} alt="Scroll right" />
+                          </button>
+                        )}
+                      <img
+                        className="rounded-[20px] flex-center w-full h-full object-cover scroll-snap-align-start"
+                        src={item.images[0]}
+                        alt=""
+                        style={{
+                          scrollSnapAlign: "start",
+                          flexShrink: 0,
+                          width: `${imageWidth}px`,
+                        }}
+                      />
+                      {hoveredItems?.includes(item.id) &&
+                        item.images.slice(1).map((img, i) => (
+                          <img
+                            className="rounded-[20px] flex-center w-full h-full object-cover scroll-snap-align-start"
+                            src={img}
+                            key={i}
+                            alt=""
+                            style={{
+                              scrollSnapAlign: "start",
+                              flexShrink: 0,
+                              width: `${imageWidth}px`,
+                            }}
+                          />
+                        ))}
+                    </div>
+                    <div className="flex w-full justify-between items-start h-[25%]">
+                      <div className="w-[80%]">
+                        <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
+                          {item["house-title"]}
+                        </p>
+                        <p className="font-light text-grey text-[15px]">
+                          {Math.ceil(item.price / 83 + 150)} kilometers away
+                        </p>
+                        <p className="font-light text-grey text-[15px]">
+                          16-21 May
+                        </p>
+                        <p className="text-[15px] font-medium">
+                          ${Math.ceil(item.price / 83)}
+                          <span className="font-light text-[15px]"> night</span>
+                        </p>
+                      </div>
+                      <p className="flex gap-x-1 w-[20%] justify-end items-center">
+                        <img src={star} className="w-[15px] h-[15px]" alt="" />
+                        <span className="font-light text-[15px]">4.75</span>
                       </p>
                     </div>
-                    <p className="flex gap-x-1 w-[20%] justify-end items-center">
-                      <img src={star} className="w-[15px] h-[15px]" alt="" />
-                      <span className="font-light text-[15px]">4.75</span>
-                    </p>
                   </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              ))
+            )}
       </div>
-      {!!data && (
-        <div className="w-full flex flex-col my-10 gap-y-2 justify-center items-center h-20">
-          <span className="text-lg font-medium">
-            {`Continue exploring ${selectedIcon} 
-          ${selectedIcon.endsWith("s") ? "" : "homes"}`}
-          </span>
-          <button className="bg-black text-white h-12 w-32 rounded-lg">
-            Show more
-          </button>
-        </div>
+
+      {isFetchingNextPage && (
+        <div className="w-full text-center mt-4 loader h-[24.5rem] flex-center"></div>
       )}
     </div>
   );
