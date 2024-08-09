@@ -71,7 +71,7 @@ const Options = () => {
         optionRef.removeEventListener("scroll", handleScroll);
       }
     };
-  }, []);
+  }, [isLoading]);
 
   const handleScrollBtn = (direction) => {
     const container = optionsRef.current;
