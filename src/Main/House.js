@@ -31,6 +31,7 @@ const House = () => {
   const startScroll = useSelector((store) => store.app.startScroll);
   const hoveredItems = useSelector((store) => store.app.hoveredItems);
   const scrollPositions = useSelector((store) => store.app.scrollPositions);
+  let showMore = useRef(true);
   const city = useSelector((store) => store.app.city);
 
   const [localScrollPositions, setLocalScrollPositions] = useState({});
@@ -110,13 +111,15 @@ const House = () => {
     }
 
     // Check if we're near the bottom of the page
-    if (
-      containerRef.current &&
-      containerRef.current.getBoundingClientRect().bottom <=
-        window.innerHeight + 200
-    ) {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
+    if (!showMore.current) {
+      if (
+        containerRef.current &&
+        containerRef.current.getBoundingClientRect().bottom <=
+          window.innerHeight + 200
+      ) {
+        if (hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
       }
     }
   }, [dispatch, fetchNextPage, hasNextPage, isFetchingNextPage]);
@@ -135,6 +138,10 @@ const House = () => {
     }
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    showMore.current = true;
+  }, [selectedIcon]);
 
   useLayoutEffect(() => {
     if (!startScroll) window.scrollTo(0, 10);
@@ -259,6 +266,28 @@ const House = () => {
               ))
             )}
       </div>
+      {!!data && showMore.current && (
+        <div className="w-full flex flex-col mt-10 gap-y-2 justify-center items-center h-20">
+          <span className="text-lg font-medium">
+            {`Continue exploring ${selectedIcon} 
+            ${selectedIcon.endsWith("s") ? "" : "homes"}`}
+          </span>
+          <button
+            className="bg-black text-white h-12 w-32 rounded-lg"
+            onClick={() => {
+              fetchNextPage();
+              showMore.current = false;
+            }}
+            disabled={!hasNextPage || isFetchingNextPage}
+          >
+            {isFetchingNextPage
+              ? "Loading more..."
+              : hasNextPage
+              ? "Show more"
+              : "Nothing more to load"}
+          </button>
+        </div>
+      )}
 
       {isFetchingNextPage && (
         <div className="w-full text-center mt-4 loader h-[24.5rem] flex-center"></div>

@@ -4,7 +4,7 @@ const Toggle = ({ isChecked, setIsChecked, handleToggle }) => {
   return (
     <label
       htmlFor="toggleA"
-      className="flex cursor-pointer py-[12px]  pl-[2px] pr-[15px]  z-20 items-center justify-start"
+      className="flex  py-[12px]  pl-[2px] pr-[15px]  z-20 items-center justify-start"
     >
       <div className="relative">
         <input
