@@ -17,7 +17,7 @@ import { setActiveInput } from "../Header/Form/mainFormSlice";
 const House = () => {
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
-
+  const dispatch = useDispatch();
   const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
   const hoveredItem = useSelector((store) => store.app.hoveredItem);
@@ -48,13 +48,13 @@ const House = () => {
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
       dispatch(
-        setScrollPositions((prev) => ({
-          ...prev,
+        setScrollPositions({
+          ...scrollPositions,
           [itemId]: {
             isAtStart: scrollLeft === 0,
             isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
           },
-        }))
+        })
       );
     }
   };
@@ -69,12 +69,11 @@ const House = () => {
           isAtEnd: false,
         };
       });
-      setScrollPositions(initialScrollPositions);
+      dispatch(setScrollPositions(initialScrollPositions));
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   let lastScrollPosition = useRef(window.scrollY);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleWindowScroll = () => {
@@ -104,7 +103,7 @@ const House = () => {
   return (
     <div
       className={`absolute pb-14 flex-center flex-col transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[17rem] overflow-scroll ${
-        !startScroll ? "-translate-y-[6rem] -z-30" : ""
+        !startScroll ? "-translate-y-[4.5rem] -z-30" : ""
       }`}
     >
       <div className="grid gap-x-5 fixed-[50%] grid-cols-four-col justify-center w-full items-center gap-y-8 grid-flow-row">

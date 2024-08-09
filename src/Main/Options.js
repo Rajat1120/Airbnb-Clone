@@ -17,6 +17,7 @@ const Options = () => {
   const optionsRef = useRef(null);
   const itemRefs = useRef([]);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
+  const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const city = useSelector((store) => store.app.city);
   const minimize = useSelector((store) => store.app.minimize);
 
@@ -25,8 +26,9 @@ const Options = () => {
   );
 
   useEffect(() => {
-    if (options.length) dispatch(setSelectedIcon(options[0].iconName));
-  }, [options, dispatch]);
+    if (options.length && !selectedIcon)
+      dispatch(setSelectedIcon(options[0].iconName));
+  }, [options, selectedIcon, dispatch]);
 
   const { isLoading, data, error } = useQuery({
     queryKey: ["country", selectedCountry],
