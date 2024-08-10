@@ -15,7 +15,6 @@ import {
   setHoveredItem,
   setHoveredItems,
   setMinimize,
-  setScrollPositions,
   setStartScroll,
 } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
@@ -30,7 +29,7 @@ const House = () => {
   const hoveredItem = useSelector((store) => store.app.hoveredItem);
   const startScroll = useSelector((store) => store.app.startScroll);
   const hoveredItems = useSelector((store) => store.app.hoveredItems);
-  const scrollPositions = useSelector((store) => store.app.scrollPositions);
+
   let showMore = useRef(true);
   const city = useSelector((store) => store.app.city);
 
@@ -44,17 +43,15 @@ const House = () => {
           selectedIcon,
           selectedCountry,
           city,
-          pageParam * 20,
-          (pageParam + 1) * 20 - 1
+          pageParam * 16,
+          (pageParam + 1) * 16 - 1
         ),
       getNextPageParam: (lastPage, pages) => {
-        if (lastPage.length < 20) return undefined;
+        if (lastPage.length < 16) return undefined;
         return pages.length;
       },
       enabled: !!selectedIcon,
     });
-
-  console.log(status);
 
   const handleScrollBtn = (e, direction, itemId) => {
     e.preventDefault();
@@ -96,8 +93,6 @@ const House = () => {
     }
   }, [data]);
 
-  let lastScrollPosition = useRef(window.scrollY);
-
   const handleWindowScroll = useCallback(() => {
     const currentScrollPosition = window.scrollY;
 
@@ -110,12 +105,12 @@ const House = () => {
       dispatch(setStartScroll(true));
     }
 
-    // Check if we're near the bottom of the page
     if (!showMore.current) {
+      // Check if we're near the bottom of the page
       if (
         containerRef.current &&
         containerRef.current.getBoundingClientRect().bottom <=
-          window.innerHeight + 200
+          window.innerHeight + 100
       ) {
         if (hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
@@ -280,11 +275,7 @@ const House = () => {
             }}
             disabled={!hasNextPage || isFetchingNextPage}
           >
-            {isFetchingNextPage
-              ? "Loading more..."
-              : hasNextPage
-              ? "Show more"
-              : "Nothing more to load"}
+            Show More
           </button>
         </div>
       )}

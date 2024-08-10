@@ -40,7 +40,7 @@ export async function fetchRowsWithOptions(
   country,
   city,
   start = 0,
-  end = 19
+  end = 15
 ) {
   let query = supabase.from("Rooms").select("*").like("filter", `%${option}%`);
 
