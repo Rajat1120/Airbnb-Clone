@@ -42,16 +42,16 @@ export async function fetchRowsWithOptions(
   start = 0,
   end = 15
 ) {
-  let query = supabase.from("Rooms").select("*").like("filter", `%${option}%`);
+  let query = supabase.from("Rooms").select("*").ilike("filter", `%${option}%`);
 
   // Add country filter
   if (country) {
-    query = query.eq("country", country);
+    query = query.ilike("country", `%${country}%`);
   }
 
   // Add city filter if city is truthy
   if (city) {
-    query = query.eq("city", city);
+    query = query.ilike("city", `%${city}%`);
   }
 
   // Limit the range of fetched rows

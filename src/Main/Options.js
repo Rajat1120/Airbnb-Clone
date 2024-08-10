@@ -21,9 +21,16 @@ const Options = () => {
   const city = useSelector((store) => store.app.city);
   const minimize = useSelector((store) => store.app.minimize);
 
-  const options = optionImgs.filter((item) =>
-    uniqueFilters.includes(item?.iconName)
+  const normalizedFilters = uniqueFilters.map((filter) =>
+    filter.replace(/[-'/]/g, "").toLowerCase()
   );
+
+  const options = optionImgs.filter((item) => {
+    const normalizedIconName = item?.iconName
+      ?.replace(/[-'/]/g, "")
+      .toLowerCase();
+    return normalizedFilters.includes(normalizedIconName);
+  });
 
   useEffect(() => {
     if (options.length && !selectedIcon)
@@ -31,7 +38,7 @@ const Options = () => {
   }, [options, selectedIcon, dispatch]);
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ["country", selectedCountry],
+    queryKey: ["options", selectedCountry, city],
     queryFn: () => getRooms(selectedCountry, city),
     enabled: !!selectedCountry,
   });

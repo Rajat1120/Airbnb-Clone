@@ -261,7 +261,7 @@ const House = () => {
               ))
             )}
       </div>
-      {!!data && showMore.current && (
+      {!!data && showMore.current && hasNextPage && (
         <div className="w-full flex flex-col mt-10 gap-y-2 justify-center items-center h-20">
           <span className="text-lg font-medium">
             {`Continue exploring ${selectedIcon} 
