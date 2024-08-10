@@ -34,12 +34,14 @@ const House = () => {
   const city = useSelector((store) => store.app.city);
 
   const [localScrollPositions, setLocalScrollPositions] = useState({});
+  const ids = useSelector((store) => store.app.inputSearchIds);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
-      queryKey: ["iconFilter", selectedIcon, selectedCountry, city],
+      queryKey: ["iconFilter", ids, selectedIcon, selectedCountry, city],
       queryFn: ({ pageParam = 0 }) =>
         fetchRowsWithOptions(
+          ids,
           selectedIcon,
           selectedCountry,
           city,
@@ -47,7 +49,7 @@ const House = () => {
           (pageParam + 1) * 16 - 1
         ),
       getNextPageParam: (lastPage, pages) => {
-        if (lastPage.length < 16) return undefined;
+        if (lastPage && lastPage.length < 16) return undefined;
         return pages.length;
       },
       enabled: !!selectedIcon,
@@ -110,7 +112,7 @@ const House = () => {
       if (
         containerRef.current &&
         containerRef.current.getBoundingClientRect().bottom <=
-          window.innerHeight + 100
+          window.innerHeight + 500
       ) {
         if (hasNextPage && !isFetchingNextPage) {
           fetchNextPage();

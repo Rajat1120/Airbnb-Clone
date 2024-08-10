@@ -34,7 +34,13 @@ import Destination from "./FormFields/Destination";
 
 import Month from "./Month";
 import Flexible from "./Flexible";
-import { setInputSearchIds, setMinimize } from "../../Main/AppSlice";
+import {
+  setCity,
+  setInputSearchIds,
+  setMinimize,
+  setSelectedCountry,
+  setSelectedIcon,
+} from "../../Main/AppSlice";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 
 const MainFormContent = () => {
@@ -391,6 +397,9 @@ const MainFormContent = () => {
     }
 
     dispatch(setInputSearchIds(result));
+    dispatch(setSelectedCountry(""));
+    dispatch(setCity(""));
+    dispatch(setSelectedIcon(""));
   }
 
   return (

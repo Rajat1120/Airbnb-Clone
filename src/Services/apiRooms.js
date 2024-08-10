@@ -1,8 +1,18 @@
 import supabase from "./Supabase";
 
-export async function getRooms(country, city) {
+export async function getRooms(ids, country, city) {
   // Start building the query
-  let query = supabase.from("Rooms").select("*").ilike("country", country);
+  let query = supabase.from("Rooms").select("*");
+
+  // Add ids filter if provided
+  if (ids && ids.length > 0) {
+    query = query.in("id", ids);
+  }
+
+  // Add country filter if provided
+  if (country) {
+    query = query.ilike("country", country);
+  }
 
   // Add city filter if provided
   if (city) {
@@ -14,7 +24,7 @@ export async function getRooms(country, city) {
 
   if (error) {
     console.error("Error fetching rooms:", error);
-    return null; // Return null or handle the error appropriately
+    throw error; // Throw the error to be handled by the caller
   } else {
     return data;
   }
@@ -51,13 +61,24 @@ export async function getRoomInfo(id) {
 }
 
 export async function fetchRowsWithOptions(
+  ids,
   option,
   country,
   city,
   start = 0,
   end = 15
 ) {
-  let query = supabase.from("Rooms").select("*").ilike("filter", `%${option}%`);
+  let query = supabase.from("Rooms").select("*");
+
+  // Filter by IDs if provided
+  if (ids && ids.length > 0) {
+    query = query.in("id", ids);
+  }
+
+  // Add option filter
+  if (option) {
+    query = query.ilike("filter", `%${option}%`);
+  }
 
   // Add country filter
   if (country) {
@@ -76,6 +97,7 @@ export async function fetchRowsWithOptions(
 
   if (error) {
     console.error("Error fetching rows:", error);
+    throw error;
   } else {
     return data;
   }

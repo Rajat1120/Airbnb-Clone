@@ -17,6 +17,7 @@ const Options = () => {
   const optionsRef = useRef(null);
   const itemRefs = useRef([]);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
+  const ids = useSelector((store) => store.app.inputSearchIds);
   const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const city = useSelector((store) => store.app.city);
   const minimize = useSelector((store) => store.app.minimize);
@@ -32,16 +33,16 @@ const Options = () => {
     return normalizedFilters.includes(normalizedIconName);
   });
 
+  const { isLoading, data, error } = useQuery({
+    queryKey: ["rooms", ids, selectedCountry, city],
+    queryFn: () => getRooms(ids, selectedCountry, city),
+    //  enabled: !!ids && ids.length > 0 && !!selectedCountry,
+  });
+
   useEffect(() => {
     if (options.length && !selectedIcon)
       dispatch(setSelectedIcon(options[0].iconName));
-  }, [options, selectedIcon, dispatch]);
-
-  const { isLoading, data, error } = useQuery({
-    queryKey: ["options", selectedCountry, city],
-    queryFn: () => getRooms(selectedCountry, city),
-    enabled: !!selectedCountry,
-  });
+  }, [options, selectedIcon, dispatch, data]);
 
   useEffect(() => {
     if (data) {
@@ -60,11 +61,17 @@ const Options = () => {
     if (container) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
 
-      setIsAtStart(scrollLeft < itemRefs?.current[0]?.offsetWidth);
-      setIsAtEnd(
-        Math.abs(scrollWidth - clientWidth - scrollLeft) <
-          itemRefs?.current[itemRefs.current.length - 1].offsetWidth
-      );
+      // Check if there are any items before accessing their properties
+      if (itemRefs.current.length > 0) {
+        const firstItemWidth = itemRefs.current[0]?.offsetWidth || 0;
+        const lastItemWidth =
+          itemRefs.current[itemRefs.current.length - 1]?.offsetWidth || 0;
+
+        setIsAtStart(scrollLeft < firstItemWidth);
+        setIsAtEnd(
+          Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
+        );
+      }
     }
   };
 
@@ -125,7 +132,9 @@ const Options = () => {
               >
                 {options.map((item, i) => (
                   <div
-                    ref={(el) => (itemRefs.current[i] = el)}
+                    ref={(el) => {
+                      if (el) itemRefs.current[i] = el;
+                    }}
                     onClick={() => dispatch(setSelectedIcon(item.iconName))}
                     key={i}
                     className={`opacity-75 hover:opacity-100 cursor-pointer flex-center mr-0 ${
@@ -149,7 +158,7 @@ const Options = () => {
                   </div>
                 ))}
               </div>
-              {!isAtStart && (
+              {!isAtStart && options.length > 8 && (
                 <>
                   <div className="absolute -left-1    w-10 h-20 bg-white">
                     <div className="absolute left-4 w-full h-full bg-white blur-right"></div>
@@ -162,7 +171,7 @@ const Options = () => {
                   </button>
                 </>
               )}
-              {!isAtEnd && (
+              {!isAtEnd && options.length > 8 && (
                 <>
                   <div className="absolute right-[21.7rem]  w-10 h-20 bg-white">
                     <div className="absolute -left-4 w-full h-full bg-white blur-left"></div>
