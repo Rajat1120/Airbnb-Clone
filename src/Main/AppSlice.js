@@ -11,6 +11,7 @@ let appState = {
   hoveredItem: null,
   hoveredItems: [],
   scrollPositions: {},
+  inputSearchIds: [],
 };
 
 const AppSlice = createSlice({
@@ -48,6 +49,10 @@ const AppSlice = createSlice({
     setScrollPositions(state, action) {
       state.scrollPositions = action.payload;
     },
+
+    setInputSearchIds(state, action) {
+      state.inputSearchIds = action.payload;
+    },
   },
 });
 
@@ -62,6 +67,7 @@ export const {
   setHoveredItems,
   setScrollPositions,
   setCity,
+  setInputSearchIds,
 } = AppSlice.actions;
 
 export default AppSlice.reducer;

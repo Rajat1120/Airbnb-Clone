@@ -34,7 +34,8 @@ import Destination from "./FormFields/Destination";
 
 import Month from "./Month";
 import Flexible from "./Flexible";
-import { setMinimize } from "../../Main/AppSlice";
+import { setInputSearchIds, setMinimize } from "../../Main/AppSlice";
+import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 
 const MainFormContent = () => {
   const [guestPlural, setGuestPlural] = useState("");
@@ -294,6 +295,102 @@ const MainFormContent = () => {
     if (textForGuestInput) {
       dispatch(setDisplayGuestInput(textForGuestInput));
     }
+  }
+
+  const queryClient = useQueryClient();
+  const isFetching = useIsFetching({ queryKey: ["allRows"] });
+  const [cachedData, setCachedData] = useState(null);
+  const [combinedString, setCombinedString] = useState([]);
+
+  useEffect(() => {
+    const data = queryClient.getQueryData(["allRows"]);
+    setCachedData(data); // Should log data if it has been cached
+  }, [queryClient, isFetching]);
+
+  useEffect(() => {
+    let resultArray = [];
+
+    // Loop over each item in the input array
+    cachedData?.forEach((item) => {
+      // Combine city, country, and house-title into a single string
+      let combinedString = `${item.city}${item.country}${item["house-title"]}`;
+
+      // Remove all spaces and non-alphanumeric characters from the combined string
+      combinedString = combinedString.replace(/[^a-zA-Z0-9]/g, "");
+
+      // Create a new object with id as the key and combinedString as the value
+      const newObj = {
+        [item.id]: combinedString,
+      };
+
+      // Push the new object to the resultArray
+      resultArray.push(newObj);
+    });
+    setCombinedString(resultArray);
+    // Return the result array
+  }, [cachedData]);
+
+  function findMatchingKeys(inputString, arr) {
+    // Helper function to remove spaces, punctuation, and convert to lowercase
+    const sanitizeString = (str) => str.replace(/[^a-zA-Z]/g, "").toLowerCase();
+
+    // Sanitize the input string
+    const sanitizedInput = sanitizeString(inputString);
+
+    // Function to calculate character frequency in a string
+    const charFrequency = (str) => {
+      return [...str].reduce((acc, char) => {
+        acc[char] = (acc[char] || 0) + 1;
+        return acc;
+      }, {});
+    };
+
+    // Calculate character frequency of sanitized input
+    const inputFrequency = charFrequency(sanitizedInput);
+
+    // Function to check if two objects have at least 90% matching character frequencies
+    const isNinetyPercentMatch = (inputFreq, targetFreq) => {
+      let matchCount = 0;
+      let totalChars = 0;
+
+      for (let char in inputFreq) {
+        if (targetFreq[char]) {
+          matchCount += Math.min(inputFreq[char], targetFreq[char]);
+        }
+        totalChars += inputFreq[char];
+      }
+
+      return matchCount / totalChars >= 0.9;
+    };
+
+    const result = [];
+
+    // Loop over the array
+    arr.forEach((item) => {
+      for (let key in item) {
+        // Sanitize the value and calculate its frequency
+        const sanitizedValue = sanitizeString(item[key]);
+        const valueFrequency = charFrequency(sanitizedValue);
+
+        // Check if the value is a 90% match
+        if (isNinetyPercentMatch(inputFrequency, valueFrequency)) {
+          result.push(key);
+        }
+      }
+    });
+
+    return result;
+  }
+
+  function handleSearchInput() {
+    let result;
+    if (region !== "all") {
+      result = findMatchingKeys(region, combinedString);
+    } else {
+      result = findMatchingKeys(destinationInputVal, combinedString);
+    }
+
+    dispatch(setInputSearchIds(result));
   }
 
   return (
@@ -691,6 +788,7 @@ const MainFormContent = () => {
               onClick={() => {
                 data && dispatch(setActiveInput(""));
                 handleSearch();
+                handleSearchInput();
                 dispatch(setMinimize(false));
               }}
               className={`hover:bg-dark-pink  ${

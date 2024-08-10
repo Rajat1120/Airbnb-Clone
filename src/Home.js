@@ -7,10 +7,18 @@ import { useEffect, useRef } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useSelector } from "react-redux";
 import Footer from "./Footer";
+import { useQuery } from "@tanstack/react-query";
+import { getAllRows } from "./Services/apiRooms";
 
 export default function Home() {
   const startScroll = useSelector((store) => store.app.startScroll);
   const minimize = useSelector((store) => store.app.minimize);
+
+  useQuery({
+    queryKey: ["allRows"],
+    queryFn: () => getAllRows(),
+  });
+
   let headerRef = useRef();
 
   let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
