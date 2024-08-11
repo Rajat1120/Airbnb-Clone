@@ -9,13 +9,13 @@ import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
 import arrowUp from "../data/Icons svg/arrowUpword.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+
 import { setIsVisible } from "./HouseDetailSlice";
 
 const MidMainCont = () => {
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
-
+  const [houseInfoDetails, setHouseInfoDetails] = useState([]);
   const dispatch = useDispatch();
 
   const elementRef = useRef(null);
@@ -51,6 +51,48 @@ const MidMainCont = () => {
     };
   }, [dispatch]);
 
+  useEffect(() => {
+    // Initialize an empty array to store the counts
+    const counts = [];
+
+    // Regular expression to match non-alphanumeric characters except spaces
+    const cleanString = (str) => str?.replace(/[^a-zA-Z0-9\s]/g, "").trim();
+
+    // Clean and check guest_count
+    if (houseInfo?.guest_count !== null) {
+      const cleanedGuestCount = cleanString(houseInfo?.guest_count);
+      if (cleanedGuestCount) {
+        counts.push(cleanedGuestCount);
+      }
+    }
+
+    // Clean and check bedroom_count
+    if (houseInfo?.bedroom_count !== null) {
+      const cleanedBedroomCount = cleanString(houseInfo?.bedroom_count);
+      if (cleanedBedroomCount) {
+        counts.push(cleanedBedroomCount);
+      }
+    }
+
+    // Clean and check bed_count
+    if (houseInfo?.bed_count !== null) {
+      const cleanedBedCount = cleanString(houseInfo?.bed_count);
+      if (cleanedBedCount) {
+        counts.push(cleanedBedCount);
+      }
+    }
+
+    // Clean and check bathroom_count
+    if (houseInfo?.bathroom_count !== null) {
+      const cleanedBathroomCount = cleanString(houseInfo?.bathroom_count);
+      if (cleanedBathroomCount) {
+        counts.push(cleanedBathroomCount);
+      }
+    }
+
+    setHouseInfoDetails(counts);
+  }, [houseInfo]);
+
   return (
     <div className="w-[calc(100%-10rem)] mx-auto flex justify-between px-[5rem] max-h-[198.59rem] relative after:content-[''] after:absolute after:bottom-0  after:w-[calc(100%-10rem)]  after:h-[1px]  after:bg-grey-dim ">
       <div className="w-[40.83rem]">
@@ -64,19 +106,28 @@ const MidMainCont = () => {
               </h1>
             )}
           </>
-          <p className="flex items-center">
+          <div className="flex items-center">
             {isLoading ? (
               <div className="w-80 h-5 mt-2 imgLoader"></div>
             ) : (
-              <>
-                <span className="font-light">1 queen bed</span>
-                <span className="mx-2 flex items-center justify-center">
-                  <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-                </span>
-                <span className="font-light">Shared bathroom</span>
-              </>
+              <div className="flex items-center">
+                {houseInfoDetails.length > 0 &&
+                  houseInfoDetails.map((item, i) => {
+                    return (
+                      <div className="flex items-center" key={i}>
+                        <span className="font-light">{item}</span>
+                        {/* Add the separator, but only if it's not the last item */}
+                        {i < houseInfoDetails.length - 1 && (
+                          <span className="flex h-full mx-1 items-center justify-center">
+                            <span className="w-[3px] h-[3px] bg-current rounded-full"></span>
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+              </div>
             )}
-          </p>
+          </div>
           <div className="flex gap-1 items-center leading-8">
             {isLoading ? (
               <div className="w-4 h-4"></div>

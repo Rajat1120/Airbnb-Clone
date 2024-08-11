@@ -13,10 +13,7 @@ let arr = [
     link: "https://a0.muscache.com/pictures/c5a4f6fc-c92c-4ae8-87dd-57f1ff1b89a6.jpg",
     iconName: "OMG!",
   },
-  {
-    link: "https://a0.muscache.com/pictures/b887040f-0968-4174-9a4f-2d41f8728248.jpg",
-    iconName: "Your search",
-  },
+
   {
     link: "https://a0.muscache.com/pictures/3271df99-f071-4ecf-9128-eb2d2b1f50f0.jpg",
     iconName: "Tiny homes",
