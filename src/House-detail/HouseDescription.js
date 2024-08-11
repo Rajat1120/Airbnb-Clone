@@ -33,13 +33,14 @@ const HouseDescription = () => {
     }
   }, [isLoading, maxLines]);
 
+  if (!houseInfo?.house_description) return null;
   return (
     <div>
       <div className="pt-8 h-64 flex flex-col  justify-center  pb-11 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
         <p className="flex-grow overflow-hidden relative">
           <span
             ref={paragraphRef}
-            className="absolute  inset-0 overflow-hidden "
+            className="absolute whitespace-pre-wrap  inset-0 overflow-hidden "
           >
             {houseInfo?.house_description}
           </span>
@@ -62,7 +63,9 @@ const HouseDescription = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="w-[46rem] h-full ">{houseInfo?.house_description}</div>
+        <div className="w-[46rem] h-full whitespace-pre-wrap ">
+          {houseInfo?.house_description}
+        </div>
       </HouseDescriptionModal>
     </div>
   );
