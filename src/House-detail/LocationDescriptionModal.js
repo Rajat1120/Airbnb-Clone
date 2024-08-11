@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import { useSelector } from "react-redux";
 const LocationDescriptionModal = ({ isOpen, onClose, children }) => {
   const [visible, setVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const ref = useRef();
-
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
@@ -60,9 +61,9 @@ const LocationDescriptionModal = ({ isOpen, onClose, children }) => {
                 </span>
                 <div className="w-full h-20 pb-10">
                   <span className="block mb-4 font-medium">
-                    Korome, Kerala, India
+                    {houseInfo?.house_location}
                   </span>
-                  <span className="block max-h-96 overflow-scroll font-light">
+                  <span className="block max-h-96 overflow-scroll whitespace-pre-wrap font-light">
                     {children}
                   </span>
                 </div>

@@ -1,15 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import LocationDescriptionModal from "./LocationDescriptionModal";
 import showMore from "../data/Icons svg/arrow-right.svg";
+import { useSelector } from "react-redux";
 const Map = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const paragraphRef = useRef(null);
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+
+  let locationDescp = Boolean(houseInfo?.location_description);
+  let houseLocation = Boolean(houseInfo?.house_location);
+  console.log(locationDescp);
 
   let maxLines = 2;
-
-  let text =
-    " situated close to Sai Noi Beach, approximately two minutes' walk sTurtle Bay is situated between Khao Tao Valley and a naturallybeautiful lotus pond. Chic cafés, a mangrove forest in the middle of nowhere, and five-star luxury resorts and condos can all be found in Khao Tao. - 2 mins walk to the beach - 15 mins drive toHua Hin Town - 20 min drive to Hua Hin Airport - 2 Hrs fly from condos can all be found in Khao Tao. - 2 mins walk to the beach - 15 mins drive toHua Hin Town - 20 min drive to Hua Hin Airport - 2 Hrs fly from condos can all be found in Khao Tao. Town - 20 min drive to Hua Hin Airport - 2 Hrs fly from condos can all be found in Khao Tao Town - 20 min drive to Hua Hin Airport - 2 Hrs fly from condos can all be found in Khao Tao";
 
   useEffect(() => {
     const paragraph = paragraphRef.current;
@@ -27,7 +30,9 @@ const Map = () => {
       paragraph.style.maxHeight = "none";
       paragraph.classList.remove("truncateLocDes");
     }
-  }, [text, maxLines]);
+  }, [houseInfo, maxLines]);
+
+  if (!houseLocation) return null;
 
   return (
     <div
@@ -44,14 +49,16 @@ const Map = () => {
         <div className="w-full mt-6 flex flex-col gap-y-6 max-h-[8.75rem]">
           <div className="flex flex-col w-full">
             <span className="mb-4 font-medium">
-              Hua Hin District, Prachuap Khiri Khan, Thailand
+              {houseInfo?.house_location}
             </span>
-            <span
-              ref={paragraphRef}
-              className="font-light h-12 overflow-hidden"
-            >
-              {text}
-            </span>
+            {locationDescp && (
+              <span
+                ref={paragraphRef}
+                className="font-light h-12 whitespace-pre-wrap overflow-hidden"
+              >
+                {houseInfo?.location_description}
+              </span>
+            )}
           </div>
           {isOverflowing && (
             <div className="w-full flex justify-start ">
@@ -72,7 +79,10 @@ const Map = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="w-full  h-full ">{text}</div>
+        <div className="w-full  h-full ">
+          {" "}
+          {locationDescp && houseInfo?.location_description}
+        </div>
       </LocationDescriptionModal>
     </div>
   );
