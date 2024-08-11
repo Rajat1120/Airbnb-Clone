@@ -151,6 +151,11 @@
     animation: shimmer 1.5s linear infinite alternate;
   }
 
+  /* Hide Leaflet attribution control */
+  .leaflet-control-attribution {
+    display: none !important;
+  }
+
   @keyframes shimmer {
     0% {
       opacity: 40%;
