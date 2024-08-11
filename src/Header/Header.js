@@ -1,6 +1,3 @@
-// import myIcon from "./data/airbnb-Img.svg";
-
-import { useState } from "react";
 import icon from "../data/airbnbLogo.svg";
 import globe from "../data/globe.svg";
 import menu from "../data/Menu-Icon.svg";

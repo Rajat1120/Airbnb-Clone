@@ -5,6 +5,7 @@ import room from "../../src/data/Icons svg/roomIcon.svg";
 import sharedSpace from "../../src/data/Icons svg/commonSpace.svg";
 import bathroom from "../../src/data/Icons svg/bathroom.svg";
 import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
+import person from "../data/person.svg";
 import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
 import arrowUp from "../data/Icons svg/arrowUpword.svg";
@@ -50,6 +51,16 @@ const MidMainCont = () => {
       }
     };
   }, [dispatch]);
+
+  function cleanString(input) {
+    // Replace "About" with an empty string
+    let result = input.replace(/About/g, "");
+
+    // Trim any leading or trailing spaces and remove extra spaces between words
+    result = result.replace(/\s+/g, " ").trim();
+
+    return result;
+  }
 
   useEffect(() => {
     // Initialize an empty array to store the counts
@@ -149,12 +160,17 @@ const MidMainCont = () => {
             <div>
               <div className="py-6 gap-8 items-center flex">
                 <img
-                  className="h-10 w-10 rounded-full"
-                  src="https://a0.muscache.com/im/pictures/user/c4e01b26-3e06-4b65-b501-abfcd0c75840.jpg?im_w=240"
-                  alt=""
+                  className="h-10 w-10 object-cover  rounded-full"
+                  src={houseInfo?.host_image ? houseInfo?.host_image : person}
+                  alt="host-image"
                 />
                 <div className="flex flex-col">
-                  <span className="font-medium">Hosted by Ankita</span>
+                  <span className="font-medium">
+                    Hosted by{" "}
+                    {houseInfo?.host_name
+                      ? cleanString(houseInfo?.host_name)
+                      : "Carl"}
+                  </span>
                   <span className="font-extralight text-grey text-sm">
                     {" "}
                     6 years hosting

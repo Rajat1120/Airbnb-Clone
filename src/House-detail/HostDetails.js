@@ -1,8 +1,20 @@
 import React from "react";
 import star from "../../src/data/Icons svg/star.svg";
-
+import { useSelector } from "react-redux";
+import person from "../data/person.svg";
 const HostDetails = () => {
-  let hostDescription = true;
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+  let hostDescription = Boolean(houseInfo?.host_description);
+
+  function cleanString(input) {
+    // Replace "About" with an empty string
+    let result = input.replace(/About/g, "");
+
+    // Trim any leading or trailing spaces and remove extra spaces between words
+    result = result.replace(/\s+/g, " ").trim();
+
+    return result;
+  }
 
   return (
     <div className="flex py-10  w-full max-h-[27.75rem] justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
@@ -15,14 +27,16 @@ const HostDetails = () => {
             <div className="col-span-2 w-full   grid-cols-1 grid ">
               <div className="w-full  flex justify-center items-end">
                 <img
-                  className="w-28 h-28 rounded-full"
-                  src="https://a0.muscache.com/im/pictures/user/c4e01b26-3e06-4b65-b501-abfcd0c75840.jpg?im_w=240"
+                  className="w-28 h-28 object-cover rounded-full"
+                  src={houseInfo?.host_image ? houseInfo?.host_image : person}
                   alt="host-image"
                 />
               </div>
               <div className="flex w-full justify-start pt-2 flex-col items-center">
-                <h1 className="text-[32px] leading-9 tracking-wide font-[600]">
-                  Ankita
+                <h1 className="text-[32px] leading-9 tracking-wide font-[600] w-[80%] max-w-full overflow-hidden text-center   text-ellipsis whitespace-nowrap">
+                  {houseInfo?.host_name
+                    ? cleanString(houseInfo?.host_name)
+                    : "Carl"}
                 </h1>
                 <span className="leading-4 pb-2 text-sm font-medium">Host</span>
               </div>
@@ -65,18 +79,21 @@ const HostDetails = () => {
         }`}
       >
         {hostDescription && (
-          <div className="w-full pt-14 flex flex-col justify-between h-20">
-            <span className="block text-lg font-medium">About Ankita</span>
-            <span className="block font-light ">
-              Life's journey is not to arrive at the grave safely, in a
-              well-preserved body; but rather to skid in sideways, totally
-              worn-out, shouting: "Holy shit, what a ride"..."!
+          <div className="w-full pt-14 flex flex-col justify-between">
+            <span className="block text-lg font-medium">
+              About{" "}
+              {houseInfo?.host_name
+                ? cleanString(houseInfo?.host_name)
+                : "Carl"}
+            </span>
+            <span className="font-light whitespace-pre-wrap w-full h-[4.8rem] overflow-scroll">
+              {houseInfo?.host_description}
             </span>
           </div>
         )}
         <div
           className={`w-full ${
-            hostDescription ? "pt-10" : "pt-14"
+            hostDescription ? "pt-5" : "pt-14"
           } h-20 flex flex-col justify-between `}
         >
           <span className="block text-lg font-medium">Host details</span>
