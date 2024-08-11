@@ -7,6 +7,24 @@ const NavBar = () => {
 
   const isVisible = useSelector((store) => store.houseDetail.isVisible);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+  let houseRating = Boolean(houseInfo?.house_rating > 2);
+  let reviewsCount = Boolean(houseInfo?.rating_count);
+
+  function formatSingleDigit(number) {
+    // Convert the number to a string
+    let numStr = number.toString();
+
+    // Split the number into the integer and decimal parts
+    let [integerPart, decimalPart] = numStr.split(".");
+
+    // Check if the integer part is a single digit and decimal part is undefined
+    if (integerPart.length === 1 && !decimalPart) {
+      // Append ".0" to the single-digit number
+      numStr = integerPart + ".0";
+    }
+
+    return numStr;
+  }
 
   useEffect(() => {
     function handleScroll() {
@@ -84,11 +102,15 @@ const NavBar = () => {
               </div>
               <div className="flex gap-x-1 items-center">
                 <img src={star} className="h-3 w-3" alt="" />
-                <span className="text-xs font-medium">4.83</span>
+                <span className="text-xs font-medium">
+                  {houseRating && formatSingleDigit(houseInfo?.house_rating)}
+                </span>
                 <span className=" flex items-center justify-center">
                   <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
                 </span>
-                <span className="text-xs font-extralight">163 reviews</span>
+                <span className="text-xs font-extralight">
+                  {reviewsCount && houseInfo?.rating_count}
+                </span>
               </div>
             </div>
             <button className="bg-dark-pink h-12 w-[9.25rem] text-white rounded-lg">

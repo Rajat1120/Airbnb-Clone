@@ -12,6 +12,23 @@ import { useSelector } from "react-redux";
 const Review = () => {
   let totalCards = 5;
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+  let houseRating = Boolean(houseInfo?.house_rating > 2);
+
+  function formatSingleDigit(number) {
+    // Convert the number to a string
+    let numStr = number.toString();
+
+    // Split the number into the integer and decimal parts
+    let [integerPart, decimalPart] = numStr.split(".");
+
+    // Check if the integer part is a single digit and decimal part is undefined
+    if (integerPart.length === 1 && !decimalPart) {
+      // Append ".0" to the single-digit number
+      numStr = integerPart + ".0";
+    }
+
+    return numStr;
+  }
 
   return (
     <div
@@ -29,7 +46,7 @@ const Review = () => {
             />
             <span className=" h-full w-[196px] flex items-start justify-center">
               <span className=" text-[5rem] h-full font-bold leading-[4rem] ">
-                {houseInfo.house_rating}
+                {houseRating && formatSingleDigit(houseInfo?.house_rating)}
               </span>
             </span>
             <img
@@ -57,14 +74,14 @@ const Review = () => {
             <span>
               <img className="w-6 h-6" src={star} alt="" />
             </span>
-            {houseInfo?.house_rating && (
+            {houseRating && (
               <span className="text-2xl font-medium">
-                {houseInfo?.house_rating}
+                {formatSingleDigit(houseInfo?.house_rating)}
               </span>
             )}
           </div>
 
-          {houseInfo?.house_rating && (
+          {houseRating && (
             <span className=" flex items-center justify-center">
               <span className="w-[4px] h-[4px] bg-current rounded-full"></span>
             </span>

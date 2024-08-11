@@ -254,8 +254,16 @@ const House = () => {
                         </p>
                       </div>
                       <p className="flex gap-x-1 w-[20%] justify-end items-center">
-                        <img src={star} className="w-[15px] h-[15px]" alt="" />
-                        <span className="font-light text-[15px]">4.75</span>
+                        {item.house_rating > 2 && (
+                          <img
+                            src={star}
+                            className="w-[15px] h-[15px]"
+                            alt=""
+                          />
+                        )}
+                        <span className="font-light text-[15px]">
+                          {item.house_rating > 2 && item.house_rating}
+                        </span>
                       </p>
                     </div>
                   </div>
