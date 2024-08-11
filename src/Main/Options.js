@@ -18,7 +18,7 @@ const Options = () => {
   const itemRefs = useRef([]);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
   const ids = useSelector((store) => store.app.inputSearchIds);
-  const selectedIcon = useSelector((store) => store.app.selectedIcon);
+
   const city = useSelector((store) => store.app.city);
   const minimize = useSelector((store) => store.app.minimize);
 
@@ -40,11 +40,6 @@ const Options = () => {
   });
 
   useEffect(() => {
-    if (options.length && !selectedIcon)
-      dispatch(setSelectedIcon(options[0].iconName));
-  }, [options, selectedIcon, dispatch, data]);
-
-  useEffect(() => {
     if (data) {
       const findUniqueFilters = (data) => {
         const filters = data.map((item) => item.filter);
@@ -53,8 +48,19 @@ const Options = () => {
       };
       const uniqueFilterValues = findUniqueFilters(data);
       setUniqueFilters(uniqueFilterValues);
+
+      // Always set the first option from the new list as the selected icon
+      const newOptions = optionImgs.filter((item) =>
+        uniqueFilterValues
+          .map((filter) => filter.replace(/[-'/]/g, "").toLowerCase())
+          .includes(item.iconName.replace(/[-'/]/g, "").toLowerCase())
+      );
+
+      if (newOptions.length > 0) {
+        dispatch(setSelectedIcon(newOptions[0].iconName));
+      }
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   const handleScroll = () => {
     const container = optionsRef.current;
