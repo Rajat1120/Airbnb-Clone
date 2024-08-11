@@ -8,9 +8,9 @@ import msg from "../data/Icons svg/msg.svg";
 import location from "../data/Icons svg/location.svg";
 import value from "../data/Icons svg/value.svg";
 import { useSelector } from "react-redux";
+import CustomerReviews from "./CustomerReviews";
 
 const Review = () => {
-  let totalCards = 5;
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
   let houseRating = Boolean(houseInfo?.house_rating > 2);
 
@@ -30,11 +30,19 @@ const Review = () => {
     return numStr;
   }
 
+  function isNumberGreaterThanTen(inputString) {
+    // Use a regular expression to extract the number from the string
+    const numberMatch = inputString?.match(/\d+/);
+
+    // If a number is found, convert it to an integer
+    const number = numberMatch ? parseInt(numberMatch[0], 10) : 0;
+
+    // Return true if the number is greater than 10, else return false
+    return number > 10;
+  }
+
   return (
-    <div
-      id="Reviews"
-      className="py-12 scroll-mt-16 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim  w-full ]"
-    >
+    <div id="Reviews" className="pt-12 scroll-mt-16 relative   w-full ]">
       {/* Guest favourite */}
       {houseInfo.guest_favorite === "Guest favourite" && (
         <div className="h-[13.38rem] mt-4 mb-16 flex flex-col justify-between items-center">
@@ -205,65 +213,9 @@ const Review = () => {
         </div>
       </div>
       {/* reviews section */}
-      <div className="grid w-full max-h-[38.87rem]  grid-cols-2">
-        {Array.from({ length: totalCards }).map((_, index) => (
-          <div
-            key={index}
-            className="min-h-[10rem] max-h-[14rem]  px-2 mr-[5.91rem] "
-          >
-            <div
-              className={` ${
-                index < totalCards - 2 ? "mb-10" : ""
-              } mb-10 overflow-hidden  min-h-[6.62rem] max-h-[11.40rem] `}
-            >
-              <div className="h-[4.8rem] flex flex-col justify-between mb-1">
-                <div className="h-12 gap-2 flex items-center ">
-                  <img
-                    className="h-12 rounded-full object-cover w-12"
-                    src="https://a0.muscache.com/im/pictures/user/da905aa9-41c5-4edb-8e51-527726a3f2ee.jpg?im_w=240"
-                    alt=""
-                  />
-                  <div className="h-10 flex flex-col justify-center box-border ">
-                    <span className="font-medium">Jonas</span>
-                    <span className="text-sm font-light">
-                      7 years on Airbnb
-                    </span>
-                  </div>
-                </div>
-                <div className=" flex items-center ">
-                  <div className="flex h-[10px] w-12">
-                    <img className="h-auto w-auto" src={star} alt="" />
-                    <img className="h-auto w-auto" src={star} alt="" />
-                    <img className="h-auto w-auto" src={star} alt="" />
-                    <img className="h-auto w-auto" src={star} alt="" />
-                    <img className="h-auto w-auto" src={star} alt="" />
-                  </div>
-                  <span className="mx-2 flex items-center justify-center">
-                    <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-                  </span>
-                  <span className="text-sm">1 week ago</span>
-                </div>
-              </div>
-              <div className="w-full h-auto overflow-scroll">
-                <span className="h-full overflow-hidden">
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                  Very nice villa. Nice and helpful staff. Really enjoyed here.
-                </span>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+      {isNumberGreaterThanTen(houseInfo?.rating_count) && (
+        <CustomerReviews></CustomerReviews>
+      )}
     </div>
   );
 };
