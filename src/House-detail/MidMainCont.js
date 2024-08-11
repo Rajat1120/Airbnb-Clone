@@ -136,7 +136,7 @@ const MidMainCont = () => {
                 <span>
                   <img className="w-4 h-4" src={star} alt="" />
                 </span>
-                <span className="underline"> 2 reviews</span>
+                <span className="underline">{houseInfo?.rating_count}</span>
               </>
             )}
           </div>

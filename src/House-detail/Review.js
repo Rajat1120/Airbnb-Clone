@@ -7,11 +7,11 @@ import key from "../data/Icons svg/key.svg";
 import msg from "../data/Icons svg/msg.svg";
 import location from "../data/Icons svg/location.svg";
 import value from "../data/Icons svg/value.svg";
-import OptionImgs from "../OptionsImgs";
+import { useSelector } from "react-redux";
 
 const Review = () => {
   let totalCards = 5;
-  let guestFavourite = true;
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
 
   return (
     <div
@@ -19,7 +19,7 @@ const Review = () => {
       className="py-12 scroll-mt-16 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim  w-full ]"
     >
       {/* Guest favourite */}
-      {guestFavourite && (
+      {houseInfo.guest_favorite === "Guest favourite" && (
         <div className="h-[13.38rem] mt-4 mb-16 flex flex-col justify-between items-center">
           <div className="h-[8.25rem] items-start flex w-[23.86rem] ">
             <img
@@ -29,7 +29,7 @@ const Review = () => {
             />
             <span className=" h-full w-[196px] flex items-start justify-center">
               <span className=" text-[5rem] h-full font-bold leading-[4rem] ">
-                4.90
+                {houseInfo.house_rating}
               </span>
             </span>
             <img
@@ -52,18 +52,26 @@ const Review = () => {
 
       {/* reviews count section */}
       <div className="pb-12 mb-12 border-b-[1px] border-grey-dim w-full">
-        <div className="h-[1.87rem] mb-10 flex items-center  w-full">
+        <div className="h-[1.87rem] mb-10 gap-x-2 flex items-center  w-full">
           <div className="flex items-center gap-x-2 ">
             <span>
               <img className="w-6 h-6" src={star} alt="" />
             </span>
-            <span className="text-2xl font-medium">4.23</span>
+            {houseInfo?.house_rating && (
+              <span className="text-2xl font-medium">
+                {houseInfo?.house_rating}
+              </span>
+            )}
           </div>
 
-          <span className="mx-2 flex items-center justify-center">
-            <span className="w-[4px] h-[4px] bg-current rounded-full"></span>
+          {houseInfo?.house_rating && (
+            <span className=" flex items-center justify-center">
+              <span className="w-[4px] h-[4px] bg-current rounded-full"></span>
+            </span>
+          )}
+          <span className="text-2xl font-medium">
+            {houseInfo?.rating_count}
           </span>
-          <span className="text-2xl font-medium">95 reviews</span>
         </div>
         <div className="w-full grid  grid-cols-7 h-[6.90rem]  ">
           <div className=" border-r-[1px] border-grey-dim w-[10.62rem] flex justify-center  h-full">

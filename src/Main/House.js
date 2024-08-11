@@ -176,7 +176,7 @@ const House = () => {
                     }}
                     onMouseLeave={() => dispatch(setHoveredItem(null))}
                   >
-                    {item.guest_favorite && (
+                    {item.guest_favorite === "Guest favourite" && (
                       <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
                         <span className="text-sm font-medium">
                           Guest favourite
