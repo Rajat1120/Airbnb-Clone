@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
 import { useSelector } from "react-redux";
-const LocationDescriptionModal = ({ isOpen, onClose, children }) => {
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
+const LocationDescriptionModal = ({ isOpen, onClose, children, position }) => {
   const [visible, setVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const ref = useRef();
+
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
   useEffect(() => {
     if (isOpen) {
@@ -32,6 +34,10 @@ const LocationDescriptionModal = ({ isOpen, onClose, children }) => {
       document.body.style.overflow = "unset"; // Cleanup on component unmount
     };
   }, [isOpen]);
+  <style>
+    {`.leaflet-control-attribution {
+    display: none !important`}
+  </style>;
 
   if (!shouldRender) return null;
 
@@ -68,8 +74,17 @@ const LocationDescriptionModal = ({ isOpen, onClose, children }) => {
                   </span>
                 </div>
               </div>
-              <div className="h-full min-w-[19rem] max-w-[61rem] ">
-                leaf let map
+              <div className="h-full  w-[61rem]  ">
+                <MapContainer
+                  center={position}
+                  zoom={17}
+                  style={{ height: "100%", width: "100%" }}
+                  scrollWheelZoom={false}
+                  zoomControl={false} // Disable default zoom control to position it manually
+                >
+                  <TileLayer url="https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoicmFqYXQxMTIwMDAiLCJhIjoiY2x4c3Ixc3U5MWp5djJxc2hhMTNwMHY1YiJ9.nstYy61-k4ixPtceICiyug" />
+                  <ZoomControl position="bottomright" />
+                </MapContainer>
               </div>
             </div>
           </div>
