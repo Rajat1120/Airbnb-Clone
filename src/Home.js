@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
 import { getAllRows } from "./Services/apiRooms";
+import Login from "./Services/Authentication";
 
 export default function Home() {
   const startScroll = useSelector((store) => store.app.startScroll);

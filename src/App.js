@@ -4,12 +4,17 @@ import HouseDetail from "./House-detail/HouseDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Analytics } from "@vercel/analytics/react";
+import Login from "./Services/Authentication";
 const queryClient = new QueryClient({});
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home></Home>,
+  },
+  {
+    path: "/login",
+    element: <Login></Login>,
   },
   {
     path: "/house/:id",
@@ -22,7 +27,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Analytics />
       <ReactQueryDevtools initialIsOpen={false}></ReactQueryDevtools>
-      <RouterProvider router={router}></RouterProvider>;
+      <RouterProvider router={router}></RouterProvider>
     </QueryClientProvider>
   );
 }
