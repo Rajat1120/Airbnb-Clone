@@ -8,6 +8,7 @@ import React, {
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
+import favHeart from "../data/Icons svg/favHeart.svg";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchRowsWithOptions } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
@@ -192,6 +193,9 @@ const House = () => {
                       }}
                       onScroll={() => handleScroll(item.id)}
                     >
+                      <button className="absolute hover:scale-110 top-3 right-4">
+                        <img src={favHeart} className="h-6 w-6" alt="" />
+                      </button>
                       {hoveredItem === item.id &&
                         !localScrollPositions[item.id]?.isAtStart && (
                           <button
