@@ -37,5 +37,6 @@
       "auto": true,
       "group": ".NET Core"
     }
-  ]
+  ],
+  "cSpell.words": ["Dmodal"]
 }

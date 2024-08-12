@@ -1,10 +1,10 @@
 import icon from "../data/airbnbLogo.svg";
 import globe from "../data/globe.svg";
-import menu from "../data/Menu-Icon.svg";
-import person from "../data/person.svg";
+
 import MainForm from "./Form/MainForm";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import UserDashboard from "./UserDashboard";
 
 function Header({ headerRef }) {
   const location = useLocation();
@@ -68,12 +68,7 @@ function Header({ headerRef }) {
             <img className="h-4 w-4" src={globe} alt="" />
           </button>
 
-          <div className=" py-[7px] pl-[14px] ml-[0.75rem] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey-light opacity-[0.7] ">
-            <button className="w-[3.8rem] items-center flex justify-between">
-              <img src={menu} className="  h-4 w-4 " alt="" />
-              <img src={person} className="h-8 opacity-80 w-8" alt="" />
-            </button>
-          </div>
+          <UserDashboard></UserDashboard>
         </div>
       </div>
       {<MainForm headerRef={headerRef}></MainForm>}
