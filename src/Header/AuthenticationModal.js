@@ -73,7 +73,7 @@ const AuthenticationModal = () => {
             onClick={() => dispatch(setShowLogin(false))}
             className="w-6 h-6 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
           >
-            <img src={cross} alt="" />
+            <img src={cross} className="h-4 w-4" alt="" />
           </button>
           <span className="font-semibold ">Log in or sign up</span>
           <div className="px-4"></div>

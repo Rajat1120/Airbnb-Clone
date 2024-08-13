@@ -93,6 +93,7 @@
     background-color: #fff;
 
     overflow: hidden;
+    animation: shimmer 1.5s linear infinite alternate;
   }
   /* Add this CSS to your stylesheet */
   .blur-right {

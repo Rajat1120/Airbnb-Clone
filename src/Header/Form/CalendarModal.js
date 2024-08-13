@@ -63,7 +63,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
             onClick={onClose}
             className="w-6 h-6 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
           >
-            <img src={cross} alt="" />
+            <img className="h-4 w-4" src={cross} alt="" />
           </button>
           <p className="w-[100%] text-xl font-medium justify-center flex items-center">
             Choose a start date

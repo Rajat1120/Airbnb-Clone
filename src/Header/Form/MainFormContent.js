@@ -477,7 +477,7 @@ const MainFormContent = () => {
                       onClick={(e) => handleCrossClick(e, "destination")}
                       className="w-[1.5rem] mr-[-1rem] self-center justify- flex justify-center  items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                     >
-                      <img src={cross} alt="" />
+                      <img className="h-4 w-4" src={cross} alt="" />
                     </div>
                   ) : null}
                 </div>
@@ -574,7 +574,7 @@ const MainFormContent = () => {
                         onClick={(e) => handleCrossClick(e, "checkIn")}
                         className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                       >
-                        <img src={cross} alt="" />
+                        <img className="h-4 w-4" src={cross} alt="" />
                       </div>
                     )}
                   </div>
@@ -678,7 +678,7 @@ const MainFormContent = () => {
                         onClick={(e) => handleCrossClick(e, "checkOut")}
                         className="w-[1.5rem] flex justify-center items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                       >
-                        <img src={cross} alt="" />
+                        <img className="h-4 w-4" src={cross} alt="" />
                       </div>
                     )}
                   </div>
@@ -785,7 +785,7 @@ const MainFormContent = () => {
                     onClick={(e) => handleCrossClick(e, "guest")}
                     className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
                   >
-                    <img src={cross} alt="" />
+                    <img className="h-4 w-4" src={cross} alt="" />
                   </div>
                 ) : null}
                 <div />
