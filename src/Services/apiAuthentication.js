@@ -17,6 +17,16 @@ export const signInWithGoogle = async () => {
 
 // let { error } = await supabase.auth.signOut();
 
+export const getUserLogout = async () => {
+  let { error } = await supabase.auth.signOut();
+
+  if (error) {
+    return error;
+  } else {
+    window.location.reload();
+  }
+};
+
 export const getUserData = async () => {
   const {
     data: { user },
