@@ -9,8 +9,23 @@ export const signInWithGoogle = async () => {
     console.error("Error signing in with Google:", error);
   } else {
     console.log("User:", user);
+
     console.log("Session:", session);
     // Handle the user and session as needed
+  }
+};
+
+// let { error } = await supabase.auth.signOut();
+
+export const getUserData = async () => {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (user) {
+    return user;
+  } else {
+    return null;
   }
 };
 
