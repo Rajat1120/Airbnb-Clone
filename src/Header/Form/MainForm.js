@@ -153,9 +153,9 @@ const MainForm = ({ headerRef }) => {
     return ReactDOM.createPortal(
       <>
         <div
-          className={`fixed top-0  opacity-40  w-full h-${
-            minimize ? "full" : "0"
-          } bg-black`}
+          className={`${
+            onHouseDetailPage ? "absolute" : "fixed top-0"
+          }  opacity-40  w-full h-${minimize ? "full" : "0"} bg-black`}
         ></div>
       </>,
       document.body
