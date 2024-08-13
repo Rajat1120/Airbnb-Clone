@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import cross from "../data/Icons svg/cross.svg";
+import google from "../data/Icons svg/Google.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowLogin } from "../Main/AppSlice";
+import { signInWithGoogle } from "../Services/apiAuthentication";
 
 const AuthenticationModal = () => {
   const [visible, setVisible] = useState(false);
@@ -76,7 +78,7 @@ const AuthenticationModal = () => {
           <span className="font-semibold ">Log in or sign up</span>
           <div className="px-4"></div>
         </div>
-        <div className="w-[35.5rem] h-[38.62rem] p-6">
+        <div className="w-[35.5rem]  p-6">
           <div>
             <div className="mt-2 mb-6 text-2xl font-medium ">
               Welcome to Airbnb
@@ -155,6 +157,20 @@ const AuthenticationModal = () => {
             <button className="w-full h-12 mt-2 rounded-lg text-white btnColor ">
               Continue
             </button>
+            <div className="py-5 flex items-center">
+              <div className="h-[1px] w-full bg-grey-light"></div>
+              <span className="w-20 text-center text-xs">or</span>
+              <div className="h-[1px] w-full bg-grey-light"></div>
+            </div>
+
+            <div
+              onClick={() => signInWithGoogle()}
+              className="w-full cursor-pointer h-14 border px-5 py-5 border-black rounded-lg flex items-center justify-between"
+            >
+              <img src={google} className="h-5 w-5" alt="" />
+              <span className="text-sm font-medium">Continue with Google</span>
+              <div className="px-2"></div>
+            </div>
           </div>
         </div>
       </div>
