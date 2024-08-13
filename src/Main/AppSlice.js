@@ -12,6 +12,7 @@ let appState = {
   hoveredItems: [],
   scrollPositions: {},
   inputSearchIds: [],
+  showLogin: false,
 };
 
 const AppSlice = createSlice({
@@ -53,6 +54,10 @@ const AppSlice = createSlice({
     setInputSearchIds(state, action) {
       state.inputSearchIds = action.payload;
     },
+
+    setShowLogin(state, action) {
+      state.showLogin = action.payload;
+    },
   },
 });
 
@@ -63,6 +68,7 @@ export const {
   setSelectedIcon,
   setIsLoading,
   setSelectedCountry,
+  setShowLogin,
   setHoveredItem,
   setHoveredItems,
   setScrollPositions,

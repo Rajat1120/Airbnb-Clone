@@ -5,6 +5,7 @@ import MainForm from "./Form/MainForm";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import UserDashboard from "./UserDashboard";
+import AuthenticationModal from "./AuthenticationModal";
 
 function Header({ headerRef }) {
   const location = useLocation();
@@ -70,6 +71,7 @@ function Header({ headerRef }) {
 
           <UserDashboard></UserDashboard>
         </div>
+        {<AuthenticationModal></AuthenticationModal>}
       </div>
       {<MainForm headerRef={headerRef}></MainForm>}
     </div>

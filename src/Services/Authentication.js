@@ -1,6 +1,6 @@
 import supabase from "./Supabase";
 
-const Login = () => {
+export const Login = () => {
   const signInWithGoogle = async () => {
     const { user, session, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -23,3 +23,13 @@ const Login = () => {
 };
 
 export default Login;
+
+export const loginWithEmail = async (Email, Password) => {
+  let { data, error } = await supabase.auth.signInWithPassword({
+    email: Email,
+    password: Password,
+  });
+
+  console.log(data);
+  console.log(error);
+};

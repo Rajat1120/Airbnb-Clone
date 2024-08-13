@@ -156,6 +156,21 @@
     display: none !important;
   }
 
+  .btnColor {
+    background-image: radial-gradient(
+      circle,
+      rgb(255, 56, 92) 0%,
+      /* Lightest color */ rgb(230, 30, 77) 30%,
+      /* Gradually darkening */ rgb(227, 28, 95) 40%,
+      /* Midpoint */ rgb(215, 4, 102) 60%,
+      /* Darker shade */ rgb(189, 30, 89) 80%,
+      /* Darkest shade */ rgb(189, 30, 89) 100% /* Darkest shade */
+    );
+    background-position-x: 75%; /* Shifted to the right */
+    background-position-y: 50%; /* Centered vertically */
+    background-size: 150% 150%; /* Adjusted size to ensure smooth transition */
+  }
+
   @keyframes shimmer {
     0% {
       opacity: 40%;

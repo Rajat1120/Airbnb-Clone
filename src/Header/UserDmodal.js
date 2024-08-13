@@ -1,16 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-const UserDmodal = ({ isOpen }) => {
-  if (!isOpen) return null;
+import { setShowLogin } from "../Main/AppSlice";
+import { useDispatch } from "react-redux";
 
+const UserDmodal = ({ isOpen }) => {
+  const dispatch = useDispatch();
+  if (!isOpen) return null;
   return ReactDOM.createPortal(
     <div className="fixed top-[4.5rem] flex flex-col shadow-2xl justify-between rounded-xl w-60 z-50 h-48 bg-white right-20">
       <div className="w-full flex mt-2 flex-col justify-between">
-        <span className="text-sm cursor-pointer w-full flex items-center font-medium hover:bg-shadow-gray-light h-10 px-5">
+        <span
+          onClick={() => dispatch(setShowLogin(true))}
+          className="text-sm cursor-pointer w-full flex items-center font-medium hover:bg-shadow-gray-light h-10 px-5"
+        >
           Sign up
         </span>
-        <span className="text-sm cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
+        <span
+          onClick={() => dispatch(setShowLogin(true))}
+          className="text-sm cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full"
+        >
           Log in
         </span>
       </div>

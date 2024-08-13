@@ -242,7 +242,9 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
                   >
                     <div className="">
                       <img
-                        className="w-10 h-10"
+                        className={`w-8 h-8 ${
+                          curSelectedMonths.includes(index) ? "" : "opacity-60"
+                        } `}
                         src={
                           curSelectedMonths.includes(index)
                             ? monthSelected

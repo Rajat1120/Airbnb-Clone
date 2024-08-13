@@ -16,6 +16,7 @@ import {
   setHoveredItem,
   setHoveredItems,
   setMinimize,
+  setShowLogin,
   setStartScroll,
 } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
@@ -193,7 +194,14 @@ const House = () => {
                       }}
                       onScroll={() => handleScroll(item.id)}
                     >
-                      <button className="absolute hover:scale-110 top-3 right-4">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+
+                          dispatch(setShowLogin(true));
+                        }}
+                        className="absolute hover:scale-110 top-3 right-4"
+                      >
                         <img src={favHeart} className="h-6 w-6" alt="" />
                       </button>
                       {hoveredItem === item.id &&

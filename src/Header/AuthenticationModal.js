@@ -1,0 +1,166 @@
+import React, { useEffect, useRef, useState } from "react";
+import ReactDOM from "react-dom";
+import cross from "../data/Icons svg/cross.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowLogin } from "../Main/AppSlice";
+
+const AuthenticationModal = () => {
+  const [visible, setVisible] = useState(false);
+  const [showLine, setShowLine] = useState(true);
+  const [activeInput, setActiveInput] = useState("");
+  const [shouldRender, setShouldRender] = useState(false);
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const ref = useRef();
+  const dispatch = useDispatch();
+  const isOpen = useSelector((store) => store.app.showLogin);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      setTimeout(() => {
+        setVisible(true);
+      }, 50); // Small delay to ensure transition is noticeable
+    } else {
+      setVisible(false);
+      setTimeout(() => {
+        setShouldRender(false);
+      }, 0);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset"; // Cleanup on component unmount
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) {
+        dispatch(setShowLogin(false));
+      }
+    };
+
+    document.addEventListener("click", handleClick, true);
+
+    return () => {
+      document.removeEventListener("click", handleClick, true);
+    };
+  }, [dispatch]);
+
+  if (!shouldRender) return null;
+
+  return ReactDOM.createPortal(
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div
+        id="calendar"
+        ref={ref}
+        className={`bg-white ${
+          visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
+        } transition-all fixed  rounded-xl duration-[0.2s] flex flex-col ease-in-out items-center justify-center shadow-md w- z-50`}
+      >
+        <div className=" items-center border-b-[1px] border-grey-light-50  justify-between flex w-[35.5rem] h-[3.9rem] px-6 ">
+          <button
+            onClick={() => dispatch(setShowLogin(false))}
+            className="w-6 h-6 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
+          >
+            <img src={cross} alt="" />
+          </button>
+          <span className="font-semibold ">Log in or sign up</span>
+          <div className="px-4"></div>
+        </div>
+        <div className="w-[35.5rem] h-[38.62rem] p-6">
+          <div>
+            <div className="mt-2 mb-6 text-2xl font-medium ">
+              Welcome to Airbnb
+            </div>
+            <form action="">
+              <div className="pt-4">
+                <div
+                  className={` rounded-lg ${showLine ? "border" : ""} ${
+                    activeInput === "email" ? "border-b border-l border-r" : ""
+                  } ${
+                    activeInput === "password"
+                      ? "border-t border-l border-r"
+                      : ""
+                  }  border-grey-light `}
+                >
+                  <div className="relative">
+                    <label
+                      htmlFor="email"
+                      className={` w-full absolute text-grey font-light top-1/2 -translate-y-3 left-2 ${
+                        activeInput === "email" || email
+                          ? "text-xs top-4"
+                          : "top-1/2 -translate-y-3"
+                      }  transition-all duration-[0.1s]   `}
+                    >
+                      Email
+                    </label>
+                    <input
+                      type="text"
+                      id="email"
+                      onChange={(e) => setEmail(e.target.value)}
+                      onFocus={() => {
+                        setShowLine(false);
+                        setActiveInput("email");
+                      }}
+                      onBlur={() => {
+                        setShowLine(true);
+                        setActiveInput("");
+                      }}
+                      className=" w-full p-2  focus:border-2 focus:rounded-lg focus:border-black  flex items-center border-grey-light-50 h-14 rounded-t-lg outline-none "
+                    />
+                  </div>
+                  <div
+                    className={`w-full h-[1px] ${
+                      showLine ? " bg-grey-light" : "bg-white"
+                    }`}
+                  ></div>
+                  <div className="relative">
+                    <label
+                      htmlFor="password"
+                      className={` w-full border-grey-light-50 absolute text-grey font-light ${
+                        activeInput === "password" || password
+                          ? "text-xs top-1"
+                          : "top-1/2 -translate-y-3"
+                      }  transition-all duration-[0.1s] left-2  h-full `}
+                    >
+                      Password
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(e) => setPassword(e.target.value)}
+                      onFocus={() => {
+                        setShowLine(false);
+                        setActiveInput("password");
+                      }}
+                      onBlur={() => {
+                        setShowLine(true);
+                        setActiveInput("");
+                      }}
+                      id="password"
+                      className={`  w-full p-2 focus:border-2  flex items-center border-grey-light-50 h-14 focus:rounded-lg focus:border-black rounded-b-lg outline-none  `}
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+            <button className="w-full h-12 mt-2 rounded-lg text-white btnColor ">
+              Continue
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+};
+
+export default AuthenticationModal;
