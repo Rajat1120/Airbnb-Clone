@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import menu from "../data/Menu-Icon.svg";
 import person from "../data/person.svg";
 import UserDmodal from "./UserDmodal";
@@ -9,8 +9,6 @@ import { setUserData } from "../Main/AppSlice";
 const UserDashboard = () => {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
 
-  const dispatch = useDispatch();
-
   const buttonRef = useRef(null);
 
   const toggleModal = (e) => {
@@ -18,16 +16,6 @@ const UserDashboard = () => {
     setIsUserModalOpen(!isUserModalOpen);
   };
   let userData = useSelector((store) => store.app.userData);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserData();
-
-      dispatch(setUserData(userData));
-    };
-
-    fetchUser();
-  }, [dispatch]);
 
   useEffect(() => {
     function handleVisibilityChange() {

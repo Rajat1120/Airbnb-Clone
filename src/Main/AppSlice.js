@@ -14,6 +14,8 @@ let appState = {
   inputSearchIds: [],
   userData: null,
   showLogin: false,
+  userFavListing: [],
+  userFavListingsFromApi: [],
 };
 
 const AppSlice = createSlice({
@@ -63,6 +65,27 @@ const AppSlice = createSlice({
     setUserData(state, action) {
       state.userData = action.payload;
     },
+
+    setFavListingFromApi(state, action) {
+      state.userFavListingsFromApi = [...action.payload];
+    },
+    setUserFavListing(state, action) {
+      // Normalize action.payload to always be an array
+      const items = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
+
+      // Merge new items with the existing list
+      state.userFavListing = [...state.userFavListing, ...items];
+    },
+    removeUserFavListing(state, action) {
+      state.userFavListing = state.userFavListing.filter(
+        (item) => item !== action.payload
+      );
+      state.userFavListingsFromApi = state.userFavListingsFromApi.filter(
+        (item) => item !== action.payload
+      );
+    },
   },
 });
 
@@ -72,6 +95,9 @@ export const {
   setUserData,
   setFilterData,
   setSelectedIcon,
+  setUserFavListing,
+  setFavListingFromApi,
+  removeUserFavListing,
   setIsLoading,
   setSelectedCountry,
   setShowLogin,
