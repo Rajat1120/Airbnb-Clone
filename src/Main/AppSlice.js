@@ -15,7 +15,8 @@ let appState = {
   userData: null,
   showLogin: false,
   userFavListing: [],
-  userFavListingsFromApi: [],
+  isFavorite: null,
+  itemId: null,
 };
 
 const AppSlice = createSlice({
@@ -66,25 +67,30 @@ const AppSlice = createSlice({
       state.userData = action.payload;
     },
 
-    setFavListingFromApi(state, action) {
-      state.userFavListingsFromApi = [...action.payload];
-    },
     setUserFavListing(state, action) {
       // Normalize action.payload to always be an array
       const items = Array.isArray(action.payload)
         ? action.payload
         : [action.payload];
 
-      // Merge new items with the existing list
-      state.userFavListing = [...state.userFavListing, ...items];
+      // Merge new items with the existing list without duplicates
+      const uniqueItems = new Set([...state.userFavListing, ...items]);
+
+      return {
+        ...state,
+        userFavListing: Array.from(uniqueItems),
+      };
     },
     removeUserFavListing(state, action) {
       state.userFavListing = state.userFavListing.filter(
         (item) => item !== action.payload
       );
-      state.userFavListingsFromApi = state.userFavListingsFromApi.filter(
-        (item) => item !== action.payload
-      );
+    },
+    setIsFavorite(state, action) {
+      state.isFavorite = action.payload;
+    },
+    setItemId(state, action) {
+      state.itemId = action.payload;
     },
   },
 });
@@ -93,10 +99,11 @@ export const {
   setStartScroll,
   setMinimize,
   setUserData,
+  setIsFavorite,
   setFilterData,
   setSelectedIcon,
   setUserFavListing,
-  setFavListingFromApi,
+  setItemId,
   removeUserFavListing,
   setIsLoading,
   setSelectedCountry,

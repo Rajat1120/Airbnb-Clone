@@ -1,12 +1,15 @@
-// src/store.js
 import { configureStore } from "@reduxjs/toolkit";
 import formReducer from "../Header/Form/mainFormSlice";
-
 import appReducer from "../../src/Main/AppSlice";
-
 import HouseDetailSlice from "../House-detail/HouseDetailSlice";
+import {
+  createStateSyncMiddleware,
+  initMessageListener,
+} from "redux-state-sync";
 
-const store = configureStore({
+const stateSyncMiddleware = createStateSyncMiddleware();
+
+export const store = configureStore({
   reducer: {
     form: formReducer,
     app: appReducer,
@@ -15,7 +18,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(stateSyncMiddleware),
 });
 
-export default store;
+initMessageListener(store);

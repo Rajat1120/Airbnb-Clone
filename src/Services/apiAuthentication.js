@@ -1,10 +1,6 @@
-import store from "../Utils/Store";
+import { store } from "../Utils/Store";
 import supabase from "./Supabase";
-import {
-  setFavListingFromApi,
-  setUserData,
-  setUserFavListing,
-} from "../Main/AppSlice";
+import { setUserData, setUserFavListing } from "../Main/AppSlice";
 
 export const signInWithGoogle = async () => {
   const { user, session, error } = await supabase.auth.signInWithOAuth({
@@ -22,7 +18,6 @@ export const signInWithGoogle = async () => {
 };
 
 export const getUserLogout = async () => {
-  await saveFavorite();
   let { error } = await supabase.auth.signOut();
 
   if (error) {
@@ -47,7 +42,6 @@ export const getUserData = async () => {
 
     if (favorites) {
       store.dispatch(setUserFavListing(favorites.map((fav) => fav.item_id)));
-      store.dispatch(setFavListingFromApi(favorites.map((fav) => fav.item_id)));
     }
     return user;
   } else {
@@ -67,29 +61,26 @@ export const loginWithEmail = async (Email, Password) => {
   console.log(error);
 };
 
-export const saveFavorite = async () => {
+export const saveFavorite = async (itemId) => {
   try {
     const curUser = await supabase.auth.getUser();
 
     if (curUser.data.user) {
-      const itemIds = store.getState().app.userFavListing;
-      const existingItemIds = store.getState().app.userFavListingsFromApi;
-
-      const newFavorites = itemIds.filter(
-        (itemId) => !existingItemIds.includes(itemId)
-      );
-
-      // Prepare an array of objects to insert
-      const favoritesToInsert = newFavorites.map((itemId) => ({
+      const favoriteToInsert = {
         user_id: curUser.data.user.id,
         item_id: itemId,
-      }));
+      };
 
       const { data, error } = await supabase
         .from("Favorites")
-        .insert(favoritesToInsert);
+        .insert(favoriteToInsert);
 
       if (error) {
+        // Check if the error is due to a unique constraint violation
+        if (error.code === "23505") {
+          // The favorite already exists, so we can consider this a success
+          return { message: "Favorite already exists" };
+        }
         throw new Error("Error saving favorite: " + error.message);
       } else {
         return data;
@@ -102,6 +93,38 @@ export const saveFavorite = async () => {
   }
 };
 
-window.addEventListener("beforeunload", async () => {
-  await saveFavorite();
-});
+export const deleteFavorite = async (itemId) => {
+  try {
+    const curUser = await supabase.auth.getUser();
+
+    if (curUser.data.user) {
+      const { error: deleteError } = await supabase
+        .from("Favorites")
+        .delete()
+        .eq("user_id", curUser?.data.user.id)
+        .eq("item_id", itemId);
+
+      if (deleteError) {
+        throw new Error("Error deleting favorite: " + deleteError.message);
+      }
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getFavoriteListing = async (itemId) => {
+  try {
+    const curUser = await supabase.auth.getUser();
+    let { data: Favorite, error } = await supabase
+      .from("Favorites")
+      .select("user_id,item_id")
+      .eq("user_id", curUser.data.user.id) // Matches the specific user_id
+      .eq("item_id", itemId); // Matches the specific item_id
+    if (error) {
+      return error;
+    } else {
+      return Favorite;
+    }
+  } catch (err) {}
+};

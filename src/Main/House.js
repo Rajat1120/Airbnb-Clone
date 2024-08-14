@@ -8,23 +8,28 @@ import React, {
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
-import favHeart from "../data/Icons svg/favHeart.svg";
+
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchRowsWithOptions } from "../Services/apiRooms";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
   removeUserFavListing,
   setHoveredItem,
   setHoveredItems,
+  setIsFavorite,
+  setItemId,
   setMinimize,
   setShowLogin,
   setStartScroll,
   setUserFavListing,
 } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
-import { saveFavorite } from "../Services/apiAuthentication";
+import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
+import { svg } from "../data/HeartIconSvg";
 
 const House = () => {
+  const isFavorite = useSelector((store) => store.app.isFavorite);
+  const itemId = useSelector((store) => store.app.itemId);
   const imageWidth = 301.91;
   const houseImagesRefs = useRef({});
   const containerRef = useRef(null);
@@ -43,6 +48,20 @@ const House = () => {
 
   const [localScrollPositions, setLocalScrollPositions] = useState({});
   const ids = useSelector((store) => store.app.inputSearchIds);
+
+  useEffect(() => {
+    const handleUpdate = async () => {
+      if (itemId) {
+        if (isFavorite) {
+          await saveFavorite(itemId);
+        } else {
+          await deleteFavorite(itemId);
+        }
+      }
+    };
+
+    handleUpdate();
+  }, [favListings, isFavorite, itemId]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
@@ -152,33 +171,6 @@ const House = () => {
     if (!startScroll) window.scrollTo(0, 10);
   }, [selectedIcon, startScroll]);
 
-  function svg(itemId) {
-    const svgColor = favListings.includes(itemId)
-      ? "red"
-      : "rgba(0, 0, 0, 0.5)";
-
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 32 32"
-        aria-hidden="true"
-        role="presentation"
-        focusable="false"
-        style={{
-          display: "block",
-          fill: svgColor,
-          height: "24px",
-          width: "24px",
-          stroke: "white",
-          strokeWidth: "2",
-          overflow: "visible",
-        }}
-      >
-        <path d="M16 28c7-4.73 14-10 14-17a6.98 6.98 0 0 0-7-7c-1.8 0-3.58.68-4.95 2.05L16 8.1l-2.05-2.05a6.98 6.98 0 0 0-9.9 0A6.98 6.98 0 0 0 2 11c0 7 7 12.27 14 17z"></path>
-      </svg>
-    );
-  }
-
   return (
     <div
       className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[4rem] ${
@@ -235,14 +227,18 @@ const House = () => {
                           } else {
                             if (favListings.includes(item.id)) {
                               dispatch(removeUserFavListing(item.id));
+                              dispatch(setIsFavorite(false));
+                              dispatch(setItemId(item.id));
                             } else {
                               dispatch(setUserFavListing(item.id));
+                              dispatch(setIsFavorite(true));
+                              dispatch(setItemId(item.id));
                             }
                           }
                         }}
                         className="absolute hover:scale-110 top-3 right-4"
                       >
-                        {svg(item.id)}
+                        {svg(item.id, favListings)}
                       </button>
                       {hoveredItem === item.id &&
                         !localScrollPositions[item.id]?.isAtStart && (
@@ -250,7 +246,7 @@ const House = () => {
                             onClick={(e) => handleScrollBtn(e, "left", item.id)}
                             className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
                           >
-                            {svg(item.id)}
+                            <img src={arrow_left} alt="Scroll left" />
                           </button>
                         )}
                       {hoveredItem === item.id &&

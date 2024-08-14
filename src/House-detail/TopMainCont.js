@@ -1,17 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import share from "../../src/data/Icons svg/shareIcon.svg";
 import heart from "../../src/data/Icons svg/heart.svg";
 import dots from "../data/Icons svg/dots.svg";
 import { useParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ImageGalleryModal from "./ImageGalleryModal";
+import { svg } from "../data/HeartIconSvg";
+import {
+  removeUserFavListing,
+  setIsFavorite,
+  setItemId,
+  setShowLogin,
+  setUserFavListing,
+} from "../Main/AppSlice";
+import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
 
 const TopMainCont = () => {
   const { id } = useParams();
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  let userData = useSelector((store) => store.app.userData);
+  const dispatch = useDispatch();
+  let favListings = useSelector((store) => store.app.userFavListing);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
+  const isFavorite = useSelector((store) => store.app.isFavorite);
+
+  useEffect(() => {
+    dispatch({ type: "FETCH_LATEST_STATE" });
+  }, [dispatch]);
+
+  useEffect(() => {
+    const handleUpdate = async () => {
+      if (houseInfo?.id) {
+        if (isFavorite) {
+          await saveFavorite(houseInfo.id);
+        } else {
+          await deleteFavorite(houseInfo.id);
+        }
+      }
+    };
+
+    handleUpdate();
+  }, [favListings, isFavorite, houseInfo?.id]);
 
   // Pre-define the grid layout
   const gridLayout = [
@@ -42,8 +72,25 @@ const TopMainCont = () => {
               <img className="w-[1.2rem] h-[1.2rem] pt-1" src={share} alt="" />
               <span className="h-[1.2rem]">Share</span>
             </span>
-            <span className="underline w-[4.8rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
-              <img className="w-[1.2rem] h-[1.2rem] pt-1" src={heart} alt="" />
+            <span
+              onClick={() => {
+                if (!userData) {
+                  dispatch(setShowLogin(true));
+                } else {
+                  if (favListings.includes(houseInfo.id)) {
+                    dispatch(removeUserFavListing(houseInfo.id));
+                    dispatch(setIsFavorite(false));
+                    dispatch(setItemId(houseInfo.id));
+                  } else {
+                    dispatch(setUserFavListing(houseInfo.id));
+                    dispatch(setIsFavorite(true));
+                    dispatch(setItemId(houseInfo.id));
+                  }
+                }
+              }}
+              className="underline w-[4.8rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex"
+            >
+              {svg(houseInfo.id, favListings)}
               <span className="h-[1.2rem]">Save</span>
             </span>
           </div>
