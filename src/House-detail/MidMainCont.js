@@ -10,12 +10,17 @@ import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
 import arrowUp from "../data/Icons svg/arrowUpword.svg";
 import { useDispatch, useSelector } from "react-redux";
-
+import { differenceInDays } from "date-fns";
 import { setIsVisible } from "./HouseDetailSlice";
 
 const MidMainCont = () => {
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+  const startDate = useSelector((store) => store.form.selectedStartDate);
+  const endDate = useSelector((store) => store.form.selectedEndDate);
+
+  let numOfDays = differenceInDays(startDate, endDate);
+
   const [houseInfoDetails, setHouseInfoDetails] = useState([]);
   const dispatch = useDispatch();
 
@@ -296,16 +301,31 @@ const MidMainCont = () => {
               </div>
               <div className="w-full mt-6">
                 <div className="flex h-[20px] w-full justify-between">
-                  <span className="font-light">$16.250 x 8 nights</span>
-                  <span className="font-light">$125,657 </span>
+                  <span className="font-light">{`$${
+                    houseInfo?.price
+                  } x ${Math.abs(numOfDays)}`}</span>
+                  <span className="font-light">
+                    ${Math.ceil(houseInfo?.price * Math.abs(numOfDays))}{" "}
+                  </span>
                 </div>
                 <div className="flex pt-4 justify-between">
                   <span className="font-light">Airbnb service fee</span>
-                  <span className="font-light">$1256</span>
+                  <span className="font-light">
+                    $
+                    {Math.floor(
+                      0.11 * Math.ceil(houseInfo?.price * Math.abs(numOfDays))
+                    )}
+                  </span>
                 </div>
                 <div className="h-11 pt-6 flex justify-between items-center mt-6 border-t-[1px]  border-grey-dim">
                   <span className="font-medium">Total before taxes</span>
-                  <span className="font-medium">$125,678</span>
+                  <span className="font-medium">
+                    $
+                    {Math.ceil(houseInfo?.price * Math.abs(numOfDays)) +
+                      Math.floor(
+                        0.1 * Math.ceil(houseInfo?.price * Math.abs(numOfDays))
+                      )}
+                  </span>
                 </div>
               </div>
             </div>
