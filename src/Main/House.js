@@ -178,7 +178,7 @@ const House = () => {
       }`}
       ref={containerRef}
     >
-      <div className="grid gap-x-5 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
+      <div className="grid gap-x-6 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
         {status === "pending"
           ? Array.from({ length: 50 }).map((_, i) => (
               <div
@@ -280,7 +280,7 @@ const House = () => {
                             style={{
                               scrollSnapAlign: "start",
                               flexShrink: 0,
-                              "scroll-snap-stop": "always",
+                              scrollSnapStop: "always",
                               width: `${imageWidth}px`,
                             }}
                           />
