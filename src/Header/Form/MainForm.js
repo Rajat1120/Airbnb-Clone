@@ -9,8 +9,7 @@ import {
   setOpenName,
 } from "./mainFormSlice";
 import { setMinimize, setStartScroll } from "../../Main/AppSlice";
-import Header from "../Header";
-import { useModalRef } from "../../Modals/Modal";
+
 import { useLocation } from "react-router";
 
 const MainForm = ({ headerRef }) => {

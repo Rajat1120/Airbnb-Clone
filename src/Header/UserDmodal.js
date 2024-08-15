@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import { setShowLogin } from "../Main/AppSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserLogout } from "../Services/apiAuthentication";
+import { Link } from "react-router-dom";
 
 const UserDmodal = ({ isOpen }) => {
   let userData = useSelector((store) => store.app.userData);
@@ -23,9 +24,11 @@ const UserDmodal = ({ isOpen }) => {
             <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
               Trips
             </span>
-            <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Wishlist
-            </span>
+            <Link to={"/wishlist"}>
+              <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
+                Wishlist
+              </span>
+            </Link>
           </div>
           <div className="w-full py-[0.5px] my-2 z-30 bg-grey-light-50"></div>
           <div>

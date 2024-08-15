@@ -10,6 +10,10 @@ const Wishlist = () => {
       >
         <Header></Header>
       </div>
+      <div className="w-[calc(100%-10rem)] pt-9 pb-6 mx-auto">
+        <h1 className="text-[2rem] font-medium">Wishlists</h1>
+        <div></div>
+      </div>
     </div>
   );
 };

@@ -1,10 +1,16 @@
 import { store } from "../Utils/Store";
 import supabase from "./Supabase";
+
 import { setUserData, setUserFavListing } from "../Main/AppSlice";
 
 export const signInWithGoogle = async () => {
+  const redirectUrl = window.location.href;
+  localStorage.setItem("redirectAfterLogin", redirectUrl);
   const { user, session, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
+    options: {
+      redirectTo: redirectUrl,
+    },
   });
 
   if (error) {
