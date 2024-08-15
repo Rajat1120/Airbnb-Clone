@@ -33,10 +33,9 @@ const Options = () => {
     return normalizedFilters.includes(normalizedIconName);
   });
 
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["rooms", ids, selectedCountry, city],
     queryFn: () => getRooms(ids, selectedCountry, city),
-    //  enabled: !!ids && ids.length > 0 && !!selectedCountry,
   });
 
   useEffect(() => {

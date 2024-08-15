@@ -32,7 +32,7 @@ export async function getRooms(ids, country, city) {
 
 export async function getAllRows() {
   // Start building the query
-  let query = supabase.from("Rooms").select("*");
+  let query = supabase.from("Rooms").select("id,city, country, house-title");
 
   // Execute the query
   const { data, error } = await query;
@@ -40,6 +40,20 @@ export async function getAllRows() {
   if (error) {
     console.error("Error fetching rooms:", error);
     return null; // Return null or handle the error appropriately
+  } else {
+    return data;
+  }
+}
+
+export async function getWishList(idsArray) {
+  let { data, error } = await supabase
+    .from("Rooms")
+    .select("*") // Specify the columns you want to fetch
+    .in("id", idsArray); // Fetch rows where the 'id' column matches any value in the array
+
+  if (error) {
+    console.log(error);
+    return null; // Handle error appropriately
   } else {
     return data;
   }

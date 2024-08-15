@@ -10,7 +10,7 @@ import {
 } from "./AppSlice";
 import { svg } from "../data/HeartIconSvg";
 import { useQuery } from "@tanstack/react-query";
-import { getAllRows } from "../Services/apiRooms";
+import { getWishList } from "../Services/apiRooms";
 
 const Wishlist = () => {
   const [wishList, setWishList] = useState(null);
@@ -18,9 +18,12 @@ const Wishlist = () => {
   const userData = useSelector((store) => store.app.userData);
 
   const { data, isLoading } = useQuery({
-    queryKey: ["allRows"],
-    queryFn: () => getAllRows(),
+    queryKey: ["wishList"],
+    queryFn: () => getWishList(favListings),
+    enabled: !!favListings.length,
   });
+
+  console.log(data);
 
   const imageWidth = 301.91;
 
@@ -29,8 +32,7 @@ const Wishlist = () => {
 
   useEffect(() => {
     if (favListings.length && !firstRender.current && data) {
-      let listings = data?.filter((item) => favListings.includes(item.id));
-      setWishList(listings);
+      setWishList(data);
       firstRender.current = true;
     }
   }, [favListings, data]);

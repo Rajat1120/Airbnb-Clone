@@ -263,6 +263,8 @@ const House = () => {
                       <img
                         className="rounded-[20px] flex-center w-full h-full object-cover scroll-snap-align-start"
                         src={item.images[0]}
+                        rel="preload"
+                        as="image"
                         alt=""
                         style={{
                           scrollSnapAlign: "start",
@@ -275,6 +277,8 @@ const House = () => {
                           <img
                             className="rounded-[20px] flex-center w-full h-full object-cover scroll-snap-align-start"
                             src={img}
+                            rel="preload"
+                            as="image"
                             key={i}
                             alt=""
                             style={{
