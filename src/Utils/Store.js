@@ -8,7 +8,15 @@ import {
   withReduxStateSync,
 } from "redux-state-sync";
 
-const stateSyncMiddleware = createStateSyncMiddleware();
+const stateSyncMiddleware = createStateSyncMiddleware({
+  whitelist: [
+    "app/setItemId",
+    "app/setIsFavorite",
+    "app/removeUserFavListing",
+    "app/setUserFavListing",
+    "app/setUserData",
+  ],
+});
 
 export const store = configureStore({
   reducer: withReduxStateSync(
