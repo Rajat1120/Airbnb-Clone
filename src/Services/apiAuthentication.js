@@ -16,6 +16,7 @@ export const signInWithGoogle = async () => {
   if (error) {
     console.error("Error signing in with Google:", error);
   } else {
+    store.dispatch(setUserData(user));
     console.log("User:", user);
 
     console.log("Session:", session);
@@ -24,6 +25,7 @@ export const signInWithGoogle = async () => {
 };
 
 export const getUserLogout = async () => {
+  store.dispatch(setUserData(null));
   let { error } = await supabase.auth.signOut();
 
   if (error) {

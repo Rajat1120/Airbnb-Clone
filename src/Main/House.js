@@ -51,7 +51,7 @@ const House = () => {
 
   useEffect(() => {
     const handleUpdate = async () => {
-      if (itemId) {
+      if (itemId && userData) {
         if (isFavorite) {
           await saveFavorite(itemId);
         } else {
@@ -61,7 +61,7 @@ const House = () => {
     };
 
     handleUpdate();
-  }, [favListings, isFavorite, itemId]);
+  }, [favListings, isFavorite, userData, itemId]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
