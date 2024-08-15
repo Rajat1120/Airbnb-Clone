@@ -6,6 +6,7 @@ import sharedSpace from "../../src/data/Icons svg/commonSpace.svg";
 import bathroom from "../../src/data/Icons svg/bathroom.svg";
 import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
 import person from "../data/person.svg";
+import { format } from "date-fns";
 import HouseDescription from "./HouseDescription";
 import SleepBed from "./SleepBedDetail";
 import arrowUp from "../data/Icons svg/arrowUpword.svg";
@@ -14,9 +15,21 @@ import { differenceInDays } from "date-fns";
 import { setIsVisible } from "./HouseDetailSlice";
 
 const MidMainCont = () => {
+  const [formatStartDate, setFormatStartDate] = useState(null);
+  const [formatEndDate, setFormatEndDate] = useState(null);
+
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
   const startDate = useSelector((store) => store.form.selectedStartDate);
+
+  const guestPlural = useSelector((store) => store.form.guestPlural);
+  const petPlural = useSelector((store) => store.form.petPlural);
+
+  const adultCount = useSelector((store) => store.form.adultCount);
+  const childCount = useSelector((store) => store.form.childCount);
+  const infantCount = useSelector((store) => store.form.infantCount);
+  const petCount = useSelector((store) => store.form.petsCount);
+
   const endDate = useSelector((store) => store.form.selectedEndDate);
 
   let numOfDays = differenceInDays(startDate, endDate);
@@ -25,6 +38,15 @@ const MidMainCont = () => {
   const dispatch = useDispatch();
 
   const elementRef = useRef(null);
+
+  useEffect(() => {
+    if (startDate) {
+      setFormatStartDate(format(startDate, "MM/dd/yyyy"));
+    }
+    if (endDate) {
+      setFormatEndDate(format(endDate, "MM/dd/yyyy"));
+    }
+  }, [startDate, endDate]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -261,7 +283,9 @@ const MidMainCont = () => {
                         <span className="text-[10px] font-semibold">
                           CHECK-IN
                         </span>
-                        <span className="text-sm font-light">10/16/2024</span>
+                        <span className="text-sm font-light">
+                          {startDate && formatStartDate}
+                        </span>
                       </div>
                     </div>
                     <div className="w-1/2 h-full flex items-center ">
@@ -269,7 +293,9 @@ const MidMainCont = () => {
                         <span className="text-[10px] font-semibold">
                           CHECKOUT
                         </span>
-                        <span className="text-sm font-light">10/24/2024</span>
+                        <span className="text-sm font-light">
+                          {endDate && formatEndDate}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -279,7 +305,19 @@ const MidMainCont = () => {
                         <span className="text-[10px] font-semibold">
                           GUESTS
                         </span>
-                        <span className="text-sm font-light">2 guests</span>
+                        <span className="text-sm font-light">
+                          {adultCount + childCount > 0
+                            ? `${adultCount + childCount} guest${guestPlural} ${
+                                infantCount
+                                  ? `${infantCount} infant${
+                                      infantCount > 1 ? "s" : ""
+                                    }${petCount > 1 ? "," : ""}`
+                                  : ""
+                              } ${
+                                petCount ? `${petCount} pet${petPlural}` : ""
+                              }`
+                            : "Add guest"}
+                        </span>
                       </div>
                       <div className="h-4 w-4">
                         <img className="h-full w-full" src={arrowUp} alt="" />

@@ -4,8 +4,11 @@ import App from "./App";
 
 import { store } from "./Utils/Store";
 import { Provider } from "react-redux";
+import { initStateWithPrevTab } from "redux-state-sync";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
+initStateWithPrevTab(store);
 
 root.render(
   <Provider store={store}>

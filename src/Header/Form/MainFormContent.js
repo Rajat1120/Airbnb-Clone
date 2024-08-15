@@ -15,10 +15,13 @@ import {
   setDisplaySearch,
   setDisplaySearchWeek,
   setEndDateToShow,
+  setExtraGuest,
+  setGuestPlural,
   setHoverInput,
   setInfantCount,
   setMinimizeFormBtn,
   setOpenName,
+  setPetPlural,
   setPetsCount,
   setRegion,
   setSelectedEndDate,
@@ -44,11 +47,13 @@ import {
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 
 const MainFormContent = () => {
-  const [guestPlural, setGuestPlural] = useState("");
-  const [petPlural, setPetPlural] = useState("");
-  const [extraGuest, setExtraGuest] = useState("");
+  const dispatch = useDispatch();
 
   const data = useSelector((store) => store.form.curSelectInput);
+  const guestPlural = useSelector((store) => store.form.guestPlural);
+  const petPlural = useSelector((store) => store.form.petPlural);
+  const extraGuest = useSelector((store) => store.form.extraGuest);
+
   const destinationInputVal = useSelector(
     (store) => store.form.destinationInputVal
   );
@@ -82,30 +87,28 @@ const MainFormContent = () => {
 
   useEffect(() => {
     if (childCount + adultCount === 1 && petCount + infantCount === 0) {
-      setGuestPlural("");
+      dispatch(setGuestPlural(""));
     } else if (childCount + adultCount > 1 && petCount + infantCount === 0) {
-      setGuestPlural("s");
+      dispatch(setGuestPlural("s"));
     } else if (childCount + adultCount > 1 && petCount + infantCount > 0) {
-      setGuestPlural("s,");
+      dispatch(setGuestPlural("s,"));
     } else if (childCount + adultCount === 1 && petCount + infantCount > 0) {
-      setGuestPlural(",");
+      dispatch(setGuestPlural(","));
     }
     if (petCount > 1) {
-      setPetPlural("s");
+      dispatch(setPetPlural("s"));
     } else if (petCount <= 1) {
-      setPetPlural("");
+      dispatch(setPetPlural(""));
     }
 
     if (infantCount > 0) {
-      setExtraGuest(`${infantCount} infant`);
+      dispatch(setExtraGuest(`${infantCount} infant`));
     }
 
     if (petCount > 0 && infantCount === 0) {
-      setExtraGuest(`${petCount} pet${petPlural}`);
+      dispatch(setExtraGuest(`${petCount} pet${petPlural}`));
     }
-  }, [adultCount, childCount, infantCount, petCount, petPlural]);
-
-  const dispatch = useDispatch();
+  }, [adultCount, childCount, dispatch, infantCount, petCount, petPlural]);
 
   const modalRef = useRef();
   const checkInResetRef = useRef();

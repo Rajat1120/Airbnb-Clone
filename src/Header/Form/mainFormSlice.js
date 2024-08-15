@@ -26,8 +26,11 @@ let formState = {
   stayDuration: "week",
   months: [],
   isCalendarModalOpen: false,
+  guestPlural: "",
+  petPlural: "",
   destinationInputVal: "",
   displaySearchWeek: "",
+  extraGuest: "",
   textForInputDuration: "",
   textForFlexibleInput: "",
   textForGuestInput: "",
@@ -87,6 +90,15 @@ const formSlice = createSlice({
         state.months.push(action.payload);
       }
     },
+    setGuestPlural(state, action) {
+      state.guestPlural = action.payload;
+    },
+    setPetPlural(state, action) {
+      state.petPlural = action.payload;
+    },
+    setExtraGuest(state, action) {
+      state.extraGuest = action.payload;
+    },
     setStayDuration(state, action) {
       state.stayDuration = action.payload;
     },
@@ -137,6 +149,9 @@ export const {
   setSelectedEndDate,
   setMinimizeFormBtn,
   setStartDateToShow,
+  setExtraGuest,
+  setPetPlural,
+  setGuestPlural,
   setTextForInputDuration,
   setEndDateToShow,
   setDisplaySearch,

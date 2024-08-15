@@ -3,16 +3,32 @@ import Options from "./Main/Options";
 import styles from "./input.css";
 
 import House from "./Main/House";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
 import { getAllRows } from "./Services/apiRooms";
-
+import { addDays } from "date-fns";
+import {
+  setSelectedEndDate,
+  setSelectedStartDate,
+} from "./Header/Form/mainFormSlice";
 export default function Home() {
   const startScroll = useSelector((store) => store.app.startScroll);
   const minimize = useSelector((store) => store.app.minimize);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const today = new Date();
+
+    // Get tomorrow's date
+    const tomorrow = addDays(today, 1);
+
+    // Get the date that is 5 days after tomorrow
+    const tomorrowPlusFive = addDays(tomorrow, 5);
+    dispatch(setSelectedStartDate(tomorrow));
+    dispatch(setSelectedEndDate(tomorrowPlusFive));
+  }, [dispatch]);
 
   useQuery({
     queryKey: ["allRows"],
