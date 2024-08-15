@@ -10,6 +10,7 @@ import AuthenticationModal from "./AuthenticationModal";
 function Header({ headerRef }) {
   const location = useLocation();
   let onHouseDetailPage = location.pathname.includes("/house/");
+  let onWishListPage = location.pathname.includes("/wishlist");
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
@@ -18,10 +19,10 @@ function Header({ headerRef }) {
 
   let val1 = minimize
     ? "after:translate-y-[7rem] after:opacity-0 "
-    : "after:translate-y-[1.8rem] after:opacity-100";
+    : "after:translate-y-[2.1rem] after:opacity-100";
 
   let classForAfter = `after:content-[''] ${
-    !startScroll ? ` ${val1}` : "after:translate-y-[7.5rem]"
+    !startScroll || onWishListPage ? ` ${val1}` : "after:translate-y-[7.5rem]"
   } after:transition-transform after:duration-[0.2s] after:ease-in-out after:w-full  after:bg-grey-dim after:z-50  after:h-[1px]`;
 
   return (
@@ -30,7 +31,7 @@ function Header({ headerRef }) {
       className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
       <div
-        className={`grid grid-cols-3  ${
+        className={`grid grid-cols-${onWishListPage ? "2" : "3"}  ${
           onHouseDetailPage ? "w-[calc(100%-10rem)]  mx-auto" : "w-full"
         } px-20 `}
       >
@@ -44,21 +45,23 @@ function Header({ headerRef }) {
             </div>
           </a>
         </div>
-        <div
-          className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
-            !startScroll
-              ? `${minimize ? "translate-y-0" : "-translate-y-20"}  `
-              : ""
-          } justify-center  items-center `}
-        >
-          <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">
-            Stays
-          </button>
+        {!onWishListPage && (
+          <div
+            className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
+              !startScroll
+                ? `${minimize ? "translate-y-0" : "-translate-y-20"}  `
+                : ""
+            } justify-center  items-center `}
+          >
+            <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">
+              Stays
+            </button>
 
-          <p className="h-[2.5rem] flex items-center justify-center hover:bg-gray-100 hover:text-slate-600 rounded-full text-center w-[8rem] text-grey font-light">
-            Experiences
-          </p>
-        </div>
+            <p className="h-[2.5rem] flex items-center justify-center hover:bg-gray-100 hover:text-slate-600 rounded-full text-center w-[8rem] text-grey font-light">
+              Experiences
+            </p>
+          </div>
+        )}
         <div className="h-20 flex   items-center  justify-end ">
           <a href="#">
             <p className="text-sm h-[2.5rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
@@ -73,7 +76,7 @@ function Header({ headerRef }) {
         </div>
         {<AuthenticationModal></AuthenticationModal>}
       </div>
-      {<MainForm headerRef={headerRef}></MainForm>}
+      {!onWishListPage && <MainForm headerRef={headerRef}></MainForm>}
     </div>
   );
 }

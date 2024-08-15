@@ -4,6 +4,7 @@ import HouseDetail from "./House-detail/HouseDetail";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Analytics } from "@vercel/analytics/react";
+import Wishlist from "./Main/Wishlist";
 
 const queryClient = new QueryClient({});
 
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/house/:id",
     element: <HouseDetail></HouseDetail>,
+  },
+  {
+    path: "/wishlist",
+    element: <Wishlist></Wishlist>,
   },
 ]);
 

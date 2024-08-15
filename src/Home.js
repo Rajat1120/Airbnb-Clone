@@ -42,7 +42,7 @@ export default function Home() {
       <div
         className={`  transition-all duration-[0.3s] ease-in-out flex-center  fixed z-10 w-full  bg-white  ${
           !startScroll ? "-translate-y-[5.9rem] shadow-md" : ""
-        }   top-[10.5rem]  flex-center  `}
+        }   top-[10.8rem]  flex-center  `}
       >
         <Options></Options>
       </div>
