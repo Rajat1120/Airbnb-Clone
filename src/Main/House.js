@@ -280,6 +280,7 @@ const House = () => {
                             style={{
                               scrollSnapAlign: "start",
                               flexShrink: 0,
+                              "scroll-snap-stop": "always",
                               width: `${imageWidth}px`,
                             }}
                           />
