@@ -136,6 +136,18 @@
     background-size: 100% 100%;
   }
 
+  .success-message {
+    color: green;
+    font-size: 1.2em;
+    margin-top: 10px;
+  }
+
+  .error-message {
+    color: red;
+    font-size: 1.2em;
+    margin-top: 10px;
+  }
+
   .loader::after {
     content: "";
     display: block;

@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Analytics } from "@vercel/analytics/react";
 import Wishlist from "./Main/Wishlist";
+import StripePayment from "./CheckoutForm";
 
 const queryClient = new QueryClient({});
 
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/wishlist",
     element: <Wishlist></Wishlist>,
+  },
+  {
+    path: "/book",
+    element: <StripePayment></StripePayment>,
   },
 ]);
 
