@@ -11,16 +11,17 @@ import {
 import { svg } from "../data/HeartIconSvg";
 import { useQuery } from "@tanstack/react-query";
 import { getWishList } from "../Services/apiRooms";
+import { useLocation } from "react-router";
 
 const Wishlist = () => {
   const [wishList, setWishList] = useState(null);
   const favListings = useSelector((store) => store.app.userFavListing);
   const userData = useSelector((store) => store.app.userData);
 
-  const { data, isLoading } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["wishList"],
     queryFn: () => getWishList(favListings),
-    enabled: !!favListings.length,
+    enabled: false,
   });
 
   console.log(data);
@@ -28,14 +29,16 @@ const Wishlist = () => {
   const imageWidth = 301.91;
 
   const dispatch = useDispatch();
-  let firstRender = useRef(false);
 
   useEffect(() => {
-    if (favListings.length && !firstRender.current && data) {
-      setWishList(data);
-      firstRender.current = true;
+    refetch();
+  }, [refetch]);
+
+  useEffect(() => {
+    if (data) {
+      setWishList(data); // Always set the latest data
     }
-  }, [favListings, data]);
+  }, [data]);
 
   if (!userData) {
     return <p>you need to sing in</p>;
