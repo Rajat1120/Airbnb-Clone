@@ -143,7 +143,7 @@ const SleepBedDetail = () => {
               <img className="h-6 w-6" src={lift} alt="" />
               <span className="font-light">Lift</span>
             </div>
-            <div className="w-1/2 pb-4 gap-4 flex">
+            <div id="airConditioner" className="w-1/2 pb-4 gap-4 flex">
               <img className="h-6 w-6" src={airConditioner} alt="" />
               <span className="font-light">Air conditioning</span>
             </div>
@@ -162,7 +162,9 @@ const SleepBedDetail = () => {
       </div>
       <div className="py-12 h-[32.37rem]">
         <div className="flex flex-col">
-          <h3 className="text-2xl leading-6 font-medium ">{calendarTitle()}</h3>
+          <h3 id="calendar" className="text-2xl leading-6 font-medium ">
+            {calendarTitle()}
+          </h3>
           <div className="h-9 flex pt-2  items-start">
             <div className="flex-center gap-1">
               {startDate && endDate ? (

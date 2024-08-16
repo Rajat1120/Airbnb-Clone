@@ -131,6 +131,17 @@ const MidMainCont = () => {
     setHouseInfoDetails(counts);
   }, [houseInfo]);
 
+  const scrollToSection = (sectionId) => (event) => {
+    event.preventDefault();
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
   return (
     <div className="w-[calc(100%-10rem)] mx-auto flex justify-between px-[5rem] max-h-[198.59rem] relative after:content-[''] after:absolute after:bottom-0  after:w-[calc(100%-10rem)]  after:h-[1px]  after:bg-grey-dim ">
       <div className="w-[40.83rem]">
@@ -268,105 +279,195 @@ const MidMainCont = () => {
           </div>
         ) : (
           <div className="pt-8 mb-20 flex justify-end sticky top-20">
-            <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
-              <div className="">
-                <span className="mb-6 flex items-end gap-2 text-2xl">
-                  ${houseInfo?.price}
-                  <span className="text-base font-light flex items-end">
-                    night
-                  </span>
-                </span>
-                <div className="mb-4 cursor-pointer border-[1px] border-border-color rounded-lg h-28">
-                  <div className="w-full h-1/2 flex   border-b-[1px] border-border-color">
-                    <div className="w-1/2 h-full border-r-[1px] border-border-color flex justify-center flex-col ">
-                      <div className="flex items-start justify-center flex-col pl-3">
-                        <span className="text-[10px] font-semibold">
-                          CHECK-IN
-                        </span>
-                        <span className="text-sm font-light">
-                          {startDate && formatStartDate}
-                        </span>
+            {!startDate || !endDate ? (
+              <div className=" rounded-xl border-[1px]  border-grey-dim h-[17.12rem] p-6 w-[23.14rem]">
+                <div>
+                  <div className="mb-6">
+                    <h1 className="text-2xl font-light">
+                      Add dates for prices
+                    </h1>
+                  </div>
+                  <div className="mb-4 cursor-pointer border-[1px] border-border-color rounded-lg h-28">
+                    <div className="w-full h-1/2 flex   border-b-[1px] border-border-color">
+                      <div
+                        onClick={scrollToSection("calendar")}
+                        className="w-1/2 h-full border-r-[1px] border-border-color flex justify-center flex-col "
+                      >
+                        <div className="flex items-start justify-center flex-col pl-3">
+                          <span className="text-[10px] font-semibold">
+                            CHECK-IN
+                          </span>
+                          <span className="text-sm text-grey font-normal">
+                            {startDate ? formatStartDate : "Add date"}
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        onClick={scrollToSection("calendar")}
+                        className="w-1/2 h-full flex items-center "
+                      >
+                        <div className="flex items-start justify-center flex-col pl-3">
+                          <span className="text-[10px] font-semibold">
+                            CHECKOUT
+                          </span>
+                          <span className="text-sm font-light">
+                            {endDate ? formatEndDate : "Add date"}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="w-1/2 h-full flex items-center ">
-                      <div className="flex items-start justify-center flex-col pl-3">
-                        <span className="text-[10px] font-semibold">
-                          CHECKOUT
-                        </span>
-                        <span className="text-sm font-light">
-                          {endDate && formatEndDate}
-                        </span>
+                    <div className="flex  w-full h-1/2 items-center">
+                      <div className="flex px-3 w-full items-center justify-between">
+                        <div
+                          onClick={scrollToSection("header")}
+                          className="flex items-start justify-center flex-col"
+                        >
+                          <span className="text-[10px] font-semibold">
+                            GUESTS
+                          </span>
+                          <span className="text-sm font-light">
+                            {adultCount + childCount > 0
+                              ? `${
+                                  adultCount + childCount
+                                } guest${guestPlural} ${
+                                  infantCount
+                                    ? `${infantCount} infant${
+                                        infantCount > 1 ? "s" : ""
+                                      }${petCount > 1 ? "," : ""}`
+                                    : ""
+                                } ${
+                                  petCount ? `${petCount} pet${petPlural}` : ""
+                                }`
+                              : "Add guest"}
+                          </span>
+                        </div>
+                        <div className="h-4 w-4">
+                          <img className="h-full w-full" src={arrowUp} alt="" />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="flex  w-full h-1/2 items-center">
-                    <div className="flex px-3 w-full items-center justify-between">
-                      <div className="flex items-start justify-center flex-col">
-                        <span className="text-[10px] font-semibold">
-                          GUESTS
-                        </span>
-                        <span className="text-sm font-light">
-                          {adultCount + childCount > 0
-                            ? `${adultCount + childCount} guest${guestPlural} ${
-                                infantCount
-                                  ? `${infantCount} infant${
-                                      infantCount > 1 ? "s" : ""
-                                    }${petCount > 1 ? "," : ""}`
-                                  : ""
-                              } ${
-                                petCount ? `${petCount} pet${petPlural}` : ""
-                              }`
-                            : "Add guest"}
-                        </span>
+                  <button
+                    disabled
+                    className="w-full rounded-lg flex-center bg-dark-pink h-12"
+                  >
+                    <span className="text-white">Check availability</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
+                <div className="">
+                  <span className="mb-6 flex items-end gap-2 text-2xl">
+                    ${houseInfo?.price}
+                    <span className="text-base font-light flex items-end">
+                      night
+                    </span>
+                  </span>
+                  <div className="mb-4 cursor-pointer border-[1px] border-border-color rounded-lg h-28">
+                    <div className="w-full h-1/2 flex   border-b-[1px] border-border-color">
+                      <div
+                        onClick={scrollToSection("airConditioner")}
+                        className="w-1/2 h-full border-r-[1px] border-border-color flex justify-center flex-col "
+                      >
+                        <div className="flex items-start justify-center flex-col pl-3">
+                          <span className="text-[10px] font-semibold">
+                            CHECK-IN
+                          </span>
+                          <span className="text-sm font-light">
+                            {startDate && formatStartDate}
+                          </span>
+                        </div>
                       </div>
-                      <div className="h-4 w-4">
-                        <img className="h-full w-full" src={arrowUp} alt="" />
+                      <div
+                        onClick={scrollToSection("airConditioner")}
+                        className="w-1/2 h-full flex items-center "
+                      >
+                        <div className="flex items-start justify-center flex-col pl-3">
+                          <span className="text-[10px] font-semibold">
+                            CHECKOUT
+                          </span>
+                          <span className="text-sm font-light">
+                            {endDate && formatEndDate}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex  w-full h-1/2 items-center">
+                      <div className="flex px-3 w-full items-center justify-between">
+                        <div
+                          onClick={scrollToSection("header")}
+                          className="flex items-start justify-center flex-col"
+                        >
+                          <span className="text-[10px] font-semibold">
+                            GUESTS
+                          </span>
+                          <span className="text-sm font-light">
+                            {adultCount + childCount > 0
+                              ? `${
+                                  adultCount + childCount
+                                } guest${guestPlural} ${
+                                  infantCount
+                                    ? `${infantCount} infant${
+                                        infantCount > 1 ? "s" : ""
+                                      }${petCount > 1 ? "," : ""}`
+                                    : ""
+                                } ${
+                                  petCount ? `${petCount} pet${petPlural}` : ""
+                                }`
+                              : "Add guest"}
+                          </span>
+                        </div>
+                        <div className="h-4 w-4">
+                          <img className="h-full w-full" src={arrowUp} alt="" />
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <button
+                    ref={elementRef}
+                    className="w-full rounded-lg flex-center bg-dark-pink h-12"
+                  >
+                    <span className="text-white">Reserve</span>
+                  </button>
                 </div>
-                <div
-                  ref={elementRef}
-                  className="w-full rounded-lg flex-center bg-dark-pink h-12"
-                >
-                  <span className="text-white">Reserve</span>
-                </div>
-              </div>
-              <div className="w-full flex-center mt-2">
-                <span className="text-sm pt-2 font-light">
-                  You won't be charged yet
-                </span>
-              </div>
-              <div className="w-full mt-6">
-                <div className="flex h-[20px] w-full justify-between">
-                  <span className="font-light">{`$${
-                    houseInfo?.price
-                  } x ${Math.abs(numOfDays)}`}</span>
-                  <span className="font-light">
-                    ${Math.ceil(houseInfo?.price * Math.abs(numOfDays))}{" "}
+                <div className="w-full flex-center mt-2">
+                  <span className="text-sm pt-2 font-light">
+                    You won't be charged yet
                   </span>
                 </div>
-                <div className="flex pt-4 justify-between">
-                  <span className="font-light">Airbnb service fee</span>
-                  <span className="font-light">
-                    $
-                    {Math.floor(
-                      0.11 * Math.ceil(houseInfo?.price * Math.abs(numOfDays))
-                    )}
-                  </span>
-                </div>
-                <div className="h-11 pt-6 flex justify-between items-center mt-6 border-t-[1px]  border-grey-dim">
-                  <span className="font-medium">Total before taxes</span>
-                  <span className="font-medium">
-                    $
-                    {Math.ceil(houseInfo?.price * Math.abs(numOfDays)) +
-                      Math.floor(
-                        0.1 * Math.ceil(houseInfo?.price * Math.abs(numOfDays))
+                <div className="w-full mt-6">
+                  <div className="flex h-[20px] w-full justify-between">
+                    <span className="font-light">{`$${
+                      houseInfo?.price
+                    } x ${Math.abs(numOfDays)}`}</span>
+                    <span className="font-light">
+                      ${Math.ceil(houseInfo?.price * Math.abs(numOfDays))}{" "}
+                    </span>
+                  </div>
+                  <div className="flex pt-4 justify-between">
+                    <span className="font-light">Airbnb service fee</span>
+                    <span className="font-light">
+                      $
+                      {Math.floor(
+                        0.11 * Math.ceil(houseInfo?.price * Math.abs(numOfDays))
                       )}
-                  </span>
+                    </span>
+                  </div>
+                  <div className="h-11 pt-6 flex justify-between items-center mt-6 border-t-[1px]  border-grey-dim">
+                    <span className="font-medium">Total before taxes</span>
+                    <span className="font-medium">
+                      $
+                      {Math.ceil(houseInfo?.price * Math.abs(numOfDays)) +
+                        Math.floor(
+                          0.1 *
+                            Math.ceil(houseInfo?.price * Math.abs(numOfDays))
+                        )}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
       </div>
