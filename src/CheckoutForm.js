@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import icon from "./data/airbnbLogo.svg";
 import arrowLeft from "./data/Icons svg/arrow-left.svg";
+import star from "./data/Icons svg/star.svg";
 import card from "./data/Icons svg/card.svg";
 import supabase from "./Services/Supabase";
 import CustomCardElement from "./CustomCardElement";
+import { useSelector } from "react-redux";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Navigate, useNavigate, useParams } from "react-router";
+import { getRoomInfo } from "./Services/apiRooms";
+import { differenceInDays } from "date-fns";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -13,6 +19,17 @@ const CheckoutForm = () => {
   const [success, setSuccess] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [session, setSession] = useState(null);
+  const queryClient = useQueryClient();
+  const endDate = useSelector((store) => store.form.selectedEndDate);
+  const startDate = useSelector((store) => store.form.selectedStartDate);
+  let numOfDays = differenceInDays(startDate, endDate);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["roomInfo", id],
+    queryFn: () => getRoomInfo(id),
+  });
 
   // State for customer details
   const [customerName, setCustomerName] = useState("");
@@ -134,14 +151,17 @@ const CheckoutForm = () => {
             <span className="pt-16 block  text-[2rem] font-medium pb-4">
               Request to book
             </span>
-            <button className="absolute -left-12 top-20">
+            <button
+              onClick={() => navigate(-1)}
+              className="absolute -left-12 top-20"
+            >
               <img className="h-4 w-4" src={arrowLeft} alt="" />
             </button>
           </div>
         </div>
 
         <div className="w-[calc(100%-10rem)] flex px-20  mx-auto">
-          <section className="w-1/2">
+          <section className="w-1/2 mb-36">
             <span className="text-2xl block font-medium pb-6">Your trip</span>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
@@ -221,14 +241,152 @@ const CheckoutForm = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-2">
-              <span className="mt-8 text-2xl font-medium mb-6">
+            <div className="mt-2 w-full">
+              <span className="pt-8 border-t  border-grey-light-50  w-full block text-2xl font-medium pb-6">
                 Required for your trip
               </span>
-              <div className="mb-6"></div>
+              <div className="mb-6 justify-between flex">
+                <div className="flex flex-col">
+                  <span className="">Write a message to the Host</span>
+                  <span className="text-sm">
+                    Before you continue, let Renata know a little about your
+                    trip and why their place is a good fit.
+                  </span>
+                </div>
+                <div className="">
+                  <button
+                    disabled
+                    className="px-[15px] text-sm border-black py-[7px] border rounded-md"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+              <div className="mb-10 justify-between flex">
+                <div className="flex flex-col">
+                  <span className="font-bold">Profile photo</span>
+                  <span className="text-sm">
+                    Hosts want to know who’s staying at their place.
+                  </span>
+                </div>
+                <div className="">
+                  <button
+                    disabled
+                    className="px-[15px] text-sm border-black py-[7px] border rounded-md"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="mt-2 border-t border-grey-light-50  w-full">
+              <div className="pt-8  w-full pb-6">
+                <span className="block  font-medium text-2xl mb-6">
+                  Ground rules
+                </span>
+                <p className="mb-4 font-light">
+                  We ask every guest to remember a few simple things about what
+                  makes a great guest.
+                </p>
+                <ul className="custom-list">
+                  <li className="">
+                    <span className="font-light">Follow the house rules</span>
+                  </li>
+                  <li className="">
+                    <span className="font-light">
+                      Treat your Host’s home like your own
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="py-8 mt-2 border-t border-grey-light-50  w-full">
+              <button className="bg-dark-pink  font-medium rounded-lg text-white w-56 h-14">
+                Request to book
+              </button>
             </div>
           </section>
-          <section className=""></section>
+          <section className="w-1/2">
+            <div className="ml-[5.83rem] sticky top-52 ">
+              <div className="mb-[5.5rem]  p-6 border border-grey-light-50 rounded-lg">
+                <div className="w-full space-x-4 border-b border-grey-light-50 items-center pb-6 flex">
+                  <img
+                    className="w-28 object-cover rounded-xl h-28"
+                    src={data.images[2]}
+                    alt=""
+                  />
+                  <div className="w-full justify-center flex space-y-1 flex-col">
+                    <span className="block text-sm font-medium">
+                      At {data.host_name.replace(/about/gi, "")}
+                    </span>
+                    <span className="text-sm font-light">
+                      Entire guest suite
+                    </span>
+                    <div className="flex items-center space-x-1">
+                      <img className="w-4 h-4" src={star} alt="" />
+                      <span className="text-sm font-medium">
+                        {data.house_rating}
+                      </span>
+                      <span className="text-sm font-light">
+                        ({data.rating_count})
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="py-6">
+                  <span className="block text-2xl font-medium">
+                    Price details
+                  </span>
+                </div>
+                <div>
+                  <div className="flex pb-4 font-light justify-between items-center">
+                    <span>
+                      ${Math.ceil(data.price / 83)} x {Math.abs(numOfDays)}{" "}
+                      nights
+                    </span>
+                    <span>
+                      $
+                      {Math.ceil(
+                        Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex pb-4 justify-between font-light  items-center">
+                    <span>Cleaning fee</span>
+                    <span>${Math.floor(Math.ceil(data.price / 83) * 0.7)}</span>
+                  </div>
+                  <div className="flex pb-4 justify-between   font-light items-center">
+                    <span>Airbnb service fee</span>
+                    <span>
+                      $
+                      {Math.floor(
+                        0.11 *
+                          Math.ceil(
+                            Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                          )
+                      )}
+                    </span>
+                  </div>
+                  <div className="flex border-t border-grey-light-50 pt-4 justify-between font-light  items-center">
+                    <span className="font-medium">Total (U.S. Dollar)</span>
+                    <span className="font-medium">
+                      $
+                      {Math.ceil(
+                        Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                      ) +
+                        Math.floor(Math.ceil(data.price / 83) * 0.7) +
+                        Math.floor(
+                          0.11 *
+                            Math.ceil(
+                              Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                            )
+                        )}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>

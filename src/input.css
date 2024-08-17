@@ -142,6 +142,28 @@
     margin-top: 10px;
   }
 
+  ul.custom-list {
+    list-style: none; /* Removes default list bullets */
+    padding-left: 0; /* Optional: Removes left padding */
+  }
+
+  ul.custom-list li {
+    position: relative;
+    padding-left: 15px; /* Space for the custom bullet */
+    font-weight: lighter; /* Keeps the lighter font */
+  }
+
+  ul.custom-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 3px; /* Smaller size for the dot */
+    width: 3px; /* Smaller size for the dot */
+    background-color: #000; /* Color of the dot */
+    border-radius: 50%; /* Makes the dot circular */
+  }
   .error-message {
     color: red;
     font-size: 1.2em;

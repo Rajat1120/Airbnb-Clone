@@ -21,7 +21,6 @@ const MidMainCont = () => {
 
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
-  const startDate = useSelector((store) => store.form.selectedStartDate);
 
   const guestPlural = useSelector((store) => store.form.guestPlural);
   const petPlural = useSelector((store) => store.form.petPlural);
@@ -31,6 +30,7 @@ const MidMainCont = () => {
   const infantCount = useSelector((store) => store.form.infantCount);
   const petCount = useSelector((store) => store.form.petsCount);
 
+  const startDate = useSelector((store) => store.form.selectedStartDate);
   const endDate = useSelector((store) => store.form.selectedEndDate);
 
   let numOfDays = differenceInDays(startDate, endDate);
