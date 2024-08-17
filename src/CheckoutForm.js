@@ -8,7 +8,7 @@ import supabase from "./Services/Supabase";
 import CustomCardElement from "./CustomCardElement";
 import { useSelector } from "react-redux";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { getRoomInfo } from "./Services/apiRooms";
 import { differenceInDays } from "date-fns";
 
@@ -19,7 +19,7 @@ const CheckoutForm = () => {
   const [success, setSuccess] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [session, setSession] = useState(null);
-  const queryClient = useQueryClient();
+
   const endDate = useSelector((store) => store.form.selectedEndDate);
   const startDate = useSelector((store) => store.form.selectedStartDate);
   let numOfDays = differenceInDays(startDate, endDate);
@@ -153,7 +153,7 @@ const CheckoutForm = () => {
             </span>
             <button
               onClick={() => navigate(-1)}
-              className="absolute -left-12 top-20"
+              className="absolute -left-14 hover:bg-shadow-gray-light h-12 w-12 flex-center rounded-full top-16"
             >
               <img className="h-4 w-4" src={arrowLeft} alt="" />
             </button>
@@ -312,12 +312,15 @@ const CheckoutForm = () => {
                 <div className="w-full space-x-4 border-b border-grey-light-50 items-center pb-6 flex">
                   <img
                     className="w-28 object-cover rounded-xl h-28"
-                    src={data.images[2]}
+                    src={data?.images[2]}
                     alt=""
                   />
                   <div className="w-full justify-center flex space-y-1 flex-col">
                     <span className="block text-sm font-medium">
-                      At {data.host_name.replace(/about/gi, "")}
+                      At{" "}
+                      {data?.host_name
+                        ? data?.host_name?.replace(/about/gi, "")
+                        : "Carl's"}
                     </span>
                     <span className="text-sm font-light">
                       Entire guest suite
@@ -325,10 +328,10 @@ const CheckoutForm = () => {
                     <div className="flex items-center space-x-1">
                       <img className="w-4 h-4" src={star} alt="" />
                       <span className="text-sm font-medium">
-                        {data.house_rating}
+                        {data?.house_rating}
                       </span>
                       <span className="text-sm font-light">
-                        ({data.rating_count})
+                        ({data?.rating_count})
                       </span>
                     </div>
                   </div>
@@ -341,19 +344,21 @@ const CheckoutForm = () => {
                 <div>
                   <div className="flex pb-4 font-light justify-between items-center">
                     <span>
-                      ${Math.ceil(data.price / 83)} x {Math.abs(numOfDays)}{" "}
+                      ${Math.ceil(data?.price / 83)} x {Math.abs(numOfDays)}{" "}
                       nights
                     </span>
                     <span>
                       $
                       {Math.ceil(
-                        Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                        Math.ceil(data?.price / 83) * Math.abs(numOfDays)
                       )}
                     </span>
                   </div>
                   <div className="flex pb-4 justify-between font-light  items-center">
                     <span>Cleaning fee</span>
-                    <span>${Math.floor(Math.ceil(data.price / 83) * 0.7)}</span>
+                    <span>
+                      ${Math.floor(Math.ceil(data?.price / 83) * 0.7)}
+                    </span>
                   </div>
                   <div className="flex pb-4 justify-between   font-light items-center">
                     <span>Airbnb service fee</span>
@@ -362,7 +367,7 @@ const CheckoutForm = () => {
                       {Math.floor(
                         0.11 *
                           Math.ceil(
-                            Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                            Math.ceil(data?.price / 83) * Math.abs(numOfDays)
                           )
                       )}
                     </span>
@@ -372,13 +377,13 @@ const CheckoutForm = () => {
                     <span className="font-medium">
                       $
                       {Math.ceil(
-                        Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                        Math.ceil(data?.price / 83) * Math.abs(numOfDays)
                       ) +
-                        Math.floor(Math.ceil(data.price / 83) * 0.7) +
+                        Math.floor(Math.ceil(data?.price / 83) * 0.7) +
                         Math.floor(
                           0.11 *
                             Math.ceil(
-                              Math.ceil(data.price / 83) * Math.abs(numOfDays)
+                              Math.ceil(data?.price / 83) * Math.abs(numOfDays)
                             )
                         )}
                     </span>

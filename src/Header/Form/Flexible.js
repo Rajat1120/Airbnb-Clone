@@ -3,8 +3,8 @@ import Modal from "../../Modals/Modal";
 import CheckInOption from "./DatesOption";
 import monthSvg from "../../data/Icons svg/month.svg";
 import monthSelected from "../../data/Icons svg/month-checked.svg";
-import arrow_left from "../../data/Icons svg/arrow-left.svg";
-import arrow_right from "../../data/Icons svg/arrow-right.svg";
+import arrow_left from "../../data/Icons svg/arrowLeftDark.svg";
+import arrow_right from "../../data/Icons svg/arrowRightDark.svg";
 import { addMonths, format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -259,13 +259,13 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
                 ))}
               </div>
               <button ref={leftScrollBtnRef} className={btnLeftClassName}>
-                <img src={arrow_left} className="h-6 " alt="" />
+                <img src={arrow_left} className="h-3 w-3 " alt="" />
               </button>
               {scrollPosition > 0 && (
                 <div className="w-12 h-40 absolute   top-[60%] left-0 bg-white border-r-[0.8rem] border-white "></div>
               )}
               <button ref={rightScrollBtnRef} className={btnRightClassName}>
-                <img src={arrow_right} className="h-6 " alt="" />
+                <img src={arrow_right} className="h-3 w-3 " alt="" />
               </button>
               {scrollPosition < 758 && (
                 <div className="w-12 h-40 absolute   top-[60%] right-0 bg-white border-r-[0.8rem] border-white "></div>

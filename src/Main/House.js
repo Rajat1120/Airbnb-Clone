@@ -246,7 +246,11 @@ const House = () => {
                             onClick={(e) => handleScrollBtn(e, "left", item.id)}
                             className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
                           >
-                            <img src={arrow_left} alt="Scroll left" />
+                            <img
+                              className="h-4 w-6 "
+                              src={arrow_left}
+                              alt="Scroll left"
+                            />
                           </button>
                         )}
                       {hoveredItem === item.id &&
@@ -257,7 +261,11 @@ const House = () => {
                             }
                             className="z-10 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
                           >
-                            <img src={arrow_right} alt="Scroll right" />
+                            <img
+                              className="h-4 w-6 "
+                              src={arrow_right}
+                              alt="Scroll right"
+                            />
                           </button>
                         )}
                       <img

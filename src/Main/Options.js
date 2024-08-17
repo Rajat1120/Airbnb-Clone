@@ -172,7 +172,11 @@ const Options = () => {
                     onClick={() => handleScrollBtn("left")}
                     className="absolute z-30 flex-center     top-[30%] left-0 h-9 w-9 bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%]  border-[1px] border-grey-dim"
                   >
-                    <img src={arrow_left} className="h-6" alt="Scroll left" />
+                    <img
+                      src={arrow_left}
+                      className="h-4 w-6"
+                      alt="Scroll left"
+                    />
                   </button>
                 </>
               )}
@@ -185,7 +189,11 @@ const Options = () => {
                     onClick={() => handleScrollBtn("right")}
                     className="absolute flex-center top-[30%] z-50 right-[22rem] h-9 w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-[1px]"
                   >
-                    <img src={arrow_right} className="h-6" alt="Scroll right" />
+                    <img
+                      src={arrow_right}
+                      className="h-4 w-6 "
+                      alt="Scroll right"
+                    />
                   </button>
                 </>
               )}

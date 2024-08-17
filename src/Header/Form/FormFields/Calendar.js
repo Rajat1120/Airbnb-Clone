@@ -361,7 +361,7 @@ const Calendar = () => {
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
-        <img src={arrowLeft} alt="" />
+        <img className="h-4 w-4 " src={arrowLeft} alt="" />
       </button>
       <button
         disabled={currentIndex === 20}
@@ -374,7 +374,7 @@ const Calendar = () => {
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
-        <img src={arrowRight} alt="" />
+        <img className="h-4 w-4 " src={arrowRight} alt="" />
       </button>
       <div
         ref={scrollContainerRef}
