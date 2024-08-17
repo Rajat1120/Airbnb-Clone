@@ -13,6 +13,7 @@ import arrowUp from "../data/Icons svg/arrowUpword.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { differenceInDays } from "date-fns";
 import { setIsVisible } from "./HouseDetailSlice";
+import { Link } from "react-router-dom";
 
 const MidMainCont = () => {
   const [formatStartDate, setFormatStartDate] = useState(null);
@@ -424,12 +425,14 @@ const MidMainCont = () => {
                       </div>
                     </div>
                   </div>
-                  <button
-                    ref={elementRef}
-                    className="w-full rounded-lg flex-center bg-dark-pink h-12"
-                  >
-                    <span className="text-white">Reserve</span>
-                  </button>
+                  <Link to={`/${houseInfo.id}/book`}>
+                    <button
+                      ref={elementRef}
+                      className="w-full rounded-lg flex-center bg-dark-pink h-12"
+                    >
+                      <span className="text-white">Reserve</span>
+                    </button>
+                  </Link>
                 </div>
                 <div className="w-full flex-center mt-2">
                   <span className="text-sm pt-2 font-light">

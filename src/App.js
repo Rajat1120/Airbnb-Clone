@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element: <Wishlist></Wishlist>,
   },
   {
-    path: "/book",
+    path: "/:id/book",
     element: <StripePayment></StripePayment>,
   },
 ]);
