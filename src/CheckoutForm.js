@@ -7,10 +7,10 @@ import card from "./data/Icons svg/card.svg";
 import supabase from "./Services/Supabase";
 import CustomCardElement from "./CustomCardElement";
 import { useSelector } from "react-redux";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { getRoomInfo } from "./Services/apiRooms";
-import { differenceInDays } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -22,6 +22,18 @@ const CheckoutForm = () => {
 
   const endDate = useSelector((store) => store.form.selectedEndDate);
   const startDate = useSelector((store) => store.form.selectedStartDate);
+
+  const guestPlural = useSelector((store) => store.form.guestPlural);
+  const petPlural = useSelector((store) => store.form.petPlural);
+
+  const adultCount = useSelector((store) => store.form.adultCount);
+  const childCount = useSelector((store) => store.form.childCount);
+  const infantCount = useSelector((store) => store.form.infantCount);
+  const petCount = useSelector((store) => store.form.petsCount);
+
+  const formattedEndDate = format(endDate, "d MMM");
+  const formatStartDate = format(startDate, "dd");
+
   let numOfDays = differenceInDays(startDate, endDate);
 
   const { id } = useParams();
@@ -166,14 +178,26 @@ const CheckoutForm = () => {
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
                 <span className="mt-2 block">Dates</span>
-                <span className="">18 - 23 Aug</span>
+                <span className="">
+                  {formatStartDate} - {formattedEndDate}
+                </span>
               </div>
               <button className="font-medium underline">Edit</button>
             </div>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
                 <span className="mt-2 block">Guests</span>
-                <span className="">1 guest</span>
+                <span className="">
+                  {adultCount + childCount > 0
+                    ? `${adultCount + childCount} guest${guestPlural} ${
+                        infantCount
+                          ? `${infantCount} infant${
+                              infantCount > 1 ? "s" : ""
+                            }${petCount > 1 ? "," : ""}`
+                          : ""
+                      } ${petCount ? `${petCount} pet${petPlural}` : ""}`
+                    : "1 guest"}
+                </span>
               </div>
               <button className="font-medium underline">Edit</button>
             </div>
@@ -309,18 +333,21 @@ const CheckoutForm = () => {
           <section className="w-1/2">
             <div className="ml-[5.83rem] sticky top-52 ">
               <div className="mb-[5.5rem]  p-6 border border-grey-light-50 rounded-lg">
-                <div className="w-full space-x-4 border-b border-grey-light-50 items-center pb-6 flex">
-                  <img
-                    className="w-28 object-cover rounded-xl h-28"
-                    src={data?.images[2]}
-                    alt=""
-                  />
+                <div className="w-full  border-b border-grey-light-50 grid-cols-3 items-center grid-flow-col  pb-6 grid">
+                  <div className="w-28 h-28">
+                    <img
+                      className="w-full object-cover rounded-xl h-full"
+                      src={data?.images[0]}
+                      alt=""
+                    />
+                  </div>
                   <div className="w-full justify-center flex space-y-1 flex-col">
                     <span className="block text-sm font-medium">
                       At{" "}
                       {data?.host_name
                         ? data?.host_name?.replace(/about/gi, "")
                         : "Carl's"}
+                      's
                     </span>
                     <span className="text-sm font-light">
                       Entire guest suite
