@@ -1,11 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import cross from "../../data/Icons svg/cross.svg";
+import { useLocation } from "react-router";
+
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedEndDate, setSelectedStartDate } from "./mainFormSlice";
 
 const CalendarModal = ({ isOpen, onClose, children }) => {
   const [visible, setVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+  const dispatch = useDispatch();
   const ref = useRef();
+
+  const startDate = useSelector((store) => store.form.selectedStartDate);
+  const endDate = useSelector((store) => store.form.selectedEndDate);
+
+  function clearDates() {
+    dispatch(setSelectedEndDate(null));
+    dispatch(setSelectedStartDate(null));
+  }
+
+  const location = useLocation();
+  let onCheckOutPage = location.pathname?.includes("/book");
+
+  const dateNotSelect = onCheckOutPage && (!startDate || !endDate);
 
   useEffect(() => {
     if (isOpen) {
@@ -56,7 +74,9 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
         ref={ref}
         className={`bg-white ${
           visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
-        } transition-all fixed p-6 rounded-[2rem] duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
+        } transition-all fixed p-6 ${
+          onCheckOutPage ? "rounded-xl" : "rounded-3xl"
+        } duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
       >
         <div className="w-full items-center justify-center flex pb-2 mb-3 ">
           <button
@@ -66,18 +86,32 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
             <img className="h-4 w-4" src={cross} alt="" />
           </button>
           <p className="w-[100%] text-xl font-medium justify-center flex items-center">
-            Choose a start date
+            {onCheckOutPage ? "" : " Choose a start date"}
           </p>
         </div>
-        <div className="h-[24rem]">{children}</div>
-        <div className="h-[2px] m-4 bg-grey-light w-full"></div>
-        <div className="flex w-full items-center justify-end">
-          <p
-            onClick={onClose}
-            className="w-28 cursor-pointer h-12 flex items-center justify-center rounded-lg bg-black text-white"
+        <div></div>
+        <div className="">{children}</div>
+        {!onCheckOutPage && (
+          <div className="h-[2px] m-4 bg-grey-light w-full"></div>
+        )}
+        <div className="flex w-full items-center space-x-3 justify-end">
+          <button
+            onClick={() => clearDates()}
+            className="text-sm underline font-medium"
           >
-            Apply
-          </p>
+            Clear dates
+          </button>
+          <button
+            onClick={onClose}
+            disabled={dateNotSelect}
+            className={`  ${
+              dateNotSelect ? "cursor-not-allowed opacity-30" : "cursor-pointer"
+            } ${
+              !onCheckOutPage ? "w-28 h-12" : "w-16 h-9 text-sm"
+            }   flex items-center justify-center rounded-lg bg-black text-white `}
+          >
+            {onCheckOutPage ? "Save" : "Apply"}
+          </button>
         </div>
       </div>
     </div>,

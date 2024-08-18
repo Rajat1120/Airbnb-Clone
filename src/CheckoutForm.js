@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import icon from "./data/airbnbLogo.svg";
 import arrowLeft from "./data/Icons svg/arrow-left.svg";
@@ -6,11 +6,14 @@ import star from "./data/Icons svg/star.svg";
 import card from "./data/Icons svg/card.svg";
 import supabase from "./Services/Supabase";
 import CustomCardElement from "./CustomCardElement";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import { getRoomInfo } from "./Services/apiRooms";
 import { differenceInDays, format } from "date-fns";
+import CalendarModal from "./Header/Form/CalendarModal";
+import Calendar from "./Header/Form/FormFields/Calendar";
+import { setCalendarModalOpen } from "./Header/Form/mainFormSlice";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -19,7 +22,7 @@ const CheckoutForm = () => {
   const [success, setSuccess] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [session, setSession] = useState(null);
-
+  const dispatch = useDispatch();
   const endDate = useSelector((store) => store.form.selectedEndDate);
   const startDate = useSelector((store) => store.form.selectedStartDate);
 
@@ -30,11 +33,32 @@ const CheckoutForm = () => {
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
   const petCount = useSelector((store) => store.form.petsCount);
+  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
-  const formattedEndDate = format(endDate, "d MMM");
-  const formatStartDate = format(startDate, "dd");
+  const handleEditClick = () => {
+    dispatch(setCalendarModalOpen(true));
+  };
 
-  let numOfDays = differenceInDays(startDate, endDate);
+  const handleCloseModal = () => {
+    dispatch(setCalendarModalOpen(false));
+    updateDates();
+  };
+
+  let formattedEndDate = useRef();
+  let formatStartDate = useRef();
+  let numOfDays = useRef();
+
+  function updateDates() {
+    if (startDate && endDate) {
+      numOfDays.current = differenceInDays(startDate, endDate);
+      if (endDate) {
+        formattedEndDate.current = format(endDate, "d MMM");
+      }
+      if (startDate) {
+        formatStartDate.current = format(startDate, "dd");
+      }
+    }
+  }
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -179,10 +203,15 @@ const CheckoutForm = () => {
               <div className="flex flex-col">
                 <span className="mt-2 block">Dates</span>
                 <span className="">
-                  {formatStartDate} - {formattedEndDate}
+                  {formatStartDate.current} - {formattedEndDate.current}
                 </span>
               </div>
-              <button className="font-medium underline">Edit</button>
+              <button
+                onClick={() => handleEditClick()}
+                className="font-medium underline"
+              >
+                Edit
+              </button>
             </div>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
@@ -371,13 +400,14 @@ const CheckoutForm = () => {
                 <div>
                   <div className="flex pb-4 font-light justify-between items-center">
                     <span>
-                      ${Math.ceil(data?.price / 83)} x {Math.abs(numOfDays)}{" "}
-                      nights
+                      ${Math.ceil(data?.price / 83)} x{" "}
+                      {Math.abs(numOfDays.current)} nights
                     </span>
                     <span>
                       $
                       {Math.ceil(
-                        Math.ceil(data?.price / 83) * Math.abs(numOfDays)
+                        Math.ceil(data?.price / 83) *
+                          Math.abs(numOfDays.current)
                       )}
                     </span>
                   </div>
@@ -394,7 +424,8 @@ const CheckoutForm = () => {
                       {Math.floor(
                         0.11 *
                           Math.ceil(
-                            Math.ceil(data?.price / 83) * Math.abs(numOfDays)
+                            Math.ceil(data?.price / 83) *
+                              Math.abs(numOfDays.current)
                           )
                       )}
                     </span>
@@ -404,19 +435,26 @@ const CheckoutForm = () => {
                     <span className="font-medium">
                       $
                       {Math.ceil(
-                        Math.ceil(data?.price / 83) * Math.abs(numOfDays)
+                        Math.ceil(data?.price / 83) *
+                          Math.abs(numOfDays.current)
                       ) +
                         Math.floor(Math.ceil(data?.price / 83) * 0.7) +
                         Math.floor(
                           0.11 *
                             Math.ceil(
-                              Math.ceil(data?.price / 83) * Math.abs(numOfDays)
+                              Math.ceil(data?.price / 83) *
+                                Math.abs(numOfDays.current)
                             )
                         )}
                     </span>
                   </div>
                 </div>
               </div>
+              <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
+                <div className="w-[41.31rem]">
+                  <Calendar />
+                </div>
+              </CalendarModal>
             </div>
           </section>
         </div>

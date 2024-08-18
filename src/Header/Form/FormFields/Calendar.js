@@ -33,8 +33,11 @@ const Calendar = () => {
   const minimize = useSelector((store) => store.app.minimize);
   const location = useLocation();
   let onHouseDetailPage = location.pathname.includes("/house/");
+  let onCheckOutPage = location.pathname.includes("/book");
+
   const [currentIndex, setCurrentIndex] = useState(0);
-  const monthWidth = onHouseDetailPage && !minimize ? 340 : 440; // Width of each month component
+  const monthWidth =
+    (onHouseDetailPage || onCheckOutPage) && !minimize ? 340 : 440; // Width of each month component
   const scrollSpeed = 200;
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
@@ -82,7 +85,9 @@ const Calendar = () => {
       days.push(
         <div
           className={` flex ${
-            onHouseDetailPage && !minimize ? "w-[2.62rem]" : "w-[3rem]"
+            (onHouseDetailPage && !minimize) || onCheckOutPage
+              ? "w-[2.62rem]"
+              : "w-[3rem]"
           } justify-center text-xs text-center `}
           key={format(day, "yyyy-MM-dd")}
         >
@@ -118,14 +123,16 @@ const Calendar = () => {
           isSameMonth(day, monthStart) && day < today.setHours(0, 0, 0, 0);
 
         let onClickHandler = () => {
-          if (isModalOpen) {
+          if (isModalOpen && onCheckOutPage) {
+            onCheckoutDateClick(isPastDate ? undefined : cloneDay);
+          } else if (isModalOpen) {
             onCalendarModalDateClick(cloneDay + 1);
           } else {
             onDateClick(isPastDate ? undefined : cloneDay);
           }
         };
 
-        if (isModalOpen) {
+        if (isModalOpen && !onCheckOutPage) {
           if (
             isSameDay(day, startDurationDate) &&
             isSameMonth(day, monthStart)
@@ -167,11 +174,16 @@ const Calendar = () => {
                 "bg-shadow-gray-light  text-black  hover:before:content-[''] hover:before:w-full hover:before:h-full hover:before:rounded-full hover:before:border-[1.5px] hover:before:border-black hover:before:absolute hover:top-0 hover:before:left-0 hove:before:right-0 hove:before:bottom-0  ";
             }
           } else if (
-            selectedStartDate &&
-            !selectedEndDate &&
-            onHouseDetailPage &&
-            !minimize &&
-            isBefore(day, selectedStartDate)
+            (selectedStartDate &&
+              !selectedEndDate &&
+              onHouseDetailPage &&
+              !minimize &&
+              isBefore(day, selectedStartDate)) ||
+            (selectedStartDate &&
+              !selectedEndDate &&
+              onCheckOutPage &&
+              !minimize &&
+              isBefore(day, selectedStartDate))
           ) {
             cellClass = "bg-white text-gray-400 line-through !cursor-default"; // Disable selection of dates before
             onClickHandler = null;
@@ -200,14 +212,14 @@ const Calendar = () => {
           <div
             key={day.toString()}
             className={` relative ${
-              onHouseDetailPage && !minimize
+              (onHouseDetailPage && !minimize) || onCheckOutPage
                 ? "h-[2.62rem]   w-[2.62rem]"
                 : "h-[3rem]   w-[3rem]"
             }  flex items-center justify-center `}
           >
             <div
               className={`${
-                onHouseDetailPage && !minimize
+                (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? "h-[2.62rem]  w-[2.62rem]"
                   : "h-[3rem]  w-[3rem]"
               } flex items-center justify-center ${
@@ -225,7 +237,7 @@ const Calendar = () => {
       rows.push(
         <div
           className={`flex ${
-            onHouseDetailPage && !minimize ? "" : "mb-[2px]"
+            (onHouseDetailPage && !minimize) || onCheckOutPage ? "" : "mb-[2px]"
           } items-center justify-center`}
           key={day.toString()}
         >
@@ -240,6 +252,17 @@ const Calendar = () => {
 
   const onCalendarModalDateClick = (day) => {
     dispatch(setStartDurationDate(day));
+  };
+
+  const onCheckoutDateClick = (day) => {
+    if (!selectedEndDate && !selectedStartDate) {
+      dispatch(setSelectedStartDate(day));
+    } else if (selectedStartDate && !selectedEndDate) {
+      dispatch(setSelectedEndDate(day));
+    } else {
+      dispatch(setSelectedStartDate(day));
+      dispatch(setSelectedEndDate(null));
+    }
   };
 
   const onDateClick = (day) => {
@@ -316,7 +339,7 @@ const Calendar = () => {
     const preventDefault = (e) => e.preventDefault();
     const container = scrollContainerRef.current;
 
-    if (!onHouseDetailPage && !minimize) {
+    if ((!onHouseDetailPage && !minimize) || onCheckOutPage) {
       container.addEventListener("wheel", preventDefault, { passive: false });
       container.addEventListener("touchmove", preventDefault, {
         passive: false,
@@ -326,25 +349,31 @@ const Calendar = () => {
       container.removeEventListener("wheel", preventDefault);
       container.removeEventListener("touchmove", preventDefault);
     };
-  }, [onHouseDetailPage, minimize]);
+  }, [onHouseDetailPage, onCheckOutPage, minimize]);
 
   useEffect(() => {
     if (currentIndex >= 0 && currentIndex <= 20) {
       setScrollPosition(monthWidth * currentIndex);
     }
-  }, [currentIndex]);
+  }, [currentIndex, monthWidth]);
 
   return (
     <div className="flex w-full flex-col justify-center relative">
       <div
         className={`absolute top-[3.6rem] ${
-          onHouseDetailPage && !minimize ? "left-[1rem]" : "left-[2.2rem]"
+          onCheckOutPage && "!left-[1.1rem]"
+        } ${
+          (onHouseDetailPage && !minimize) || onCheckOutPage
+            ? "left-[1rem]"
+            : "left-[2.2rem]"
         }`}
       >
         {renderDays()}
       </div>
       <div
         className={`absolute  top-[3.6rem] ${
+          onCheckOutPage && "!right-[0.6rem]"
+        }  ${
           onHouseDetailPage && !minimize ? "right-[0.1rem]" : "right-[2.2rem]"
         }`}
       >
@@ -357,7 +386,9 @@ const Calendar = () => {
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
         } ${
-          onHouseDetailPage && !minimize ? "left-2" : "left-8"
+          (onHouseDetailPage && !minimize) || onCheckOutPage
+            ? "left-2"
+            : "left-8"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
@@ -370,7 +401,9 @@ const Calendar = () => {
             ? "opacity-30 cursor-not-allowed"
             : " hover:bg-gray-100"
         } ${
-          onHouseDetailPage && !minimize ? "right-0" : "right-8"
+          (onHouseDetailPage && !minimize) || onCheckOutPage
+            ? "right-0"
+            : "right-8"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
@@ -387,14 +420,16 @@ const Calendar = () => {
             transform: `translateX(-${scrollPosition}px)`,
           }}
           className={`inline-flex ${
-            onHouseDetailPage && !minimize ? "gap-x-3" : "gap-x-8"
+            (onHouseDetailPage && !minimize) || onCheckOutPage
+              ? "gap-x-3"
+              : "gap-x-8"
           }`}
         >
           {Array.from({ length: 23 }, (_, index) => (
             <div
               key={`${index}-current`}
               className={`max-w-md    justify-center items-center ${
-                onHouseDetailPage && !minimize
+                (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? "w-[20rem] h-[20.5rem]"
                   : "w-[25rem]"
               } mx-1 rounded-lg`}

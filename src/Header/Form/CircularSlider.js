@@ -30,7 +30,6 @@ const CircularSlider = () => {
   };
 
   const handleCloseModal = () => {
-    console.log("true");
     dispatch(setCalendarModalOpen(false));
   };
 
