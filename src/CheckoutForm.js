@@ -9,7 +9,13 @@ import CustomCardElement from "./CustomCardElement";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
-import { getRoomInfo } from "./Services/apiRooms";
+import {
+  booking,
+  bookRoom,
+  getBooking,
+  getRoomInfo,
+  updateBooking,
+} from "./Services/apiRooms";
 import { differenceInDays, format } from "date-fns";
 import CalendarModal from "./Header/Form/CalendarModal";
 import Calendar from "./Header/Form/FormFields/Calendar";
@@ -21,6 +27,7 @@ const CheckoutForm = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const { id } = useParams();
   const [session, setSession] = useState(null);
   const dispatch = useDispatch();
   const endDate = useSelector((store) => store.form.selectedEndDate);
@@ -35,13 +42,29 @@ const CheckoutForm = () => {
   const petCount = useSelector((store) => store.form.petsCount);
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
+  const userData = useSelector((store) => store.app.userData);
+
   const handleEditClick = () => {
     dispatch(setCalendarModalOpen(true));
   };
 
+  let updateBookingData;
+
   const handleCloseModal = () => {
     dispatch(setCalendarModalOpen(false));
     updateDates();
+
+    updateBookingData = {
+      startDate: formatStartDate?.current,
+      endDate: formattedEndDate?.current,
+      numOfDays: Math.abs(numOfDays?.current),
+      userEmail: userData?.email,
+      roomId: id,
+    };
+
+    if (allBookingDataTruthy(updateBookingData)) {
+      updateUserBooking();
+    }
   };
 
   let formattedEndDate = useRef();
@@ -60,11 +83,80 @@ const CheckoutForm = () => {
     }
   }
 
-  const { id } = useParams();
+  const {
+    data: updateData,
+    isLoading: updateLoading,
+    refetch: updateUserBooking,
+    isError: updateError,
+  } = useQuery({
+    queryFn: () => updateBooking(updateBookingData),
+    queryKey: ["updateBookingData"],
+    enabled: false,
+  });
+
+  let bookingData;
+
+  function updateBookingDataFn() {
+    bookingData = {
+      startDate: formatStartDate?.current,
+      endDate: formattedEndDate?.current,
+      numOfDays: Math.abs(numOfDays?.current),
+      status: "pending",
+      user_email: userData?.email,
+      room_id: id,
+    };
+
+    updateBookingData = {
+      startDate: formatStartDate?.current,
+      endDate: formattedEndDate?.current,
+      numOfDays: Math.abs(numOfDays?.current),
+      userEmail: userData?.email,
+      roomId: id,
+    };
+
+    if (userBookingData) {
+      if (allBookingDataTruthy(updateBookingData)) {
+        updateUserBooking();
+      }
+    } else {
+      if (allBookingDataTruthy(bookingData)) {
+        insertBooking();
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    updateDates();
+    updateBookingDataFn();
+  }, []);
+
+  const allBookingDataTruthy = (data) => {
+    return Object.values(data).every((value) => Boolean(value));
+  };
+
+  const {
+    refetch: insertBooking,
+
+    isLoading: bookingLoading,
+    isError: bookingError,
+  } = useQuery({
+    queryFn: () => booking(bookingData),
+    queryKey: ["booking"],
+    enabled: false,
+  });
+
+  const { data: userBookingData } = useQuery({
+    queryFn: () => getBooking(userData?.email, id),
+    queryKey: ["bookingInfo", id],
+    enabled: !!userData?.email && !!id,
+  });
+
   const navigate = useNavigate();
   const { data, isLoading, isError } = useQuery({
     queryKey: ["roomInfo", id],
     queryFn: () => getRoomInfo(id),
+    enabled: !!id,
   });
 
   // State for customer details
@@ -141,15 +233,12 @@ const CheckoutForm = () => {
       // Payment succeeded
       if (result.paymentIntent.status === "succeeded") {
         // Update the database or perform any post-payment actions
-        const { error: dbError } = await supabase.from("payments").insert({
+
+        bookRoom({
           amount: 1000,
           status: "succeeded",
           stripe_payment_intent_id: result.paymentIntent.id,
         });
-
-        if (dbError) {
-          console.error("Error updating database:", dbError);
-        }
 
         // Show success message in the UI
         setSuccess("Payment successful!");
@@ -203,7 +292,11 @@ const CheckoutForm = () => {
               <div className="flex flex-col">
                 <span className="mt-2 block">Dates</span>
                 <span className="">
-                  {formatStartDate.current} - {formattedEndDate.current}
+                  {formatStartDate.current ||
+                    userBookingData?.booking?.startDate}{" "}
+                  -{" "}
+                  {formattedEndDate.current ||
+                    userBookingData?.booking?.endDate}
                 </span>
               </div>
               <button
@@ -401,13 +494,19 @@ const CheckoutForm = () => {
                   <div className="flex pb-4 font-light justify-between items-center">
                     <span>
                       ${Math.ceil(data?.price / 83)} x{" "}
-                      {Math.abs(numOfDays.current)} nights
+                      {Math.abs(
+                        numOfDays.current || userBookingData?.booking?.numOfDays
+                      )}{" "}
+                      nights
                     </span>
                     <span>
                       $
                       {Math.ceil(
                         Math.ceil(data?.price / 83) *
-                          Math.abs(numOfDays.current)
+                          Math.abs(
+                            numOfDays.current ||
+                              userBookingData?.booking?.numOfDays
+                          )
                       )}
                     </span>
                   </div>
@@ -425,7 +524,10 @@ const CheckoutForm = () => {
                         0.11 *
                           Math.ceil(
                             Math.ceil(data?.price / 83) *
-                              Math.abs(numOfDays.current)
+                              Math.abs(
+                                numOfDays.current ||
+                                  userBookingData?.booking?.numOfDays
+                              )
                           )
                       )}
                     </span>
@@ -436,14 +538,20 @@ const CheckoutForm = () => {
                       $
                       {Math.ceil(
                         Math.ceil(data?.price / 83) *
-                          Math.abs(numOfDays.current)
+                          Math.abs(
+                            numOfDays.current ||
+                              userBookingData?.booking?.numOfDays
+                          )
                       ) +
                         Math.floor(Math.ceil(data?.price / 83) * 0.7) +
                         Math.floor(
                           0.11 *
                             Math.ceil(
                               Math.ceil(data?.price / 83) *
-                                Math.abs(numOfDays.current)
+                                Math.abs(
+                                  numOfDays.current ||
+                                    userBookingData?.booking?.numOfDays
+                                )
                             )
                         )}
                     </span>

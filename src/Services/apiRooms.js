@@ -74,6 +74,71 @@ export async function getRoomInfo(id) {
   }
 }
 
+export async function booking(data) {
+  console.log(data);
+
+  const { data: bookingData, error: dbError } = await supabase
+    .from("Bookings")
+    .insert([data])
+    .select();
+
+  if (dbError) {
+    console.error("Booking error:", dbError);
+    return dbError;
+  } else {
+    return bookingData;
+  }
+}
+
+export async function getBooking(userEmail, roomId) {
+  const { data: bookings, error } = await supabase
+    .from("Bookings")
+    .select("*") // Select all columns, you can specify only the ones you need
+    .match({ user_email: userEmail, room_id: roomId });
+
+  if (error) {
+    console.error("Error fetching booking:", error);
+    return { success: false, error: error };
+  }
+
+  if (bookings && bookings.length > 0) {
+    return { success: true, booking: bookings[0] };
+  } else {
+    return { success: false, error: "No matching booking found" };
+  }
+}
+
+export async function updateBooking(updateData) {
+  // First, attempt to update the booking
+
+  const { data, error } = await supabase
+    .from("Bookings")
+    .update({
+      startDate: updateData?.startDate,
+      endDate: updateData?.endDate,
+      numOfDays: updateData?.numOfDays,
+    })
+    .match({ user_email: updateData?.userEmail, room_id: updateData?.roomId })
+    .select();
+
+  if (error) {
+    console.error("Booking update error:", error);
+    return { success: false, error: error };
+  } else {
+    return data;
+  }
+}
+
+export async function bookRoom(data) {
+  const { error: dbError } = await supabase.from("payments").insert(data);
+
+  if (dbError) {
+    return dbError;
+  } else {
+    return null;
+  }
+}
+
 export async function fetchRowsWithOptions(
   ids,
   option,
