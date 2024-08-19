@@ -20,6 +20,7 @@ import { differenceInDays, format } from "date-fns";
 import CalendarModal from "./Header/Form/CalendarModal";
 import Calendar from "./Header/Form/FormFields/Calendar";
 import { setCalendarModalOpen } from "./Header/Form/mainFormSlice";
+import Footer from "./Footer";
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -250,8 +251,15 @@ const CheckoutForm = () => {
     setProcessing(false);
   };
 
+  let load = updateLoading || bookingLoading;
+
   return (
     <div>
+      {load && (
+        <div className=" w-screen z-50 h-screen bg-white opacity-80  fixed flex-center">
+          <div className="cssLoader  absolute top-1/2 left-1/2  w-12 h-3"></div>
+        </div>
+      )}
       <header>
         <div className="pl-6 border-b border-shadow-gray ">
           <div className="w-8 ">
@@ -286,7 +294,7 @@ const CheckoutForm = () => {
         </div>
 
         <div className="w-[calc(100%-10rem)] flex px-20  mx-auto">
-          <section className="w-1/2 mb-36">
+          <section className="w-1/2 ">
             <span className="text-2xl block font-medium pb-6">Your trip</span>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
@@ -452,7 +460,7 @@ const CheckoutForm = () => {
               </button>
             </div>
           </section>
-          <section className="w-1/2">
+          <section className="w-1/2 mb-32">
             <div className="ml-[5.83rem] sticky top-52 ">
               <div className="mb-[5.5rem]  p-6 border border-grey-light-50 rounded-lg">
                 <div className="w-full  border-b border-grey-light-50 grid-cols-3 items-center grid-flow-col  pb-6 grid">
@@ -567,6 +575,9 @@ const CheckoutForm = () => {
           </section>
         </div>
       </main>
+      <div className="w-screen border-t border-grey-light-50 flex-center bg-shadow-gray-light h-16">
+        <Footer></Footer>
+      </div>
     </div>
   );
 };

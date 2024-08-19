@@ -1,9 +1,16 @@
 import React from "react";
 import globe from "../src/data/globe.svg";
+import { useLocation } from "react-router";
 
 const Footer = () => {
+  const location = useLocation();
+  let onCheckoutPage = location.pathname.includes("book");
   return (
-    <div className="w-[calc(100%-10rem)] flex justify-between items-center  bg-white  h-full">
+    <div
+      className={` w-[calc(100%-10rem)] flex justify-between items-center  ${
+        onCheckoutPage ? "bg-shadow-gray-light" : "bg-white"
+      }  h-full `}
+    >
       <div className="w-[60% flex">
         <span className="text-sm font-light">© 2024 Airbnb, Inc</span>
         <span className="mx-2 flex items-center justify-center">
