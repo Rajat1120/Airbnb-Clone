@@ -11,6 +11,8 @@ function Header({ headerRef }) {
   const location = useLocation();
   let onHouseDetailPage = location.pathname.includes("/house/");
   let onWishListPage = location.pathname.includes("/wishlist");
+  let onTripsPage = location.pathname.includes("trips");
+  let onSignInPage = location.pathname.includes("/login");
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
@@ -22,7 +24,9 @@ function Header({ headerRef }) {
     : "after:translate-y-[2.1rem] after:opacity-100";
 
   let classForAfter = `after:content-[''] ${
-    !startScroll || onWishListPage ? ` ${val1}` : "after:translate-y-[7.5rem]"
+    !startScroll || onWishListPage || onTripsPage || onSignInPage
+      ? ` ${val1}`
+      : "after:translate-y-[7.5rem]"
   } after:transition-transform after:duration-[0.2s] after:ease-in-out after:w-full  after:bg-grey-dim after:z-50  after:h-[1px]`;
 
   return (
@@ -31,7 +35,9 @@ function Header({ headerRef }) {
       className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
     >
       <div
-        className={`grid grid-cols-${onWishListPage ? "2" : "3"}  ${
+        className={`grid grid-cols-${
+          onWishListPage || onTripsPage || onSignInPage ? "2" : "3"
+        }  ${
           onHouseDetailPage ? "w-[calc(100%-10rem)]  mx-auto" : "w-full"
         } px-20 `}
       >
@@ -45,7 +51,7 @@ function Header({ headerRef }) {
             </div>
           </a>
         </div>
-        {!onWishListPage && (
+        {!onTripsPage && !onSignInPage && !onWishListPage && (
           <div
             className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
               !startScroll
@@ -76,7 +82,9 @@ function Header({ headerRef }) {
         </div>
         {<AuthenticationModal></AuthenticationModal>}
       </div>
-      {!onWishListPage && <MainForm headerRef={headerRef}></MainForm>}
+      {!onWishListPage && !onSignInPage && !onTripsPage && (
+        <MainForm headerRef={headerRef}></MainForm>
+      )}
     </div>
   );
 }
