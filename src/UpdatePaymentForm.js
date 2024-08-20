@@ -52,8 +52,6 @@ const UpdatedPaymentForm = ({
   }, []);
 
   const onSubmit = async (formData) => {
-    console.log("runs");
-
     sendDataToParent();
     setProcessing(true);
 
@@ -139,15 +137,6 @@ const UpdatedPaymentForm = ({
     // Implement your room booking logic here
     console.log("Booking room with payment details:", paymentDetails);
   };
-
-  /*   useEffect(() => {
-    if (onSubmitReference) {
-      console.log("run");
-
-      handleSubmit(onSubmit);
-    }
-  }, [onSubmitReference, handleSubmit]); */
-  console.log(success);
 
   useEffect(() => {
     if (onSubmitReference) {

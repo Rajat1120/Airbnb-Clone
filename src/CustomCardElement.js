@@ -1,4 +1,5 @@
 import React from "react";
+import copySvg from "./data/Icons svg/copy.svg";
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -6,6 +7,39 @@ import {
 } from "@stripe/react-stripe-js";
 
 const CustomCardElement = () => {
+  let ccNumber = "4242 4242 4242 4242";
+  let expirationDate = "02/28";
+  let cvc = "567";
+
+  function copyDetails(btnName) {
+    if (btnName === "card") {
+      document.getElementById("copy-cc").addEventListener("click", function () {
+        // Get the text from the div
+        const textToCopy = ccNumber;
+        // Use the Clipboard API to copy the text
+        navigator.clipboard.writeText(textToCopy);
+      });
+    } else if (btnName === "expiry") {
+      document
+        .getElementById("copy-exp")
+        .addEventListener("click", function () {
+          // Get the text from the div
+          const textToCopy = expirationDate;
+          // Use the Clipboard API to copy the text
+          navigator.clipboard.writeText(textToCopy);
+        });
+    } else {
+      document
+        .getElementById("copy-cvc")
+        .addEventListener("click", function () {
+          // Get the text from the div
+          const textToCopy = cvc;
+          // Use the Clipboard API to copy the text
+          navigator.clipboard.writeText(textToCopy);
+        });
+    }
+  }
+
   const options = {
     style: {
       base: {
@@ -25,12 +59,22 @@ const CustomCardElement = () => {
     <div className="bg-white  rounded-lg p-4 w-full max-w-md">
       <div className="space-y-4">
         <div>
-          <label
-            htmlFor="card-number"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Card Number
-          </label>
+          <div className="flex items-center space-x-2">
+            <label
+              htmlFor="card-number"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Card Number
+            </label>
+            <button
+              className="active:scale-90"
+              type="button"
+              onClick={() => copyDetails("card")}
+              id="copy-cc"
+            >
+              <img src={copySvg} alt="" />
+            </button>
+          </div>
           <div className="mt-1">
             <CardNumberElement
               autocomplete="cc-number"
@@ -42,12 +86,22 @@ const CustomCardElement = () => {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label
-              htmlFor="card-expiry"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Expiration Date
-            </label>
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="card-expiry"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Expiration date
+              </label>
+              <button
+                className="active:scale-90"
+                type="button"
+                onClick={() => copyDetails("expiry")}
+                id="copy-exp"
+              >
+                <img src={copySvg} alt="" />
+              </button>
+            </div>
             <div className="mt-1">
               <CardExpiryElement
                 id="card-expiry"
@@ -57,12 +111,22 @@ const CustomCardElement = () => {
             </div>
           </div>
           <div>
-            <label
-              htmlFor="card-cvc"
-              className="block text-sm font-medium text-gray-700"
-            >
-              CVC
-            </label>
+            <div className="flex items-center space-x-2">
+              <label
+                htmlFor="card-cvc"
+                className="block text-sm font-medium text-gray-700"
+              >
+                CVC
+              </label>
+              <button
+                className="active:scale-90"
+                type="button"
+                onClick={() => copyDetails("cvc")}
+                id="copy-cvc"
+              >
+                <img src={copySvg} alt="" />
+              </button>
+            </div>
             <div className="mt-1">
               <CardCvcElement
                 id="card-cvc"
