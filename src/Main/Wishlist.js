@@ -13,25 +13,47 @@ import { useQuery } from "@tanstack/react-query";
 import { getWishList } from "../Services/apiRooms";
 
 import LongFooter from "../House-detail/LongFooter";
+import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
 
 const Wishlist = () => {
   const [wishList, setWishList] = useState(null);
   const favListings = useSelector((store) => store.app.userFavListing);
   const userData = useSelector((store) => store.app.userData);
+  const isFavorite = useSelector((store) => store.app.isFavorite);
+  const itemId = useSelector((store) => store.app.itemId);
 
-  const { data, refetch } = useQuery({
+  useEffect(() => {
+    const handleUpdate = async () => {
+      if (itemId && userData) {
+        if (isFavorite) {
+          await saveFavorite(itemId);
+        } else {
+          await deleteFavorite(itemId);
+        }
+      }
+    };
+
+    handleUpdate();
+  }, [favListings, isFavorite, userData, itemId]);
+
+  const { data, refetch, isLoading } = useQuery({
     queryKey: ["wishList"],
     queryFn: () => getWishList(favListings),
     enabled: false,
   });
-
   const imageWidth = 301.91;
 
   const dispatch = useDispatch();
 
+  let firstRender = useRef(false);
   useEffect(() => {
-    refetch();
-  }, [refetch]);
+    if (favListings.length && !firstRender.current) {
+      refetch();
+      if (isLoading) {
+        firstRender.current = true;
+      }
+    }
+  }, [refetch, favListings, isLoading]);
 
   useEffect(() => {
     if (data) {
