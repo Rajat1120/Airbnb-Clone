@@ -33,6 +33,7 @@ const CustomCardElement = () => {
           </label>
           <div className="mt-1">
             <CardNumberElement
+              autocomplete="cc-number"
               id="card-number"
               options={options}
               className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"

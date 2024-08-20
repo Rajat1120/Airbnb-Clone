@@ -21,15 +21,17 @@ import CalendarModal from "./Header/Form/CalendarModal";
 import Calendar from "./Header/Form/FormFields/Calendar";
 import { setCalendarModalOpen } from "./Header/Form/mainFormSlice";
 import Footer from "./Footer";
+import UpdatedPaymentForm from "./UpdatePaymentForm";
 
 const CheckoutForm = () => {
-  const stripe = useStripe();
-  const elements = useElements();
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const [processing, setProcessing] = useState(false);
   const { id } = useParams();
-  const [session, setSession] = useState(null);
+  const [dataFromChild, setDataFromChild] = useState({});
+  const [submitFormReference, setSubmitFormReference] = useState(false);
+
+  const handleDataFromChild = (data) => {
+    setDataFromChild(data);
+  };
+
   const dispatch = useDispatch();
   const endDate = useSelector((store) => store.form.selectedEndDate);
   const startDate = useSelector((store) => store.form.selectedStartDate);
@@ -44,7 +46,7 @@ const CheckoutForm = () => {
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
   const userData = useSelector((store) => store.app.userData);
-
+  let paymentForm = document.getElementById("paymentForm");
   const handleEditClick = () => {
     dispatch(setCalendarModalOpen(true));
   };
@@ -160,96 +162,19 @@ const CheckoutForm = () => {
     enabled: !!id,
   });
 
-  // State for customer details
-  const [customerName, setCustomerName] = useState("");
-  const [customerAddress, setCustomerAddress] = useState({
-    line1: "",
-    city: "",
-    state: "",
-    postal_code: "",
-    country: "IN", // Assuming default country is India
-  });
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setProcessing(true);
-
-    if (!stripe || !elements || !session) {
-      setProcessing(false);
-      return;
-    }
-
-    // Call Supabase function to create payment intent
-    const response = await fetch(
-      "https://xailnuaqpfvjojptkpgh.supabase.co/functions/v1/create-payment-intent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-        },
-        body: JSON.stringify({
-          amount: 1000, // Amount in cents
-          customerName,
-          customerAddress,
-        }),
-      }
+  let totalAmount =
+    Math.ceil(
+      Math.ceil(data?.price / 83) *
+        Math.abs(numOfDays.current || userBookingData?.booking?.numOfDays)
+    ) +
+    Math.floor(Math.ceil(data?.price / 83) * 0.7) +
+    Math.floor(
+      0.11 *
+        Math.ceil(
+          Math.ceil(data?.price / 83) *
+            Math.abs(numOfDays.current || userBookingData?.booking?.numOfDays)
+        )
     );
-
-    const data = await response.json();
-
-    if (response.status !== 200) {
-      setError(data.error);
-      setProcessing(false);
-      return;
-    }
-
-    const { clientSecret } = data;
-
-    // Confirm the payment with Stripe
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      },
-    });
-
-    if (result.error) {
-      // Payment failed
-      setError(result.error.message);
-    } else {
-      // Payment succeeded
-      if (result.paymentIntent.status === "succeeded") {
-        // Update the database or perform any post-payment actions
-
-        bookRoom({
-          amount: 1000,
-          status: "succeeded",
-          stripe_payment_intent_id: result.paymentIntent.id,
-        });
-
-        // Show success message in the UI
-        setSuccess("Payment successful!");
-      } else {
-        setError("Payment failed. Please try again.");
-      }
-    }
-
-    setProcessing(false);
-  };
 
   let load = updateLoading || bookingLoading;
 
@@ -377,7 +302,12 @@ const CheckoutForm = () => {
                       </div>
                     </div>
                     <div className="w-full mt-4 border border-grey rounded-lg">
-                      <CustomCardElement></CustomCardElement>
+                      <UpdatedPaymentForm
+                        onSubmitReference={submitFormReference}
+                        onSendData={handleDataFromChild}
+                        totalAmount={totalAmount}
+                        userId={userData}
+                      ></UpdatedPaymentForm>
                     </div>
                     <label htmlFor="card-holder-name"></label>
                     <div className="w-full relative flex justify-center mt-4 border border-grey rounded-lg">
@@ -455,8 +385,16 @@ const CheckoutForm = () => {
               </div>
             </div>
             <div className="py-8 mt-2 border-t border-grey-light-50  w-full">
-              <button className="bg-dark-pink  font-medium rounded-lg text-white w-56 h-14">
-                Request to book
+              <button
+                onClick={() => setSubmitFormReference(true)}
+                disabled={
+                  !dataFromChild.stripe ||
+                  dataFromChild.processing ||
+                  !dataFromChild.session
+                }
+                className="bg-dark-pink  font-medium rounded-lg text-white w-56 h-14"
+              >
+                {dataFromChild.processing ? "Processing..." : "Request to book"}
               </button>
             </div>
           </section>
@@ -542,27 +480,7 @@ const CheckoutForm = () => {
                   </div>
                   <div className="flex border-t border-grey-light-50 pt-4 justify-between font-light  items-center">
                     <span className="font-medium">Total (U.S. Dollar)</span>
-                    <span className="font-medium">
-                      $
-                      {Math.ceil(
-                        Math.ceil(data?.price / 83) *
-                          Math.abs(
-                            numOfDays.current ||
-                              userBookingData?.booking?.numOfDays
-                          )
-                      ) +
-                        Math.floor(Math.ceil(data?.price / 83) * 0.7) +
-                        Math.floor(
-                          0.11 *
-                            Math.ceil(
-                              Math.ceil(data?.price / 83) *
-                                Math.abs(
-                                  numOfDays.current ||
-                                    userBookingData?.booking?.numOfDays
-                                )
-                            )
-                        )}
-                    </span>
+                    <span className="font-medium">${totalAmount}</span>
                   </div>
                 </div>
               </div>
