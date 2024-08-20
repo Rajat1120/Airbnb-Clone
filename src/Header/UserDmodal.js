@@ -21,9 +21,11 @@ const UserDmodal = ({ isOpen }) => {
             <span className="text-sm font-medium  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
               Notification
             </span>
-            <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Trips
-            </span>
+            <Link to={"/trips"}>
+              <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
+                Trips
+              </span>
+            </Link>
             <Link to={"/wishlist"}>
               <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
                 Wishlist
