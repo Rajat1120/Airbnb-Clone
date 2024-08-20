@@ -11,7 +11,8 @@ import {
 import { svg } from "../data/HeartIconSvg";
 import { useQuery } from "@tanstack/react-query";
 import { getWishList } from "../Services/apiRooms";
-import { useLocation } from "react-router";
+
+import LongFooter from "../House-detail/LongFooter";
 
 const Wishlist = () => {
   const [wishList, setWishList] = useState(null);
@@ -23,8 +24,6 @@ const Wishlist = () => {
     queryFn: () => getWishList(favListings),
     enabled: false,
   });
-
-  console.log(data);
 
   const imageWidth = 301.91;
 
@@ -48,11 +47,11 @@ const Wishlist = () => {
     <div className="relative">
       <div
         id="header"
-        className={`   bg-white   w-full flex items-start justify-center  `}
+        className={`  z-50 bg-white fixed top-0  w-full flex items-start justify-center  `}
       >
         <Header></Header>
       </div>
-      <div className="w-[calc(100%-10rem)] pt-9 pb-6 mx-auto">
+      <div className="w-[calc(100%-10rem)] mt-20 pt-9 pb-6 mx-auto">
         <h1 className="text-[2rem] font-medium">Wishlists</h1>
         <div className="grid gap-x-6 py-10 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
           {wishList?.map((item) => (
@@ -130,6 +129,7 @@ const Wishlist = () => {
           ))}
         </div>
       </div>
+      <LongFooter></LongFooter>
     </div>
   );
 };

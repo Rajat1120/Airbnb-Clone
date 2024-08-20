@@ -6,11 +6,12 @@ import { useLocation, useParams } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
 import BottomMainCont from "./BottomMainCont";
-import Footer from "./Footer";
+
 import NavBar from "./NavBar";
 import { getRoomInfo } from "../Services/apiRooms";
 import { useQuery } from "@tanstack/react-query";
 import { setHouseInfo, setIsLoading } from "./HouseDetailSlice";
+import LongFooter from "./LongFooter";
 
 const HouseDetail = () => {
   const location = useLocation();
@@ -87,7 +88,7 @@ const HouseDetail = () => {
         <TopMainCont></TopMainCont>
         <MidMainCont></MidMainCont>
         <BottomMainCont></BottomMainCont>
-        <Footer></Footer>
+        <LongFooter></LongFooter>
       </div>
     </div>
   );

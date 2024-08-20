@@ -46,6 +46,8 @@ export async function getAllRows() {
 }
 
 export async function getWishList(idsArray) {
+  console.log(idsArray);
+
   let { data, error } = await supabase
     .from("Rooms")
     .select("*") // Specify the columns you want to fetch

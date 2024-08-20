@@ -5,7 +5,7 @@ import twitter from "../data/Icons svg/twitter.svg";
 import Insta from "../data/Icons svg/Insta.svg";
 import globe from "../data/globe.svg";
 
-const Footer = () => {
+const LongFooter = () => {
   return (
     <footer className="w-full  bg-shadow-gray-light   ">
       <div className="px-20 border-y-[1px] border-y-grey-dim  h-[5.25rem]">
@@ -114,4 +114,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default LongFooter;
