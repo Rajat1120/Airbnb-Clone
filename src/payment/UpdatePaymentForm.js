@@ -7,8 +7,11 @@ import {
 } from "@stripe/react-stripe-js";
 import supabase from "../Services/Supabase"; // Adjust the import path as needed
 import CustomCardElement from "./CustomCardElement"; // Adjust the import path as needed
+import copySvg from "../data/Icons svg/copy.svg";
+import importantSvg from "../data/Icons svg/important.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setHasError } from "./CardSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 const UpdatedPaymentForm = ({
   totalAmount,
@@ -66,8 +69,6 @@ const UpdatedPaymentForm = ({
   }
 
   const onSubmit = async (formData) => {
-    console.log("onSubmit called");
-
     if (fieldEmpty) {
       dispatch(setHasError(true));
       setOnSubmitReference(false);
@@ -163,6 +164,25 @@ const UpdatedPaymentForm = ({
   };
 
   useEffect(() => {
+    toast.success(
+      <div className="flex-center ">
+        <span className="font-medium  text-sm">
+          {" "}
+          Copy test card details by clicking on this icon{" "}
+          <img src={copySvg} className="h-6 inline w-6" alt=""></img>
+        </span>{" "}
+      </div>,
+      {
+        style: {
+          border: "2px solid #ff385c",
+        },
+        duration: 5000,
+        icon: <img alt="important icon" src={importantSvg}></img>,
+      }
+    );
+  }, []);
+
+  useEffect(() => {
     if (onSubmitReference) {
       onSubmit();
     }
@@ -171,7 +191,7 @@ const UpdatedPaymentForm = ({
   return (
     <>
       <CustomCardElement />
-
+      <Toaster></Toaster>
       {error && <div className="text-red-500">{error}</div>}
       {success && <div className="text-green-500">{success}</div>}
     </>
