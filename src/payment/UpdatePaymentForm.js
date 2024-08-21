@@ -5,14 +5,17 @@ import {
   useElements,
   CardNumberElement,
 } from "@stripe/react-stripe-js";
-import supabase from "./Services/Supabase"; // Adjust the import path as needed
+import supabase from "../Services/Supabase"; // Adjust the import path as needed
 import CustomCardElement from "./CustomCardElement"; // Adjust the import path as needed
+import { useDispatch, useSelector } from "react-redux";
+import { setHasError } from "./CardSlice";
 
 const UpdatedPaymentForm = ({
   totalAmount,
   userId,
   onSendData,
   onSubmitReference,
+  setOnSubmitReference,
 }) => {
   const [session, setSession] = useState(null);
   const [processing, setProcessing] = useState(false);
@@ -20,6 +23,13 @@ const UpdatedPaymentForm = ({
   const [success, setSuccess] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
+  const dispatch = useDispatch();
+  const isCardNumEmpty = useSelector((store) => store.card.isCardNumEmpty);
+  const isExpEmpty = useSelector((store) => store.card.isExpEmpty);
+
+  const isCvcEmpty = useSelector((store) => store.card.isCvcEmpty);
+
+  let fieldEmpty = !isCardNumEmpty || !isExpEmpty || !isCvcEmpty;
 
   let childData = {
     stripe: stripe,
@@ -51,7 +61,21 @@ const UpdatedPaymentForm = ({
     return () => subscription.unsubscribe();
   }, []);
 
+  function fieldEmptyFun() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   const onSubmit = async (formData) => {
+    console.log("onSubmit called");
+
+    if (fieldEmpty) {
+      dispatch(setHasError(true));
+      setOnSubmitReference(false);
+      fieldEmptyFun();
+      return;
+    } else {
+      dispatch(setHasError(false));
+    }
     sendDataToParent();
     setProcessing(true);
 

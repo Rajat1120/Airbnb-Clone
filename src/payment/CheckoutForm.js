@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import icon from "./data/airbnbLogo.svg";
-import arrowLeft from "./data/Icons svg/arrow-left.svg";
-import star from "./data/Icons svg/star.svg";
-import card from "./data/Icons svg/card.svg";
-import supabase from "./Services/Supabase";
+import icon from "../data/airbnbLogo.svg";
+import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import star from "../data/Icons svg/star.svg";
+import errorImg from "../data/Icons svg/Error.svg";
+import card from "../data/Icons svg/card.svg";
+import supabase from "../Services/Supabase";
 import CustomCardElement from "./CustomCardElement";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
@@ -15,13 +16,14 @@ import {
   getBooking,
   getRoomInfo,
   updateBooking,
-} from "./Services/apiRooms";
+} from "../Services/apiRooms";
 import { differenceInDays, format } from "date-fns";
-import CalendarModal from "./Header/Form/CalendarModal";
-import Calendar from "./Header/Form/FormFields/Calendar";
-import { setCalendarModalOpen } from "./Header/Form/mainFormSlice";
-import Footer from "./Footer";
+import CalendarModal from "../Header/Form/CalendarModal";
+import Calendar from "../Header/Form/FormFields/Calendar";
+import { setCalendarModalOpen } from "../Header/Form/mainFormSlice";
+import Footer from "../Footer";
 import UpdatedPaymentForm from "./UpdatePaymentForm";
+import { setFirstBtnClick } from "./CardSlice";
 
 const CheckoutForm = () => {
   const { id } = useParams();
@@ -35,6 +37,8 @@ const CheckoutForm = () => {
   const dispatch = useDispatch();
   const endDate = useSelector((store) => store.form.selectedEndDate);
   const startDate = useSelector((store) => store.form.selectedStartDate);
+  const hasError = useSelector((store) => store.card.hasError);
+  const error = useSelector((store) => store.card.error);
 
   const guestPlural = useSelector((store) => store.form.guestPlural);
   const petPlural = useSelector((store) => store.form.petPlural);
@@ -178,6 +182,10 @@ const CheckoutForm = () => {
 
   let load = updateLoading || bookingLoading;
 
+  console.log(
+    !dataFromChild.stripe || dataFromChild.processing || !dataFromChild.session
+  );
+
   return (
     <div>
       {load && (
@@ -218,8 +226,23 @@ const CheckoutForm = () => {
           </div>
         </div>
 
-        <div className="w-[calc(100%-10rem)] flex px-20  mx-auto">
+        <div className="w-[calc(100%-10rem)]  flex px-20  mx-auto">
           <section className="w-1/2 ">
+            {hasError && (
+              <div className="p-4 mb-10 flex space-x-2  border border-shadow-gray rounded-xl">
+                <div className="bg-red-700 flex-center h-[2.8rem] w-[2.8rem] rounded-full">
+                  <img className="h-4 w-4 " src={errorImg} alt="" />
+                </div>
+                <div className="flex justify-center flex-col">
+                  <span className="text-sm font-bold">
+                    Let's try that again
+                  </span>
+                  <span className="text-sm font-light">
+                    Please check your payment details
+                  </span>
+                </div>
+              </div>
+            )}
             <span className="text-2xl block font-medium pb-6">Your trip</span>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
@@ -303,12 +326,27 @@ const CheckoutForm = () => {
                     </div>
                     <div className="w-full mt-4 border border-grey rounded-lg">
                       <UpdatedPaymentForm
+                        setOnSubmitReference={setSubmitFormReference}
                         onSubmitReference={submitFormReference}
                         onSendData={handleDataFromChild}
                         totalAmount={totalAmount}
                         userId={userData}
                       ></UpdatedPaymentForm>
                     </div>
+                    {error?.length ? (
+                      <div className="py-2 flex space-x-1 items-center">
+                        <div className="bg-red-700 flex-center h-3 w-3 rounded-full">
+                          <img className="h-2 w-2" src={errorImg} alt="" />
+                        </div>
+                        <span className="text-xs text-red-500">
+                          Check your {error[0] === "cardError" && "card number"}{" "}
+                          {error[0] === "ExpiryError" && "expiry date"}
+                          {error[0] === "cvcError" && "CVC"}
+                        </span>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <label htmlFor="card-holder-name"></label>
                     <div className="w-full relative flex justify-center mt-4 border border-grey rounded-lg">
                       <span className="absolute left-3 top-2 text-xs font-light">
@@ -386,13 +424,18 @@ const CheckoutForm = () => {
             </div>
             <div className="py-8 mt-2 border-t border-grey-light-50  w-full">
               <button
-                onClick={() => setSubmitFormReference(true)}
+                onClick={() => {
+                  setSubmitFormReference(true);
+
+                  dispatch(setFirstBtnClick(true));
+                }}
+                type="button"
                 disabled={
                   !dataFromChild.stripe ||
                   dataFromChild.processing ||
                   !dataFromChild.session
                 }
-                className="bg-dark-pink  font-medium rounded-lg text-white w-56 h-14"
+                className="bg-dark-pink cursor-pointer  font-medium rounded-lg text-white w-56 h-14"
               >
                 {dataFromChild.processing ? "Processing..." : "Request to book"}
               </button>

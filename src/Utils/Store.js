@@ -2,6 +2,8 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import formReducer from "../Header/Form/mainFormSlice";
 import appReducer from "../../src/Main/AppSlice";
 import HouseDetailSlice from "../House-detail/HouseDetailSlice";
+
+import CardSlice from "../payment/CardSlice";
 import {
   createStateSyncMiddleware,
   initMessageListener,
@@ -24,6 +26,7 @@ export const store = configureStore({
       form: formReducer,
       app: appReducer,
       houseDetail: HouseDetailSlice,
+      card: CardSlice,
     })
   ),
   middleware: (getDefaultMiddleware) =>
