@@ -132,12 +132,18 @@ export async function updateBooking(updateData) {
 }
 
 export async function bookRoom(data) {
-  const { error: dbError } = await supabase.from("payments").insert(data);
+  console.log("run");
+
+  const { data: paymentData, error: dbError } = await supabase
+    .from("Payments")
+    .insert(data);
 
   if (dbError) {
+    console.log(dbError);
+
     return dbError;
   } else {
-    return null;
+    return paymentData;
   }
 }
 

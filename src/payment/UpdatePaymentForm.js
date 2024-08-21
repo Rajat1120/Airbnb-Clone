@@ -12,6 +12,10 @@ import importantSvg from "../data/Icons svg/important.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setHasError } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router";
+import { differenceInCalendarDays } from "date-fns";
+import { useQuery } from "@tanstack/react-query";
+import { bookRoom } from "../Services/apiRooms";
 
 const UpdatedPaymentForm = ({
   totalAmount,
@@ -19,16 +23,22 @@ const UpdatedPaymentForm = ({
   onSendData,
   onSubmitReference,
   setOnSubmitReference,
+  startDate,
+  endDate,
+  numOfDays,
 }) => {
   const [session, setSession] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
+  const [stripePaymentId, setStripePaymentId] = useState(null);
   const [success, setSuccess] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
   const isCardNumEmpty = useSelector((store) => store.card.isCardNumEmpty);
+
   const isExpEmpty = useSelector((store) => store.card.isExpEmpty);
+  const { id } = useParams();
 
   const isCvcEmpty = useSelector((store) => store.card.isCvcEmpty);
 
@@ -68,6 +78,38 @@ const UpdatedPaymentForm = ({
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  let paymentDetails = {
+    amount: totalAmount,
+
+    customer_name: userId?.user_metadata.full_name,
+    user_email: userId?.email,
+    currency: "usd",
+    room_id: id,
+    startDate: startDate,
+    endDate: endDate,
+    numOfDays: numOfDays,
+    payment_method: "card",
+    status: "successful",
+    stripe_payment_intent_id: stripePaymentId,
+    address: {
+      line1: "2034",
+      city: "Los angeles",
+      state: "California",
+      postal_code: "67854",
+      country: "US",
+    },
+  };
+
+  function areAllKeysTruthy(obj) {
+    return Object.values(obj).every((value) => Boolean(value));
+  }
+
+  const { refetch, error: paymentError } = useQuery({
+    queryKey: ["payment"],
+    queryFn: () => bookRoom(paymentDetails),
+    enabled: false,
+  });
+
   const onSubmit = async (formData) => {
     if (fieldEmpty) {
       dispatch(setHasError(true));
@@ -96,8 +138,8 @@ const UpdatedPaymentForm = ({
             Authorization: `Bearer ${session.access_token}`,
           },
           body: JSON.stringify({
-            amount: 1000, // Amount in cents
-            customerName: `rajat`,
+            amount: totalAmount, // Amount in cents
+            customerName: userId?.user_metadata.full_name,
             customerAddress: {
               line1: "2034",
               city: "Los angeles",
@@ -122,7 +164,7 @@ const UpdatedPaymentForm = ({
         payment_method: {
           card: elements.getElement(CardNumberElement),
           billing_details: {
-            name: `rajat`,
+            name: userId?.user_metadata.full_name,
 
             address: {
               line1: "2034",
@@ -141,12 +183,10 @@ const UpdatedPaymentForm = ({
 
       if (result.paymentIntent.status === "succeeded") {
         // Update the database or perform any post-payment actions
-        /*       await bookRoom({
-          amount: 1000,
-          status: "succeeded",
-          stripe_payment_intent_id: result.paymentIntent.id,
-        }); */
-
+        setStripePaymentId(result.paymentIntent.id);
+        if (areAllKeysTruthy(paymentDetails)) {
+          refetch();
+        }
         setSuccess("Payment successful!");
       } else {
         throw new Error("Payment failed. Please try again.");
@@ -158,10 +198,35 @@ const UpdatedPaymentForm = ({
     }
   };
 
-  const bookRoom = async (paymentDetails) => {
-    // Implement your room booking logic here
-    console.log("Booking room with payment details:", paymentDetails);
-  };
+  const navigate = useNavigate();
+  console.log(paymentError);
+
+  useEffect(() => {
+    if (success && paymentError?.error !== "23505") {
+      // navigate("/trips");
+    }
+  }, [success, navigate, paymentError]);
+
+  useEffect(() => {
+    if (paymentError?.code === "23505") {
+      toast.error(
+        <div className="flex-center ">
+          <span className="font-medium  text-sm">
+            {" "}
+            Copy test card details by clicking on this icon{" "}
+            <img src={copySvg} className="h-6 inline w-6" alt=""></img>
+          </span>{" "}
+        </div>,
+        {
+          style: {
+            color: "white",
+            border: "2px solid #000000",
+          },
+          duration: 5000,
+        }
+      );
+    }
+  }, [paymentError]);
 
   useEffect(() => {
     toast.success(
@@ -174,7 +239,9 @@ const UpdatedPaymentForm = ({
       </div>,
       {
         style: {
-          border: "2px solid #ff385c",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "2px solid #000000",
         },
         duration: 5000,
         icon: <img alt="important icon" src={importantSvg}></img>,

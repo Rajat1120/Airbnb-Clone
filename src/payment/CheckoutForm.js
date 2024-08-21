@@ -182,10 +182,6 @@ const CheckoutForm = () => {
 
   let load = updateLoading || bookingLoading;
 
-  console.log(
-    !dataFromChild.stripe || dataFromChild.processing || !dataFromChild.session
-  );
-
   return (
     <div>
       {load && (
@@ -326,6 +322,9 @@ const CheckoutForm = () => {
                     </div>
                     <div className="w-full mt-4 border border-grey rounded-lg">
                       <UpdatedPaymentForm
+                        startDate={userBookingData?.booking?.startDate}
+                        endDate={userBookingData?.booking?.endDate}
+                        numOfDays={userBookingData?.booking?.numOfDays}
                         setOnSubmitReference={setSubmitFormReference}
                         onSubmitReference={submitFormReference}
                         onSendData={handleDataFromChild}
