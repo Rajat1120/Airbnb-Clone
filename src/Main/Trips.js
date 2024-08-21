@@ -2,8 +2,20 @@ import React from "react";
 import LongFooter from "../House-detail/LongFooter";
 import Header from "../Header/Header";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { getPayments } from "../Services/apiRooms";
 
 const Trips = () => {
+  const userData = useSelector((store) => store.app.userData);
+
+  const { data, error, isLoading } = useQuery({
+    queryFn: () => getPayments(userData?.email),
+    queryKey: ["payments"],
+  });
+
+  console.log(data);
+
   let isTripAvailable = false;
 
   return (

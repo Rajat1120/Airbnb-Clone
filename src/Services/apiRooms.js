@@ -132,18 +132,27 @@ export async function updateBooking(updateData) {
 }
 
 export async function bookRoom(data) {
-  console.log("run");
-
   const { data: paymentData, error: dbError } = await supabase
     .from("Payments")
     .insert(data);
 
   if (dbError) {
-    console.log(dbError);
-
-    return dbError;
+    throw dbError;
   } else {
     return paymentData;
+  }
+}
+
+export async function getPayments(email) {
+  let { data: Payments, error: paymentError } = await supabase
+    .from("Payments")
+    .select("*")
+    .eq("user_email", email);
+
+  if (paymentError) {
+    throw paymentError;
+  } else {
+    return Payments;
   }
 }
 

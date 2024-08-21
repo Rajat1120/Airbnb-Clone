@@ -26,6 +26,7 @@ const UpdatedPaymentForm = ({
   startDate,
   endDate,
   numOfDays,
+  booked,
 }) => {
   const [session, setSession] = useState(null);
   const [processing, setProcessing] = useState(false);
@@ -184,9 +185,7 @@ const UpdatedPaymentForm = ({
       if (result.paymentIntent.status === "succeeded") {
         // Update the database or perform any post-payment actions
         setStripePaymentId(result.paymentIntent.id);
-        if (areAllKeysTruthy(paymentDetails)) {
-          refetch();
-        }
+
         setSuccess("Payment successful!");
       } else {
         throw new Error("Payment failed. Please try again.");
@@ -198,8 +197,15 @@ const UpdatedPaymentForm = ({
     }
   };
 
+  useEffect(() => {
+    if (success) {
+      if (areAllKeysTruthy(paymentDetails)) {
+        refetch();
+      }
+    }
+  }, [success, refetch, stripePaymentId]);
+
   const navigate = useNavigate();
-  console.log(paymentError);
 
   useEffect(() => {
     if (success) {
@@ -216,21 +222,22 @@ const UpdatedPaymentForm = ({
   }, [success, error, setOnSubmitReference, navigate, paymentError]);
 
   useEffect(() => {
-    toast.success(
-      <div className="flex-center ">
-        <span className="font-medium  text-sm">
-          {" "}
-          Copy test card details by clicking on this icon{" "}
-          <img src={copySvg} className="h-6 inline w-6" alt=""></img>
-        </span>{" "}
-      </div>,
-      {
-        style: {},
-        duration: 5000,
-        icon: <img alt="important icon" src={importantSvg}></img>,
-      }
-    );
-  }, []);
+    if (booked && booked !== "found")
+      toast.success(
+        <div className="flex-center ">
+          <span className="font-medium  text-sm">
+            {" "}
+            Copy test card details by clicking on this icon{" "}
+            <img src={copySvg} className="h-6 inline w-6" alt=""></img>
+          </span>{" "}
+        </div>,
+        {
+          style: {},
+          duration: 10000,
+          icon: <img alt="important icon" src={importantSvg}></img>,
+        }
+      );
+  }, [booked]);
 
   useEffect(() => {
     if (onSubmitReference) {

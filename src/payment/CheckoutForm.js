@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import icon from "../data/airbnbLogo.svg";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
@@ -14,16 +14,18 @@ import {
   booking,
   bookRoom,
   getBooking,
+  getPayments,
   getRoomInfo,
   updateBooking,
 } from "../Services/apiRooms";
-import { differenceInDays, format } from "date-fns";
+import { differenceInDays, format, set } from "date-fns";
 import CalendarModal from "../Header/Form/CalendarModal";
 import Calendar from "../Header/Form/FormFields/Calendar";
 import { setCalendarModalOpen } from "../Header/Form/mainFormSlice";
 import Footer from "../Footer";
 import UpdatedPaymentForm from "./UpdatePaymentForm";
 import { setFirstBtnClick } from "./CardSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 const CheckoutForm = () => {
   const { id } = useParams();
@@ -50,7 +52,44 @@ const CheckoutForm = () => {
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
   const userData = useSelector((store) => store.app.userData);
-  let paymentForm = document.getElementById("paymentForm");
+
+  const {
+    data: paymentData,
+    refetch: refetchPayment,
+    isLoading: paymentLoading,
+    isStale,
+  } = useQuery({
+    queryFn: () => getPayments(userData?.email),
+    queryKey: ["payments"],
+    enabled: false,
+  });
+
+  const [bookingStatus, setBookingStatus] = useState(null);
+
+  useLayoutEffect(() => {
+    const checkBookingStatus = async () => {
+      await refetchPayment();
+
+      if (paymentData?.length && id) {
+        let isBooked = paymentData.some((item) => item.room_id == id);
+
+        if (isBooked) {
+          setBookingStatus("found");
+        } else {
+          setBookingStatus("NotFound");
+        }
+
+        if (bookingStatus === "found") {
+          toast.error("You have already booked this room", {
+            duration: 30000,
+          });
+        }
+      }
+    };
+
+    checkBookingStatus();
+  }, [paymentData, bookingStatus, id]);
+
   const handleEditClick = () => {
     dispatch(setCalendarModalOpen(true));
   };
@@ -184,6 +223,7 @@ const CheckoutForm = () => {
 
   return (
     <div>
+      <Toaster position="top-right" reverseOrder={false}></Toaster>
       {load && (
         <div className=" w-screen z-50 h-screen bg-white opacity-80  fixed flex-center">
           <div className="cssLoader  absolute top-1/2 left-1/2  w-12 h-3"></div>
@@ -322,6 +362,7 @@ const CheckoutForm = () => {
                     </div>
                     <div className="w-full mt-4 border border-grey rounded-lg">
                       <UpdatedPaymentForm
+                        booked={bookingStatus}
                         startDate={userBookingData?.booking?.startDate}
                         endDate={userBookingData?.booking?.endDate}
                         numOfDays={userBookingData?.booking?.numOfDays}
@@ -430,11 +471,16 @@ const CheckoutForm = () => {
                 }}
                 type="button"
                 disabled={
+                  bookingStatus === "found" ||
                   !dataFromChild.stripe ||
                   dataFromChild.processing ||
                   !dataFromChild.session
                 }
-                className="bg-dark-pink cursor-pointer  font-medium rounded-lg text-white w-56 h-14"
+                className={`bg-dark-pink ${
+                  bookingStatus === "found"
+                    ? "cursor-disable"
+                    : "cursor-pointer  "
+                } font-medium rounded-lg text-white w-56 h-14`}
               >
                 {dataFromChild.processing ? "Processing..." : "Request to book"}
               </button>
