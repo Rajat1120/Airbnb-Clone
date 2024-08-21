@@ -202,31 +202,18 @@ const UpdatedPaymentForm = ({
   console.log(paymentError);
 
   useEffect(() => {
-    if (success && paymentError?.error !== "23505") {
-      // navigate("/trips");
+    if (success) {
+      toast.success("Your payment was successful");
+      setTimeout(() => {
+        navigate("/trips");
+      }, 3000);
     }
-  }, [success, navigate, paymentError]);
 
-  useEffect(() => {
-    if (paymentError?.code === "23505") {
-      toast.error(
-        <div className="flex-center ">
-          <span className="font-medium  text-sm">
-            {" "}
-            Copy test card details by clicking on this icon{" "}
-            <img src={copySvg} className="h-6 inline w-6" alt=""></img>
-          </span>{" "}
-        </div>,
-        {
-          style: {
-            color: "white",
-            border: "2px solid #000000",
-          },
-          duration: 5000,
-        }
-      );
+    if (error) {
+      toast.error("Your payment was declined check your card details");
+      setOnSubmitReference(true);
     }
-  }, [paymentError]);
+  }, [success, error, setOnSubmitReference, navigate, paymentError]);
 
   useEffect(() => {
     toast.success(
@@ -238,11 +225,7 @@ const UpdatedPaymentForm = ({
         </span>{" "}
       </div>,
       {
-        style: {
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "2px solid #000000",
-        },
+        style: {},
         duration: 5000,
         icon: <img alt="important icon" src={importantSvg}></img>,
       }
@@ -258,9 +241,7 @@ const UpdatedPaymentForm = ({
   return (
     <>
       <CustomCardElement />
-      <Toaster></Toaster>
-      {error && <div className="text-red-500">{error}</div>}
-      {success && <div className="text-green-500">{success}</div>}
+      <Toaster position="top-right" reverseOrder={false}></Toaster>
     </>
   );
 };
