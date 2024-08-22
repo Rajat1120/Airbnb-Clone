@@ -1,5 +1,6 @@
-export function svg(itemId, favListings) {
-  const svgColor = favListings?.includes(itemId) ? "red" : "rgba(0, 0, 0, 0.5)";
+export function svg(itemId, favListings, userData) {
+  const svgColor =
+    favListings?.includes(itemId) && userData ? "red" : "rgba(0, 0, 0, 0.5)";
 
   return (
     <svg

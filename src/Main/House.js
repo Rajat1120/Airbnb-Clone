@@ -238,7 +238,7 @@ const House = () => {
                         }}
                         className="absolute hover:scale-110 top-3 right-4"
                       >
-                        {svg(item.id, favListings)}
+                        {svg(item.id, favListings, userData)}
                       </button>
                       {hoveredItem === item.id &&
                         !localScrollPositions[item.id]?.isAtStart && (
