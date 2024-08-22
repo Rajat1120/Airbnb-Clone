@@ -74,15 +74,12 @@ export async function getRoomInfo(id) {
 }
 
 export async function booking(data) {
-  console.log(data);
-
   const { data: bookingData, error: dbError } = await supabase
     .from("Bookings")
     .insert([data])
     .select();
 
   if (dbError) {
-    console.error("Booking error:", dbError);
     return dbError;
   } else {
     return bookingData;
@@ -116,6 +113,7 @@ export async function updateBooking(updateData) {
       startDate: updateData?.startDate,
       endDate: updateData?.endDate,
       numOfDays: updateData?.numOfDays,
+      guest: updateData?.guest,
     })
     .match({ user_email: updateData?.userEmail, room_id: updateData?.roomId })
     .select();
@@ -134,6 +132,8 @@ export async function bookRoom(data) {
     .insert(data);
 
   if (dbError) {
+    console.log(dbError);
+
     throw dbError;
   } else {
     return paymentData;

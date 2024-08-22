@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { bookRoom } from "../Services/apiRooms";
 
 const UpdatedPaymentForm = ({
+  guestCount,
   totalAmount,
   userId,
   onSendData,
@@ -92,6 +93,7 @@ const UpdatedPaymentForm = ({
     payment_method: "card",
     status: "successful",
     stripe_payment_intent_id: stripePaymentId,
+    Guest: guestCount,
     address: {
       line1: "2034",
       city: "Los angeles",
@@ -200,6 +202,8 @@ const UpdatedPaymentForm = ({
   useEffect(() => {
     if (success) {
       if (areAllKeysTruthy(paymentDetails)) {
+        console.log("run");
+
         refetch();
       }
     }

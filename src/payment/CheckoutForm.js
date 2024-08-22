@@ -67,7 +67,7 @@ const CheckoutForm = () => {
 
   const [bookingStatus, setBookingStatus] = useState(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let guestCount = `${adultCount + childCount} guest${guestPlural}`;
 
     if (infantCount) {
@@ -98,7 +98,7 @@ const CheckoutForm = () => {
         }
 
         if (bookingStatus === "found") {
-          toast.error("You have already booked this room", {
+          toast.error("You have already booked this place", {
             duration: 30000,
           });
         }
@@ -112,22 +112,14 @@ const CheckoutForm = () => {
     dispatch(setCalendarModalOpen(true));
   };
 
-  let updateBookingData;
-
   const handleCloseModal = () => {
     dispatch(setCalendarModalOpen(false));
     updateDates();
 
-    updateBookingData = {
-      startDate: formatStartDate?.current,
-      endDate: formattedEndDate?.current,
-      numOfDays: Math.abs(numOfDays?.current),
-      userEmail: userData?.email,
-      roomId: id,
-    };
-
     if (allBookingDataTruthy(updateBookingData)) {
-      updateUserBooking();
+      setTimeout(() => {
+        updateUserBooking();
+      }, 1000);
     }
   };
 
@@ -158,27 +150,41 @@ const CheckoutForm = () => {
     enabled: false,
   });
 
-  let bookingData;
+  const [bookingData, setBookingData] = useState({});
+  const [updateBookingData, setUpdateBookingData] = useState({});
 
-  function updateBookingDataFn() {
-    bookingData = {
+  useEffect(() => {
+    let bookingData = {
       startDate: formatStartDate?.current,
       endDate: formattedEndDate?.current,
       numOfDays: Math.abs(numOfDays?.current),
       status: "pending",
       user_email: userData?.email,
       room_id: id,
+      guest: String(guestCount),
     };
+    setBookingData(bookingData);
 
-    updateBookingData = {
+    let updateBookingData = {
       startDate: formatStartDate?.current,
       endDate: formattedEndDate?.current,
       numOfDays: Math.abs(numOfDays?.current),
       userEmail: userData?.email,
       roomId: id,
+      guest: String(guestCount),
     };
 
-    if (userBookingData) {
+    setUpdateBookingData(updateBookingData);
+  }, [
+    id,
+    userData?.email,
+    guestCount,
+    formatStartDate.current,
+    formattedEndDate.current,
+  ]);
+
+  function updateBookingDataFn() {
+    if (userBookingData?.success) {
       if (allBookingDataTruthy(updateBookingData)) {
         updateUserBooking();
       }
@@ -192,7 +198,10 @@ const CheckoutForm = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     updateDates();
-    updateBookingDataFn();
+
+    setTimeout(() => {
+      updateBookingDataFn();
+    }, 1000);
   }, []);
 
   const allBookingDataTruthy = (data) => {
@@ -319,7 +328,9 @@ const CheckoutForm = () => {
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
                 <span className="mt-2 block">Guests</span>
-                <span className="">{guestCount}</span>
+                <span className="">
+                  {guestCount || userBookingData?.booking?.guest}
+                </span>
               </div>
               <button className="font-medium underline">Edit</button>
             </div>
@@ -370,9 +381,18 @@ const CheckoutForm = () => {
                     </div>
                     <div className="w-full mt-4 border border-grey rounded-lg">
                       <UpdatedPaymentForm
+                        guestCount={
+                          String(guestCount) || userBookingData?.booking?.guest
+                        }
                         booked={bookingStatus}
-                        startDate={userBookingData?.booking?.startDate}
-                        endDate={userBookingData?.booking?.endDate}
+                        startDate={
+                          formatStartDate.current ||
+                          userBookingData?.booking?.startDate
+                        }
+                        endDate={
+                          formattedEndDate.current ||
+                          userBookingData?.booking?.endDate
+                        }
                         numOfDays={userBookingData?.booking?.numOfDays}
                         setOnSubmitReference={setSubmitFormReference}
                         onSubmitReference={submitFormReference}
@@ -597,17 +617,3 @@ const CheckoutForm = () => {
 };
 
 export default CheckoutForm;
-
-/* 
-
-<form onSubmit={handleSubmit}>
-     
-      <CardElement />
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
-      <button type="submit" disabled={!stripe || processing || !session}>
-        Pay
-      </button>
-    </form>
-
-*/
