@@ -28,6 +28,7 @@ import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 
 const CheckoutForm = () => {
+  const [guestCount, setGuestCount] = useState("");
   const { id } = useParams();
   const [dataFromChild, setDataFromChild] = useState({});
   const [submitFormReference, setSubmitFormReference] = useState(false);
@@ -65,6 +66,23 @@ const CheckoutForm = () => {
   });
 
   const [bookingStatus, setBookingStatus] = useState(null);
+
+  useEffect(() => {
+    let guestCount = `${adultCount + childCount} guest${guestPlural}`;
+
+    if (infantCount) {
+      guestCount += ` ${infantCount} infant${infantCount > 1 ? "s" : ""}`;
+    }
+
+    if (petCount) {
+      guestCount += `${infantCount ? "," : ""} ${petCount} pet${petPlural}`;
+    }
+    if (guestCount !== "0 guests,") {
+      setGuestCount(guestCount);
+    } else {
+      setGuestCount("1 guest");
+    }
+  }, [adultCount, childCount, infantCount, petCount, guestPlural, petPlural]);
 
   useLayoutEffect(() => {
     const checkBookingStatus = async () => {
@@ -301,17 +319,7 @@ const CheckoutForm = () => {
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
                 <span className="mt-2 block">Guests</span>
-                <span className="">
-                  {adultCount + childCount > 0
-                    ? `${adultCount + childCount} guest${guestPlural} ${
-                        infantCount
-                          ? `${infantCount} infant${
-                              infantCount > 1 ? "s" : ""
-                            }${petCount > 1 ? "," : ""}`
-                          : ""
-                      } ${petCount ? `${petCount} pet${petPlural}` : ""}`
-                    : "1 guest"}
-                </span>
+                <span className="">{guestCount}</span>
               </div>
               <button className="font-medium underline">Edit</button>
             </div>
