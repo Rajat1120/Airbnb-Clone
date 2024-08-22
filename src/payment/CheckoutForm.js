@@ -329,7 +329,7 @@ const CheckoutForm = () => {
               <div className="flex flex-col">
                 <span className="mt-2 block">Guests</span>
                 <span className="">
-                  {guestCount || userBookingData?.booking?.guest}
+                  {guestCount !== "0 guest" ? guestCount : "1 guest"}
                 </span>
               </div>
               <button className="font-medium underline">Edit</button>
@@ -382,7 +382,9 @@ const CheckoutForm = () => {
                     <div className="w-full mt-4 border border-grey rounded-lg">
                       <UpdatedPaymentForm
                         guestCount={
-                          String(guestCount) || userBookingData?.booking?.guest
+                          guestCount !== "0 guest"
+                            ? String(guestCount)
+                            : "1 guest"
                         }
                         booked={bookingStatus}
                         startDate={
