@@ -395,7 +395,10 @@ const CheckoutForm = () => {
                           formattedEndDate.current ||
                           userBookingData?.booking?.endDate
                         }
-                        numOfDays={userBookingData?.booking?.numOfDays}
+                        numOfDays={
+                          numOfDays.current ||
+                          userBookingData?.booking?.numOfDays
+                        }
                         setOnSubmitReference={setSubmitFormReference}
                         onSubmitReference={submitFormReference}
                         onSendData={handleDataFromChild}

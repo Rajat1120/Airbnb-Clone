@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import LongFooter from "../House-detail/LongFooter";
 import Header from "../Header/Header";
 import { Link } from "react-router-dom";
@@ -26,13 +26,18 @@ const Trips = () => {
     enabled: false,
   });
 
-  console.log(paymentsData);
-
   useEffect(() => {
     if (paymentsData?.length) {
       refetch();
     }
   }, [paymentsData]);
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   let isTripAvailable = bookedTrips?.length;
 
@@ -103,19 +108,45 @@ const Trips = () => {
                     </div>
                   </div>
                   <div className=" p-5 h-full">
-                    <div className="py-6 flex h-full  justify-between items-center ">
-                      <div className="flex py-4 px-5 flex-col">
+                    <div className="py-6 flex h-full gap-y-4  flex-col items-start justify-center ">
+                      <div className="flex   flex-col">
                         <span className="font-medium text-lg">Dates</span>
                         <span>
-                          {paymentsData[i]?.startDate} -{" "}
-                          {paymentsData[i]?.endDate}
+                          {
+                            paymentsData.find(
+                              (item) => item.room_id === data.id
+                            )?.startDate
+                          }{" "}
+                          -{" "}
+                          {
+                            paymentsData.find(
+                              (item) => item.room_id === data.id
+                            )?.endDate
+                          }
                         </span>
                         <span></span>
                       </div>
-                      <div className="flex py-4 px-5 flex-col">
+                      <div className="flex    flex-col">
                         <span className="font-medium text-lg">Guests</span>
-                        <span>{paymentsData[i]?.Guest}</span>
+                        <span>
+                          {
+                            paymentsData.find(
+                              (item) => item.room_id === data.id
+                            )?.Guest
+                          }
+                        </span>
                       </div>
+                    </div>
+                  </div>
+                  <div className="p-5 h-full">
+                    <div className="py-6 flex flex-col h-full   items-center justify-center gap-y-5 ">
+                      <h1 className="font-bold text-lg">Booking number</h1>
+                      <span className="bg-shadow-gray px-2 h-10 flex-center ">
+                        {
+                          paymentsData.find((item) => item.room_id === data.id)
+                            ?.id
+                        }
+                      </span>
                     </div>
                   </div>
                 </div>

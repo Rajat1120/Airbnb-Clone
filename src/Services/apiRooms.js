@@ -127,15 +127,11 @@ export async function updateBooking(updateData) {
 }
 
 export async function bookRoom(data) {
-  console.log("run");
-
   const { data: paymentData, error: dbError } = await supabase
     .from("Payments")
     .insert(data);
 
   if (dbError) {
-    console.log(dbError);
-
     throw dbError;
   } else {
     return paymentData;

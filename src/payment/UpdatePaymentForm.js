@@ -14,7 +14,7 @@ import { setHasError } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
 import { differenceInCalendarDays } from "date-fns";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookRoom } from "../Services/apiRooms";
 
 const UpdatedPaymentForm = ({
@@ -199,13 +199,20 @@ const UpdatedPaymentForm = ({
     }
   };
 
-  useEffect(() => {
-    if (success) {
-      if (areAllKeysTruthy(paymentDetails)) {
-        console.log("run");
+  const queryClient = useQueryClient();
 
+  console.log(paymentError);
+
+  useEffect(() => {
+    if (success && !paymentError) {
+      if (areAllKeysTruthy(paymentDetails)) {
         refetch();
+        queryClient.invalidateQueries(["payments"]);
       }
+    }
+
+    if (paymentError) {
+      toast.error("Payment failed, please try again");
     }
   }, [success, refetch, stripePaymentId]);
 
