@@ -21,13 +21,12 @@ const Trips = () => {
   });
 
   const { data: bookedTrips, refetch } = useQuery({
-    queryKey: ["payments"],
+    queryKey: ["trips"],
     queryFn: () => getWishList(paymentsData?.map((item) => item.room_id)),
     enabled: false,
   });
 
-  // console.log(paymentsData);
-  // console.log(bookedTrips);
+  console.log(paymentsData);
 
   useEffect(() => {
     if (paymentsData?.length) {
@@ -35,7 +34,7 @@ const Trips = () => {
     }
   }, [paymentsData]);
 
-  let isTripAvailable = bookedTrips.length;
+  let isTripAvailable = bookedTrips?.length;
 
   return (
     <div className="relative">
@@ -67,45 +66,60 @@ const Trips = () => {
         )}
         {isTripAvailable && (
           <div className="w-full">
-            {bookedTrips?.map((data) => (
-              <div
-                key={data.id}
-                className="grid-cols-3 border-b border-grey-light-50   grid "
-              >
-                <div className=" p-5 h-full">
-                  <div className="w-full  grid-cols-2 items-center grid-flow-col  py-6 grid">
-                    <div className="w-40 h-40">
-                      <img
-                        className="w-full object-cover rounded-xl h-full"
-                        src={data?.images?.[0]}
-                        alt=""
-                      />
+            {bookedTrips?.map((data, i) => (
+              <Link to={`/house/${data?.id}`} key={data?.id}>
+                <div
+                  key={data.id}
+                  className="grid-cols-3 border-b border-grey-light-50   grid "
+                >
+                  <div className=" p-5 h-full">
+                    <div className="w-full  grid-cols-2 items-center grid-flow-col  py-6 grid">
+                      <div className="w-40 h-40">
+                        <img
+                          className="w-full object-cover rounded-xl h-full"
+                          src={data?.images?.[0]}
+                          alt=""
+                        />
+                      </div>
+                      <div className="w-full justify-center flex space-y-1 flex-col">
+                        <span className="block  font-medium">
+                          At{" "}
+                          {data?.host_name
+                            ? data?.host_name?.replace(/about/gi, "")
+                            : "Carl's"}
+                          's
+                        </span>
+                        <span className=" font-light">Entire guest suite</span>
+                        <div className="flex items-center space-x-1">
+                          <img className="w-4 h-4" src={star} alt="" />
+                          <span className="font-medium">
+                            {data?.house_rating}
+                          </span>
+                          <span className="font-light">
+                            ({data?.rating_count})
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="w-full justify-center flex space-y-1 flex-col">
-                      <span className="block text-sm font-medium">
-                        At{" "}
-                        {data?.host_name
-                          ? data?.host_name?.replace(/about/gi, "")
-                          : "Carl's"}
-                        's
-                      </span>
-                      <span className="text-sm font-light">
-                        Entire guest suite
-                      </span>
-                      <div className="flex items-center space-x-1">
-                        <img className="w-4 h-4" src={star} alt="" />
-                        <span className="text-sm font-medium">
-                          {data?.house_rating}
+                  </div>
+                  <div className=" p-5 h-full">
+                    <div className="py-6 flex h-full  justify-between items-center ">
+                      <div className="flex py-4 px-5 flex-col">
+                        <span className="font-medium text-lg">Dates</span>
+                        <span>
+                          {paymentsData[i]?.startDate} -{" "}
+                          {paymentsData[i]?.endDate}
                         </span>
-                        <span className="text-sm font-light">
-                          ({data?.rating_count})
-                        </span>
+                        <span></span>
+                      </div>
+                      <div className="flex py-4 px-5 flex-col">
+                        <span className="font-medium text-lg">Guests</span>
+                        <span>{paymentsData[i]?.Guest}</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className=" p-5 h-full"></div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
