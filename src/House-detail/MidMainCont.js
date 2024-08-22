@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { differenceInDays } from "date-fns";
 import { setIsVisible } from "./HouseDetailSlice";
 import { Link } from "react-router-dom";
+import { setShowLogin } from "../Main/AppSlice";
 
 const MidMainCont = () => {
   const [formatStartDate, setFormatStartDate] = useState(null);
@@ -29,7 +30,7 @@ const MidMainCont = () => {
   const childCount = useSelector((store) => store.form.childCount);
   const infantCount = useSelector((store) => store.form.infantCount);
   const petCount = useSelector((store) => store.form.petsCount);
-
+  let userData = useSelector((store) => store.app.userData);
   const startDate = useSelector((store) => store.form.selectedStartDate);
   const endDate = useSelector((store) => store.form.selectedEndDate);
 
@@ -425,7 +426,15 @@ const MidMainCont = () => {
                       </div>
                     </div>
                   </div>
-                  <Link to={`/${houseInfo.id}/book`}>
+                  <Link
+                    to={userData ? `/${houseInfo.id}/book` : "#"}
+                    onClick={(e) => {
+                      if (!userData) {
+                        e.preventDefault(); // Prevent navigation
+                        dispatch(setShowLogin(true)); // Show login modal
+                      }
+                    }}
+                  >
                     <button
                       ref={elementRef}
                       className="w-full rounded-lg flex-center bg-dark-pink h-12"

@@ -90,7 +90,7 @@ const TopMainCont = () => {
               }}
               className="underline w-[4.8rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex"
             >
-              {svg(houseInfo?.id, favListings)}
+              {svg(houseInfo?.id, favListings, userData)}
               <span className="h-[1.2rem]">Save</span>
             </span>
           </div>

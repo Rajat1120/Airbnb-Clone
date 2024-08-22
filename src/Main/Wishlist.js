@@ -107,7 +107,7 @@ const Wishlist = () => {
                     }}
                     className="absolute hover:scale-110 top-3 right-4"
                   >
-                    {svg(item.id, favListings)}
+                    {svg(item.id, favListings, userData)}
                   </button>
 
                   <img

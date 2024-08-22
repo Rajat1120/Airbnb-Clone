@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import star from "../data/Icons svg/star.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowLogin } from "../Main/AppSlice";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [showNav, setShowNav] = useState(false);
 
   const isVisible = useSelector((store) => store.houseDetail.isVisible);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+  const dispatch = useDispatch();
   let houseRating = Boolean(houseInfo?.house_rating > 2);
   let reviewsCount = Boolean(houseInfo?.rating_count);
-
+  let userData = useSelector((store) => store.app.userData);
   function formatSingleDigit(number) {
     // Convert the number to a string
     let numStr = number.toString();
@@ -113,9 +116,19 @@ const NavBar = () => {
                 </span>
               </div>
             </div>
-            <button className="bg-dark-pink h-12 w-[9.25rem] text-white rounded-lg">
-              Reserve
-            </button>
+            <Link
+              to={userData ? `/${houseInfo.id}/book` : "#"}
+              onClick={(e) => {
+                if (!userData) {
+                  e.preventDefault();
+                  dispatch(setShowLogin(true));
+                }
+              }}
+            >
+              <button className="rounded-lg flex-center bg-dark-pink w-[9.5rem] h-12">
+                <span className="text-white">Reserve</span>
+              </button>
+            </Link>
           </div>
         )}
       </nav>
