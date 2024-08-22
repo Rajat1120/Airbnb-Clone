@@ -46,16 +46,13 @@ export async function getAllRows() {
 }
 
 export async function getWishList(idsArray) {
-  console.log(idsArray);
-
   let { data, error } = await supabase
     .from("Rooms")
     .select("*") // Specify the columns you want to fetch
     .in("id", idsArray); // Fetch rows where the 'id' column matches any value in the array
 
   if (error) {
-    console.log(error);
-    return null; // Handle error appropriately
+    throw error; // Handle error appropriately
   } else {
     return data;
   }
