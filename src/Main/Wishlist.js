@@ -46,13 +46,19 @@ const Wishlist = () => {
   const dispatch = useDispatch();
 
   let firstRender = useRef(false);
+
   useEffect(() => {
+    let timeoutId;
+
     if (favListings.length && !firstRender.current) {
       refetch();
-      if (isLoading) {
+
+      timeoutId = setTimeout(() => {
         firstRender.current = true;
-      }
+      }, 1000);
     }
+
+    return () => clearTimeout(timeoutId);
   }, [refetch, favListings, isLoading]);
 
   useEffect(() => {
