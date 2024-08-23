@@ -4,8 +4,14 @@ import supabase from "./Supabase";
 import { setUserData, setUserFavListing } from "../Main/AppSlice";
 
 export const signInWithGoogle = async () => {
-  const redirectUrl = window.location.href;
-  localStorage.setItem("redirectAfterLogin", redirectUrl);
+  let redirectUrl = window.location.href;
+
+  // If the URL contains '/login', change the redirect URL to the home page ('/')
+  if (redirectUrl.includes("/login")) {
+    redirectUrl = `${window.location.origin}/`;
+  }
+
+  // Attempt to sign in with Google
   const { user, session, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -13,14 +19,12 @@ export const signInWithGoogle = async () => {
     },
   });
 
+  // Handle any errors that occur during sign-in
   if (error) {
-    console.error("Error signing in with Google:", error);
+    throw error;
   } else {
+    // Dispatch user data to the store and log user/session information
     store.dispatch(setUserData(user));
-    console.log("User:", user);
-
-    console.log("Session:", session);
-    // Handle the user and session as needed
   }
 };
 
