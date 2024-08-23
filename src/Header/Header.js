@@ -39,13 +39,13 @@ function Header({ headerRef }) {
           onWishListPage || onTripsPage || onSignInPage ? "2" : "3"
         }  ${
           onHouseDetailPage ? "w-[calc(100%-10rem)]  mx-auto" : "w-full"
-        } px-20 `}
+        } px-10 1xl:px-20 `}
       >
         <div className="w-8 ">
           <a href="/">
             <div className="flex h-20 items-center">
               <img className="mr-2  h-34 scale-[1.2] " src={icon} alt="like" />
-              <h1 className="text-2xl  leading-8   text-pink text-start font-semibold">
+              <h1 className="text-2xl 1lg:flex-center hidden   leading-8   text-pink text-start font-semibold">
                 airbnb
               </h1>
             </div>

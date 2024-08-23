@@ -19,6 +19,11 @@ module.exports = {
       ],
     },
     extend: {
+      screens: {
+        "1xl": "1440px",
+        "1lg": "1124px",
+        "1md": "956px",
+      },
       boxShadow: {
         "3xl": "-1px 3.5px 5px 1px #CFCFD1",
         "2xl": "0 10px 20px rgba(0, 0, 0, 0.2)",

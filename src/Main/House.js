@@ -173,12 +173,12 @@ const House = () => {
 
   return (
     <div
-      className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out w-full px-20 top-[4rem] ${
+      className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out px-10 1xl:px-20 top-[4rem] ${
         !startScroll ? "-translate-y-[4.8rem] " : ""
       }`}
       ref={containerRef}
     >
-      <div className="grid gap-x-6 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
+      <div className="grid gap-x-6 grid-cols-four-col  1lg:grid-cols-four-col justify-center w-full items-start 1lg:gap-y-4 xl:gap-y-8 grid-flow-row">
         {status === "pending"
           ? Array.from({ length: 50 }).map((_, i) => (
               <div
@@ -196,7 +196,7 @@ const House = () => {
                   className="block h-[24.5rem]"
                 >
                   <div
-                    className="w-full relative h-full  flex gap-y-4 items-center justify-center flex-col"
+                    className="1xl:w-full  relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
                     onMouseEnter={() => {
                       dispatch(setHoveredItem(item.id));
                       dispatch(setHoveredItems([...hoveredItems, item.id]));
@@ -269,7 +269,7 @@ const House = () => {
                           </button>
                         )}
                       <img
-                        className="rounded-[20px] flex-center w-full h-full object-cover scroll-snap-align-start"
+                        className="rounded-[20px] flex-center  w-full h-full object-cover scroll-snap-align-start"
                         src={item.images[0]}
                         rel="preload"
                         as="image"
@@ -277,13 +277,13 @@ const House = () => {
                         style={{
                           scrollSnapAlign: "start",
                           flexShrink: 0,
-                          width: `${imageWidth}px`,
+                          aspectRatio: "1/1",
                         }}
                       />
                       {hoveredItems?.includes(item.id) &&
                         item.images.slice(1).map((img, i) => (
                           <img
-                            className="rounded-[20px] flex-center w-full h-full object-cover scroll-snap-align-start"
+                            className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
                             src={img}
                             rel="preload"
                             as="image"
@@ -293,7 +293,7 @@ const House = () => {
                               scrollSnapAlign: "start",
                               flexShrink: 0,
                               scrollSnapStop: "always",
-                              width: `${imageWidth}px`,
+                              aspectRatio: "1/1",
                             }}
                           />
                         ))}
