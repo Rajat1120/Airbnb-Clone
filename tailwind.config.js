@@ -23,6 +23,10 @@ module.exports = {
         "1xl": "1440px",
         "1lg": "1124px",
         "1md": "956px",
+        "1smd": "936px",
+        "1sm": "751px",
+        "1xz": "744px",
+        "1xs": "550px",
       },
       boxShadow: {
         "3xl": "-1px 3.5px 5px 1px #CFCFD1",

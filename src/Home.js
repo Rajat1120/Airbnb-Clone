@@ -57,7 +57,9 @@ export default function Home() {
 
       <div
         className={`  transition-all duration-[0.3s] ease-in-out flex-center  fixed z-10 w-full  bg-white  ${
-          !startScroll ? "-translate-y-[5.9rem] shadow-md" : ""
+          !startScroll
+            ? "-translate-y-[5.9rem] shadow-md"
+            : "1md:translate-y-[0rem] 1sm:translate-y-[3rem] "
         }   top-[10.8rem]  flex-center  `}
       >
         <Options></Options>
@@ -66,7 +68,7 @@ export default function Home() {
       <div className="mt-[12rem]   flex justify-center items-center ">
         <House></House>
       </div>
-      <div className="w-full flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
+      <div className="w-full hidden 1sm:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
         <Footer></Footer>
       </div>
 

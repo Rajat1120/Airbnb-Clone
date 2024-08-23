@@ -20,13 +20,13 @@ function Header({ headerRef }) {
   const minimize = useSelector((store) => store.app.minimize);
 
   let val1 = minimize
-    ? "after:translate-y-[7rem] after:opacity-0 "
-    : "after:translate-y-[2.1rem] after:opacity-100";
+    ? "1md:after:translate-y-[7rem]  after:opacity-0 "
+    : "1md:after:translate-y-[2.1rem] 1sm:after:translate-y-[2rem] after:opacity-100";
 
   let classForAfter = `after:content-[''] ${
     !startScroll || onWishListPage || onTripsPage || onSignInPage
       ? ` ${val1}`
-      : "after:translate-y-[7.5rem]"
+      : "1md:after:translate-y-[7.5rem] 1sm:after:translate-y-[11rem]"
   } after:transition-transform after:duration-[0.2s] after:ease-in-out after:w-full  after:bg-grey-dim after:z-50  after:h-[1px]`;
 
   return (
@@ -55,8 +55,12 @@ function Header({ headerRef }) {
           <div
             className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
               !startScroll
-                ? `${minimize ? "translate-y-0" : "-translate-y-20"}  `
-                : ""
+                ? `${
+                    minimize
+                      ? "translate-y-0"
+                      : "-translate-y-20 1md:translate-x-0 1sm:-translate-x-56"
+                  }  `
+                : "1sm:translate-y-12 1md:translate-y-0"
             } justify-center  items-center `}
           >
             <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">

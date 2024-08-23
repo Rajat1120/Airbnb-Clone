@@ -173,12 +173,14 @@ const House = () => {
 
   return (
     <div
-      className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out px-10 1xl:px-20 top-[4rem] ${
-        !startScroll ? "-translate-y-[4.8rem] " : ""
+      className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out 1xs:px-10 px-5  1xl:px-20 top-[4rem] ${
+        !startScroll
+          ? "-translate-y-[4.8rem] "
+          : "1sm:translate-y-[4rem] 1md:translate-y-[0rem]"
       }`}
       ref={containerRef}
     >
-      <div className="grid gap-x-6 grid-cols-four-col  1lg:grid-cols-four-col justify-center w-full items-start 1lg:gap-y-4 xl:gap-y-8 grid-flow-row">
+      <div className="grid    gap-x-6 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:my-grid-cols-four-col justify-center w-full items-start 1xs:grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
         {status === "pending"
           ? Array.from({ length: 50 }).map((_, i) => (
               <div
@@ -193,10 +195,10 @@ const House = () => {
                   href={`/house/${item.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block h-[24.5rem]"
+                  className="block "
                 >
                   <div
-                    className="1xl:w-full  relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
+                    className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
                     onMouseEnter={() => {
                       dispatch(setHoveredItem(item.id));
                       dispatch(setHoveredItems([...hoveredItems, item.id]));
