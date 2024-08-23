@@ -6,6 +6,7 @@ import {
   setInfantCount,
   setPetsCount,
 } from "../mainFormSlice";
+import { useLocation } from "react-router";
 
 const AddGuest = () => {
   const [Disable, setDisable] = useState(false);
@@ -25,10 +26,13 @@ const AddGuest = () => {
       setDisable(true);
     }
   }, [adultCount, childCount, infantCount, petCount]);
-
+  const location = useLocation();
+  let onCheckOutPage = location.pathname?.includes("/book");
   return (
-    <div className="w-[26rem]  flex-center h-[25rem]">
-      <div className="py-6 flex-center flex-col ">
+    <div className="  flex-center ">
+      <div
+        className={` ${onCheckOutPage ? "" : "py-6"}  flex-center flex-col `}
+      >
         <div className="flex w-[22rem] flex-center flex-col">
           <div className="w-full justify-between flex items-center">
             <div className="">

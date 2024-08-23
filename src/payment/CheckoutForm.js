@@ -26,9 +26,12 @@ import Footer from "../Footer";
 import UpdatedPaymentForm from "./UpdatePaymentForm";
 import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
+import AddGuestModal from "../Modals/AddGuestModal";
+import { setCancelGuestUpdate } from "../Main/AppSlice";
 
 const CheckoutForm = () => {
   const [guestCount, setGuestCount] = useState("");
+  const [openGuestModal, setOpenGuestModal] = useState(false);
   const { id } = useParams();
   const [dataFromChild, setDataFromChild] = useState({});
   const [submitFormReference, setSubmitFormReference] = useState(false);
@@ -53,6 +56,7 @@ const CheckoutForm = () => {
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
   const userData = useSelector((store) => store.app.userData);
+  const cancelGuestUpdate = useSelector((store) => store.app.cancelGuestUpdate);
 
   const {
     data: paymentData,
@@ -78,11 +82,28 @@ const CheckoutForm = () => {
       guestCount += `${infantCount ? "," : ""} ${petCount} pet${petPlural}`;
     }
     if (guestCount !== "0 guests,") {
-      setGuestCount(guestCount);
+      if (!openGuestModal && !cancelGuestUpdate) {
+        setGuestCount(guestCount);
+      }
     } else {
       setGuestCount("1 guest");
     }
-  }, [adultCount, childCount, infantCount, petCount, guestPlural, petPlural]);
+  }, [
+    adultCount,
+    childCount,
+    openGuestModal,
+    cancelGuestUpdate,
+    infantCount,
+    petCount,
+    guestPlural,
+    petPlural,
+  ]);
+
+  useEffect(() => {
+    if (openGuestModal) {
+      dispatch(dispatch(setCancelGuestUpdate(false)));
+    }
+  }, [openGuestModal, dispatch]);
 
   useLayoutEffect(() => {
     const checkBookingStatus = async () => {
@@ -336,7 +357,12 @@ const CheckoutForm = () => {
                   {guestCount !== "0 guest" ? guestCount : "1 guest"}
                 </span>
               </div>
-              <button className="font-medium underline">Edit</button>
+              <button
+                onClick={() => setOpenGuestModal(true)}
+                className="font-medium underline"
+              >
+                Edit
+              </button>
             </div>
             <div className="mt-2">
               <div className="border-t border-grey-light-50 w-full"></div>
@@ -614,6 +640,10 @@ const CheckoutForm = () => {
                   <Calendar />
                 </div>
               </CalendarModal>
+              <AddGuestModal
+                isOpen={openGuestModal}
+                onClose={() => setOpenGuestModal(false)}
+              ></AddGuestModal>
             </div>
           </section>
         </div>

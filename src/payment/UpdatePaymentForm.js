@@ -201,8 +201,6 @@ const UpdatedPaymentForm = ({
 
   const queryClient = useQueryClient();
 
-  console.log(paymentError);
-
   useEffect(() => {
     if (success && !paymentError) {
       if (areAllKeysTruthy(paymentDetails)) {

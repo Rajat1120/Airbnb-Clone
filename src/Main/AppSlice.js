@@ -17,6 +17,7 @@ let appState = {
   userFavListing: [],
   isFavorite: null,
   itemId: null,
+  cancelGuestUpdate: false,
 };
 
 const AppSlice = createSlice({
@@ -66,6 +67,9 @@ const AppSlice = createSlice({
     setUserData(state, action) {
       state.userData = action.payload;
     },
+    setCancelGuestUpdate(state, action) {
+      state.cancelGuestUpdate = action.payload;
+    },
 
     setUserFavListing(state, action) {
       // Normalize action.payload to always be an array
@@ -102,6 +106,7 @@ export const {
   setIsFavorite,
   setFilterData,
   setSelectedIcon,
+  setCancelGuestUpdate,
   setUserFavListing,
   setItemId,
   removeUserFavListing,
