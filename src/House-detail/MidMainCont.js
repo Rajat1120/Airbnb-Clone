@@ -396,11 +396,11 @@ const MidMainCont = () => {
                       </div>
                     </div>
                     <div className="flex  w-full h-1/2 items-center">
-                      <div className="flex px-3 w-full items-center justify-between">
-                        <div
-                          onClick={scrollToSection("header")}
-                          className="flex items-start justify-center flex-col"
-                        >
+                      <div
+                        onClick={scrollToSection("header")}
+                        className="flex px-3 w-full items-center justify-between"
+                      >
+                        <div className="flex items-start justify-center flex-col">
                           <span className="text-[10px] font-semibold">
                             GUESTS
                           </span>

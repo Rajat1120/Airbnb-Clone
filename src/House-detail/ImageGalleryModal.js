@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import arrowLeft from "../data/Icons svg/arrow-left.svg";
 
 const generateGridAreas = (imageCount) => {
   const basePattern = [
@@ -33,6 +32,25 @@ const generateGridAreas = (imageCount) => {
   return areas.map((row) => `"${row.join(" ")}"`).join("\n");
 };
 
+let arrowLeft = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 32 32"
+    aria-hidden="true"
+    role="presentation"
+    focusable="false"
+    className="w-4 h-4"
+    style={{
+      display: "block",
+      fill: "none",
+      stroke: "currentColor",
+      strokeWidth: "4",
+      overflow: "visible",
+    }}
+  >
+    <path fill="none" d="M20 28 8.7 16.7a1 1 0 0 1 0-1.4L20 4"></path>
+  </svg>
+);
 const ImageGalleryModal = ({ isOpen, onClose, children }) => {
   const [visible, setVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
@@ -73,7 +91,7 @@ const ImageGalleryModal = ({ isOpen, onClose, children }) => {
               onClick={onClose}
               className="w-10 h-10 flex items-center justify-center cursor-pointer hover:bg-gray-100 rounded-full"
             >
-              <img src={arrowLeft} className="w-6 h-6" alt="" />
+              {arrowLeft}
             </button>
           </div>
           <div className="pl-8 pt-10 h-full pb-20 overflow-auto pr-8 w-full">
