@@ -248,6 +248,10 @@ const CheckoutForm = () => {
 
   let load = updateLoading || bookingLoading;
 
+  if (!userData) {
+    return navigate("/login");
+  }
+
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false}></Toaster>

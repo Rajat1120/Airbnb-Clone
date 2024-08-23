@@ -14,6 +14,7 @@ import { getWishList } from "../Services/apiRooms";
 
 import LongFooter from "../House-detail/LongFooter";
 import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
+import { useNavigate } from "react-router";
 
 const Wishlist = () => {
   const [wishList, setWishList] = useState(null);
@@ -21,7 +22,7 @@ const Wishlist = () => {
   const userData = useSelector((store) => store.app.userData);
   const isFavorite = useSelector((store) => store.app.isFavorite);
   const itemId = useSelector((store) => store.app.itemId);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handleUpdate = async () => {
       if (itemId && userData) {
@@ -68,7 +69,7 @@ const Wishlist = () => {
   }, [data]);
 
   if (!userData) {
-    return <p>you need to sing in</p>;
+    return navigate("/login");
   }
 
   return (
