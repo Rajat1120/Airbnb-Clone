@@ -407,7 +407,7 @@ const MainFormContent = () => {
 
   return (
     <div
-      className={`flex z-20  justify-center ${
+      className={`1smd:flex 1xz:grid 1xz:w-[calc(100vw-5rem)] 1xz:grid-cols-3  z-20   justify-center ${
         !minimize && !startScroll
           ? "scale-[0.6] opacity-50"
           : "scale-100 opacity-1"
@@ -425,11 +425,11 @@ const MainFormContent = () => {
               onMouseLeave={() => {
                 if (data !== "destination") dispatch(setHoverInput(null));
               }}
-              className={`flex ${
+              className={`flex  ${
                 data === "destination"
                   ? "shadow-destinationShadow rounded-full"
                   : ""
-              } justify-center  items-center`}
+              } 1smd:justify-center 1xz:justify-start  items-center`}
             >
               <label
                 onClick={() => handleDestinationField("destination")}
@@ -493,22 +493,23 @@ const MainFormContent = () => {
         </Modal>
       </div>
 
-      <div
-        className={`w-[0.05rem] ${
-          data
-            ? hoverInput === "destination" ||
-              hoverInput === "checkIn" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-              ? "bg-shadow-gray"
+      <div className="flex 1smd:justify-center 1xz:justify-between items-center">
+        <div
+          className={`min-w-[0.05rem] ${
+            data
+              ? hoverInput === "destination" ||
+                hoverInput === "checkIn" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+                ? "bg-shadow-gray"
+                : "bg-gray-300"
+              : hoverInput === "destination" ||
+                hoverInput === "checkIn" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+              ? "bg-white"
               : "bg-gray-300"
-            : hoverInput === "destination" ||
-              hoverInput === "checkIn" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-            ? "bg-white"
-            : "bg-gray-300"
-        } h-[2rem] 
+          } h-[2rem] 
         ${
           data === "destination" ||
           data === "checkIn" ||
@@ -518,9 +519,7 @@ const MainFormContent = () => {
             : ""
         }
         `}
-      ></div>
-
-      <div className="flex justify-center items-center">
+        ></div>
         {(dateOption === "dates" || dateOption === "") && (
           <Modal>
             <Modal.Open opens="checkIn">
@@ -700,24 +699,22 @@ const MainFormContent = () => {
             </Modal.Window>
           </Modal>
         )}
-      </div>
-
-      <div
-        className={`w-[0.05rem] ${
-          data
-            ? hoverInput === "checkOut" ||
-              hoverInput === "addGuest" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-              ? "bg-shadow-gray"
+        <div
+          className={`min-w-[0.05rem] ${
+            data
+              ? hoverInput === "checkOut" ||
+                hoverInput === "addGuest" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+                ? "bg-shadow-gray"
+                : "bg-grey-light-50 "
+              : hoverInput === "checkOut" ||
+                hoverInput === "addGuest" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+              ? "bg-white"
               : "bg-grey-light-50 "
-            : hoverInput === "checkOut" ||
-              hoverInput === "addGuest" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-            ? "bg-white"
-            : "bg-grey-light-50 "
-        } h-[2rem]
+          } h-[2rem]
         ${
           data === "checkOut" ||
           data === "addGuest" ||
@@ -728,7 +725,8 @@ const MainFormContent = () => {
         }
         
         `}
-      ></div>
+        ></div>
+      </div>
 
       <Modal>
         <div
@@ -739,11 +737,11 @@ const MainFormContent = () => {
           onMouseLeave={() => {
             if (data !== "addGuest") dispatch(setHoverInput(null));
           }}
-          className={`flex w-[17.7rem] ${
+          className={`flex 1smd:w-[17.7rem]  ${
             data === "addGuest"
               ? "rounded-full bg-white shadow-AddGuestShadow "
               : ""
-          } justify-center items-center`}
+          } 1xz:justify-between 1smd:justify-center items-center`}
         >
           <Modal.Open opens="addGuest">
             <div className="flex justify-center  items-center">
@@ -757,12 +755,12 @@ const MainFormContent = () => {
                 } hover:before:content-[''] 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "addGuest" ? "" : "before:hover:bg-grey-light-50 "}
               justify-between
-               1smd:before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[1.5rem] cursor-pointer`}
+               1smd:before:left-[35.20rem] before:rounded-full before:hover:opacity-40  1xz:pl-[1.5rem] 1xz:pr-[11vw] py-[0.8rem]  h-[3.85rem] 1smd:px-[1.5rem] cursor-pointer`}
               >
                 <div className="flex flex-col justify-center items-start">
                   <div className="text-xs font-medium">Who</div>
                   <div
-                    className={`1smd:w-[6.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
+                    className={`1smd:w-[6.62rem]  flex justify-between items-center outline-none focus:outline-none  
                     ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
                     `}
                   >
@@ -803,8 +801,8 @@ const MainFormContent = () => {
                 handleSearchInput();
                 dispatch(setMinimize(false));
               }}
-              className={`hover:bg-dark-pink  ${
-                data ? "w-[8rem] z-50" : "w-[3rem] z-50 "
+              className={`hover:bg-dark-pink 1xz:mr-2  ${
+                data ? "w-[8rem]  z-50" : "w-[3rem] 1smd:mr-0 z-50 "
               } hover:cursor-pointer flex items-center justify-${
                 data ? "start" : "center"
               } duration-200 ease-out ${

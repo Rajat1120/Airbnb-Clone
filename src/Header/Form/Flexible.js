@@ -142,19 +142,19 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
           onMouseEnter={() => dispatch(setHoverInput("month"))}
           onMouseLeave={() => dispatch(setHoverInput(null))}
           ref={flexibleRef}
-          className={`flex justify-center items-center ${
+          className={`flex  1smd:justify-center 1xz:justify-start 1xz:w-full 1smd:px-0 1xz:px-6 items-center ${
             curInput === "flexible" ? "shadow-checkInShadow rounded-full" : ""
           }`}
         >
           <div
-            className={`w-[17.3rem] h-[3.85rem] hover:before:content-[''] before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full  ${
+            className={`1smd:w-[17.3rem] h-[3.85rem] hover:before:content-[''] 1smd:before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full  ${
               curInput === "flexible"
                 ? "rounded-full bg-white"
                 : "before:hover:bg-[#c0c0c0] "
             }  before:hover:opacity-40  flex items-center justify-center`}
             onClick={(e) => handleInputField(e.target, "flexible")}
           >
-            <div className="flex text-sm font-medium items-start justify-center w-[15rem] flex-col ">
+            <div className="flex text-sm font-medium items-start justify-center 1smd:w-[15rem] flex-col ">
               <span className="text-xs font-medium">When</span>
               <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap w-[15rem]">
                 {curSelectedInput ? (

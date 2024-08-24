@@ -42,20 +42,20 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
         <div
           onMouseEnter={() => dispatch(setHoverInput("month"))}
           onMouseLeave={() => dispatch(setHoverInput(null))}
-          className={`flex justify-center  items-center ${
+          className={`flex  1smd:justify-center 1xz:justify-start 1xz:w-full 1smd:px-0 1xz:px-6 items-center ${
             curInput === "month" ? "shadow-checkInShadow rounded-full" : ""
           } `}
           ref={monthRef}
         >
           <div
-            className={`w-[17.3rem] h-[3.85rem] hover:before:content-[''] before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full  ${
+            className={`1smd:w-[17.3rem] h-[3.85rem] hover:before:content-[''] 1smd:before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full  ${
               curInput === "month"
                 ? "rounded-full bg-white"
                 : "before:hover:bg-[#c0c0c0] "
             }  before:hover:opacity-40  flex items-center justify-center`}
             onClick={handleClick}
           >
-            <div className="flex flex-col w-[14.8rem] items-start justify-center">
+            <div className="flex flex-col 1smd:w-[14.8rem] items-start justify-center">
               <p className="text-xs font-medium">When</p>
               {curSelectedInput ? (
                 <p className="text-sm font-medium ">
