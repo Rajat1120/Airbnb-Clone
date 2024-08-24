@@ -434,7 +434,7 @@ const MainFormContent = () => {
               <label
                 onClick={() => handleDestinationField("destination")}
                 htmlFor="destination"
-                className={`w-[17.67rem] hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
+                className={`1smd:w-[17.67rem] hover:before:content-[''] 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
 
                 
                 ${data === "destination" ? "rounded-full bg-white" : ""} 
@@ -457,8 +457,8 @@ const MainFormContent = () => {
                         dispatch(setDestinationInputVal(e.target.value));
                       }}
                       type="text"
-                      className={`w-[10.62rem] 4 text-sm font-medium"
-                      outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                      className={`1smd:w-[10.62rem]  text-sm font-medium"
+                      outline-none focus:outline-none placeholder:text-sm ${
                         data && data !== "destination" ? "bg-shadow-gray" : ""
                       } placeholder:font-extralight placeholder:text-black`}
                       id="destination"
@@ -534,7 +534,7 @@ const MainFormContent = () => {
               >
                 <div
                   onClick={(e) => handleInputField(e.target, "checkIn")}
-                  className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[17.67rem] before:rounded-full 
+                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full 
 
                    ${
                      data === "checkIn"
@@ -547,7 +547,7 @@ const MainFormContent = () => {
                h-[3.85rem] cursor-pointer`}
                 >
                   <div
-                    className={`w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
+                    className={`1smd:w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "checkIn" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
                   >
@@ -644,7 +644,7 @@ const MainFormContent = () => {
                   onClick={(e) => {
                     handleInputField(e.target, "checkOut");
                   }}
-                  className={`w-[8.67rem] hover:before:content-[''] before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-[26.34rem] before:rounded-full 
+                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[26.34rem] before:rounded-full 
                    ${
                      data === "checkOut" ? "" : "before:hover:bg-grey-light-50 "
                    }
@@ -653,7 +653,7 @@ const MainFormContent = () => {
                h-[3.85rem] flex-col flex justify-center items-center  cursor-pointer`}
                 >
                   <div
-                    className={`w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                    className={`1smd:w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "checkOut" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
                   >
@@ -752,17 +752,17 @@ const MainFormContent = () => {
                 onClick={(e) => handleInputField(e.target, "addGuest")}
                 className={`${
                   data
-                    ? "w-[12.2rem] flex items-center before:z-10 "
-                    : "w-[14.2rem]"
-                } hover:before:content-[''] before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
+                    ? "1smd:w-[12.2rem] flex items-center before:z-10 "
+                    : "1smd:w-[14.2rem]"
+                } hover:before:content-[''] 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "addGuest" ? "" : "before:hover:bg-grey-light-50 "}
               justify-between
-               before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[1.5rem] cursor-pointer`}
+               1smd:before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[1.5rem] cursor-pointer`}
               >
                 <div className="flex flex-col justify-center items-start">
                   <div className="text-xs font-medium">Who</div>
                   <div
-                    className={`w-[6.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
+                    className={`1smd:w-[6.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
                     ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
                     `}
                   >
