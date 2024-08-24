@@ -29,6 +29,7 @@ const Calendar = () => {
   const selectedInput = useSelector((store) => store.form.curSelectInput);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const [monthWidth, setmonthWidth] = useState(0);
   const scrollContainerRef = useRef(null);
   const minimize = useSelector((store) => store.app.minimize);
   const location = useLocation();
@@ -36,8 +37,28 @@ const Calendar = () => {
   let onCheckOutPage = location.pathname.includes("/book");
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const monthWidth =
-    (onHouseDetailPage || onCheckOutPage) && !minimize ? 340 : 440; // Width of each month component
+
+  useEffect(() => {
+    function findMonthWidth() {
+      let width =
+        (onHouseDetailPage || onCheckOutPage) && !minimize
+          ? 340
+          : window.innerWidth <= 956
+          ? 384
+          : 440; // Width of each month component
+
+      setmonthWidth(width);
+    }
+
+    findMonthWidth();
+
+    window.addEventListener("resize", findMonthWidth);
+
+    return () => {
+      window.removeEventListener("resize", findMonthWidth);
+    };
+  }, [minimize, onHouseDetailPage, onCheckOutPage]);
+
   const scrollSpeed = 200;
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
 
@@ -358,9 +379,9 @@ const Calendar = () => {
   }, [currentIndex, monthWidth]);
 
   return (
-    <div className="flex w-full flex-col justify-center relative">
+    <div className="flex 1md:w-full w-96  flex-col justify-center relative">
       <div
-        className={`absolute top-[3.6rem] ${
+        className={`absolute hidden 1md:block top-[3.6rem] ${
           onCheckOutPage && "!left-[1.1rem]"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
@@ -374,7 +395,9 @@ const Calendar = () => {
         className={`absolute  top-[3.6rem] ${
           onCheckOutPage && "!right-[0.6rem]"
         }  ${
-          onHouseDetailPage && !minimize ? "right-[0.1rem]" : "right-[2.2rem]"
+          onHouseDetailPage && !minimize
+            ? "right-[0.1rem]"
+            : "1md:right-[2.2rem] right-[50%]  1md:translate-x-0 1xz:translate-x-1/2"
         }`}
       >
         {renderDays()}
@@ -388,7 +411,7 @@ const Calendar = () => {
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
             ? "left-2"
-            : "left-8"
+            : "1md:left-8 left-0"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
@@ -403,7 +426,7 @@ const Calendar = () => {
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
             ? "right-0"
-            : "right-8"
+            : "1md:right-10 right-0"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
@@ -411,7 +434,7 @@ const Calendar = () => {
       </button>
       <div
         ref={scrollContainerRef}
-        className="overflow-x-hidden overflow-y-clip w-full scrollbar-hide"
+        className="overflow-x-hidden overflow-y-clip scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <div
@@ -419,10 +442,10 @@ const Calendar = () => {
             transition: `transform ${scrollSpeed}ms ease-out`,
             transform: `translateX(-${scrollPosition}px)`,
           }}
-          className={`inline-flex ${
+          className={`inline-flex  ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
               ? "gap-x-3"
-              : "gap-x-8"
+              : "1smd:gap-x-8 gap-x-0"
           }`}
         >
           {Array.from({ length: 23 }, (_, index) => (
@@ -431,12 +454,14 @@ const Calendar = () => {
               className={`max-w-md    justify-center items-center ${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? "w-[20rem] h-[20.5rem]"
-                  : "w-[25rem]"
-              } mx-1 rounded-lg`}
+                  : ` w-full flex  flex-col ${
+                      index <= 0 ? "1md:pl-8 " : "1md:pl-16 "
+                    } justify-between h-full gap-y-10  `
+              } 1xz:mx-6 1md:mx-1 rounded-lg`}
             >
               {renderHeader(addMonths(currentMonth, index))}
 
-              <div className="mt-10">
+              <div className="">
                 {renderCells(addMonths(currentMonth, index))}
               </div>
             </div>

@@ -14,7 +14,6 @@ const CircularSlider = () => {
   );
   const formatDate = format(startDurationDate, "EEE, MMM d");
 
-  console.log(isModalOpen);
   let NumOfMonths = currentDot;
 
   const dotCount = 12;
