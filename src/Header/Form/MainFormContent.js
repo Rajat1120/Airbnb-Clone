@@ -407,13 +407,13 @@ const MainFormContent = () => {
 
   return (
     <div
-      className={`flex z-20  justify-center ${
+      className={`1smd:flex w-full 1xz:grid 1xz:grid-cols-3  z-20   justify-center ${
         !minimize && !startScroll
           ? "scale-[0.6] opacity-50"
           : "scale-100 opacity-1"
       }  items-center transition-all duration-[0.4s]`}
     >
-      <div>
+      <div id="destination-form">
         <Modal>
           <Modal.Open opens="destination">
             <div
@@ -425,19 +425,19 @@ const MainFormContent = () => {
               onMouseLeave={() => {
                 if (data !== "destination") dispatch(setHoverInput(null));
               }}
-              className={`flex ${
+              className={`flex 1xz:relative 1smd:static  ${
                 data === "destination"
                   ? "shadow-destinationShadow rounded-full"
                   : ""
-              } justify-center  items-center`}
+              } 1smd:justify-center 1xz:justify-start  items-center`}
             >
               <label
                 onClick={() => handleDestinationField("destination")}
                 htmlFor="destination"
-                className={`1smd:w-[17.67rem] hover:before:content-[''] 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
+                className={`1smd:w-[17.67rem]  hover:before:content-[''] 1smd:before:w-[17.67rem] 1xz:before:w-full before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
 
                 
-                ${data === "destination" ? "rounded-full bg-white" : ""} 
+                ${data === "destination" ? "rounded-full w-full bg-white" : ""} 
 
                  ${
                    data === "destination"
@@ -493,22 +493,23 @@ const MainFormContent = () => {
         </Modal>
       </div>
 
-      <div
-        className={`w-[0.05rem] ${
-          data
-            ? hoverInput === "destination" ||
-              hoverInput === "checkIn" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-              ? "bg-shadow-gray"
+      <div className="flex 1smd:justify-center 1xz:justify-between items-center">
+        <div
+          className={`min-w-[0.05rem] ${
+            data
+              ? hoverInput === "destination" ||
+                hoverInput === "checkIn" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+                ? "bg-shadow-gray"
+                : "bg-gray-300"
+              : hoverInput === "destination" ||
+                hoverInput === "checkIn" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+              ? "bg-white"
               : "bg-gray-300"
-            : hoverInput === "destination" ||
-              hoverInput === "checkIn" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-            ? "bg-white"
-            : "bg-gray-300"
-        } h-[2rem] 
+          } h-[2rem] 
         ${
           data === "destination" ||
           data === "checkIn" ||
@@ -518,9 +519,7 @@ const MainFormContent = () => {
             : ""
         }
         `}
-      ></div>
-
-      <div className="flex justify-center items-center">
+        ></div>
         {(dateOption === "dates" || dateOption === "") && (
           <Modal>
             <Modal.Open opens="checkIn">
@@ -528,17 +527,17 @@ const MainFormContent = () => {
                 ref={checkInRef}
                 onMouseEnter={() => dispatch(setHoverInput("checkIn"))}
                 onMouseLeave={() => dispatch(setHoverInput(null))}
-                className={`flex ${
+                className={`flex 1xz:w-full  1xz:relative 1smd:static ${
                   data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
                 } justify-center  items-center`}
               >
                 <div
                   onClick={(e) => handleInputField(e.target, "checkIn")}
-                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full 
+                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] 1xz:before:w-full before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full 
 
                    ${
                      data === "checkIn"
-                       ? "rounded-full bg-white"
+                       ? "rounded-full w-full bg-white"
                        : "before:hover:bg-grey-light-50 "
                    }
                   
@@ -547,7 +546,7 @@ const MainFormContent = () => {
                h-[3.85rem] cursor-pointer`}
                 >
                   <div
-                    className={`1smd:w-[5.62rem] outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
+                    className={`1smd:w-[5.62rem] 1smd:pl-0 1smd:pr-0 1xz:pl-6 1xz:pr-3  1xz:w-full outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "checkIn" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
                   >
@@ -634,7 +633,7 @@ const MainFormContent = () => {
                 ref={checkOutRef}
                 onMouseEnter={() => dispatch(setHoverInput("checkOut"))}
                 onMouseLeave={() => dispatch(setHoverInput(null))}
-                className={`flex ${
+                className={`flex 1xz:w-full 1xz:relative 1smd:static ${
                   data === "checkOut"
                     ? "shadow-checkOutShadow rounded-full"
                     : ""
@@ -644,16 +643,16 @@ const MainFormContent = () => {
                   onClick={(e) => {
                     handleInputField(e.target, "checkOut");
                   }}
-                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[26.34rem] before:rounded-full 
+                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] 1xz:before:w-full before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[26.34rem] before:rounded-full 
                    ${
                      data === "checkOut" ? "" : "before:hover:bg-grey-light-50 "
                    }
                   before:hover:opacity-40 
-               ${data === "checkOut" ? "rounded-full bg-white" : ""}
+               ${data === "checkOut" ? "rounded-full w-full bg-white" : ""}
                h-[3.85rem] flex-col flex justify-center items-center  cursor-pointer`}
                 >
                   <div
-                    className={`1smd:w-[5.62rem] items-center   flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
+                    className={`1smd:w-[5.62rem] items-center 1smd:pl-0 1smd:pr-0 1xz:pl-6 1xz:pr-3  1xz:w-full flex justify-between outline-none focus:outline-none h[2rem] placeholder:text-sm ${
                       data && data !== "checkOut" ? "bg-shadow-gray" : ""
                     } placeholder:font-extralight placeholder:text-black`}
                   >
@@ -700,24 +699,22 @@ const MainFormContent = () => {
             </Modal.Window>
           </Modal>
         )}
-      </div>
-
-      <div
-        className={`w-[0.05rem] ${
-          data
-            ? hoverInput === "checkOut" ||
-              hoverInput === "addGuest" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-              ? "bg-shadow-gray"
+        <div
+          className={`min-w-[0.05rem] ${
+            data
+              ? hoverInput === "checkOut" ||
+                hoverInput === "addGuest" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+                ? "bg-shadow-gray"
+                : "bg-grey-light-50 "
+              : hoverInput === "checkOut" ||
+                hoverInput === "addGuest" ||
+                hoverInput === "month" ||
+                hoverInput === "flexible"
+              ? "bg-white"
               : "bg-grey-light-50 "
-            : hoverInput === "checkOut" ||
-              hoverInput === "addGuest" ||
-              hoverInput === "month" ||
-              hoverInput === "flexible"
-            ? "bg-white"
-            : "bg-grey-light-50 "
-        } h-[2rem]
+          } h-[2rem]
         ${
           data === "checkOut" ||
           data === "addGuest" ||
@@ -728,10 +725,12 @@ const MainFormContent = () => {
         }
         
         `}
-      ></div>
+        ></div>
+      </div>
 
       <Modal>
         <div
+          id="addGuest-form"
           ref={addGuestRef}
           onMouseEnter={() => {
             if (data !== "addGuest") dispatch(setHoverInput("addGuest"));
@@ -739,11 +738,11 @@ const MainFormContent = () => {
           onMouseLeave={() => {
             if (data !== "addGuest") dispatch(setHoverInput(null));
           }}
-          className={`flex w-[17.7rem] ${
+          className={`flex 1xz:relative 1smd:static 1smd:w-[17.7rem]  ${
             data === "addGuest"
               ? "rounded-full bg-white shadow-AddGuestShadow "
               : ""
-          } justify-center items-center`}
+          } 1xz:justify-between 1smd:justify-center items-center`}
         >
           <Modal.Open opens="addGuest">
             <div className="flex justify-center  items-center">
@@ -754,15 +753,15 @@ const MainFormContent = () => {
                   data
                     ? "1smd:w-[12.2rem] flex items-center before:z-10 "
                     : "1smd:w-[14.2rem]"
-                } hover:before:content-[''] 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
+                } hover:before:content-['']  1xz:before:w-full 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
                   ${data === "addGuest" ? "" : "before:hover:bg-grey-light-50 "}
               justify-between
-               1smd:before:left-[35.20rem] before:rounded-full before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[1.5rem] cursor-pointer`}
+               1smd:before:left-[35.20rem] before:rounded-full before:hover:opacity-40    py-[0.8rem]  h-[3.85rem] 1smd:px-[1.5rem] cursor-pointer`}
               >
-                <div className="flex flex-col justify-center items-start">
+                <div className="flex flex-col 1xz:pl-6 1smd:pl-0 justify-center items-start">
                   <div className="text-xs font-medium">Who</div>
                   <div
-                    className={`1smd:w-[6.62rem] flex justify-between items-center outline-none focus:outline-none h[2rem] 
+                    className={`1smd:w-[6.62rem] flex justify-between items-center outline-none focus:outline-none  
                     ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
                     `}
                   >
@@ -803,20 +802,30 @@ const MainFormContent = () => {
                 handleSearchInput();
                 dispatch(setMinimize(false));
               }}
-              className={`hover:bg-dark-pink  ${
-                data ? "w-[8rem] z-50" : "w-[3rem] z-50 "
-              } hover:cursor-pointer flex items-center justify-${
-                data ? "start" : "center"
+              className={`hover:bg-dark-pink 1xz:mr-2  ${
+                data
+                  ? "1smd:w-[8rem] 1xz:w-[3rem]  z-50"
+                  : "w-[3rem] 1smd:mr-0 z-50 "
+              } hover:cursor-pointer flex items-center ${
+                data
+                  ? "1xz:justify-center 1smd:justify-start"
+                  : "justify-center"
               } duration-200 ease-out ${
                 data ? "bg-dark-pink ml-[-1.6rem] mr-2" : "bg-pink ml-[-0.5rem]"
               } rounded-full h-[3rem]`}
             >
               <img
-                className={` ${data ? "pl-2 pr-1" : ""} `}
+                className={` ${data ? "1smd:pl-2 1smd:pr-1" : ""} `}
                 src={searchIcon}
                 alt=""
               />
-              {data ? <p className=" text-center   text-white ">Search</p> : ""}
+              {data ? (
+                <p className=" text-center 1xz:hidden 1smd:block text-white ">
+                  Search
+                </p>
+              ) : (
+                ""
+              )}
             </div>
           }
         </div>

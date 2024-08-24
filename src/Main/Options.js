@@ -103,12 +103,12 @@ const Options = () => {
 
   return (
     <div
-      className={`bg-white ${
+      className={`1sm:bg-white ${
         minimize ? "hidden" : ""
-      } z-10 justify-self-center w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
+      } z-10 justify-self-center w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
     >
       <div
-        className={`h-[5rem] py-6 flex w-full relative items-center justify-between space-x-10`}
+        className={`1sm:h-20 1sm:py-6 flex w-full relative items-center justify-between space-x-10`}
       >
         <div className="w-full flex  items-center overflow-hidden rounded-lg">
           {isLoading ? (
@@ -130,7 +130,7 @@ const Options = () => {
               <div
                 id="options"
                 ref={optionsRef}
-                className="flex items-center space-x-10 justify-start h-24 w-full overflow-x-auto scroll-smooth"
+                className="flex items-center space-x-10 justify-start h-16 1sm:h-24 w-full overflow-x-auto scroll-smooth"
                 style={{
                   scrollBehavior: "smooth",
                 }}
@@ -143,7 +143,9 @@ const Options = () => {
                     onClick={() => dispatch(setSelectedIcon(item.iconName))}
                     key={i}
                     className={`opacity-75 hover:opacity-100 cursor-pointer flex-center mr-0 ${
-                      i === 0 ? "pl-2" : ""
+                      i === 0 ? "1sm:pl-2 1xs:pl-10 pl-5" : ""
+                    } ${
+                      i === options.length - 1 ? "1sm:pr-2 1xs:pr-10 pr-5" : ""
                     } h-16 my-[12px] border-b-2 border-white py-[4px] hover:border-grey-light-50`}
                     style={{
                       scrollSnapAlign: "start",
@@ -165,12 +167,12 @@ const Options = () => {
               </div>
               {!isAtStart && options.length > 8 && (
                 <>
-                  <div className="absolute -left-1    w-10 h-20 bg-white">
+                  <div className="absolute -left-1 hidden 1sm:flex items-center justify-center    w-10 h-20 bg-white">
                     <div className="absolute left-4 w-full h-full bg-white blur-right"></div>
                   </div>
                   <button
                     onClick={() => handleScrollBtn("left")}
-                    className="absolute z-30 flex-center     top-[30%] left-0 h-9 w-9 bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%]  border-[1px] border-grey-dim"
+                    className="absolute z-30 hidden 1sm:flex items-center justify-center  top-[30%] left-0 h-9 w-9 bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%]  border-[1px] border-grey-dim"
                   >
                     <img
                       src={arrow_left}
@@ -182,12 +184,12 @@ const Options = () => {
               )}
               {!isAtEnd && options.length > 8 && (
                 <>
-                  <div className="absolute right-[21.7rem]  w-10 h-20 bg-white">
+                  <div className="absolute right-[21.7rem] hidden 1sm:flex items-center justify-center w-10 h-20 bg-white">
                     <div className="absolute -left-4 w-full h-full bg-white blur-left"></div>
                   </div>
                   <button
                     onClick={() => handleScrollBtn("right")}
-                    className="absolute flex-center top-[30%] z-50 right-[22rem] h-9 w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-[1px]"
+                    className="absolute hidden 1sm:flex items-center justify-center top-[30%] z-50 right-[22rem] h-9 w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-[1px]"
                   >
                     <img
                       src={arrow_right}
