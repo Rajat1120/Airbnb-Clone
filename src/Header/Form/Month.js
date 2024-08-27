@@ -42,13 +42,15 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
         <div
           onMouseEnter={() => dispatch(setHoverInput("month"))}
           onMouseLeave={() => dispatch(setHoverInput(null))}
-          className={`flex  1smd:justify-center 1xz:justify-start 1xz:w-full 1smd:px-0 1xz:px-6 items-center ${
-            curInput === "month" ? "shadow-checkInShadow rounded-full" : ""
+          className={`flex 1xz:relative 1smd:static  1smd:justify-center 1xz:justify-start 1xz:w-full  1smd:px-0 1xz:px-6 items-center ${
+            curInput === "month"
+              ? "shadow-checkInShadow  bg-white rounded-full"
+              : ""
           } `}
           ref={monthRef}
         >
           <div
-            className={`1smd:w-[17.3rem] h-[3.85rem] hover:before:content-[''] 1smd:before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full  ${
+            className={`1smd:w-[17.3rem] 1xz:before:left-0 1xz:before:w-full h-[3.85rem] hover:before:content-[''] 1smd:before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full  ${
               curInput === "month"
                 ? "rounded-full bg-white"
                 : "before:hover:bg-[#c0c0c0] "

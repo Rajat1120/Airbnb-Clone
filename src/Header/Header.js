@@ -32,7 +32,7 @@ function Header({ headerRef }) {
   return (
     <div
       id="header"
-      className={` ${classForAfter} w-full after:mt-2 flex flex-col items-center  justify-center relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} w-full after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
     >
       <div
         className={`grid grid-cols-${
@@ -87,7 +87,9 @@ function Header({ headerRef }) {
         {<AuthenticationModal></AuthenticationModal>}
       </div>
       {!onWishListPage && !onSignInPage && !onTripsPage && (
-        <MainForm headerRef={headerRef}></MainForm>
+        <div className="w-full 1smd:w-auto flex 1smd:block  items-center justify-start 1smd:pl-0  pl-[16rem]">
+          <MainForm headerRef={headerRef}></MainForm>
+        </div>
       )}
     </div>
   );
