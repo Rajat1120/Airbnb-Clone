@@ -38,19 +38,19 @@ const MobileForm = () => {
         <div className="flex flex-col space-y-1">
           <h3 className="text-sm font-medium">Where to?</h3>
           <div className="flex items-center space-x-1">
-            <span className="text-xs leading-none text-grey font-light">
+            <span className="text-xs text-nowrap leading-none text-grey font-light">
               Anywhere
             </span>
             <div className="flex items-center justify-center h-full">
               <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
             </div>
-            <span className="text-xs leading-none text-grey font-light">
+            <span className="text-xs text-nowrap leading-none text-grey font-light">
               Any week
             </span>
             <div className="flex items-center justify-center h-full">
               <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
             </div>
-            <span className="text-xs leading-none text-grey font-light">
+            <span className="text-xs text-nowrap leading-none text-grey font-light">
               Add guests
             </span>
           </div>
