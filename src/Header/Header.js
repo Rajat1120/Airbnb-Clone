@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import UserDashboard from "./UserDashboard";
 import AuthenticationModal from "./AuthenticationModal";
+import MobileForm from "./Form/MobileForm";
 
 function Header({ headerRef }) {
   const location = useLocation();
@@ -26,13 +27,13 @@ function Header({ headerRef }) {
   let classForAfter = `after:content-[''] ${
     !startScroll || onWishListPage || onTripsPage || onSignInPage
       ? ` ${val1}`
-      : "1md:after:translate-y-[7.5rem] 1sm:after:translate-y-[11rem]"
+      : "1md:after:translate-y-[7.5rem]  1sm:after:translate-y-[11rem]"
   } after:transition-transform after:duration-[0.2s] after:ease-in-out after:w-full  after:bg-grey-dim after:z-50  after:h-[1px]`;
 
   return (
     <div
       id="header"
-      className={` ${classForAfter} w-full after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} w-full  after:hidden 1xz:after:block after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
     >
       <div
         className={`grid grid-cols-${
@@ -43,7 +44,7 @@ function Header({ headerRef }) {
       >
         <div className="w-8 ">
           <a href="/">
-            <div className="flex h-20 items-center">
+            <div className="1xz:flex hidden h-20 items-center">
               <img className="mr-2  h-34 scale-[1.2] " src={icon} alt="like" />
               <h1 className="text-2xl 1lg:flex-center hidden   leading-8   text-pink text-start font-semibold">
                 airbnb
@@ -63,16 +64,16 @@ function Header({ headerRef }) {
                 : "1sm:translate-y-12 1md:translate-y-0"
             } justify-center  items-center `}
           >
-            <button className="h-[44] w-[72.65] px-4 py-2 rounded-md font-medium ">
+            <button className="h-[44] hidden 1smd:block w-[72.65] px-4 py-2 rounded-md font-medium ">
               Stays
             </button>
 
-            <p className="h-[2.5rem] flex items-center justify-center hover:bg-gray-100 hover:text-slate-600 rounded-full text-center w-[8rem] text-grey font-light">
+            <p className="h-[2.5rem] 1smd:flex items-center hidden justify-center hover:bg-gray-100 hover:text-slate-600 rounded-full text-center w-[8rem] text-grey font-light">
               Experiences
             </p>
           </div>
         )}
-        <div className="h-20 flex   items-center  justify-end ">
+        <div className="h-20 1xz:flex hidden    items-center  justify-end ">
           <a href="#">
             <p className="text-sm h-[2.5rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
               Airbnb your home
@@ -86,8 +87,13 @@ function Header({ headerRef }) {
         </div>
         {<AuthenticationModal></AuthenticationModal>}
       </div>
+      {
+        <div className="1xz:hidden w-full -translate-y-20  flex">
+          <MobileForm></MobileForm>
+        </div>
+      }
       {!onWishListPage && !onSignInPage && !onTripsPage && (
-        <div className="w-full 1smd:w-auto flex 1smd:block  items-center justify-start 1smd:pl-0  pl-[16rem]">
+        <div className="w-full 1smd:w-auto hidden 1xz:flex 1smd:block  items-center justify-start 1smd:pl-0  pl-[16rem]">
           <MainForm headerRef={headerRef}></MainForm>
         </div>
       )}

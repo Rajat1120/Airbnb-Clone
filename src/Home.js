@@ -39,7 +39,7 @@ export default function Home() {
 
   let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
 
-  let animateHeaderClass2 = minimize ? "animate-collapse" : "h-[11rem]";
+  let animateHeaderClass2 = minimize ? "animate-collapse" : "1sm:h-[11rem]";
 
   return (
     <div className="flex items-center  justify-center flex-col relative">
@@ -56,16 +56,16 @@ export default function Home() {
       </div>
 
       <div
-        className={`  transition-all duration-[0.3s] ease-in-out flex-center  fixed z-10 w-full  bg-white  ${
+        className={`  transition-all duration-[0.3s] ease-in-out flex-center  fixed z-10 w-full  bg-white shadow-md 1sm:shadow-none  ${
           !startScroll
-            ? "-translate-y-[5.9rem] shadow-md"
+            ? "1sm:-translate-y-[5.9rem] !shadow-md"
             : "1md:translate-y-[0rem] 1sm:translate-y-[3rem] "
-        }   top-[10.8rem]  flex-center  `}
+        }   1sm:top-[10.8rem] top-[5.7rem]  flex-center  `}
       >
         <Options></Options>
       </div>
 
-      <div className="mt-[12rem]   flex justify-center items-center ">
+      <div className="1sm:mt-[12rem] mt-[7rem]  flex justify-center items-center ">
         <House></House>
       </div>
       <div className="w-full hidden 1sm:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
