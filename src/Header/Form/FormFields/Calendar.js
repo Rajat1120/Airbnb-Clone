@@ -232,24 +232,26 @@ const Calendar = () => {
         days.push(
           <div
             key={day.toString()}
-            className={` relative ${
+            className={`  relative ${
               (onHouseDetailPage && !minimize) || onCheckOutPage
                 ? "h-[2.62rem]   w-[2.62rem]"
-                : "h-[3rem]   w-[3rem]"
+                : " w-full 1xz:h-[3rem] 1xz:w-[3rem] h-full aspect-square   "
             }  flex items-center justify-center `}
           >
             <div
               className={`${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? "h-[2.62rem]  w-[2.62rem]"
-                  : "h-[3rem]  w-[3rem]"
+                  : " w-full  1xz:h-[3rem] 1xz:w-[3rem] aspect-square h-full"
               } flex items-center justify-center ${
                 isPastDate ? "" : "cursor-pointer"
               } ${cellClass}`}
               key={day.toString()}
               onClick={onClickHandler}
             >
-              <span className="text-sm z-20 font-medium">{formattedDate}</span>
+              <span className="text-sm w-full 1xz:w-auto text-center z-20 font-medium">
+                {formattedDate}
+              </span>
             </div>
           </div>
         );
@@ -257,9 +259,9 @@ const Calendar = () => {
       }
       rows.push(
         <div
-          className={`flex ${
+          className={`grid grid-cols-7 1xz:flex 1xz:items-center 1xz:justify-center w-full ${
             (onHouseDetailPage && !minimize) || onCheckOutPage ? "" : "mb-[2px]"
-          } items-center justify-center`}
+          } place-items-stretch`}
           key={day.toString()}
         >
           {days}
@@ -268,7 +270,11 @@ const Calendar = () => {
       rowCount++;
       days = [];
     }
-    return <div className="">{rows}</div>;
+    return (
+      <div className="flex flex-col w-full justify-between items-stretch">
+        {rows}
+      </div>
+    );
   };
 
   const onCalendarModalDateClick = (day) => {
@@ -355,20 +361,30 @@ const Calendar = () => {
     }
   };
 
-  // Prevent default scroll behavior
   useEffect(() => {
-    const preventDefault = (e) => e.preventDefault();
-    const container = scrollContainerRef.current;
-
-    if ((!onHouseDetailPage && !minimize) || onCheckOutPage) {
-      container.addEventListener("wheel", preventDefault, { passive: false });
-      container.addEventListener("touchmove", preventDefault, {
-        passive: false,
-      });
+    function helperFunction() {
+      let preventDefault = (e) => e.preventDefault();
+      const container = scrollContainerRef.current;
+      if (window.innerWidth >= 744) {
+        if ((!onHouseDetailPage && !minimize) || onCheckOutPage) {
+          container.addEventListener("wheel", preventDefault, {
+            passive: false,
+          });
+          container.addEventListener("touchmove", preventDefault, {
+            passive: false,
+          });
+        }
+      } else {
+        // Remove event listeners for smaller screens to allow scrolling
+        container.removeEventListener("wheel", preventDefault);
+        container.removeEventListener("touchmove", preventDefault);
+      }
+      // ...
     }
+    helperFunction();
+    window.addEventListener("resize", helperFunction);
     return () => {
-      container.removeEventListener("wheel", preventDefault);
-      container.removeEventListener("touchmove", preventDefault);
+      window.removeEventListener("resize", helperFunction);
     };
   }, [onHouseDetailPage, onCheckOutPage, minimize]);
 
@@ -379,9 +395,9 @@ const Calendar = () => {
   }, [currentIndex, monthWidth]);
 
   return (
-    <div className="flex 1md:w-full w-96  flex-col justify-center relative">
+    <div className="flex w-full   h-full 1md:w-full 1xz:w-96 flex-col justify-center relative">
       <div
-        className={`absolute hidden 1md:block top-[3.6rem] ${
+        className={`absolute hidden 1md:block  top-[3.6rem] ${
           onCheckOutPage && "!left-[1.1rem]"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
@@ -392,19 +408,19 @@ const Calendar = () => {
         {renderDays()}
       </div>
       <div
-        className={`absolute  top-[3.6rem] ${
+        className={`absolute hidden  1xz:block top-[3.6rem] ${
           onCheckOutPage && "!right-[0.6rem]"
         }  ${
           onHouseDetailPage && !minimize
             ? "right-[0.1rem]"
-            : "1md:right-[2.2rem] right-[50%]  1md:translate-x-0 1xz:translate-x-1/2"
+            : "1md:right-[2.2rem] right-[50%] 1md:translate-x-0 1xz:translate-x-1/2"
         }`}
       >
         {renderDays()}
       </div>
       <button
         disabled={currentIndex === 0}
-        className={` absolute ${
+        className={` hidden 1xz:block absolute ${
           currentIndex === 0
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
@@ -419,14 +435,14 @@ const Calendar = () => {
       </button>
       <button
         disabled={currentIndex === 20}
-        className={` absolute ${
+        className={` hidden 1xz:block absolute ${
           currentIndex === 20
             ? "opacity-30 cursor-not-allowed"
             : " hover:bg-gray-100"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
             ? "right-0"
-            : "1md:right-10 right-0"
+            : "1md:right-8 right-0"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
@@ -434,7 +450,7 @@ const Calendar = () => {
       </button>
       <div
         ref={scrollContainerRef}
-        className="overflow-x-hidden overflow-y-clip scrollbar-hide"
+        className="1xz:overflow-x-hidden h-full 1md:w-auto 1md:block w-full flex 1xz:block justify-center overflow-y-auto  1xz:overflow-y-clip scrollbar-hide"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <div
@@ -442,26 +458,30 @@ const Calendar = () => {
             transition: `transform ${scrollSpeed}ms ease-out`,
             transform: `translateX(-${scrollPosition}px)`,
           }}
-          className={`inline-flex  ${
+          className={`inline-flex  w-full  h-[calc(100vh-20rem)] 1xz:h-auto flex-col 1xz:flex-row ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
               ? "gap-x-3"
-              : "1smd:gap-x-8 gap-x-0"
+              : "1md:gap-x-8 gap-x-0"
           }`}
         >
           {Array.from({ length: 23 }, (_, index) => (
             <div
-              key={`${index}-current`}
-              className={`max-w-md    justify-center items-center ${
+              key={`1md:max-w-md ${index}-current`}
+              className={` ${
+                index === 22 ? "pb-28 1xz:pb-0" : ""
+              }  justify-center items-center ${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? "w-[20rem] h-[20.5rem]"
                   : ` w-full flex  flex-col ${
                       index <= 0 ? "1md:pl-8 " : "1md:pl-16 "
-                    } justify-between h-full gap-y-10  `
-              } 1xz:mx-6 1md:mx-1 rounded-lg`}
+                    } justify-between h-full 1xz:gap-y-10 gap-y-6  `
+              } 1xz:mx-6 1md:mx-1 w-full rounded-lg`}
             >
-              {renderHeader(addMonths(currentMonth, index))}
+              <div className="flex w-full 1xz:justify-center justify-start">
+                {renderHeader(addMonths(currentMonth, index))}
+              </div>
 
-              <div className="">
+              <div className="w-full 1md:w-auto">
                 {renderCells(addMonths(currentMonth, index))}
               </div>
             </div>

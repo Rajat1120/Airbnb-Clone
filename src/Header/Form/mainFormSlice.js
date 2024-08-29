@@ -35,6 +35,9 @@ let formState = {
   textForFlexibleInput: "",
   textForGuestInput: "",
   displayGuestInput: "",
+  openWhereCard: true,
+  openWhenCard: false,
+  openWhoCard: false,
 };
 
 const formSlice = createSlice({
@@ -46,6 +49,15 @@ const formSlice = createSlice({
     },
     setOpenName: (state, action) => {
       state.openName = action.payload;
+    },
+    setOpenWhereCard: (state, action) => {
+      state.openWhereCard = action.payload;
+    },
+    setOpenWhenCard: (state, action) => {
+      state.openWhenCard = action.payload;
+    },
+    setOpenWhoCard: (state, action) => {
+      state.openWhoCard = action.payload;
     },
     setSearchEl: (state, action) => {
       state.search = action.payload;
@@ -149,6 +161,9 @@ export const {
   setSelectedEndDate,
   setMinimizeFormBtn,
   setStartDateToShow,
+  setOpenWhereCard,
+  setOpenWhenCard,
+  setOpenWhoCard,
   setExtraGuest,
   setPetPlural,
   setGuestPlural,

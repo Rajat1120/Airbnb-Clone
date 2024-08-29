@@ -18,6 +18,7 @@ let appState = {
   isFavorite: null,
   itemId: null,
   cancelGuestUpdate: false,
+  showMobileForm: false,
 };
 
 const AppSlice = createSlice({
@@ -54,6 +55,9 @@ const AppSlice = createSlice({
     },
     setScrollPositions(state, action) {
       state.scrollPositions = action.payload;
+    },
+    setShowMobileForm(state, action) {
+      state.showMobileForm = action.payload;
     },
 
     setInputSearchIds(state, action) {
@@ -107,6 +111,7 @@ export const {
   setFilterData,
   setSelectedIcon,
   setCancelGuestUpdate,
+  setShowMobileForm,
   setUserFavListing,
   setItemId,
   removeUserFavListing,
