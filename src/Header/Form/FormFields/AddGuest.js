@@ -29,11 +29,13 @@ const AddGuest = () => {
   const location = useLocation();
   let onCheckOutPage = location.pathname?.includes("/book");
   return (
-    <div className="  flex-center ">
+    <div className=" w-full 1xz:py-5 1xz:px-5 flex-center ">
       <div
-        className={` ${onCheckOutPage ? "" : "py-6"}  flex-center flex-col `}
+        className={` ${
+          onCheckOutPage ? "" : "1md:py-6"
+        }  flex-center w-full flex-col `}
       >
-        <div className="flex w-[22rem] flex-center flex-col">
+        <div className="flex  w-full flex-center flex-col">
           <div className="w-full justify-between flex items-center">
             <div className="">
               <p>Adults</p>
@@ -74,7 +76,7 @@ const AddGuest = () => {
           </div>
           <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
         </div>
-        <div className="flex w-[22rem] flex-center flex-col">
+        <div className="flex w-full flex-center flex-col">
           <div className="w-full justify-between flex items-center">
             <div className="">
               <p>Children</p>
@@ -118,7 +120,7 @@ const AddGuest = () => {
           </div>
           <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
         </div>
-        <div className="flex w-[22rem] flex-center flex-col">
+        <div className="flex w-full flex-center flex-col">
           <div className="w-full justify-between flex items-center">
             <div className="">
               <p>Infants</p>
@@ -162,12 +164,12 @@ const AddGuest = () => {
           </div>
           <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
         </div>
-        <div className="flex w-[22rem] flex-center flex-col">
+        <div className="flex w-full flex-center flex-col">
           <div className="w-full justify-between flex items-center">
             <div className="">
               <p>Pets</p>
               <p className="text-sm hover:cursor-pointer  font-medium text-grey">
-                <u>Bringing a service animal ?</u>
+                <u className="text-nowrap">Bringing a service animal?</u>
               </p>
             </div>
             <div className="flex items-center justify-center">

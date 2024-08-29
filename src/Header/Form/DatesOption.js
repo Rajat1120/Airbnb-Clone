@@ -7,7 +7,7 @@ const CheckInOption = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex gap-3 bg-shadow-gray rounded-full 1sm:my-7 h-11 justify-center items-center w-[20rem]  ">
+    <div className="flex gap-3 bg-shadow-gray rounded-full 1sm:my-7 h-11 justify-between items-center w-[calc(100%-2rem)] px-1 max-w-80 ">
       <span
         onClick={() => {
           dispatch(setDateOption("dates"));
