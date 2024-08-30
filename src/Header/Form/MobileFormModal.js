@@ -4,12 +4,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowMobileForm } from "../../Main/AppSlice";
 import crossIcon from "../../data/Icons svg/cross.svg";
 import { motion } from "framer-motion";
-import { format } from "date-fns";
+import { format, setMonth } from "date-fns";
 import MobileWhereCard from "./MobileWhereCard";
 import {
+  setAdultCount,
+  setChildCount,
+  setCurrentDot,
+  setDateOption,
+  setEndDateToShow,
+  setInfantCount,
+  setMonths,
+  setOpenName,
   setOpenWhenCard,
   setOpenWhereCard,
   setOpenWhoCard,
+  setPetsCount,
+  setRegion,
+  setSelectedEndDate,
+  setSelectedStartDate,
+  setStartDateToShow,
+  setStartDurationDate,
+  setStayDuration,
 } from "./mainFormSlice";
 import MobileWhenCard from "./MobileWhenCard";
 import MobileWhoCard from "./MobileWhoCard";
@@ -26,7 +41,7 @@ const MobileFormModal = () => {
   const petCount = useSelector((state) => state.form.petsCount);
   const petPlural = useSelector((state) => state.form.petPlural);
   const infantCount = useSelector((state) => state.form.infantCount);
-  const extraGuest = useSelector((state) => state.form.extraGuest);
+  const region = useSelector((state) => state.form.region);
   const durationDate = useSelector((state) => state.form.durationDate);
   const dateOption = useSelector((state) => state.form.dateOption);
   const textForFlexibleInput = useSelector(
@@ -83,10 +98,24 @@ const MobileFormModal = () => {
     );
   }
 
+  function whereToShowInput() {
+    if (destinationInputVal) {
+      return destinationInputVal;
+    }
+
+    if (region && region !== "all") {
+      return region;
+    }
+
+    return "I'm flexible";
+  }
+
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= 751) {
         dispatch(setShowMobileForm(false));
+      } else {
+        dispatch(setOpenName(""));
       }
     }
 
@@ -99,15 +128,42 @@ const MobileFormModal = () => {
     };
   }, [dispatch]);
 
+  function clearAll() {
+    dispatch(setAdultCount(0));
+    dispatch(setChildCount(0));
+    dispatch(setInfantCount(0));
+    dispatch(setPetsCount(0));
+    dispatch(setRegion("all"));
+    dispatch(setSelectedStartDate(null));
+    dispatch(setSelectedEndDate(null));
+    dispatch(setStartDurationDate(new Date()));
+
+    dispatch(setCurrentDot(3));
+    dispatch(setMonths("empty"));
+    dispatch(setDateOption("dates"));
+    dispatch(setStayDuration("week"));
+  }
+
   useEffect(() => {
     if (showMobileForm) {
+      // Disable scrolling
       document.body.style.overflow = "hidden";
+      document.body.style.height = "100%";
     } else {
+      // Enable scrolling
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+
       dispatch(setOpenWhereCard(true));
       dispatch(setOpenWhenCard(false));
       dispatch(setOpenWhoCard(false));
-      document.body.style.overflow = "auto";
     }
+
+    return () => {
+      // Cleanup: re-enable scrolling
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+    };
   }, [showMobileForm, dispatch]);
 
   if (!showMobileForm) return null;
@@ -165,9 +221,7 @@ const MobileFormModal = () => {
               className=" px-4 w-full py-5 h-full cursor-pointer shadow-md bg-white  flex justify-between rounded-2xl"
             >
               <span className="text-grey text-sm font-medium">Where</span>
-              <span className=" text-sm font-medium">
-                {destinationInputVal ? destinationInputVal : "I'm flexible"}
-              </span>
+              <span className=" text-sm font-medium">{whereToShowInput()}</span>
             </div>
           )}
         </motion.div>
@@ -259,7 +313,12 @@ const MobileFormModal = () => {
           className="flex px-5 justify-between
           items-center"
         >
-          <button className="font-medium underline">Clear all</button>
+          <button
+            onClick={() => clearAll()}
+            className="font-medium px-2 py-2 hover:bg-shadow-gray-light rounded-lg underline"
+          >
+            Clear all
+          </button>
           <button className="px-6 py-3 gap-x-2 rounded-lg bg-dark-pink flex text-white">
             <SearchSVG />
             <span>Search</span>
