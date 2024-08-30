@@ -4,18 +4,36 @@ import Calendar from "./FormFields/Calendar";
 import { useDispatch, useSelector } from "react-redux";
 import CircularSlider from "./CircularSlider";
 import AddDays from "./AddDays";
+import { format } from "date-fns";
 import {
   setOpenWhenCard,
   setOpenWhoCard,
   setSelectedEndDate,
   setSelectedStartDate,
 } from "./mainFormSlice";
+import FlexibleStayOptions from "./FlexibleStayOptions";
 
 const MobileWhenCard = () => {
   const dispatch = useDispatch();
   const startDate = useSelector((state) => state.form.selectedStartDate);
   const endDate = useSelector((state) => state.form.selectedEndDate);
   const dateOption = useSelector((state) => state.form.dateOption);
+  const currentDot = useSelector((store) => store.form.curDot);
+  const startDurationDate = useSelector(
+    (store) => store.form.startDurationDate
+  );
+  const textForFlexibleInput = useSelector(
+    (store) => store.form.textForFlexibleInput
+  );
+
+  let showReset =
+    startDate ||
+    endDate ||
+    textForFlexibleInput !== " Any week" ||
+    currentDot !== 3 ||
+    format(startDurationDate, "yyyy-MM-dd") !==
+      format(new Date(), "yyyy-MM-dd");
+
   return (
     <div className="w-full relative  overflow-hidden  pt-5 h-[calc(100vh-10rem)] flex flex-col  shadow-lg border border-shadow-gray bg-white   rounded-2xl">
       <div className="flex flex-col  w-full h-full ">
@@ -77,6 +95,9 @@ const MobileWhenCard = () => {
           </>
         ) : null}
         {dateOption === "month" ? <CircularSlider></CircularSlider> : null}
+        {dateOption === "flexible" ? (
+          <FlexibleStayOptions showHorPadding={false}></FlexibleStayOptions>
+        ) : null}
 
         <div
           className={`w-full bg-white ${
@@ -100,7 +121,7 @@ const MobileWhenCard = () => {
                 }}
                 className="font-medium px-3 py-3 rounded-lg hover:bg-shadow-gray-light underline"
               >
-                {startDate || endDate ? "Reset" : "Skip"}
+                {showReset ? "Reset" : "Skip"}
               </button>
               <button
                 onClick={() => {
