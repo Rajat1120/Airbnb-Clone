@@ -6,10 +6,15 @@ import CircularSlider from "./CircularSlider";
 import AddDays from "./AddDays";
 import { format } from "date-fns";
 import {
+  setCurrentDot,
+  setMonths,
   setOpenWhenCard,
   setOpenWhoCard,
   setSelectedEndDate,
   setSelectedStartDate,
+  setStartDurationDate,
+  setStayDuration,
+  setTextForFlexibleInput,
 } from "./mainFormSlice";
 import FlexibleStayOptions from "./FlexibleStayOptions";
 
@@ -111,9 +116,13 @@ const MobileWhenCard = () => {
             >
               <button
                 onClick={() => {
-                  if (startDate || endDate) {
+                  if (showReset) {
                     dispatch(setSelectedStartDate(null));
                     dispatch(setSelectedEndDate(null));
+                    dispatch(setStartDurationDate(new Date()));
+                    dispatch(setStayDuration("week"));
+                    dispatch(setMonths("empty"));
+                    dispatch(setCurrentDot(3));
                   } else {
                     dispatch(setOpenWhenCard(false));
                     dispatch(setOpenWhoCard(true));

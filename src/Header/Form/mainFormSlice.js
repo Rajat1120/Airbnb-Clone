@@ -102,7 +102,9 @@ const formSlice = createSlice({
       state.startDurationDate = action.payload;
     },
     setMonths(state, action) {
-      if (state.months.includes(action.payload)) {
+      if (action.payload === "empty") {
+        state.months = [];
+      } else if (state.months.includes(action.payload)) {
         state.months = state.months.filter((month) => month !== action.payload);
       } else {
         state.months.push(action.payload);

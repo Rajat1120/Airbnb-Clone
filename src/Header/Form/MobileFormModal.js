@@ -15,6 +15,7 @@ import MobileWhenCard from "./MobileWhenCard";
 import MobileWhoCard from "./MobileWhoCard";
 
 const MobileFormModal = () => {
+  const dispatch = useDispatch();
   const showMobileForm = useSelector((state) => state.app.showMobileForm);
   const openWhereCard = useSelector((state) => state.form.openWhereCard);
   const openWhenCard = useSelector((state) => state.form.openWhenCard);
@@ -26,12 +27,41 @@ const MobileFormModal = () => {
   const petPlural = useSelector((state) => state.form.petPlural);
   const infantCount = useSelector((state) => state.form.infantCount);
   const extraGuest = useSelector((state) => state.form.extraGuest);
+  const durationDate = useSelector((state) => state.form.durationDate);
+  const dateOption = useSelector((state) => state.form.dateOption);
+  const textForFlexibleInput = useSelector(
+    (state) => state.form.textForFlexibleInput
+  );
   const destinationInputVal = useSelector(
     (state) => state.form.destinationInputVal
   );
   const startDate = useSelector((state) => state.form.selectedStartDate);
   const endDate = useSelector((state) => state.form.selectedEndDate);
-  const dispatch = useDispatch();
+
+  let dateInput =
+    startDate || endDate
+      ? `${startDate ? format(startDate, "d MMM") : ""} ${
+          startDate && endDate ? "-" : ""
+        } ${endDate ? format(endDate, "d MMM") : ""}`
+      : "Add dates";
+
+  function whenToShowInput(dateOption) {
+    switch (dateOption) {
+      case "flexible":
+        return textForFlexibleInput === " Any week"
+          ? "Any week"
+          : textForFlexibleInput;
+
+      case "month":
+        return durationDate;
+
+      case "dates":
+        return startDate || endDate ? dateInput : "Add dates";
+
+      default:
+        return "Add dates";
+    }
+  }
 
   function SearchSVG() {
     return (
@@ -165,11 +195,7 @@ const MobileFormModal = () => {
             >
               <span className="text-grey text-sm font-medium">When</span>
               <span className=" text-sm font-medium">
-                {startDate || endDate
-                  ? `${startDate ? format(startDate, "d MMM") : ""} ${
-                      startDate && endDate ? "-" : ""
-                    } ${endDate ? format(endDate, "d MMM") : ""}`
-                  : "Add dates"}
+                {whenToShowInput(dateOption)}
               </span>
             </div>
           )}

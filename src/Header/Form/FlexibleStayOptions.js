@@ -38,7 +38,9 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
 
   let result = getNext12Months();
 
-  let selectedMonthsName = curSelectedMonths.map((index) => result[index]);
+  let selectedMonthsName = curSelectedMonths
+    .map((index) => result[index])
+    .filter(Boolean);
 
   useEffect(() => {
     const month = monthRef.current;
@@ -105,12 +107,14 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
 
   useEffect(() => {
     let inputText = `${
-      curSelectedMonths.length > 0
-        ? `${stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${
-            selectedMonthsName.length === 1
-              ? selectedMonthsName[0].month
+      curSelectedMonths?.length > 0
+        ? `${
+            stayDuration?.charAt(0).toUpperCase() + stayDuration?.slice(1)
+          } in ${
+            selectedMonthsName?.length === 1
+              ? selectedMonthsName[0]?.month
               : selectedMonthsName
-                  .map((item) => item.month.substring(0, 3))
+                  .map((item) => item.month?.substring(0, 3))
                   .join(", ")
           }`
         : ` Any ${stayDuration}`

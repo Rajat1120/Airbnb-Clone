@@ -28,19 +28,20 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
   };
 
   const next12Months = getNext12Months();
-
-  const selectedMonthsName = curSelectedMonths.map(
-    (index) => next12Months[index]
-  );
+  const selectedMonthsName = curSelectedMonths
+    .map((index) => next12Months[index])
+    .filter(Boolean);
 
   useEffect(() => {
     let inputText = `${
-      curSelectedMonths.length > 0
-        ? `${stayDuration.charAt(0).toUpperCase() + stayDuration.slice(1)} in ${
-            selectedMonthsName.length === 1
-              ? selectedMonthsName[0].month
+      curSelectedMonths?.length > 0
+        ? `${
+            stayDuration?.charAt(0).toUpperCase() + stayDuration?.slice(1)
+          } in ${
+            selectedMonthsName?.length === 1
+              ? selectedMonthsName[0]?.month
               : selectedMonthsName
-                  .map((item) => item.month.substring(0, 3))
+                  ?.map((item) => item?.month?.substring(0, 3))
                   .join(", ")
           }`
         : ` Any ${stayDuration}`
@@ -74,16 +75,16 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
               <span className="text-xs font-medium">When</span>
               <span className="overflow-hidden text-sm font-medium text-ellipsis whitespace-nowrap 1smd:w-[15rem]">
                 {curInput === "flexible" ? (
-                  curSelectedMonths.length > 0 ? (
+                  selectedMonthsName?.length > 0 ? (
                     `${
-                      stayDuration.charAt(0).toUpperCase() +
-                      stayDuration.slice(1)
+                      stayDuration?.charAt(0).toUpperCase() +
+                      stayDuration?.slice(1)
                     } in ${
-                      selectedMonthsName.length === 1
+                      selectedMonthsName?.length === 1
                         ? selectedMonthsName[0].month
                         : selectedMonthsName
-                            .map((item) => item.month.substring(0, 3))
-                            .join(", ")
+                            ?.map((item) => item?.month?.substring(0, 3))
+                            ?.join(", ")
                     }`
                   ) : (
                     ` Any ${stayDuration}`
