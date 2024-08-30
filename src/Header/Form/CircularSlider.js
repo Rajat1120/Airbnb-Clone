@@ -1,24 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CalendarModal from "./CalendarModal";
 import Calendar from "./FormFields/Calendar";
 import { useDispatch, useSelector } from "react-redux";
-import { setCalendarModalOpen, setCurrentDot } from "./mainFormSlice";
-import { format } from "date-fns";
+import {
+  setCalendarModalOpen,
+  setCurrentDot,
+  setDurationDate,
+} from "./mainFormSlice";
+import { format, addMonths } from "date-fns";
 const CircularSlider = () => {
   const [onHover, setOnHover] = useState(false);
 
   const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
   const currentDot = useSelector((store) => store.form.curDot);
+  const dispatch = useDispatch();
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
-  const formatDate = format(startDurationDate, "EEE, MMM d");
+  const formatDate = format(startDurationDate, "MMM d, yyyy");
 
   let NumOfMonths = currentDot;
 
-  const dotCount = 12;
+  let endDurationDate = addMonths(startDurationDate, NumOfMonths);
+  const formatEndDate = format(endDurationDate, "MMM d, yyyy");
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    let formattedDate =
+      format(startDurationDate, "MMM d") +
+      " to " +
+      format(endDurationDate, "MMM d");
+    dispatch(setDurationDate(formattedDate));
+  }, [startDurationDate, dispatch, endDurationDate, currentDot]);
+
+  const dotCount = 12;
 
   const handleClick = (index) => {
     dispatch(setCurrentDot(index));
@@ -92,12 +106,18 @@ const CircularSlider = () => {
       </div>
       <div className="mb-6 ">
         <p>
-          Starting on {formatDate}{" "}
           <span
-            className="font-semibold cursor-pointer underline"
             onClick={handleEditClick}
+            className="font-medium cursor-pointer underline underline-offset-4"
           >
-            Edit
+            {formatDate}
+          </span>
+          <span className="mx-2 font-[350]">to</span>
+          <span
+            onClick={handleEditClick}
+            className="font-medium cursor-pointer underline underline-offset-4"
+          >
+            {formatEndDate}
           </span>
         </p>
         <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>

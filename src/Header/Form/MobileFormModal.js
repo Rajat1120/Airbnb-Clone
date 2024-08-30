@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowMobileForm } from "../../Main/AppSlice";
 import crossIcon from "../../data/Icons svg/cross.svg";
 import { motion } from "framer-motion";
+import { format } from "date-fns";
 import MobileWhereCard from "./MobileWhereCard";
 import {
   setOpenWhenCard,
@@ -14,11 +15,53 @@ import MobileWhenCard from "./MobileWhenCard";
 import MobileWhoCard from "./MobileWhoCard";
 
 const MobileFormModal = () => {
+  const dispatch = useDispatch();
   const showMobileForm = useSelector((state) => state.app.showMobileForm);
   const openWhereCard = useSelector((state) => state.form.openWhereCard);
   const openWhenCard = useSelector((state) => state.form.openWhenCard);
   const openWhoCard = useSelector((state) => state.form.openWhoCard);
-  const dispatch = useDispatch();
+  const adultCount = useSelector((state) => state.form.adultCount);
+  const childCount = useSelector((state) => state.form.childCount);
+  const guestPlural = useSelector((state) => state.form.guestPlural);
+  const petCount = useSelector((state) => state.form.petsCount);
+  const petPlural = useSelector((state) => state.form.petPlural);
+  const infantCount = useSelector((state) => state.form.infantCount);
+  const extraGuest = useSelector((state) => state.form.extraGuest);
+  const durationDate = useSelector((state) => state.form.durationDate);
+  const dateOption = useSelector((state) => state.form.dateOption);
+  const textForFlexibleInput = useSelector(
+    (state) => state.form.textForFlexibleInput
+  );
+  const destinationInputVal = useSelector(
+    (state) => state.form.destinationInputVal
+  );
+  const startDate = useSelector((state) => state.form.selectedStartDate);
+  const endDate = useSelector((state) => state.form.selectedEndDate);
+
+  let dateInput =
+    startDate || endDate
+      ? `${startDate ? format(startDate, "d MMM") : ""} ${
+          startDate && endDate ? "-" : ""
+        } ${endDate ? format(endDate, "d MMM") : ""}`
+      : "Add dates";
+
+  function whenToShowInput(dateOption) {
+    switch (dateOption) {
+      case "flexible":
+        return textForFlexibleInput === " Any week"
+          ? "Any week"
+          : textForFlexibleInput;
+
+      case "month":
+        return durationDate;
+
+      case "dates":
+        return startDate || endDate ? dateInput : "Add dates";
+
+      default:
+        return "Add dates";
+    }
+  }
 
   function SearchSVG() {
     return (
@@ -122,7 +165,9 @@ const MobileFormModal = () => {
               className=" px-4 w-full py-5 h-full cursor-pointer shadow-md bg-white  flex justify-between rounded-2xl"
             >
               <span className="text-grey text-sm font-medium">Where</span>
-              <span className=" text-sm font-medium">I'm flexible</span>{" "}
+              <span className=" text-sm font-medium">
+                {destinationInputVal ? destinationInputVal : "I'm flexible"}
+              </span>
             </div>
           )}
         </motion.div>
@@ -149,7 +194,9 @@ const MobileFormModal = () => {
               className=" px-4 py-5 h-full shadow-md cursor-pointer bg-white  flex justify-between rounded-2xl"
             >
               <span className="text-grey text-sm font-medium">When</span>
-              <span className=" text-sm font-medium">Add dates</span>
+              <span className=" text-sm font-medium">
+                {whenToShowInput(dateOption)}
+              </span>
             </div>
           )}
         </motion.div>
@@ -176,7 +223,21 @@ const MobileFormModal = () => {
               className="px-4 py-5 h-full cursor-pointer shadow-md bg-white  flex justify-between rounded-2xl"
             >
               <span className="text-grey text-sm font-medium">Who</span>
-              <span className=" text-sm font-medium">Add guests</span>
+              <span className=" text-sm font-medium">
+                <p className={`text-sm mt-[2px] font-medium text-black `}>
+                  {adultCount + childCount > 0
+                    ? `${adultCount + childCount} guest${guestPlural} ${
+                        infantCount
+                          ? `${infantCount} infant${
+                              infantCount > 1
+                                ? "s, "
+                                : `${petCount ? ", " : ""}`
+                            }`
+                          : ""
+                      }${petCount ? `${petCount} pet` : ""}${petPlural}`
+                    : "Add guest"}
+                </p>
+              </span>
             </div>
           )}
         </motion.div>

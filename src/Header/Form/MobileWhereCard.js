@@ -1,8 +1,20 @@
-import React from "react";
-import searchIcon from "../../data/Icons svg/search-icon.svg";
+import React, { useState } from "react";
+
 import Destination from "../../data/destination";
+import {
+  setDestinationInputVal,
+  setOpenWhenCard,
+  setOpenWhereCard,
+} from "./mainFormSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const MobileWhereCard = () => {
+  const [showNextButton, setShowNextButton] = useState(false);
+  const dispatch = useDispatch();
+  const destinationInputVal = useSelector(
+    (state) => state.form.destinationInputVal
+  );
+
   function SearchSVG() {
     return (
       <svg
@@ -27,16 +39,37 @@ const MobileWhereCard = () => {
       <div className="px-6 pb-4">
         <h1 className="text-[1.6rem]  block pb-5 font-semibold">Where to?</h1>
         <label
-          className="border px-4 py-4 gap-x-3  items-center  rounded-lg border-grey-light flex w-full h-full"
+          className={`border px-4 ${
+            showNextButton ? "py-2" : "py-4"
+          } gap-x-3  items-center  rounded-lg border-grey-light flex w-full h-full`}
           htmlFor="destination"
         >
           <SearchSVG />
           <input
+            onChange={(e) => {
+              if (e.target.value) {
+                setShowNextButton(true);
+              } else {
+                setShowNextButton(false);
+              }
+              dispatch(setDestinationInputVal(e.target.value));
+            }}
             type="text"
             id="destination"
-            className="outline-none placeholder:text-sm  placeholder:font-light placeholder:text-grey"
+            className="outline-none placeholder:text-sm block w-full placeholder:font-light placeholder:text-grey"
             placeholder="Search destination"
           />
+          {showNextButton && (
+            <button
+              onClick={() => {
+                dispatch(setOpenWhereCard(false));
+                dispatch(setOpenWhenCard(true));
+              }}
+              className="bg-black text-sm text-white px-4 py-2 rounded-full"
+            >
+              Next
+            </button>
+          )}
         </label>
       </div>
       <div className="flex w-full overflow-x-scroll gap-x-4 ">

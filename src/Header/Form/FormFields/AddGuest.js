@@ -169,7 +169,7 @@ const AddGuest = () => {
             <div className="">
               <p>Pets</p>
               <p className="text-sm hover:cursor-pointer  font-medium text-grey">
-                <u>Bringing a service animal ?</u>
+                <u className="text-nowrap">Bringing a service animal?</u>
               </p>
             </div>
             <div className="flex items-center justify-center">

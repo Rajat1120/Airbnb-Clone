@@ -13,11 +13,12 @@ let formState = {
   region: "all",
   dateOption: "dates",
   adultCount: 0,
-  curDot: 2,
+  curDot: 3,
   hoverInput: null,
   childCount: 0,
   minimizeFormBtn: "",
   displaySearch: null,
+
   infantCount: 0,
   petsCount: 0,
   startDateToShow: null,
@@ -35,6 +36,7 @@ let formState = {
   textForFlexibleInput: "",
   textForGuestInput: "",
   displayGuestInput: "",
+  durationDate: "",
   openWhereCard: true,
   openWhenCard: false,
   openWhoCard: false,
@@ -53,6 +55,10 @@ const formSlice = createSlice({
     setOpenWhereCard: (state, action) => {
       state.openWhereCard = action.payload;
     },
+    setDurationDate: (state, action) => {
+      state.durationDate = action.payload;
+    },
+
     setOpenWhenCard: (state, action) => {
       state.openWhenCard = action.payload;
     },
@@ -96,7 +102,9 @@ const formSlice = createSlice({
       state.startDurationDate = action.payload;
     },
     setMonths(state, action) {
-      if (state.months.includes(action.payload)) {
+      if (action.payload === "empty") {
+        state.months = [];
+      } else if (state.months.includes(action.payload)) {
         state.months = state.months.filter((month) => month !== action.payload);
       } else {
         state.months.push(action.payload);
@@ -157,6 +165,7 @@ const formSlice = createSlice({
 export const {
   setActiveInput,
   setSearchEl,
+  setDurationDate,
   setCurrentMonth,
   setSelectedEndDate,
   setMinimizeFormBtn,
@@ -167,6 +176,7 @@ export const {
   setExtraGuest,
   setPetPlural,
   setGuestPlural,
+
   setTextForInputDuration,
   setEndDateToShow,
   setDisplaySearch,

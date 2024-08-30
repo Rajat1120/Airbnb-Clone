@@ -467,9 +467,7 @@ const Calendar = () => {
           {Array.from({ length: 23 }, (_, index) => (
             <div
               key={`1md:max-w-md ${index}-current`}
-              className={` ${
-                index === 22 ? "pb-28 1xz:pb-0" : ""
-              }  justify-center items-center ${
+              className={`   justify-center items-center ${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? "w-[20rem] h-[20.5rem]"
                   : ` w-full flex  flex-col ${
