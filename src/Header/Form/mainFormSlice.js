@@ -18,7 +18,7 @@ let formState = {
   childCount: 0,
   minimizeFormBtn: "",
   displaySearch: null,
-
+  combinedString: [],
   infantCount: 0,
   petsCount: 0,
   startDateToShow: null,
@@ -51,6 +51,9 @@ const formSlice = createSlice({
     },
     setOpenName: (state, action) => {
       state.openName = action.payload;
+    },
+    setCombinedString: (state, action) => {
+      state.combinedString = action.payload;
     },
     setOpenWhereCard: (state, action) => {
       state.openWhereCard = action.payload;
@@ -176,7 +179,7 @@ export const {
   setExtraGuest,
   setPetPlural,
   setGuestPlural,
-
+  setCombinedString,
   setTextForInputDuration,
   setEndDateToShow,
   setDisplaySearch,

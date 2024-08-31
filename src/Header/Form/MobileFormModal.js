@@ -5,6 +5,7 @@ import { setShowMobileForm } from "../../Main/AppSlice";
 import crossIcon from "../../data/Icons svg/cross.svg";
 import { motion } from "framer-motion";
 import { format, setMonth } from "date-fns";
+import { handleSearchInput } from "./HandleSearch";
 import MobileWhereCard from "./MobileWhereCard";
 import {
   setAdultCount,
@@ -43,6 +44,7 @@ const MobileFormModal = () => {
   const infantCount = useSelector((state) => state.form.infantCount);
   const region = useSelector((state) => state.form.region);
   const durationDate = useSelector((state) => state.form.durationDate);
+  const combinedString = useSelector((store) => store.form.combinedString);
   const dateOption = useSelector((state) => state.form.dateOption);
   const textForFlexibleInput = useSelector(
     (state) => state.form.textForFlexibleInput
@@ -319,7 +321,18 @@ const MobileFormModal = () => {
           >
             Clear all
           </button>
-          <button className="px-6 py-3 gap-x-2 rounded-lg bg-dark-pink flex text-white">
+          <button
+            onClick={() => {
+              dispatch(setShowMobileForm(false));
+              handleSearchInput(
+                region,
+                destinationInputVal,
+                combinedString,
+                dispatch
+              );
+            }}
+            className="px-6 py-3 gap-x-2 rounded-lg bg-dark-pink flex text-white"
+          >
             <SearchSVG />
             <span>Search</span>
           </button>
