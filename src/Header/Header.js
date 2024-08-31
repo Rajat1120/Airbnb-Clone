@@ -74,12 +74,11 @@ function Header({ headerRef }) {
           </div>
         )}
         <div className="h-20 1xz:flex hidden    items-center  justify-end ">
-          <a href="#">
-            <p className="text-sm h-[2.5rem]  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
-              Airbnb your home
-            </p>
-          </a>
-          <button className=" h-[2rem]   flex items-center justify-center rounded-full hover:bg-shadow-gray-light w-[2rem] ">
+          <button className="text-sm h-[2.5rem] cursor-auto  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
+            Airbnb your home
+          </button>
+
+          <button className=" min-h-9 cursor-auto   flex items-center justify-center rounded-full hover:bg-shadow-gray-light min-w-9 ">
             <img className="h-4 w-4" src={globe} alt="" />
           </button>
 

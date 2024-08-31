@@ -17,6 +17,7 @@ import {
 export default function Home() {
   const startScroll = useSelector((store) => store.app.startScroll);
   const minimize = useSelector((store) => store.app.minimize);
+  const userData = useSelector((store) => store.app.userData);
   const dispatch = useDispatch();
   useEffect(() => {
     const today = new Date();
@@ -68,9 +69,11 @@ export default function Home() {
       <div className="1sm:mt-[12rem] mt-[7rem]  flex justify-center items-center ">
         <House></House>
       </div>
-      <div className="w-full hidden 1sm:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
-        <Footer></Footer>
-      </div>
+      {userData ? (
+        <div className="w-full hidden  bg-white 1smd:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
+          <Footer></Footer>
+        </div>
+      ) : null}
 
       <SpeedInsights></SpeedInsights>
     </div>

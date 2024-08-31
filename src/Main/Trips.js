@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import LongFooter from "../House-detail/LongFooter";
 import Header from "../Header/Header";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import star from "../data/Icons svg/star.svg";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +9,7 @@ import { getPayments, getWishList } from "../Services/apiRooms";
 
 const Trips = () => {
   const userData = useSelector((store) => store.app.userData);
-
+  const navigate = useNavigate();
   const {
     data: paymentsData,
     error,
@@ -40,6 +40,10 @@ const Trips = () => {
   }, []);
 
   let isTripAvailable = bookedTrips?.length;
+
+  if (!userData) {
+    return navigate("/");
+  }
 
   return (
     <div className="relative">

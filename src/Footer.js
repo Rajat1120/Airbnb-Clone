@@ -11,7 +11,7 @@ const Footer = () => {
         onCheckoutPage ? "bg-shadow-gray-light" : "bg-white"
       }  h-full `}
     >
-      <div className="w-[60% flex">
+      <div className="max-w-[60%] flex">
         <span className="text-sm font-light">© 2024 Airbnb, Inc</span>
         <span className="mx-2 flex items-center justify-center">
           <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
