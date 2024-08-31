@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setShowMobileForm } from "../../Main/AppSlice";
+import { setHitSearch, setShowMobileForm } from "../../Main/AppSlice";
 import crossIcon from "../../data/Icons svg/cross.svg";
 import { motion } from "framer-motion";
 import { format, setMonth } from "date-fns";
@@ -49,6 +49,7 @@ const MobileFormModal = () => {
   const textForFlexibleInput = useSelector(
     (state) => state.form.textForFlexibleInput
   );
+  const hitSearch = useSelector((state) => state.app.hitSearch);
   const destinationInputVal = useSelector(
     (state) => state.form.destinationInputVal
   );
@@ -324,6 +325,7 @@ const MobileFormModal = () => {
           <button
             onClick={() => {
               dispatch(setShowMobileForm(false));
+              dispatch(setHitSearch(hitSearch + 1));
               handleSearchInput(
                 region,
                 destinationInputVal,

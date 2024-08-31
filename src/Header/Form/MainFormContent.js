@@ -40,6 +40,7 @@ import Month from "./Month";
 import Flexible from "./Flexible";
 import {
   setCity,
+  setHitSearch,
   setInputSearchIds,
   setMinimize,
   setSelectedCountry,
@@ -54,6 +55,7 @@ const MainFormContent = () => {
   const guestPlural = useSelector((store) => store.form.guestPlural);
   const petPlural = useSelector((store) => store.form.petPlural);
   const extraGuest = useSelector((store) => store.form.extraGuest);
+  const hitSearch = useSelector((store) => store.app.hitSearch);
 
   const destinationInputVal = useSelector(
     (store) => store.form.destinationInputVal
@@ -735,6 +737,7 @@ const MainFormContent = () => {
             <div
               onClick={() => {
                 data && dispatch(setActiveInput(""));
+                dispatch(setHitSearch(hitSearch + 1));
                 handleSearch();
                 handleSearchInput(
                   region,

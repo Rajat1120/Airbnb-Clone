@@ -17,6 +17,7 @@ const Options = () => {
   const optionsRef = useRef(null);
   const itemRefs = useRef([]);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
+  const hitSearch = useSelector((store) => store.app.hitSearch);
   const ids = useSelector((store) => store.app.inputSearchIds);
 
   const city = useSelector((store) => store.app.city);
@@ -59,7 +60,7 @@ const Options = () => {
         dispatch(setSelectedIcon(newOptions[0].iconName));
       }
     }
-  }, [data, dispatch]);
+  }, [data, dispatch, hitSearch]);
 
   const handleScroll = () => {
     const container = optionsRef.current;
