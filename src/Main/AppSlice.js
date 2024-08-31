@@ -10,6 +10,7 @@ let appState = {
   city: "",
   hoveredItem: null,
   hoveredItems: [],
+  hitSearch: 0,
   scrollPositions: {},
   inputSearchIds: [],
   userData: null,
@@ -30,6 +31,9 @@ const AppSlice = createSlice({
     },
     setMinimize(state, action) {
       state.minimize = action.payload;
+    },
+    setHitSearch(state, action) {
+      state.hitSearch = action.payload;
     },
     setFilterData(state, action) {
       state.filterData = { ...state.filterData, ...action.payload };
@@ -114,6 +118,7 @@ export const {
   setShowMobileForm,
   setUserFavListing,
   setItemId,
+  setHitSearch,
   removeUserFavListing,
   setIsLoading,
   setSelectedCountry,

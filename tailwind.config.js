@@ -77,6 +77,10 @@ module.exports = {
           "0%": { height: "9.8rem" },
           "100%": { height: "4.9rem" },
         },
+        shimmer: {
+          "0%": { opacity: "40%" },
+          "100%": { opacity: "100%" },
+        },
 
         bgShadow: {
           "0%": { "background-color": "white" },
@@ -93,7 +97,7 @@ module.exports = {
         slideInRight: "slideInRight 0.3s ease-in-out forwards",
         expand: "expand 0.2s ease-in-out forwards",
         collapse: "collapse 0.2s  ease-in-out forwards",
-
+        shimmer: "shimmer 1.5s infinite alternate",
         bgShadow: "bgShadow 0.3s ease-in-out forwards",
         formBlur: "formBlur 0.3s ease-in-out forwards",
       },

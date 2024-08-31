@@ -180,15 +180,17 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
           </span>
         </div>
       </div>
-      <div className="w-full  max-w-[65rem] mb-12 flex flex-col items-center">
-        <span className="text-lg font-medium mt-10 mb-6">
+      <div className="w-full  max-w-[65rem] mb-5 1xz:mb-10 max-h-full flex flex-col items-center">
+        <span className="text-lg font-medium flex items-center 1xz:mt-2 1xz:mb-10  my-6">
           When do you want to go?
         </span>
         <div
           ref={monthRef}
-          className={`w-full  overflow-x-auto ${!showHorPadding ? "px-5" : ""}`}
+          className={`w-full h-full overflow-x-auto ${
+            !showHorPadding ? "px-5" : ""
+          }`}
         >
-          <div className="inline-flex gap-x-2 pb-4">
+          <div className="inline-flex h-full items-center gap-x-2 pb-4">
             {result.map((item, index) => (
               <div
                 onClick={() => dispatch(setMonths(index))}

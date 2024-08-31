@@ -1,19 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import Destination from "../../data/destination";
 import {
   setDestinationInputVal,
   setOpenWhenCard,
   setOpenWhereCard,
+  setRegion,
 } from "./mainFormSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const MobileWhereCard = () => {
+  const [defaultDestination, setDefaultDestination] = useState("");
   const [showNextButton, setShowNextButton] = useState(false);
   const dispatch = useDispatch();
+  const region = useSelector((state) => state.form.region);
   const destinationInputVal = useSelector(
     (state) => state.form.destinationInputVal
   );
+
+  useEffect(() => {
+    if (destinationInputVal) {
+      setDefaultDestination(destinationInputVal);
+    } else if (region !== "all") {
+      setDefaultDestination(region);
+    } else {
+      setDefaultDestination("");
+    }
+  }, [region, destinationInputVal]);
 
   function SearchSVG() {
     return (
@@ -58,12 +71,14 @@ const MobileWhereCard = () => {
             id="destination"
             className="outline-none placeholder:text-sm block w-full placeholder:font-light placeholder:text-grey"
             placeholder="Search destination"
+            defaultValue={defaultDestination}
           />
           {showNextButton && (
             <button
               onClick={() => {
                 dispatch(setOpenWhereCard(false));
                 dispatch(setOpenWhenCard(true));
+                dispatch(setRegion("all"));
               }}
               className="bg-black text-sm text-white px-4 py-2 rounded-full"
             >
@@ -75,6 +90,12 @@ const MobileWhereCard = () => {
       <div className="flex w-full overflow-x-scroll gap-x-4 ">
         {Destination.map((item, i) => (
           <div
+            onClick={() => {
+              dispatch(setRegion(item.iconName));
+              dispatch(setOpenWhereCard(false));
+              dispatch(setOpenWhenCard(true));
+              dispatch(setDestinationInputVal(""));
+            }}
             key={item.iconName}
             className={`flex-none ${i === 0 ? "ml-6" : ""} ${
               i === Destination.length - 1 ? "mr-6" : ""

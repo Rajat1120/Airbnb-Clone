@@ -173,20 +173,32 @@ const House = () => {
 
   return (
     <div
-      className={`relative pb-14 transition-transform duration-[0.3s] ease-in-out 1xs:px-10 px-5  1xl:px-20 top-[4rem] ${
+      className={`relative pb-14  transition-transform duration-[0.3s] ease-in-out 1xs:px-10 px-5  1xl:px-20 top-[4rem] ${
         !startScroll
           ? "-translate-y-[4.8rem] "
           : "1sm:translate-y-[4rem] 1md:translate-y-[0rem]"
       }`}
       ref={containerRef}
     >
-      <div className="grid    gap-x-6 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:my-grid-cols-four-col justify-center w-full items-start 1xs:grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
+      <div className="grid    gap-x-4 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:my-grid-cols-four-col justify-center w-full items-start 1xs:grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
         {status === "pending"
           ? Array.from({ length: 50 }).map((_, i) => (
-              <div
-                key={i}
-                className="loader w-full h-[24rem] flex-center"
-              ></div>
+              <div key={i} className="1xs:w-full w-[calc(100vw-40px)]">
+                <div className="relative  w-full aspect-square mb-4">
+                  <div className="w-full h-full animate-shimmer bg-gray-200 rounded-[20px]"></div>
+                </div>
+                <div className="flex justify-between items-start">
+                  <div className="w-[80%]">
+                    <div className="w-[90%] h-5 animate-shimmer bg-gray-200 mb-2"></div>
+                    <div className="w-[70%] h-4 animate-shimmer bg-gray-200 mb-1"></div>
+                    <div className="w-[60%] h-4 animate-shimmer bg-gray-200 mb-1"></div>
+                    <div className="w-[40%] h-4 animate-shimmer bg-gray-200"></div>
+                  </div>
+                  <div className="w-[20%] flex justify-end">
+                    <div className="w-8 h-6 animate-shimmer bg-gray-200 rounded-sm"></div>
+                  </div>
+                </div>
+              </div>
             ))
           : data?.pages.flatMap((page) =>
               page.map((item) => (
