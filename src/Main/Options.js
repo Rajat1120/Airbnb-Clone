@@ -17,6 +17,7 @@ const Options = () => {
   const optionsRef = useRef(null);
   const itemRefs = useRef([]);
   const selectedCountry = useSelector((store) => store.app.selectedCountry);
+  const selectedIcon = useSelector((store) => store.app.selectedIcon);
   const hitSearch = useSelector((store) => store.app.hitSearch);
   const ids = useSelector((store) => store.app.inputSearchIds);
 
@@ -106,7 +107,7 @@ const Options = () => {
     <div
       className={`1sm:bg-white ${
         minimize ? "hidden" : ""
-      } z-10 justify-self-center w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
+      } z-10 justify-self-center  w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
     >
       <div
         className={`1sm:h-20 1sm:py-6 flex w-full relative items-center justify-between space-x-10`}
@@ -131,7 +132,7 @@ const Options = () => {
               <div
                 id="options"
                 ref={optionsRef}
-                className="flex items-center space-x-10 justify-start h-16 1sm:h-24 w-full overflow-x-auto scroll-smooth"
+                className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 justify-start h-16 1sm:h-24 w-full overflow-x-auto scroll-smooth"
                 style={{
                   scrollBehavior: "smooth",
                 }}
@@ -143,23 +144,19 @@ const Options = () => {
                     }}
                     onClick={() => dispatch(setSelectedIcon(item.iconName))}
                     key={i}
-                    className={`opacity-75 hover:opacity-100 cursor-pointer flex-center mr-0 ${
-                      i === 0 ? "1sm:pl-2 1xs:pl-10 pl-5" : ""
-                    } ${
-                      i === options.length - 1 ? "1sm:pr-2 1xs:pr-10 pr-5" : ""
-                    } h-16 my-[12px] border-b-2 border-white py-[4px] hover:border-grey-light-50`}
+                    className={`   flex-center   h-16 my-[12px] border-b-2 ${
+                      selectedIcon === item.iconName
+                        ? "border-black cursor-default opacity-100"
+                        : "border-white cursor-pointer opacity-75 hover:border-grey-light-50 hover:opacity-100"
+                    } py-[4px]   `}
                     style={{
                       scrollSnapAlign: "start",
                       flexShrink: 0,
                     }}
                   >
                     <div className="flex-col space-y-2 h-full items-center justify-center flex">
-                      <img
-                        src={item.link}
-                        className="h-6 w-6 cursor-pointer"
-                        alt=""
-                      />
-                      <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block cursor-pointer whitespace-nowrap">
+                      <img src={item.link} className="h-6 w-6 " alt="" />
+                      <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block  whitespace-nowrap">
                         {item.iconName}
                       </span>
                     </div>

@@ -14,6 +14,7 @@ import {
   setSelectedEndDate,
   setSelectedStartDate,
 } from "./Header/Form/mainFormSlice";
+import MobileFooter from "./MobileFooter";
 export default function Home() {
   const startScroll = useSelector((store) => store.app.startScroll);
   const minimize = useSelector((store) => store.app.minimize);
@@ -73,7 +74,9 @@ export default function Home() {
         <div className="w-full hidden  bg-white 1smd:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
           <Footer></Footer>
         </div>
-      ) : null}
+      ) : (
+        <MobileFooter></MobileFooter>
+      )}
 
       <SpeedInsights></SpeedInsights>
     </div>

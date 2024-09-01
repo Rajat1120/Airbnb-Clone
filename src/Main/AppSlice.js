@@ -18,6 +18,7 @@ let appState = {
   userFavListing: [],
   isFavorite: null,
   itemId: null,
+  mobileNavOption: "Explore",
   cancelGuestUpdate: false,
   showMobileForm: false,
 };
@@ -47,6 +48,9 @@ const AppSlice = createSlice({
     },
     setIsLoading(state, action) {
       state.isLoading = action.payload;
+    },
+    setMobileNavOption(state, action) {
+      state.mobileNavOption = action.payload;
     },
     setCity(state, action) {
       state.city = action.payload;
@@ -111,6 +115,7 @@ export const {
   setStartScroll,
   setMinimize,
   setUserData,
+  setMobileNavOption,
   setIsFavorite,
   setFilterData,
   setSelectedIcon,
