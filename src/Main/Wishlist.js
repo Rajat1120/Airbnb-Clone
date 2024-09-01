@@ -15,6 +15,7 @@ import { getWishList } from "../Services/apiRooms";
 import LongFooter from "../House-detail/LongFooter";
 import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
 import { useNavigate } from "react-router";
+import MobileFooter from "../MobileFooter";
 
 const Wishlist = () => {
   const [wishList, setWishList] = useState(null);
@@ -68,20 +69,29 @@ const Wishlist = () => {
     }
   }, [data]);
 
-  if (!userData) {
-    return navigate("/login");
-  }
-
   return (
     <div className="relative">
       <div
         id="header"
-        className={`  z-50 bg-white fixed top-0  w-full flex items-start justify-center  `}
+        className={`  z-50 bg-white hidden fixed top-0  w-full 1xz:flex items-start justify-center  `}
       >
         <Header></Header>
       </div>
-      <div className="w-[calc(100%-10rem)] mt-20 pt-9 pb-6 mx-auto">
+      <div className="1xs:px-10 px-5  1lg:px-20  1xz:mt-20 pt-9 pb-6 mx-auto">
         <h1 className="text-[2rem] font-medium">Wishlists</h1>
+        {!userData && (
+          <div className="mt-8">
+            <div>
+              <h1 className="text-2xl">Log in to view your wishlists</h1>
+              <p className="text-grey mt-2 text-sm">
+                You can create, view, or edit wishlists once you’ve logged in.
+              </p>
+              <button className="bg-dark-pink w-24 mt-5 rounded-lg h-12 text-white">
+                Log in
+              </button>
+            </div>
+          </div>
+        )}
         <div className="grid gap-x-6 py-10 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
           {wishList?.map((item) => (
             <a
@@ -158,7 +168,8 @@ const Wishlist = () => {
           ))}
         </div>
       </div>
-      <LongFooter></LongFooter>
+      {userData && <LongFooter></LongFooter>}
+      {<MobileFooter></MobileFooter>}
     </div>
   );
 };

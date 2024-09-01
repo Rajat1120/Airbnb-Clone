@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setMobileNavOption } from "./Main/AppSlice";
+import { useNavigate } from "react-router";
 
 const MobileFooter = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const mobileNavOption = useSelector((state) => state.app.mobileNavOption);
+  const userdata = useSelector((state) => state.app.userdata);
+
+  useEffect(() => {
+    if (window.innerWidth < 744 && !userdata) {
+      if (mobileNavOption === "Login") {
+        // navigate("/login");
+      } else if (mobileNavOption === "Wishlist") {
+        navigate("/wishlist");
+      } else if (mobileNavOption === "Explore") {
+        navigate("/");
+      }
+    }
+  }, [mobileNavOption, navigate, userdata]);
+
   function HeartSVG() {
     return (
       <svg
