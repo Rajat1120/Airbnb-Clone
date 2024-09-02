@@ -33,6 +33,29 @@ const MobileFooter = () => {
       ) {
         navigate("/");
       }
+    } else {
+      if (
+        option === "Explore" &&
+        // if the user is already on the home page, don't navigate to it
+        location.pathname !== "/"
+      ) {
+        navigate("/");
+      } else if (
+        option === "Wishlist" &&
+        // if the user is already on the wishlist page, don't navigate to it
+        !location.pathname.includes("/wishlist")
+      ) {
+        navigate("/wishlist");
+      } else if (option === "Trips" && !location.pathname.includes("/trips")) {
+        navigate("/trips");
+      } else if (
+        option === "Profile" &&
+        // if the user is already on the profile page, don't navigate to it
+        !location.pathname.includes("/account-settings")
+      ) {
+        console.log("navigating to profile");
+        navigate("/account-settings");
+      }
     }
   }
 
@@ -250,7 +273,7 @@ const MobileFooter = () => {
             </span>
           </button>
           <button
-            onClick={() => dispatch(setMobileNavOption("Profile"))}
+            onClick={() => handleNavOption("Profile")}
             className="flex flex-col space-y-1 items-center justify-center"
           >
             <ProfileSVG></ProfileSVG>

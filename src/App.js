@@ -9,6 +9,7 @@ import Wishlist from "./Main/Wishlist";
 import Trips from "./Main/Trips";
 import SignIn from "./SignIn";
 import CheckoutForm from "./payment/CheckoutForm";
+import Profile from "./Profile";
 
 const queryClient = new QueryClient({});
 
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: "/:id/book",
     element: <CheckoutForm></CheckoutForm>,
+  },
+  {
+    path: "/account-settings",
+    element: <Profile></Profile>,
   },
 ]);
 
