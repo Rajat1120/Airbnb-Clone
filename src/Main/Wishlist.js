@@ -6,6 +6,7 @@ import {
   removeUserFavListing,
   setIsFavorite,
   setItemId,
+  setMobileNavOption,
   setUserFavListing,
 } from "./AppSlice";
 import { svg } from "../data/HeartIconSvg";
@@ -86,7 +87,10 @@ const Wishlist = () => {
               <p className="text-grey mt-2 text-sm">
                 You can create, view, or edit wishlists once you’ve logged in.
               </p>
-              <button className="bg-dark-pink w-24 mt-5 rounded-lg h-12 text-white">
+              <button
+                onClick={() => dispatch(setMobileNavOption("Login"))}
+                className="bg-dark-pink w-24 mt-5 rounded-lg h-12 text-white"
+              >
                 Log in
               </button>
             </div>

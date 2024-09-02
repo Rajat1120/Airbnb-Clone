@@ -11,9 +11,9 @@ const MobileFooter = () => {
   const userdata = useSelector((state) => state.app.userdata);
 
   useEffect(() => {
-    if (window.innerWidth < 744 && !userdata) {
+    if (!userdata) {
       if (mobileNavOption === "Login") {
-        // navigate("/login");
+        navigate("/login");
       } else if (mobileNavOption === "Wishlist") {
         navigate("/wishlist");
       } else if (mobileNavOption === "Explore") {
