@@ -8,19 +8,31 @@ const MobileFooter = () => {
   const navigate = useNavigate();
 
   const mobileNavOption = useSelector((state) => state.app.mobileNavOption);
-  const userdata = useSelector((state) => state.app.userdata);
+  const userData = useSelector((state) => state.app.userData);
 
   useEffect(() => {
-    if (!userdata) {
-      if (mobileNavOption === "Login") {
+    if (!userData) {
+      if (
+        mobileNavOption === "Login" &&
+        // if the user is already on the login page, don't navigate to it
+        window.location.pathname !== "/login"
+      ) {
         navigate("/login");
-      } else if (mobileNavOption === "Wishlist") {
+      } else if (
+        mobileNavOption === "Wishlist" &&
+        // if the user is already on the wishlist page, don't navigate to it
+        window.location.pathname !== "/wishlist"
+      ) {
         navigate("/wishlist");
-      } else if (mobileNavOption === "Explore") {
+      } else if (
+        mobileNavOption === "Explore" &&
+        // if the user is already on the home page, don't navigate to it
+        window.location.pathname !== "/"
+      ) {
         navigate("/");
       }
     }
-  }, [mobileNavOption, navigate, userdata]);
+  }, [mobileNavOption, navigate, userData]);
 
   function HeartSVG() {
     return (
