@@ -1,26 +1,40 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setMobileNavOption } from "./Main/AppSlice";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 const MobileFooter = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const mobileNavOption = useSelector((state) => state.app.mobileNavOption);
-  const userdata = useSelector((state) => state.app.userdata);
+  const userData = useSelector((state) => state.app.userData);
 
-  useEffect(() => {
-    if (!userdata) {
-      if (mobileNavOption === "Login") {
+  function handleNavOption(option) {
+    dispatch(setMobileNavOption(option));
+    if (!userData) {
+      if (
+        option === "Login" &&
+        // if the user is already on the login page, don't navigate to it
+        !location.pathname.includes("/login")
+      ) {
         navigate("/login");
-      } else if (mobileNavOption === "Wishlist") {
+      } else if (
+        option === "Wishlist" &&
+        // if the user is already on the wishlist page, don't navigate to it
+        !location.pathname.includes("/wishlist")
+      ) {
         navigate("/wishlist");
-      } else if (mobileNavOption === "Explore") {
+      } else if (
+        option === "Explore" &&
+        // if the user is already on the home page, don't navigate to it
+        location.pathname !== "/"
+      ) {
         navigate("/");
       }
     }
-  }, [mobileNavOption, navigate, userdata]);
+  }
 
   function HeartSVG() {
     return (
@@ -73,6 +87,87 @@ const MobileFooter = () => {
     );
   }
 
+  function ProfileSVG() {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        aria-hidden="true"
+        role="presentation"
+        focusable="false"
+        style={{
+          display: "block",
+          fill: "none",
+          height: "24px",
+          width: "24px",
+          stroke: mobileNavOption === "Profile" ? "#e63253" : "currentColor",
+          strokeWidth: mobileNavOption === "Profile" ? "3" : "2",
+          overflow: "visible",
+          opacity: mobileNavOption === "Profile" ? "1" : "0.6",
+        }}
+      >
+        <g fill="none">
+          <circle cx="16" cy="16" r="14" />
+          <path d="M14.02 19.66a6 6 0 1 1 3.96 0M17.35 19.67H18c3.69.61 6.8 2.91 8.54 6.08m-20.92-.27A12.01 12.01 0 0 1 14 19.67h.62" />
+        </g>
+      </svg>
+    );
+  }
+
+  function TripsSVG() {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        aria-hidden="true"
+        role="presentation"
+        focusable="false"
+        style={{
+          display: "block",
+          fill: "none",
+          height: "24px",
+          width: "24px",
+          stroke: mobileNavOption === "Trips" ? "#e63253" : "currentColor",
+          strokeWidth: mobileNavOption === "Trips" ? "3" : "2",
+          overflow: "visible",
+          opacity: mobileNavOption === "Trips" ? "1" : "0.6",
+        }}
+      >
+        <g fill="none">
+          <path d="M16.67 24.94c-2.35 3.15-4.7 4.73-7.07 4.73-3.62 0-5.17-2.38-5.53-4.21-.32-1.63.5-3.82.8-4.54l1.75-3.85A205.3 205.3 0 0 1 11.7 6.6L12.6 5l.23-.41c.4-.68 1.5-2.25 3.84-2.25a4.16 4.16 0 0 1 3.78 2.16l.29.5.76 1.37.4.73c1.22 2.3 2.75 5.52 4.02 8.25l2.51 5.5c.27.61 1.16 2.92.83 4.62-.36 1.83-1.9 4.2-5.53 4.2-2.42 0-4.77-1.57-7.06-4.72z" />
+          <path d="M16.67 24.94c2.1-2.8 3.34-5.09 3.7-6.84.52-2.63-1.06-4.83-3.7-4.83s-4.23 2.2-3.7 4.83c.35 1.75 1.59 4.03 3.7 6.84z" />
+        </g>
+      </svg>
+    );
+  }
+
+  function MessageSVG() {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        aria-hidden="true"
+        role="presentation"
+        focusable="false"
+        style={{
+          display: "block",
+          fill: "none",
+          height: "24px",
+          width: "24px",
+          stroke: "currentColor",
+          strokeWidth: "2",
+          overflow: "visible",
+          opacity: "0.6",
+        }}
+      >
+        <path
+          fill="none"
+          d="M26 3a4 4 0 0 1 4 4v14a4 4 0 0 1-4 4h-6.32L16 29.5 12.32 25H6a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4z"
+        />
+      </svg>
+    );
+  }
+
   function SearchSVG() {
     return (
       <svg
@@ -102,47 +197,115 @@ const MobileFooter = () => {
 
   return (
     <div className="w-full fixed bottom-0 1xz:hidden border-t border-shadow-grey flex-center bg-white  ">
-      <div className="grid grid-cols-3 py-2 max-w-sm w-full">
-        <button
-          onClick={() => dispatch(setMobileNavOption("Explore"))}
-          className="flex flex-col items-center justify-center"
-        >
-          <SearchSVG></SearchSVG>
-          <span
-            className={`text-xs ${
-              mobileNavOption === "Explore" ? "text-dark-pink" : "text-grey"
-            }`}
+      {userData ? (
+        <div className="grid grid-cols-5 py-2 w-full max-w-lg">
+          <button
+            onClick={() => handleNavOption("Explore")}
+            className="flex flex-col space-y-1 items-center justify-center"
           >
-            Explore
-          </span>
-        </button>
-        <button
-          onClick={() => dispatch(setMobileNavOption("Wishlist"))}
-          className="flex flex-col items-center justify-center"
-        >
-          <HeartSVG></HeartSVG>
-          <span
-            className={`text-xs ${
-              mobileNavOption === "Wishlist" ? "text-dark-pink" : "text-grey"
-            }`}
+            <SearchSVG></SearchSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Explore" ? "text-dark-pink" : "text-grey"
+              }`}
+            >
+              Explore
+            </span>
+          </button>
+          <button
+            onClick={() => handleNavOption("Wishlist")}
+            className="flex flex-col space-y-1 items-center justify-center"
           >
-            Wishlist
-          </span>
-        </button>
-        <button
-          onClick={() => dispatch(setMobileNavOption("Login"))}
-          className="flex flex-col items-center justify-center"
-        >
-          <LoginSVG></LoginSVG>
-          <span
-            className={`text-xs ${
-              mobileNavOption === "Login" ? "text-dark-pink" : " text-grey"
-            }`}
+            <HeartSVG></HeartSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Wishlist" ? "text-dark-pink" : "text-grey"
+              }`}
+            >
+              Wishlist
+            </span>
+          </button>
+          <button
+            onClick={() => handleNavOption("Trips")}
+            className="flex flex-col space-y-1 items-center justify-center"
           >
-            Log in
-          </span>
-        </button>
-      </div>
+            <TripsSVG></TripsSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Trips" ? "text-dark-pink" : "text-grey"
+              }`}
+            >
+              Trips
+            </span>
+          </button>
+
+          <button className="flex flex-col space-y-1 cursor-auto items-center justify-center">
+            <MessageSVG></MessageSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Login" ? "text-dark-pink" : " text-grey"
+              }`}
+            >
+              Messages
+            </span>
+          </button>
+          <button
+            onClick={() => dispatch(setMobileNavOption("Profile"))}
+            className="flex flex-col space-y-1 items-center justify-center"
+          >
+            <ProfileSVG></ProfileSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Profile" ? "text-dark-pink" : " text-grey"
+              }`}
+            >
+              Profile
+            </span>
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 py-2 max-w-sm w-full">
+          <button
+            onClick={() => handleNavOption("Explore")}
+            className="flex flex-col space-y-1 items-center justify-center"
+          >
+            <SearchSVG></SearchSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Explore" ? "text-dark-pink" : "text-grey"
+              }`}
+            >
+              Explore
+            </span>
+          </button>
+          <button
+            onClick={() => handleNavOption("Wishlist")}
+            className="flex flex-col space-y-1 items-center justify-center"
+          >
+            <HeartSVG></HeartSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Wishlist" ? "text-dark-pink" : "text-grey"
+              }`}
+            >
+              Wishlist
+            </span>
+          </button>
+          <button
+            onClick={() => handleNavOption("Login")}
+            className="flex flex-col space-y-1 items-center justify-center"
+          >
+            <LoginSVG></LoginSVG>
+            <span
+              className={`text-[10px] ${
+                mobileNavOption === "Login" ? "text-dark-pink" : " text-grey"
+              }`}
+            >
+              Log in
+            </span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

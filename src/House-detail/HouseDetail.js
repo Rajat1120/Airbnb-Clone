@@ -12,6 +12,7 @@ import { getRoomInfo } from "../Services/apiRooms";
 import { useQuery } from "@tanstack/react-query";
 import { setHouseInfo, setIsLoading } from "./HouseDetailSlice";
 import LongFooter from "./LongFooter";
+import MobileFooter from "../MobileFooter";
 
 const HouseDetail = () => {
   const location = useLocation();
@@ -83,7 +84,6 @@ const HouseDetail = () => {
         <Header headerRef={headerRef}></Header>
       </div>
       <NavBar></NavBar>
-
       <div className={` ${minimize ? " absolute top-20 -z-10" : ""}  w-full`}>
         <TopMainCont></TopMainCont>
         <MidMainCont></MidMainCont>
