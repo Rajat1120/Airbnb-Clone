@@ -1,35 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import LongFooter from "./House-detail/LongFooter";
 import Header from "./Header/Header";
-import { setShowLogin } from "./Main/AppSlice";
-import { useDispatch, useSelector } from "react-redux";
-import cross from "./data/Icons svg/cross.svg";
+
 import { signInWithGoogle } from "./Services/apiAuthentication";
 import google from "./data/Icons svg/Google.svg";
+import MobileFooter from "./MobileFooter";
 const SignIn = () => {
   const [activeInput, setActiveInput] = useState("");
-  const dispatch = useDispatch();
+
   const [showLine, setShowLine] = useState(true);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   return (
-    <div className=" ">
+    <div className="w-full ">
       <div
         id="header"
-        className={`  z-50 bg-white  w-full flex items-start justify-center  `}
+        className={`  z-50 bg-white  w-full hidden 1xz:flex items-start justify-center  `}
       >
         <Header></Header>
       </div>
 
-      <div className="my-20 flex-center">
+      <div className="my-0 1xz:my-20 w-full  flex-center">
         <div
           id="calendar"
-          className={`bg-white  transition-all border border-grey-light-50 rounded-xl duration-[0.2s] flex flex-col ease-in-out items-center justify-center z-50`}
+          className={`bg-white w-full 1xz:w-auto  transition-all border-0  1xz:border border-grey-light-50 rounded-xl duration-[0.2s] flex flex-col ease-in-out items-center justify-center z-50`}
         >
-          <div className=" items-center border-b-[1px]  border-grey-light-50  justify-center flex w-[35.5rem] h-[3.9rem] px-6 ">
+          <div className=" items-center border-b-[1px]  border-grey-light-50  justify-center flex 1xz:w-[35.5rem] w-full h-[3.9rem] px-6 ">
             <span className="font-semibold ">Log in or sign up</span>
           </div>
-          <div className="w-[35.5rem]  p-6">
+          <div className="1xz:w-[35.5rem] w-[calc(100%-5rem)] 1xz:p-6">
             <div>
               <div className="mt-2 mb-6 text-2xl font-medium ">
                 Welcome to Airbnb
@@ -130,8 +129,12 @@ const SignIn = () => {
           </div>
         </div>
       </div>
-
-      <LongFooter></LongFooter>
+      <div className="w-full  1xz:hidden">
+        <MobileFooter></MobileFooter>
+      </div>
+      <div className="w-full 1xz:block hidden">
+        <LongFooter></LongFooter>
+      </div>
     </div>
   );
 };
