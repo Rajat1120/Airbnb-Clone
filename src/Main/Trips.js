@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import star from "../data/Icons svg/star.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getPayments, getWishList } from "../Services/apiRooms";
+import MobileFooter from "../MobileFooter";
 
 const Trips = () => {
   const userData = useSelector((store) => store.app.userData);
@@ -159,7 +160,7 @@ const Trips = () => {
           </div>
         )}
       </div>
-
+      {userData && <MobileFooter></MobileFooter>}
       <LongFooter></LongFooter>
     </div>
   );

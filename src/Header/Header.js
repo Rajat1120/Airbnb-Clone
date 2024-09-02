@@ -14,6 +14,7 @@ function Header({ headerRef }) {
   let onWishListPage = location.pathname.includes("/wishlist");
   let onTripsPage = location.pathname.includes("trips");
   let onSignInPage = location.pathname.includes("/login");
+  let onProfilePage = location.pathname.includes("/account-settings");
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
@@ -25,7 +26,11 @@ function Header({ headerRef }) {
     : "1md:after:translate-y-[2.1rem] 1sm:after:translate-y-[2rem] after:opacity-100";
 
   let classForAfter = `after:content-[''] ${
-    !startScroll || onWishListPage || onTripsPage || onSignInPage
+    !startScroll ||
+    onWishListPage ||
+    onTripsPage ||
+    onSignInPage ||
+    onProfilePage
       ? ` ${val1}`
       : "1md:after:translate-y-[7.5rem]  1sm:after:translate-y-[11rem]"
   } after:transition-transform after:duration-[0.2s] after:ease-in-out after:w-full  after:bg-grey-dim after:z-50  after:h-[1px]`;
@@ -37,7 +42,9 @@ function Header({ headerRef }) {
     >
       <div
         className={`grid grid-cols-${
-          onWishListPage || onTripsPage || onSignInPage ? "2" : "3"
+          onWishListPage || onTripsPage || onSignInPage || onProfilePage
+            ? "2"
+            : "3"
         }  ${
           onHouseDetailPage ? "w-[calc(100%-10rem)]  mx-auto" : "w-full"
         } px-10 1xl:px-20 `}
@@ -52,7 +59,7 @@ function Header({ headerRef }) {
             </div>
           </a>
         </div>
-        {!onTripsPage && !onSignInPage && !onWishListPage && (
+        {!onTripsPage && !onSignInPage && !onWishListPage && !onProfilePage && (
           <div
             className={`flex h-20  transition-transform duration-[0.3s] ease-in-out ${
               !startScroll
@@ -91,7 +98,7 @@ function Header({ headerRef }) {
           <MobileForm></MobileForm>
         </div>
       }
-      {!onWishListPage && !onSignInPage && !onTripsPage && (
+      {!onWishListPage && !onSignInPage && !onTripsPage && !onProfilePage && (
         <div className="w-full 1smd:w-auto hidden 1xz:flex 1smd:block  items-center justify-start 1smd:pl-0  pl-[16rem]">
           <MainForm headerRef={headerRef}></MainForm>
         </div>

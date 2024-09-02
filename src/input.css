@@ -227,6 +227,10 @@
     grid-template-columns: repeat(2, minmax(14rem, 26.3rem));
   }
 
+  .mobile-grid-cols-two-col {
+    grid-template-columns: repeat(2, minmax(10rem, 26.3rem));
+  }
+
   .cssLoader {
     width: 60px;
     aspect-ratio: 4;

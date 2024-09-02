@@ -70,13 +70,12 @@ export default function Home() {
       <div className="1sm:mt-[12rem] mt-[7rem]  flex justify-center items-center ">
         <House></House>
       </div>
-      {userData ? (
+      {userData && (
         <div className="w-full hidden  bg-white 1smd:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
           <Footer></Footer>
         </div>
-      ) : (
-        <MobileFooter></MobileFooter>
       )}
+      {userData && <MobileFooter></MobileFooter>}
 
       <SpeedInsights></SpeedInsights>
     </div>

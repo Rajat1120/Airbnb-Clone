@@ -7,7 +7,7 @@ import globe from "../data/globe.svg";
 
 const LongFooter = () => {
   return (
-    <footer className="w-full  bg-shadow-gray-light   ">
+    <footer className="w-full hidden 1xz:block  bg-shadow-gray-light   ">
       <div className="px-20 border-y-[1px] border-y-grey-dim  h-[5.25rem]">
         <div className="mx-20  h-full">
           <div className="py-8 items-center gap-x-1 flex">
