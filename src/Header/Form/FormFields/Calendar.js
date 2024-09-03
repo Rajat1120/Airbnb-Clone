@@ -71,8 +71,6 @@ const Calendar = () => {
     (store) => store.form.startDurationDate
   );
 
-  // console.log(addDaysToStartDate(3));
-
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -42,9 +42,22 @@ const Trips = () => {
 
   let isTripAvailable = bookedTrips?.length;
 
-  if (!userData) {
-    return navigate("/");
-  }
+  let userDataLoaded = useRef(false);
+  useEffect(() => {
+    if (userData) {
+      userDataLoaded.current = true;
+    } else {
+      userDataLoaded.current = false;
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!userDataLoaded.current) {
+        return navigate("/login");
+      }
+    }, 1000);
+  }, [userData, navigate]);
 
   return (
     <div className="relative">
@@ -75,87 +88,25 @@ const Trips = () => {
           </div>
         )}
         {isTripAvailable && (
-          <div className="w-full">
+          <div className="grid    gap-x-4 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:grid-cols-3 justify-center w-full items-start 1xs:grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
             {bookedTrips?.map((data, i) => (
-              <Link to={`/house/${data?.id}`} key={data?.id}>
-                <div
-                  key={data.id}
-                  className="grid-cols-3 border-b border-grey-light-50   grid "
-                >
-                  <div className=" p-5 h-full">
-                    <div className="w-full  grid-cols-2 items-center grid-flow-col  py-6 grid">
-                      <div className="w-40 h-40">
-                        <img
-                          className="w-full object-cover rounded-xl h-full"
-                          src={data?.images?.[0]}
-                          alt=""
-                        />
-                      </div>
-                      <div className="w-full justify-center flex space-y-1 flex-col">
-                        <span className="block  font-medium">
-                          At{" "}
-                          {data?.host_name
-                            ? data?.host_name?.replace(/about/gi, "")
-                            : "Carl's"}
-                          's
-                        </span>
-                        <span className=" font-light">Entire guest suite</span>
-                        <div className="flex items-center space-x-1">
-                          <img className="w-4 h-4" src={star} alt="" />
-                          <span className="font-medium">
-                            {data?.house_rating}
-                          </span>
-                          <span className="font-light">
-                            ({data?.rating_count})
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className=" p-5 h-full">
-                    <div className="py-6 flex h-full gap-y-4  flex-col items-start justify-center ">
-                      <div className="flex   flex-col">
-                        <span className="font-medium text-lg">Dates</span>
-                        <span>
-                          {
-                            paymentsData.find(
-                              (item) => item.room_id === data.id
-                            )?.startDate
-                          }{" "}
-                          -{" "}
-                          {
-                            paymentsData.find(
-                              (item) => item.room_id === data.id
-                            )?.endDate
-                          }
-                        </span>
-                        <span></span>
-                      </div>
-                      <div className="flex    flex-col">
-                        <span className="font-medium text-lg">Guests</span>
-                        <span>
-                          {
-                            paymentsData.find(
-                              (item) => item.room_id === data.id
-                            )?.Guest
-                          }
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-5 h-full">
-                    <div className="py-6 flex flex-col h-full   items-center justify-center gap-y-5 ">
-                      <h1 className="font-bold text-lg">Booking number</h1>
-                      <span className="bg-shadow-gray px-2 h-10 flex-center ">
-                        {
-                          paymentsData.find((item) => item.room_id === data.id)
-                            ?.id
-                        }
-                      </span>
-                    </div>
-                  </div>
+              <div className="">
+                <div>
+                  <img
+                    className="rounded-[20px] flex-center w-full  h-full object-cover "
+                    src={data?.images?.[0]}
+                    alt=""
+                    style={{
+                      scrollSnapAlign: "start",
+                      flexShrink: 0,
+                      scrollSnapStop: "always",
+                      aspectRatio: "1/1",
+                    }}
+                  />
+
+                  <Link to={`/house/${data?.id}`} key={data?.id}></Link>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         )}
