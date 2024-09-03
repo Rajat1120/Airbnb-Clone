@@ -65,10 +65,12 @@ const AuthenticationModal = () => {
         id="calendar"
         ref={ref}
         className={`bg-white ${
-          visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
-        } transition-all fixed  rounded-xl duration-[0.2s] flex flex-col ease-in-out items-center justify-center shadow-md w- z-50`}
+          visible
+            ? " 1xz:translate-y-0 bottom-0 1xz:bottom-auto opacity-100"
+            : "1xz:translate-y-16 translate-y-full opacity-0"
+        } transition-all fixed 1xz:w-[35.5rem]   w-full rounded-xl 1xz:duration-[0.2s]  duration-300 flex flex-col ease-out items-center justify-center shadow-md z-50`}
       >
-        <div className=" items-center border-b-[1px] border-grey-light-50  justify-between flex w-[35.5rem] h-[3.9rem] px-6 ">
+        <div className=" items-center  border-b-[1px] border-grey-light-50  justify-between flex 1xz:w-[35.5rem] w-full px-6   h-[3.9rem]  ">
           <button
             onClick={() => dispatch(setShowLogin(false))}
             className="w-6 h-6 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
@@ -78,8 +80,8 @@ const AuthenticationModal = () => {
           <span className="font-semibold ">Log in or sign up</span>
           <div className="px-4"></div>
         </div>
-        <div className="w-[35.5rem]  p-6">
-          <div>
+        <div className="w-full">
+          <div className="w-full p-6">
             <div className="mt-2 mb-6 text-2xl font-medium ">
               Welcome to Airbnb
             </div>

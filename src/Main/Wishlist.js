@@ -6,7 +6,7 @@ import {
   removeUserFavListing,
   setIsFavorite,
   setItemId,
-  setMobileNavOption,
+  setShowLogin,
   setUserFavListing,
 } from "./AppSlice";
 import { svg } from "../data/HeartIconSvg";
@@ -88,7 +88,7 @@ const Wishlist = () => {
                 You can create, view, or edit wishlists once you’ve logged in.
               </p>
               <button
-                onClick={() => dispatch(setMobileNavOption("Login"))}
+                onClick={() => dispatch(setShowLogin(true))}
                 className="bg-dark-pink w-24 mt-5 rounded-lg h-12 text-white"
               >
                 Log in
@@ -96,18 +96,18 @@ const Wishlist = () => {
             </div>
           </div>
         )}
-        <div className="grid gap-x-6 py-10 grid-cols-four-col justify-center w-full items-start gap-y-8 grid-flow-row">
+        <div className="grid  pt-5 pb-10  gap-x-4 1md:grid-cols-three-col  gap-y-10 1lg:my-grid-cols-four-col justify-center w-full items-start mobile-grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
           {wishList?.map((item) => (
             <a
               key={item.id}
               href={`/house/${item.id}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="block h-[24.5rem]"
+              className="block "
             >
-              <div className="w-full relative h-full  flex gap-y-4 items-center justify-center flex-col">
+              <div className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col">
                 {item.guest_favorite === "Guest favourite" && (
-                  <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
+                  <div className="absolute max-w-32 w-full shadow-2xl h-7 hidden 1xs:flex-center top-3 py-2 left-3 rounded-2xl bg-white">
                     <span className="text-sm font-medium">Guest favourite</span>
                   </div>
                 )}
@@ -138,16 +138,18 @@ const Wishlist = () => {
                     style={{
                       scrollSnapAlign: "start",
                       flexShrink: 0,
-                      width: `${imageWidth}px`,
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      aspectRatio: "1/1",
                     }}
                   />
                 </div>
                 <div className="flex w-full justify-between items-start h-[25%]">
                   <div className="w-[80%]">
-                    <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
+                    <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-full max-w-[90%] font-medium">
                       {item["house-title"]}
                     </p>
-                    <p className="font-light text-grey text-[15px]">
+                    <p className="font-light text-grey max-w-40 overflow-hidden text-ellipsis whitespace-nowrap text-[15px]">
                       {Math.ceil(item.price / 83 + 150)} kilometers away
                     </p>
                     <p className="font-light text-grey text-[15px]">
@@ -172,7 +174,11 @@ const Wishlist = () => {
           ))}
         </div>
       </div>
-      {userData && <LongFooter></LongFooter>}
+      {userData && (
+        <div className="w-full hidden 1xz:block">
+          <LongFooter></LongFooter>
+        </div>
+      )}
       {<MobileFooter></MobileFooter>}
     </div>
   );

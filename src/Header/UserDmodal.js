@@ -11,7 +11,7 @@ const UserDmodal = ({ isOpen }) => {
   const dispatch = useDispatch();
   if (!isOpen) return null;
   return ReactDOM.createPortal(
-    <div className="fixed top-[4.5rem] flex flex-col shadow-2xl justify-between rounded-xl w-60 z-50  bg-white right-20">
+    <div className="fixed top-[4.5rem] flex flex-col shadow-2xl justify-between rounded-xl w-60 z-50  bg-white right-10">
       {userData ? (
         <div>
           <div className="w-full flex mt-2 flex-col justify-between">
