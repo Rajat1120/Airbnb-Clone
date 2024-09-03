@@ -32,6 +32,7 @@ import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import AddGuestModal from "../Modals/AddGuestModal";
 import { setCancelGuestUpdate } from "../Main/AppSlice";
+import { update } from "@react-spring/web";
 
 const CheckoutForm = () => {
   const [guestCount, setGuestCount] = useState("");
@@ -142,12 +143,6 @@ const CheckoutForm = () => {
   const handleCloseModal = () => {
     dispatch(setCalendarModalOpen(false));
     updateDates();
-
-    if (allBookingDataTruthy(updateBookingData)) {
-      setTimeout(() => {
-        updateUserBooking();
-      }, 1000);
-    }
   };
 
   let formattedEndDate = useRef();
@@ -209,6 +204,8 @@ const CheckoutForm = () => {
     formatStartDate.current,
     formattedEndDate.current,
   ]);
+
+  console.log(updateBookingData);
 
   function updateBookingDataFn() {
     if (userBookingData?.success) {
@@ -315,9 +312,14 @@ const CheckoutForm = () => {
         dispatch(setSelectedEndDate(userBookingData?.booking?.endDate));
       }
     } else {
+      if (allBookingDataTruthy(updateBookingData)) {
+        setTimeout(() => {
+          updateUserBooking();
+        }, 1000);
+      }
       dateChange.current = false;
     }
-  }, [isModalOpen, userBookingData, dispatch]);
+  }, [isModalOpen, userBookingData, dispatch, updateBookingData]);
 
   // navigate to login page if user is not logged in
   let userDataLoaded = useRef(false);
