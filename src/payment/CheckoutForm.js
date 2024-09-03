@@ -72,7 +72,9 @@ const CheckoutForm = () => {
   const [bookingStatus, setBookingStatus] = useState(null);
 
   useLayoutEffect(() => {
-    let guestCount = `${adultCount + childCount} guest${guestPlural}`;
+    let guestCount = `${adultCount + childCount} guest${guestPlural}${
+      infantCount + petCount > 0 ? "," : ""
+    }`;
 
     if (infantCount) {
       guestCount += ` ${infantCount} infant${infantCount > 1 ? "s" : ""}`;
@@ -152,10 +154,10 @@ const CheckoutForm = () => {
     if (startDate && endDate) {
       numOfDays.current = differenceInDays(startDate, endDate);
       if (endDate) {
-        formattedEndDate.current = format(endDate, "d MMM");
+        formattedEndDate.current = format(endDate, "EEE MMM dd, yyyy");
       }
       if (startDate) {
-        formatStartDate.current = format(startDate, "dd");
+        formatStartDate.current = format(startDate, "EEE MMM dd, yyyy");
       }
     }
   }
@@ -334,8 +336,8 @@ const CheckoutForm = () => {
             <span className="text-2xl block font-medium pb-6">Your trip</span>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
-                <span className="mt-2 block">Dates</span>
-                <span className="">
+                <span className="mt-2 font-medium block">Dates</span>
+                <span className="font-light ">
                   {formatStartDate.current ||
                     userBookingData?.booking?.startDate}{" "}
                   -{" "}
@@ -352,8 +354,8 @@ const CheckoutForm = () => {
             </div>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
-                <span className="mt-2 block">Guests</span>
-                <span className="">
+                <span className="mt-2 font-medium block">Guests</span>
+                <span className="font-light ">
                   {guestCount !== "0 guest" ? guestCount : "1 guest"}
                 </span>
               </div>

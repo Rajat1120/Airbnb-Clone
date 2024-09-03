@@ -69,8 +69,11 @@ export const loginWithEmail = async (Email, Password) => {
     password: Password,
   });
 
-  console.log(data);
-  console.log(error);
+  if (data) {
+    return data;
+  } else {
+    throw error;
+  }
 };
 
 export const saveFavorite = async (itemId) => {
