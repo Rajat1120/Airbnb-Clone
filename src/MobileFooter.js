@@ -14,6 +14,8 @@ const MobileFooter = () => {
   useEffect(() => {
     if (location.pathname.includes("wishlist")) {
       dispatch(setMobileNavOption("Wishlist"));
+    } else if (location.pathname.includes("account-settings")) {
+      dispatch(setMobileNavOption("Profile"));
     }
   }, []);
 

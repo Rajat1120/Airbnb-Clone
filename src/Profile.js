@@ -4,6 +4,7 @@ import Header from "./Header/Header";
 import profilePageData from "./profilePageData";
 import LongFooter from "./House-detail/LongFooter";
 import { useSelector } from "react-redux";
+import MobileProfilePage from "./MobileProfilePage";
 
 const Profile = () => {
   const userData = useSelector((state) => state.app.userData);
@@ -16,7 +17,8 @@ const Profile = () => {
       >
         <Header></Header>
       </div>
-      <div className="w-full flex  mt-36 mb-20 justify-center">
+      <MobileProfilePage></MobileProfilePage>
+      <div className="w-full hidden  1xz:flex  mt-36 mb-20 justify-center">
         <div className="flex flex-col justify-start">
           <div className="flex-col  justify-start">
             <h1 className="text-4xl font-medium">Account</h1>
