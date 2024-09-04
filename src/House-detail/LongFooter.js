@@ -8,7 +8,7 @@ import globe from "../data/globe.svg";
 const LongFooter = () => {
   return (
     <footer className="w-full hidden 1xz:block  bg-shadow-gray-light   ">
-      <div className="px-20 border-y-[1px] border-y-grey-dim  h-[5.25rem]">
+      <div className="1lg:px-20 border-y-[1px] border-y-grey-dim  h-[5.25rem]">
         <div className="mx-20  h-full">
           <div className="py-8 items-center gap-x-1 flex">
             <span className="text-sm font-light">Airbnb</span>
@@ -21,7 +21,7 @@ const LongFooter = () => {
           </div>
         </div>
       </div>
-      <div className="px-20 h-[20.25rem]">
+      <div className=" h-[20.25rem] 1lg:px-20">
         <div className="mx-20  h-full">
           <div className="w-full h-full grid grid-cols-3 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
             <div className="py-12 flex flex-col  gap-y-4">
@@ -71,7 +71,7 @@ const LongFooter = () => {
           </div>
         </div>
       </div>
-      <div className="px-20 h-[4.25rem]">
+      <div className="1lg:px-20 h-[4.25rem]">
         <div className="mx-20  h-full">
           <div className=" h-full py-6 flex justify-between  w-full">
             <div className="w-[32.31rem] items-center flex gap-x-3 h-full">
