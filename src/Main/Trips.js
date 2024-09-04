@@ -7,6 +7,8 @@ import star from "../data/Icons svg/star.svg";
 import { useQuery } from "@tanstack/react-query";
 import { getPayments, getWishList } from "../Services/apiRooms";
 import MobileFooter from "../MobileFooter";
+import monthSvg from "../data/Icons svg/month.svg";
+import person from "../data/Icons svg/Person.svg";
 
 const Trips = () => {
   const userData = useSelector((store) => store.app.userData);
@@ -26,6 +28,29 @@ const Trips = () => {
     queryFn: () => getWishList(paymentsData?.map((item) => item.room_id)),
     enabled: false,
   });
+
+  function ArrowRightSVG() {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        aria-hidden="true"
+        role="presentation"
+        focusable="false"
+        style={{
+          display: "block",
+          fill: "none",
+          height: "16px",
+          width: "16px",
+          stroke: "#ff385c",
+          strokeWidth: "3",
+          overflow: "visible",
+        }}
+      >
+        <path fill="none" d="M12 4l11.3 11.3a1 1 0 0 1 0 1.4L12 28" />
+      </svg>
+    );
+  }
 
   useEffect(() => {
     if (paymentsData?.length) {
@@ -63,12 +88,12 @@ const Trips = () => {
     <div className="relative">
       <div
         id="header"
-        className={`  z-50 bg-white fixed top-0  w-full flex items-start justify-center  `}
+        className={`  z-50 bg-white fixed top-0 hidden  w-full 1xz:flex items-start justify-center  `}
       >
         <Header></Header>
       </div>
 
-      <div className="w-[calc(100%-10rem)] mt-20 pt-9 pb-6 mx-auto">
+      <div className="1smd:w-[calc(100%-10rem)] px-5 1xz:mt-20 pt-9 pb-6 mx-auto">
         <h1 className="text-3xl border-b border-grey-light-50 pb-5 font-medium">
           Trips
         </h1>
@@ -88,23 +113,105 @@ const Trips = () => {
           </div>
         )}
         {isTripAvailable && (
-          <div className="grid    gap-x-4 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:grid-cols-3 justify-center w-full items-start 1xs:grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
+          <div className="grid 1lg:gap-x-4 mt-5 mb-20  1xs:px-12 1xz:px-0 gap-x-4  gap-y-10 grid-cols-1 1xz:grid-cols-2 1xll:grid-cols-3 justify-center w-full items-start 1lg:gap-y-4 xl:gap-y-8   grid-flow-row">
             {bookedTrips?.map((data, i) => (
-              <div className="">
-                <div>
-                  <img
-                    className="rounded-[20px] flex-center w-full  h-full object-cover "
-                    src={data?.images?.[0]}
-                    alt=""
-                    style={{
-                      scrollSnapAlign: "start",
-                      flexShrink: 0,
-                      scrollSnapStop: "always",
-                      aspectRatio: "1/1",
-                    }}
-                  />
+              <div key={data?.id} className="h-full">
+                <div className="p-0 ">
+                  <div className="shadow-2xl p-5 rounded-xl">
+                    <Link to={`/house/${data?.id}`} key={data?.id}>
+                      <img
+                        className="rounded-[20px] flex-center w-full  h-full object-cover "
+                        src={data?.images?.[0]}
+                        alt=""
+                        style={{
+                          scrollSnapAlign: "start",
+                          flexShrink: 0,
+                          scrollSnapStop: "always",
+                          aspectRatio: "1/1",
+                        }}
+                      />
+                    </Link>
+                    <div className="w-full h-full p-2 flex justify-between mt-5 grid-cols-2">
+                      <div className="w-full  h-full ">
+                        <div className="1xxl:flex-row gap-x-2 flex flex-col gap-y-2 justify-between">
+                          <div>
+                            <h2 className="text-xl text-nowrap font-medium">
+                              {data?.["house-title"]}
+                            </h2>
+                            <span className="text-gray-600 block mt-2 text-nowrap   font-[600px]">
+                              {data?.city}, {data?.country}
+                            </span>
+                          </div>
+                          <div>
+                            <span
+                              className="text-nowrap 
+                            bg-blue-200 text-sm font-medium text-blue-800 rounded-full px-2 py-1"
+                            >
+                              UPCOMING
+                            </span>
+                          </div>
+                        </div>
 
-                  <Link to={`/house/${data?.id}`} key={data?.id}></Link>
+                        <div className="flex mt-3 items-center gap-x-2">
+                          <img
+                            className="h-4 w-4 opacity-70"
+                            src={monthSvg}
+                            alt=""
+                          />
+
+                          <span className="text-grey text-[15px] text-nowrap  font-[600px]">
+                            {
+                              paymentsData.find(
+                                (item) => item.room_id === data.id
+                              )?.startDate
+                            }{" "}
+                            -{" "}
+                            {
+                              paymentsData.find(
+                                (item) => item.room_id === data.id
+                              )?.endDate
+                            }
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-x-2">
+                          <img
+                            className="h-4 w-4 opacity-70"
+                            src={person}
+                            alt=""
+                          />
+                          <span className="text-grey text-[15px]  font-[600px]">
+                            {
+                              paymentsData.find(
+                                (item) => item.room_id === data.id
+                              )?.Guest
+                            }
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-x-2 gap-y-2 1xxl:flex-row mt-3 items-start justify-between ">
+                          <div className="flex gap-x-2 items-center">
+                            <h4 className="font-medium text-nowrap text-gray-700">
+                              Reservation code:
+                            </h4>
+                            <span className="text-grey text-[15px]  text-nowrap font-[600px]">
+                              {
+                                String(
+                                  paymentsData.find(
+                                    (item) => item.room_id === data.id
+                                  )?.id
+                                ).split("-")[0]
+                              }
+                            </span>
+                          </div>
+                          <button className="flex cursor-auto items-center gap-x-2">
+                            <span className="text-nowrap text-pink font-medium">
+                              View itinerary
+                            </span>
+                            <ArrowRightSVG></ArrowRightSVG>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
