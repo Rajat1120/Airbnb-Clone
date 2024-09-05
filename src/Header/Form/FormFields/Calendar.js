@@ -42,7 +42,7 @@ const Calendar = () => {
     function findMonthWidth() {
       let width =
         (onHouseDetailPage || onCheckOutPage) && !minimize
-          ? 340
+          ? 375
           : window.innerWidth <= 956
           ? 384
           : 440; // Width of each month component
@@ -393,13 +393,17 @@ const Calendar = () => {
   }, [currentIndex, monthWidth]);
 
   return (
-    <div className="flex w-full   h-full 1md:w-full 1xz:w-96 flex-col justify-center relative">
+    <div
+      className={`flex w-full   h-full 1md:w-full ${
+        onHouseDetailPage ? "" : "1xz:w-96"
+      } flex-col justify-center relative`}
+    >
       <div
         className={`absolute hidden 1md:block  top-[3.6rem] ${
           onCheckOutPage && "!left-[1.1rem]"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
-            ? "left-[1rem]"
+            ? "left-0"
             : "left-[2.2rem]"
         }`}
       >
@@ -410,7 +414,7 @@ const Calendar = () => {
           onCheckOutPage && "!right-[0.6rem]"
         }  ${
           onHouseDetailPage && !minimize
-            ? "right-[0.1rem]"
+            ? "right-0"
             : "1md:right-[2.2rem] right-[50%] 1md:translate-x-0 1xz:translate-x-1/2"
         }`}
       >
@@ -424,7 +428,7 @@ const Calendar = () => {
             : "hover:bg-gray-100"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
-            ? "left-2"
+            ? "left-0"
             : "1md:left-8 left-0"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
@@ -458,16 +462,17 @@ const Calendar = () => {
           }}
           className={`inline-flex  w-full  h-[calc(100vh-20rem)] 1xz:h-auto flex-col 1xz:flex-row ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
-              ? "gap-x-3"
+              ? "gap-x-0 "
               : "1md:gap-x-8 gap-x-0"
           }`}
         >
           {Array.from({ length: 23 }, (_, index) => (
             <div
-              key={`1md:max-w-md ${index}-current`}
+              key={`${index}-current`}
               className={`   justify-center items-center ${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
-                  ? "w-[20rem] h-[20.5rem]"
+                  ? `w-full
+                   h-full  ${index <= 0 ? "1md:pl-0 " : "1md:pl-[4.6rem] "}`
                   : ` w-full flex  flex-col ${
                       index <= 0 ? "1md:pl-8 " : "1md:pl-16 "
                     } justify-between h-full 1xz:gap-y-10 gap-y-6  `
@@ -477,7 +482,11 @@ const Calendar = () => {
                 {renderHeader(addMonths(currentMonth, index))}
               </div>
 
-              <div className="w-full 1md:w-auto">
+              <div
+                className={`w-full ${
+                  onHouseDetailPage || onCheckOutPage ? "mt-10" : ""
+                } 1md:w-auto`}
+              >
                 {renderCells(addMonths(currentMonth, index))}
               </div>
             </div>

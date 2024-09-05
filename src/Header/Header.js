@@ -41,13 +41,15 @@ function Header({ headerRef }) {
       className={` ${classForAfter} w-full  after:hidden 1xz:after:block after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
     >
       <div
-        className={`grid grid-cols-${
+        className={`grid    grid-cols-${
           onWishListPage || onTripsPage || onSignInPage || onProfilePage
             ? "2"
             : "3"
         }  ${
-          onHouseDetailPage ? "w-[calc(100%-10rem)]  mx-auto" : "w-full"
-        } px-10 1xl:px-20 `}
+          onHouseDetailPage
+            ? "max-w-7xl  w-full px-10 1lg:px-20 "
+            : "w-full 1xl:px-20 px-10"
+        } `}
       >
         <div className="w-8 ">
           <a href="/">

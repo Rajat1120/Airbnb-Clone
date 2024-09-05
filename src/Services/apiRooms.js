@@ -39,7 +39,7 @@ export async function getAllRows() {
 
   if (error) {
     console.error("Error fetching rooms:", error);
-    return null; // Return null or handle the error appropriately
+    throw error; // Return null or handle the error appropriately
   } else {
     return data;
   }

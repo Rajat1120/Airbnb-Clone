@@ -145,12 +145,12 @@ const MidMainCont = () => {
   };
 
   return (
-    <div className="w-[calc(100%-10rem)] mx-auto flex justify-between px-[5rem] max-h-[198.59rem] relative after:content-[''] after:absolute after:bottom-0  after:w-[calc(100%-10rem)]  after:h-[1px]  after:bg-grey-dim ">
-      <div className="w-[40.83rem]">
+    <div className="max-w-7xl w-full px-10 1lg:px-20 mx-auto flex justify-between  max-h-[198.59rem] relative after:content-[''] after:absolute after:bottom-0   after:w-full after:max-w-[calc(100%-10rem)]  after:h-[1px]  after:bg-grey-dim ">
+      <div className="max-w-[40.83rem] min-w-[60%]    flex flex-col ">
         <div className={`py-8  `}>
           <>
             {isLoading ? (
-              <div className="w-[26rem] h-8 imgLoader"></div>
+              <div className="max-w-[26rem] w-full h-8 imgLoader"></div>
             ) : (
               <h1 className=" text-[25px]   font-[460]">
                 {houseInfo?.title_2}
@@ -159,9 +159,9 @@ const MidMainCont = () => {
           </>
           <div className="flex items-center">
             {isLoading ? (
-              <div className="w-80 h-5 mt-2 imgLoader"></div>
+              <div className="max-w-80 w-full h-5 mt-2 imgLoader"></div>
             ) : (
-              <div className="flex items-center">
+              <div className="flex w-full items-center">
                 {houseInfoDetails.length > 0 &&
                   houseInfoDetails.map((item, i) => {
                     return (
@@ -273,14 +273,14 @@ const MidMainCont = () => {
         <HouseDescription></HouseDescription>
         <SleepBed></SleepBed>
       </div>
-      <div className="w-[26.32rem] ">
+      <div className="max-w-[26.32rem] ml-20   w-full">
         {isLoading ? (
           <div className="">
             <div className="w-40 mt-8 ml-20 h-10 imgLoader"></div>
             <div className="w-80 mt-4 ml-20 h-10 imgLoader"></div>
           </div>
         ) : (
-          <div className="pt-8 mb-20 flex justify-end sticky top-20">
+          <div className="pt-8 mb-20   flex justify-end sticky top-20">
             {!startDate || !endDate ? (
               <div className=" rounded-xl border-[1px]  border-grey-dim h-[17.12rem] p-6 w-[23.14rem]">
                 <div>
@@ -358,7 +358,7 @@ const MidMainCont = () => {
                 </div>
               </div>
             ) : (
-              <div className="w-[23.14rem] shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
+              <div className="max-w-[23.14rem] min-w-64 w-full shadow-priceCardShadow border-[1px] p-6 rounded-xl border-grey-dim h-[29.70rem]">
                 <div className="">
                   <span className="mb-6 flex items-end gap-2 text-2xl">
                     ${houseInfo?.price}

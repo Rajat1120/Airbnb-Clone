@@ -77,17 +77,21 @@ const HouseDetail = () => {
         id="header"
         className={`   ${
           minimize ? "z-50" : "z-10"
-        }  transition-all duration-[0.3s] ease-in-out ${
+        }  transition-all  duration-[0.3s] ease-in-out ${
           !startScroll ? `${animateHeaderClass1}` : `${animateHeaderClass2}`
         } bg-white   w-full flex items-start justify-center  `}
       >
         <Header headerRef={headerRef}></Header>
       </div>
       <NavBar></NavBar>
-      <div className={` ${minimize ? " absolute top-20 -z-10" : ""}  w-full`}>
+      <div className={` ${minimize ? " absolute top-20 -z-10" : ""}   w-full`}>
         <TopMainCont></TopMainCont>
-        <MidMainCont></MidMainCont>
-        <BottomMainCont></BottomMainCont>
+        <div className="w-full flex  justify-center">
+          <MidMainCont></MidMainCont>
+        </div>
+        <div className="w-full flex justify-center">
+          <BottomMainCont></BottomMainCont>
+        </div>
         <LongFooter></LongFooter>
       </div>
     </div>

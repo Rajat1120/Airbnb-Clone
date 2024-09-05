@@ -61,7 +61,7 @@ const SleepBedDetail = () => {
             Where you'll sleep
           </h3>
           {!houseInfo?.sleep_bed_1_link ? (
-            <div className="border-[1px] w-56  flex-center rounded-xl h-36">
+            <div className="border-[1px] max-w-56 w-full flex-center rounded-xl h-36">
               <div className=" w-44 justify-between flex flex-col h-24">
                 <img src={bed} className="w-7 h-7" alt="" />
                 <div className="flex flex-col">

@@ -54,7 +54,7 @@ const TopMainCont = () => {
 
   return (
     <div className="flex-center flex-col">
-      <div className="w-[calc(100%-20rem)] flex justify-between mx-auto">
+      <div className="max-w-7xl  w-full px-10 1lg:px-20  flex justify-between ">
         <div>
           {isLoading ? (
             <div className="pt-6 imgLoader text-[27px] w-96 h-5 mt-10 font-[460]"></div>
@@ -96,7 +96,7 @@ const TopMainCont = () => {
           </div>
         )}
       </div>
-      <div className="w-[calc(100%-20rem)] px-auto">
+      <div className="max-w-7xl  w-full px-10 1lg:px-20  ">
         <div className="pt-6">
           {isLoading ? (
             <div className="grid-areas rounded-xl overflow-hidden  ">
