@@ -22,6 +22,7 @@ module.exports = {
       screens: {
         "1xl": "1440px",
         "1xxl": "1355px",
+        "1xlx": "1280px",
         "1xll": "1200px",
         "1lg": "1124px",
         "1md": "956px",
