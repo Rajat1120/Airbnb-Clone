@@ -41,8 +41,10 @@ const HouseDetail = () => {
 
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
 
-  let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
-  let animateHeaderClass2 = minimize ? "animate-collapse" : "h-[11rem]";
+  let animateHeaderClass1 = minimize ? "animate-expand" : "max-h-[5rem] h-full";
+  let animateHeaderClass2 = minimize
+    ? "animate-collapse"
+    : "max-h-[11rem] h-full";
 
   useEffect(() => {
     const handleScroll = () => {
@@ -71,23 +73,29 @@ const HouseDetail = () => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative  overflow-x-hidden 1xz:overflow-x-visible">
       <div
         ref={headerRef}
         id="header"
-        className={`   ${
+        className={`  hidden  ${
           minimize ? "z-50" : "z-10"
-        }  transition-all duration-[0.3s] ease-in-out ${
+        }  transition-all  duration-[0.3s] ease-in-out ${
           !startScroll ? `${animateHeaderClass1}` : `${animateHeaderClass2}`
-        } bg-white   w-full flex items-start justify-center  `}
+        }    w-full 1xz:flex items-start justify-center  `}
       >
         <Header headerRef={headerRef}></Header>
       </div>
-      <NavBar></NavBar>
-      <div className={` ${minimize ? " absolute top-20 -z-10" : ""}  w-full`}>
+      <div className="w-full hidden 1xz:block">
+        <NavBar></NavBar>
+      </div>
+      <div className={` ${minimize ? " absolute top-20 -z-10" : ""}   w-full`}>
         <TopMainCont></TopMainCont>
-        <MidMainCont></MidMainCont>
-        <BottomMainCont></BottomMainCont>
+        <div className="w-full flex  justify-center">
+          <MidMainCont></MidMainCont>
+        </div>
+        <div className="w-full flex justify-center">
+          <BottomMainCont></BottomMainCont>
+        </div>
         <LongFooter></LongFooter>
       </div>
     </div>

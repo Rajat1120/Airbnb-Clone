@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setMobileNavOption } from "./Main/AppSlice";
 import { useLocation, useNavigate } from "react-router";
@@ -10,6 +10,14 @@ const MobileFooter = () => {
 
   const mobileNavOption = useSelector((state) => state.app.mobileNavOption);
   const userData = useSelector((state) => state.app.userData);
+
+  useEffect(() => {
+    if (location.pathname.includes("wishlist")) {
+      dispatch(setMobileNavOption("Wishlist"));
+    } else if (location.pathname.includes("account-settings")) {
+      dispatch(setMobileNavOption("Profile"));
+    }
+  }, []);
 
   function handleNavOption(option) {
     dispatch(setMobileNavOption(option));
@@ -53,7 +61,6 @@ const MobileFooter = () => {
         // if the user is already on the profile page, don't navigate to it
         !location.pathname.includes("/account-settings")
       ) {
-        console.log("navigating to profile");
         navigate("/account-settings");
       }
     }

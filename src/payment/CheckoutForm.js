@@ -18,16 +18,21 @@ import {
   getRoomInfo,
   updateBooking,
 } from "../Services/apiRooms";
-import { differenceInDays, format, set } from "date-fns";
+import { differenceInDays, format, isSameMonth, set } from "date-fns";
 import CalendarModal from "../Header/Form/CalendarModal";
 import Calendar from "../Header/Form/FormFields/Calendar";
-import { setCalendarModalOpen } from "../Header/Form/mainFormSlice";
+import {
+  setCalendarModalOpen,
+  setSelectedEndDate,
+  setSelectedStartDate,
+} from "../Header/Form/mainFormSlice";
 import Footer from "../Footer";
 import UpdatedPaymentForm from "./UpdatePaymentForm";
 import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import AddGuestModal from "../Modals/AddGuestModal";
 import { setCancelGuestUpdate } from "../Main/AppSlice";
+import { update } from "@react-spring/web";
 
 const CheckoutForm = () => {
   const [guestCount, setGuestCount] = useState("");
@@ -72,7 +77,9 @@ const CheckoutForm = () => {
   const [bookingStatus, setBookingStatus] = useState(null);
 
   useLayoutEffect(() => {
-    let guestCount = `${adultCount + childCount} guest${guestPlural}`;
+    let guestCount = `${adultCount + childCount} guest${guestPlural}${
+      infantCount + petCount > 0 ? "," : ""
+    }`;
 
     if (infantCount) {
       guestCount += ` ${infantCount} infant${infantCount > 1 ? "s" : ""}`;
@@ -136,12 +143,6 @@ const CheckoutForm = () => {
   const handleCloseModal = () => {
     dispatch(setCalendarModalOpen(false));
     updateDates();
-
-    if (allBookingDataTruthy(updateBookingData)) {
-      setTimeout(() => {
-        updateUserBooking();
-      }, 1000);
-    }
   };
 
   let formattedEndDate = useRef();
@@ -152,10 +153,10 @@ const CheckoutForm = () => {
     if (startDate && endDate) {
       numOfDays.current = differenceInDays(startDate, endDate);
       if (endDate) {
-        formattedEndDate.current = format(endDate, "d MMM");
+        formattedEndDate.current = format(endDate, "EEE MMM dd, yyyy");
       }
       if (startDate) {
-        formatStartDate.current = format(startDate, "dd");
+        formatStartDate.current = format(startDate, "EEE MMM dd, yyyy");
       }
     }
   }
@@ -203,6 +204,8 @@ const CheckoutForm = () => {
     formatStartDate.current,
     formattedEndDate.current,
   ]);
+
+  console.log(updateBookingData);
 
   function updateBookingDataFn() {
     if (userBookingData?.success) {
@@ -269,9 +272,73 @@ const CheckoutForm = () => {
 
   let load = updateLoading || bookingLoading;
 
-  if (!userData) {
-    return navigate("/login");
-  }
+  const [bookingDate, setBookingDate] = useState("");
+
+  let dateChange = useRef(false);
+
+  useEffect(() => {
+    const formatDateRange = (start, end) => {
+      const startDate = new Date(start);
+      const endDate = new Date(end);
+      if (start && end)
+        if (isSameMonth(startDate, endDate)) {
+          return `${format(startDate, "dd")} - ${format(endDate, "dd MMM")}`;
+        } else {
+          return `${format(startDate, "dd MMM")} - ${format(
+            endDate,
+            "dd MMM"
+          )}`;
+        }
+    };
+
+    if (!dateChange.current) {
+      setBookingDate(
+        formatDateRange(
+          formatStartDate?.current || userBookingData?.booking?.startDate,
+
+          formattedEndDate?.current || userBookingData?.booking?.endDate
+        )
+      );
+    }
+  }, [startDate, endDate, dateChange.current, userBookingData]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      dateChange.current = true;
+      if (userBookingData?.booking?.startDate) {
+        dispatch(setSelectedStartDate(userBookingData?.booking?.startDate));
+      }
+      if (userBookingData?.booking?.endDate) {
+        dispatch(setSelectedEndDate(userBookingData?.booking?.endDate));
+      }
+    } else {
+      if (allBookingDataTruthy(updateBookingData)) {
+        setTimeout(() => {
+          updateUserBooking();
+        }, 1000);
+      }
+      dateChange.current = false;
+    }
+  }, [isModalOpen, userBookingData, dispatch, updateBookingData]);
+
+  // navigate to login page if user is not logged in
+  let userDataLoaded = useRef(false);
+
+  useEffect(() => {
+    if (userData) {
+      userDataLoaded.current = true;
+    } else {
+      userDataLoaded.current = false;
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!userDataLoaded.current) {
+        return navigate("/login");
+      }
+    }, 1000);
+  }, [userData, navigate]);
 
   return (
     <div>
@@ -334,14 +401,8 @@ const CheckoutForm = () => {
             <span className="text-2xl block font-medium pb-6">Your trip</span>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
-                <span className="mt-2 block">Dates</span>
-                <span className="">
-                  {formatStartDate.current ||
-                    userBookingData?.booking?.startDate}{" "}
-                  -{" "}
-                  {formattedEndDate.current ||
-                    userBookingData?.booking?.endDate}
-                </span>
+                <span className="mt-2 font-medium block">Dates</span>
+                <span className="font-light ">{bookingDate}</span>
               </div>
               <button
                 onClick={() => handleEditClick()}
@@ -352,8 +413,8 @@ const CheckoutForm = () => {
             </div>
             <div className="pb-6  flex justify-between">
               <div className="flex flex-col">
-                <span className="mt-2 block">Guests</span>
-                <span className="">
+                <span className="mt-2 font-medium block">Guests</span>
+                <span className="font-light ">
                   {guestCount !== "0 guest" ? guestCount : "1 guest"}
                 </span>
               </div>

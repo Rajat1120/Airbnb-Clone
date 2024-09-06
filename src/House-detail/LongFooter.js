@@ -4,11 +4,18 @@ import faceBook from "../data/Icons svg/faceBookIcon.svg";
 import twitter from "../data/Icons svg/twitter.svg";
 import Insta from "../data/Icons svg/Insta.svg";
 import globe from "../data/globe.svg";
+import { useLocation } from "react-router";
 
 const LongFooter = () => {
+  let location = useLocation();
+  let onProfilePage = location.pathname.includes("account-settings");
   return (
-    <footer className="w-full hidden 1xz:block  bg-shadow-gray-light   ">
-      <div className="px-20 border-y-[1px] border-y-grey-dim  h-[5.25rem]">
+    <footer className="w-full hidden 1xz:inline-grid   h-full border-t  border-t-grey-dim ">
+      <div
+        className={`1lg:px-20 border-y-[1px] ${
+          onProfilePage ? "hidden" : ""
+        } border-y-grey-dim   h-[5.25rem]`}
+      >
         <div className="mx-20  h-full">
           <div className="py-8 items-center gap-x-1 flex">
             <span className="text-sm font-light">Airbnb</span>
@@ -21,9 +28,9 @@ const LongFooter = () => {
           </div>
         </div>
       </div>
-      <div className="px-20 h-[20.25rem]">
+      <div className=" h-full 1lg:px-20">
         <div className="mx-20  h-full">
-          <div className="w-full h-full grid grid-cols-3 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+          <div className="w-full h-full 1md:grid 1md:grid-cols-3 flex flex-col relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
             <div className="py-12 flex flex-col  gap-y-4">
               <span className="block font-medium text-sm">Support</span>
               <span className="block text-sm font-light">Help Center</span>
@@ -41,7 +48,7 @@ const LongFooter = () => {
                 Report neighbourhood concern
               </span>
             </div>
-            <div className="py-12 flex flex-col  gap-y-4">
+            <div className="py-12 flex border-y border-grey-dim 1md:border-y-0 flex-col  gap-y-4">
               <span className="block font-medium text-sm">Hosting</span>
               <span className="block text-sm font-light">Airbnb your home</span>
               <span className="block text-sm font-light">
@@ -71,10 +78,13 @@ const LongFooter = () => {
           </div>
         </div>
       </div>
-      <div className="px-20 h-[4.25rem]">
+      <div
+        className="1lg:px-20 w-full 
+       "
+      >
         <div className="mx-20  h-full">
-          <div className=" h-full py-6 flex justify-between  w-full">
-            <div className="w-[32.31rem] items-center flex gap-x-3 h-full">
+          <div className=" h-full py-6 flex gap-y-2 1md:gap-y-0 flex-col 1md:flex-row justify-center 1md:justify-between items-center w-full">
+            <div className=" items-center  flex gap-x-3 h-full">
               <span className="text-sm font-light">© 2024 Airbnb, Inc.</span>
               <span className=" flex items-center justify-center">
                 <span className="w-[2px] h-[2px] bg-current rounded-full"></span>

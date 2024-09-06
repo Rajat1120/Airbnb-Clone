@@ -63,7 +63,7 @@ const HouseDescription = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       >
-        <div className="w-[46rem] h-full whitespace-pre-wrap ">
+        <div className="max-w-[46rem] w-full h-full whitespace-pre-wrap ">
           {houseInfo?.house_description}
         </div>
       </HouseDescriptionModal>

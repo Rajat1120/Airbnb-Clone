@@ -42,10 +42,23 @@ const Calendar = () => {
     function findMonthWidth() {
       let width =
         (onHouseDetailPage || onCheckOutPage) && !minimize
-          ? 340
+          ? 375
           : window.innerWidth <= 956
           ? 384
           : 440; // Width of each month component
+
+      if (onHouseDetailPage && window.innerWidth <= 1280) {
+        width = 496;
+      }
+      if (onHouseDetailPage && window.innerWidth <= 936) {
+        width = 384;
+      }
+      if (onHouseDetailPage && window.innerWidth <= 744) {
+        width = 496;
+      }
+      if (onHouseDetailPage && window.innerWidth <= 550) {
+        width = 384;
+      }
 
       setmonthWidth(width);
     }
@@ -70,8 +83,6 @@ const Calendar = () => {
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
-
-  // console.log(addDaysToStartDate(3));
 
   const dispatch = useDispatch();
 
@@ -107,7 +118,7 @@ const Calendar = () => {
         <div
           className={` flex ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
-              ? "w-[2.62rem]"
+              ? "1xlx:w-[2.62rem] w-12 1xs:w-16 1xz:w-[3rem] 1smd:w-[4rem]"
               : "w-[3rem]"
           } justify-center text-xs text-center `}
           key={format(day, "yyyy-MM-dd")}
@@ -234,14 +245,14 @@ const Calendar = () => {
             key={day.toString()}
             className={`  relative ${
               (onHouseDetailPage && !minimize) || onCheckOutPage
-                ? "h-[2.62rem]   w-[2.62rem]"
+                ? "1xlx:h-[2.62rem] w-[3rem] h-[3rem] 1xs:w-[4rem] 1xs:h-[4rem] 1xlx:w-[2.62rem] aspect-square 1xz:h-[3rem] 1xz:w-[3rem] 1smd:h-[4rem] 1smd:w-[4rem] "
                 : " w-full 1xz:h-[3rem] 1xz:w-[3rem] h-full aspect-square   "
             }  flex items-center justify-center `}
           >
             <div
               className={`${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
-                  ? "h-[2.62rem]  w-[2.62rem]"
+                  ? "1xlx:h-[2.62rem] w-[3rem] h-[3rem] 1xlx:w-[2.62rem] aspect-square  1xz:h-[3rem]  1xs:w-[4rem] 1xs:h-[4rem] 1xz:w-[3rem] 1smd:h-[4rem] 1smd:w-[4rem] "
                   : " w-full  1xz:h-[3rem] 1xz:w-[3rem] aspect-square h-full"
               } flex items-center justify-center ${
                 isPastDate ? "" : "cursor-pointer"
@@ -259,8 +270,10 @@ const Calendar = () => {
       }
       rows.push(
         <div
-          className={`grid grid-cols-7 1xz:flex 1xz:items-center 1xz:justify-center w-full ${
-            (onHouseDetailPage && !minimize) || onCheckOutPage ? "" : "mb-[2px]"
+          className={` flex items-center justify-center w-full ${
+            (onHouseDetailPage && !minimize) || onCheckOutPage
+              ? ""
+              : "mb-[2px] grid grid-cols-7"
           } place-items-stretch`}
           key={day.toString()}
         >
@@ -395,39 +408,41 @@ const Calendar = () => {
   }, [currentIndex, monthWidth]);
 
   return (
-    <div className="flex w-full   h-full 1md:w-full 1xz:w-96 flex-col justify-center relative">
+    <div
+      className={`flex w-full   h-full 1md:w-full ${
+        onHouseDetailPage ? "" : "1xz:w-96"
+      } flex-col justify-center relative`}
+    >
       <div
-        className={`absolute hidden 1md:block  top-[3.6rem] ${
+        className={`absolute   top-[3.6rem] ${
           onCheckOutPage && "!left-[1.1rem]"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
-            ? "left-[1rem]"
-            : "left-[2.2rem]"
+            ? "left-0 hidden 1xlx:block "
+            : "left-[2.2rem] hidden 1md:block"
         }`}
       >
         {renderDays()}
       </div>
       <div
-        className={`absolute hidden  1xz:block top-[3.6rem] ${
-          onCheckOutPage && "!right-[0.6rem]"
-        }  ${
+        className={`absolute   ${onCheckOutPage && "!right-[0.6rem]"}  ${
           onHouseDetailPage && !minimize
-            ? "right-[0.1rem]"
-            : "1md:right-[2.2rem] right-[50%] 1md:translate-x-0 1xz:translate-x-1/2"
+            ? "1xlx:right-0 mx-auto w-full 1xlx:w-auto top-[4rem] 1xz:top-[3.6rem] "
+            : "1md:right-[2.2rem] hidden  1xz:block top-[3.6rem] right-[50%] 1md:translate-x-0 1xz:translate-x-1/2"
         }`}
       >
         {renderDays()}
       </div>
       <button
         disabled={currentIndex === 0}
-        className={` hidden 1xz:block absolute ${
+        className={`  absolute ${
           currentIndex === 0
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
-            ? "left-2"
-            : "1md:left-8 left-0"
+            ? "left-0"
+            : "1md:left-8 left-0 hidden 1xz:block"
         } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full  `}
         onClick={() => handleScroll("left")}
       >
@@ -435,22 +450,26 @@ const Calendar = () => {
       </button>
       <button
         disabled={currentIndex === 20}
-        className={` hidden 1xz:block absolute ${
+        className={`  absolute ${
           currentIndex === 20
             ? "opacity-30 cursor-not-allowed"
             : " hover:bg-gray-100"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
             ? "right-0"
-            : "1md:right-8 right-0"
-        } top-[1.2rem] transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
+            : "1md:right-8 right-0 hidden 1xz:block"
+        } top-[1.2rem]  transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
         <img className="h-4 w-4 " src={arrowRight} alt="" />
       </button>
       <div
         ref={scrollContainerRef}
-        className="1xz:overflow-x-hidden h-full 1md:w-auto 1md:block w-full flex 1xz:block justify-center overflow-y-auto  1xz:overflow-y-clip scrollbar-hide"
+        className={` h-full    ${
+          onHouseDetailPage
+            ? "1smd:w-[30rem] w-[22rem] 1xs:w-[30rem] 1xz:w-[23rem] 1xlx:w-full mx-auto overflow-x-hidden"
+            : "w-full 1md:w-auto 1xz:overflow-x-hidden 1md:block"
+        }   flex 1xz:block justify-center overflow-y-auto  1xz:overflow-y-clip scrollbar-hide`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         <div
@@ -458,28 +477,45 @@ const Calendar = () => {
             transition: `transform ${scrollSpeed}ms ease-out`,
             transform: `translateX(-${scrollPosition}px)`,
           }}
-          className={`inline-flex  w-full  h-[calc(100vh-20rem)] 1xz:h-auto flex-col 1xz:flex-row ${
+          className={`inline-flex  w-full ${
+            onHouseDetailPage
+              ? "  1xlx:w-full  1xlx:overflow-visible "
+              : "w-full"
+          }  h-[calc(100vh-20rem)] 1xz:h-auto  ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
-              ? "gap-x-3"
-              : "1md:gap-x-8 gap-x-0"
+              ? "1xlx:gap-x-0 gap-x-10 flex-row h-full"
+              : "1md:gap-x-8 gap-x-0 flex-col 1xz:flex-row"
           }`}
         >
           {Array.from({ length: 23 }, (_, index) => (
             <div
-              key={`1md:max-w-md ${index}-current`}
-              className={`   justify-center items-center ${
+              key={`${index}-current`}
+              className={`   justify-center w-80  items-center ${
                 (onHouseDetailPage && !minimize) || onCheckOutPage
-                  ? "w-[20rem] h-[20.5rem]"
+                  ? `w-full flex !mx-1  flex-col 
+                   h-full  ${
+                     index <= 0 ? "1xlx:pl-0 1xs:pl-3 " : "1xlx:pl-[4.6rem] "
+                   }`
                   : ` w-full flex  flex-col ${
                       index <= 0 ? "1md:pl-8 " : "1md:pl-16 "
                     } justify-between h-full 1xz:gap-y-10 gap-y-6  `
               } 1xz:mx-6 1md:mx-1 w-full rounded-lg`}
             >
-              <div className="flex w-full 1xz:justify-center justify-start">
+              <div
+                className={`flex w-full ${
+                  onHouseDetailPage
+                    ? "justify-center"
+                    : "1xz:justify-center justify-start"
+                } `}
+              >
                 {renderHeader(addMonths(currentMonth, index))}
               </div>
 
-              <div className="w-full 1md:w-auto">
+              <div
+                className={`w-full ${
+                  onHouseDetailPage || onCheckOutPage ? "1xz:mt-10 mt-10" : ""
+                } 1md:w-auto`}
+              >
                 {renderCells(addMonths(currentMonth, index))}
               </div>
             </div>

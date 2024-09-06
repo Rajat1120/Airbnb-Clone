@@ -38,16 +38,18 @@ function Header({ headerRef }) {
   return (
     <div
       id="header"
-      className={` ${classForAfter} w-full  after:hidden 1xz:after:block after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} w-full h-full  after:hidden  1xz:after:block after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
     >
       <div
-        className={`grid grid-cols-${
+        className={`grid    grid-cols-${
           onWishListPage || onTripsPage || onSignInPage || onProfilePage
             ? "2"
             : "3"
         }  ${
-          onHouseDetailPage ? "w-[calc(100%-10rem)]  mx-auto" : "w-full"
-        } px-10 1xl:px-20 `}
+          onHouseDetailPage
+            ? "max-w-7xl  w-full px-10 1lg:px-20 "
+            : "w-full 1xl:px-20 px-10"
+        } `}
       >
         <div className="w-8 ">
           <a href="/">
@@ -81,11 +83,11 @@ function Header({ headerRef }) {
           </div>
         )}
         <div className="h-20 1xz:flex hidden    items-center  justify-end ">
-          <button className="text-sm h-[2.5rem] cursor-auto  flex items-center justify-center rounded-full hover:bg-shadow-gray-light   w-[9rem] font-[450]; ">
+          <button className="text-sm h-[2.5rem] cursor-auto hidden 1smm:flex items-center justify-center rounded-full hover:bg-shadow-gray-light text-nowrap max-w-36 px-2  w-full font-[450]; ">
             Airbnb your home
           </button>
 
-          <button className=" min-h-9 cursor-auto   flex items-center justify-center rounded-full hover:bg-shadow-gray-light min-w-9 ">
+          <button className=" min-h-9 cursor-auto   hidden 1smm:flex items-center justify-center rounded-full hover:bg-shadow-gray-light min-w-9 ">
             <img className="h-4 w-4" src={globe} alt="" />
           </button>
 
@@ -94,7 +96,7 @@ function Header({ headerRef }) {
         {<AuthenticationModal></AuthenticationModal>}
       </div>
       {
-        <div className="1xz:hidden w-full -translate-y-20  flex">
+        <div className="1xz:hidden w-full absolute top-0  flex">
           <MobileForm></MobileForm>
         </div>
       }

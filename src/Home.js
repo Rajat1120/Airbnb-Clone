@@ -75,7 +75,7 @@ export default function Home() {
           <Footer></Footer>
         </div>
       )}
-      {userData && <MobileFooter></MobileFooter>}
+      <MobileFooter></MobileFooter>
 
       <SpeedInsights></SpeedInsights>
     </div>

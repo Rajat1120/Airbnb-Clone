@@ -6,7 +6,7 @@ import HostDetails from "./HostDetails";
 import Insights from "./Insights";
 const BottomMainCont = () => {
   return (
-    <div className="w-[calc(100%-10rem)] mx-auto px-[5rem] flex flex-col items-center ">
+    <div className="max-w-7xl w-full px-10 1lg:px-20  flex flex-col items-center ">
       <Review></Review>
       <Map></Map>
       <HostDetails></HostDetails>

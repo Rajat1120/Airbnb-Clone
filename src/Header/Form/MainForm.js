@@ -170,7 +170,7 @@ const MainForm = ({ headerRef }) => {
   }   before:transition-all before:duration-[0.3s] before:rounded-full before:z-[2] ease-in-out  before:h-full before:w-full before:absolute before:top-0`;
 
   let onScrollProperty =
-    "translate-y-[-5.5rem] 1md:translate-x-0  border-[3px]    scale-[.5] self-center inline-block h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
+    "translate-y-[-5.5rem] 1md:translate-x-0 translate-x-6 border-[3px]    scale-[.5] self-center inline-block h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack = `1md:translate-y-[0.2rem] 1sm:translate-y-[3rem] border-[1.5px] scale-100 self-center 1xz:w-auto 1smd:left-auto 1smd:right-auto 1xz:left-10 1xz:right-10  1smd:w-[53rem] h-[4rem]
     ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
@@ -208,7 +208,7 @@ const MainForm = ({ headerRef }) => {
                 }}
                 className="text-[1.8rem] h-[6rem]  flex-center text-center px-2  max-w-[30rem] min-w-[10rem] font-normal "
               >
-                <span className="w-full ">
+                <span className="w-full text-nowrap">
                   {displaySearch ? displaySearch : "Anywhere"}
                 </span>
               </button>
