@@ -17,13 +17,13 @@ const HostDetails = () => {
   }
 
   return (
-    <div className="flex py-10  w-full max-h-[27.75rem] justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
-      <div className=" w-[24.68rem] h-full ">
+    <div className="flex 1xz:flex-row flex-col gap-y-10 py-10 gap-x-20 w-full  justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+      <div className=" w-[24.68rem] max-h-80 h-full ">
         <div className="mb-6">
           <h1 className="text-[25px]   font-[460]">Meet your host</h1>
         </div>
         <div className=" ">
-          <div className="h-[14.37rem] shadow-2xl rounded-3xl w-[23.75rem] grid grid-cols-3">
+          <div className="h-full py-5 shadow-2xl rounded-3xl w-[23.75rem] grid grid-cols-3">
             <div className="col-span-2 w-full   grid-cols-1 grid ">
               <div className="w-full  flex justify-center items-end">
                 <img
@@ -74,8 +74,8 @@ const HostDetails = () => {
         </div>
       </div>
       <div
-        className={` w-[41.31rem]  flex flex-col justify-between  ${
-          hostDescription ? "h-[22rem]" : "h-[18rem]"
+        className={` w-[41.31rem]  flex flex-col gap-y-5 justify-between  ${
+          hostDescription ? "max-h-[22rem] h-full" : "max-h-[18rem] h-full"
         }`}
       >
         {hostDescription && (
@@ -93,7 +93,7 @@ const HostDetails = () => {
         )}
         <div
           className={`w-full ${
-            hostDescription ? "pt-5" : "pt-14"
+            hostDescription ? "pt-5" : "1xz:pt-14"
           } h-20 flex flex-col justify-between `}
         >
           <span className="block text-lg font-medium">Host details</span>

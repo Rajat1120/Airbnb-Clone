@@ -54,12 +54,44 @@ const TopMainCont = () => {
 
   return (
     <div className="flex-center flex-col">
-      <div className="max-w-7xl  w-full px-10 1lg:px-20  flex justify-between ">
+      <div className="w-full 1xz:hidden">
+        <div className="w-full h-16"></div>
+        <div className="w-full  ">
+          <div
+            style={{
+              scrollSnapType: "x mandatory",
+              scrollBehavior: "smooth",
+            }}
+            className="w-full  h-full  flex overflow-x-auto"
+          >
+            {houseInfo?.images.map((img) => {
+              return (
+                <img
+                  style={{
+                    scrollSnapAlign: "start",
+                    scrollSnapStop: "always",
+                    flexShrink: 0,
+                    aspectRatio: "16/10",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                  src={img}
+                  alt=""
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+      <div className="max-w-7xl  w-full px-5 1xz:px-10 1lg:px-20  flex justify-between ">
         <div>
           {isLoading ? (
-            <div className="pt-6 imgLoader text-[27px] w-96 h-5 mt-10 font-[460]"></div>
+            <div className="pt-6 imgLoader text-[1.68rem] w-96 h-5 mt-10 font-[460]"></div>
           ) : (
-            <h1 className={` pt-6 text-[27px]  font-[460] `}>
+            <h1
+              className={` pt-6 text-[1.68rem] hidden  1xz:block font-[460] `}
+            >
               {houseInfo?.title_1}
             </h1>
           )}
@@ -67,7 +99,7 @@ const TopMainCont = () => {
         {isLoading ? (
           <div className="pt-6 w-[10rem] h-5"></div>
         ) : (
-          <div className="pt-6 flex justify-between w-[10rem]">
+          <div className="pt-6 hidden  1xz:flex justify-between w-[10rem]">
             <span className="underline w-[5.2rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
               <img className="w-[1.2rem] h-[1.2rem] pt-1" src={share} alt="" />
               <span className="h-[1.2rem]">Share</span>
@@ -96,7 +128,7 @@ const TopMainCont = () => {
           </div>
         )}
       </div>
-      <div className="max-w-7xl  w-full px-10 1lg:px-20  ">
+      <div className="max-w-7xl hidden 1xz:block  w-full px-10 1lg:px-20  ">
         <div className="pt-6">
           {isLoading ? (
             <div className="grid-areas rounded-xl overflow-hidden  ">
@@ -105,7 +137,7 @@ const TopMainCont = () => {
               ))}
             </div>
           ) : (
-            <div className="grid-areas rounded-xl overflow-hidden">
+            <div className="grid-areas hidden 1xz:grid rounded-xl overflow-hidden">
               {gridLayout.map((gridArea, index) => (
                 <div key={index} className={gridArea}>
                   {houseInfo?.images &&
@@ -120,7 +152,7 @@ const TopMainCont = () => {
                   {index === 4 && (
                     <div
                       onClick={() => setIsModalOpen(true)}
-                      className="flex-center cursor-pointer w-[10rem] h-8 bg-white absolute bottom-5 right-5 gap-x-2 rounded-lg border-[1px] border-black"
+                      className="flex-center cursor-pointer text-nowrap w-[9rem] 1smm:w-[10rem] h-8 bg-white absolute bottom-5 right-2 1smm:right-5 gap-x-2 rounded-lg border-[1px] border-black"
                     >
                       <img src={dots} className="!w-4 !h-4" alt="" />
                       <span className="text-sm font-medium">

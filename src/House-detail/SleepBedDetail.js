@@ -106,9 +106,9 @@ const SleepBedDetail = () => {
       </div>
       <div
         id="Amenities"
-        className="py-12 scroll-mt-20 h-[21.13rem] relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim"
+        className="py-12 scroll-mt-20  relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim"
       >
-        <div>
+        <div className="h-full">
           <h3 className="text-2xl leading-6 font-medium pb-6">
             What this place offers
           </h3>
@@ -160,7 +160,7 @@ const SleepBedDetail = () => {
           </div>
         </div>
       </div>
-      <div className="py-12 h-[32.37rem]">
+      <div className="py-12">
         <div className="flex flex-col">
           <h3 id="calendar" className="text-2xl leading-6 font-medium ">
             {calendarTitle()}
@@ -180,7 +180,7 @@ const SleepBedDetail = () => {
               )}
             </div>
           </div>
-          <div className="w-full flex  flex-col pt-4 justify-center items-center ">
+          <div className="w-full flex  pt-4 justify-center items-center ">
             <Calendar></Calendar>
           </div>
           <div
