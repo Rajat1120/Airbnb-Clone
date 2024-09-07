@@ -64,9 +64,10 @@ const TopMainCont = () => {
             }}
             className="w-full  h-full  flex overflow-x-auto"
           >
-            {houseInfo?.images.map((img) => {
+            {houseInfo?.images.map((img, i) => {
               return (
                 <img
+                  key={i}
                   style={{
                     scrollSnapAlign: "start",
                     scrollSnapStop: "always",

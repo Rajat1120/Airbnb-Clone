@@ -47,7 +47,7 @@ const Calendar = () => {
           ? 384
           : 440; // Width of each month component
 
-      if (onHouseDetailPage && window.innerWidth <= 1280) {
+      if (onHouseDetailPage && !minimize && window.innerWidth <= 1280) {
         width = 496;
       }
       if (onHouseDetailPage && window.innerWidth <= 936) {
@@ -273,7 +273,7 @@ const Calendar = () => {
           className={` flex items-center justify-center w-full ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
               ? ""
-              : "mb-[2px] grid grid-cols-7"
+              : "mb-[2px] "
           } place-items-stretch`}
           key={day.toString()}
         >
@@ -409,9 +409,9 @@ const Calendar = () => {
 
   return (
     <div
-      className={`flex w-full   h-full 1md:w-full ${
-        onHouseDetailPage ? "" : "1xz:w-96"
-      } flex-col justify-center relative`}
+      className={`flex w-full   h-full 1md:w-full 
+       1xz:w-96
+       flex-col justify-center relative`}
     >
       <div
         className={`absolute   top-[3.6rem] ${
@@ -466,7 +466,7 @@ const Calendar = () => {
       <div
         ref={scrollContainerRef}
         className={` h-full    ${
-          onHouseDetailPage
+          onHouseDetailPage && !minimize
             ? "1smd:w-[30rem] w-[22rem] 1xs:w-[30rem] 1xz:w-[23rem] 1xlx:w-full mx-auto overflow-x-hidden"
             : "w-full 1md:w-auto 1xz:overflow-x-hidden 1md:block"
         }   flex 1xz:block justify-center overflow-y-auto  1xz:overflow-y-clip scrollbar-hide`}
@@ -498,7 +498,11 @@ const Calendar = () => {
                    }`
                   : ` w-full flex  flex-col ${
                       index <= 0 ? "1md:pl-8 " : "1md:pl-16 "
-                    } justify-between h-full 1xz:gap-y-10 gap-y-6  `
+                    } justify-between h-full ${
+                      onHouseDetailPage && minimize
+                        ? "1xz:gap-y-0"
+                        : "1xz:gap-y-10"
+                    } gap-y-6  `
               } 1xz:mx-6 1md:mx-1 w-full rounded-lg`}
             >
               <div
