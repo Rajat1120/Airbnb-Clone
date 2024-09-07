@@ -77,7 +77,7 @@ const HouseDetail = () => {
       <div
         ref={headerRef}
         id="header"
-        className={`  hidden  ${
+        className={` bg-white hidden  ${
           minimize ? "z-50" : "z-10"
         }  transition-all  duration-[0.3s] ease-in-out ${
           !startScroll ? `${animateHeaderClass1}` : `${animateHeaderClass2}`

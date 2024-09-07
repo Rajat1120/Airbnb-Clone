@@ -98,11 +98,14 @@ const Review = () => {
             {houseInfo?.rating_count}
           </span>
         </div>
-        <div className="w-full grid  grid-cols-7 h-[6.90rem]  ">
-          <div className=" border-r-[1px] border-grey-dim w-[10.62rem] flex justify-center  h-full">
+
+        <div className="w-full grid  grid-cols-7 h-[6.90rem]   ">
+          <div className=" border-r-[1px] border-grey-dim  flex justify-center  h-full">
             <div className="w-full mr-8  h-full">
               <div className="flex flex-col justify-between">
-                <h3 className="text-sm font-medium mb-2 ">Overall rating</h3>
+                <h3 className="1md:text-sm text-xs text-nowrap font-medium mb-2 ">
+                  Overall rating
+                </h3>
                 <ol>
                   <li className="flex justify-between gap-x-2 items-center">
                     <span className="text-xs">5</span>
@@ -139,74 +142,86 @@ const Review = () => {
             </div>
           </div>
           <div className=" border-r-[1px] border-grey-dim  flex justify-center  h-full">
-            <div className=" w-[6.90rem]  h-[6.45rem]">
+            <div className="   h-[6.45rem]">
               <div className="flex flex-col h-full  justify-between">
                 <div>
-                  <h3 className="text-sm font-medium ">Cleanliness</h3>
-                  <span className="text-lg font-medium">5.0</span>
+                  <h3 className="1md:text-sm text-xs font-medium ">
+                    Cleanliness
+                  </h3>
+                  <span className=" 1md:text-lg text-sm font-medium">5.0</span>
                 </div>
 
-                <img className="h-8 w-8" src={spray} alt="" />
+                <img className="1md:h-8 1md:w-8 h-6 w-6" src={spray} alt="" />
               </div>
             </div>
           </div>
           <div className=" border-r-[1px] border-grey-dim flex justify-center  h-full">
-            <div className=" w-[6.90rem]  h-[6.45rem]">
+            <div className="   h-[6.45rem]">
               <div className="flex flex-col h-full  justify-between">
                 <div>
-                  <h3 className="text-sm font-medium ">Accuracy</h3>
-                  <span className="text-lg font-medium">5.0</span>
+                  <h3 className="1md:text-sm text-xs font-medium ">Accuracy</h3>
+                  <span className="1md:text-lg text-sm font-medium">5.0</span>
                 </div>
 
-                <img className="h-8 w-8" src={checkMark} alt="" />
+                <img
+                  className="1md:h-8 1md:w-8 h-6 w-6"
+                  src={checkMark}
+                  alt=""
+                />
               </div>
             </div>
           </div>
           <div className=" border-r-[1px] border-grey-dim flex justify-center  h-full">
-            <div className=" w-[6.90rem]  h-[6.45rem]">
+            <div className="   h-[6.45rem]">
               <div className="flex flex-col h-full  justify-between">
                 <div>
-                  <h3 className="text-sm font-medium ">Check-in</h3>
-                  <span className="text-lg font-medium">5.0</span>
+                  <h3 className="1md:text-sm text-xs font-medium ">Check-in</h3>
+                  <span className="1md:text-lg text-sm font-medium">5.0</span>
                 </div>
 
-                <img className="h-8 w-8" src={key} alt="" />
+                <img className="1md:h-8 1md:w-8 h-6 w-6" src={key} alt="" />
               </div>
             </div>
           </div>
           <div className=" border-r-[1px] border-grey-dim flex justify-center  h-full">
-            <div className=" w-[6.90rem]  h-[6.45rem]">
+            <div className="   h-[6.45rem]">
               <div className="flex flex-col h-full  justify-between">
                 <div>
-                  <h3 className="text-sm font-medium ">Communication</h3>
-                  <span className="text-lg font-medium">5.0</span>
+                  <h3 className="1md:text-sm text-xs font-medium ">
+                    Communication
+                  </h3>
+                  <span className="1md:text-lg text-sm font-medium">5.0</span>
                 </div>
 
-                <img className="h-8 w-8" src={msg} alt="" />
+                <img className="1md:h-8 1md:w-8 h-6 w-6" src={msg} alt="" />
               </div>
             </div>
           </div>
           <div className="border-r-[1px] border-grey-dim flex justify-center  h-full">
-            <div className=" w-[6.90rem]  h-[6.45rem]">
+            <div className="   h-[6.45rem]">
               <div className="flex flex-col h-full  justify-between">
                 <div>
-                  <h3 className="text-sm font-medium ">Location</h3>
-                  <span className="text-lg font-medium">4.9</span>
+                  <h3 className="1md:text-sm text-xs font-medium ">Location</h3>
+                  <span className="1md:text-lg text-sm font-medium">4.9</span>
                 </div>
 
-                <img className="h-8 w-8" src={location} alt="" />
+                <img
+                  className="1md:h-8 1md:w-8 h-6 w-6"
+                  src={location}
+                  alt=""
+                />
               </div>
             </div>
           </div>
           <div className="  flex justify-center  h-full">
-            <div className=" w-[6.90rem]  h-[6.45rem]">
+            <div className="   h-[6.45rem]">
               <div className="flex flex-col h-full  justify-between">
                 <div>
-                  <h3 className="text-sm font-medium ">Value</h3>
-                  <span className="text-lg font-medium">4.9</span>
+                  <h3 className="1md:text-sm text-xs font-medium ">Value</h3>
+                  <span className="1md:text-lg text-sm font-medium">4.9</span>
                 </div>
 
-                <img className="h-8 w-8" src={value} alt="" />
+                <img className="1md:h-8 1md:w-8 h-6 w-6" src={value} alt="" />
               </div>
             </div>
           </div>

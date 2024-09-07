@@ -38,7 +38,7 @@ function Header({ headerRef }) {
   return (
     <div
       id="header"
-      className={` ${classForAfter} w-full h-full  after:hidden  1xz:after:block after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
+      className={` ${classForAfter} w-full py-2 1xz:py-0  after:hidden  1xz:after:block after:mt-2 flex flex-col 1smd:items-center items-start  justify-center relative  bg-white   after:absolute  `}
     >
       <div
         className={`grid    grid-cols-${

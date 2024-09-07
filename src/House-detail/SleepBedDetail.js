@@ -15,7 +15,7 @@ import {
   setSelectedEndDate,
   setSelectedStartDate,
 } from "../Header/Form/mainFormSlice";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { differenceInCalendarDays, format } from "date-fns";
 import { useParams } from "react-router";
 
@@ -37,7 +37,7 @@ const SleepBedDetail = () => {
     } else if (startDate && !endDate) {
       return "Select checkout date";
     } else {
-      return `${numOfNights} nights in New Delhi`;
+      return `${numOfNights} nights in ${houseInfo?.city}`;
     }
   }
 
