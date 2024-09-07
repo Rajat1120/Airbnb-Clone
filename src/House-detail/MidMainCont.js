@@ -147,7 +147,7 @@ const MidMainCont = () => {
 
   return (
     <div className="max-w-7xl w-full px-2 1xsss:px-5 1xz:px-10 1lg:px-20 mx-auto    relative  ">
-      <div className="flex w-full border-b border-grey-dim justify-between">
+      <div className="flex w-full 1xz:border-b 1xz:border-grey-dim justify-between">
         <div className="max-w-[40.83rem] min-w-[100%] 1xz:min-w-[60%]  mb-16  flex flex-col ">
           <div className={`1xz:py-8 py-4  `}>
             <>

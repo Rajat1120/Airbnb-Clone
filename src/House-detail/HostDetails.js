@@ -17,7 +17,7 @@ const HostDetails = () => {
   }
 
   return (
-    <div className="flex 1xz:flex-row flex-col gap-y-10 py-10 gap-x-20 w-full  justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+    <div className="flex px-5 1smm:px-0 1xz:flex-row flex-col gap-y-10 py-10 gap-x-20 w-full  justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
       <div className=" w-[24.68rem] max-h-80 h-full ">
         <div className="mb-6">
           <h1 className="text-[25px]   font-[460]">Meet your host</h1>

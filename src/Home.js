@@ -67,7 +67,7 @@ export default function Home() {
         <Options></Options>
       </div>
 
-      <div className="1sm:mt-[12rem] mt-[7rem]  flex justify-center items-center ">
+      <div className="1sm:mt-[12rem] w-full mt-[7rem]  flex justify-center items-center ">
         <House></House>
       </div>
       {userData && (

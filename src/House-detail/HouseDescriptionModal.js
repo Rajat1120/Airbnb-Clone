@@ -56,7 +56,7 @@ const HouseDescriptionModal = ({ isOpen, onClose, children }) => {
         ref={ref}
         className={`bg-white ${
           visible ? "translate-y-20 opacity-100" : "translate-y-32 opacity-0"
-        } transition-all fixed p-6 rounded-[1rem] duration-[0.2s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
+        } transition-all fixed p-6 rounded-[1rem] duration-[0.2s] flex flex-col ease-in-out items-center justify-center w-[calc(100%-5rem)] 1smd:w-auto shadow-md z-50`}
       >
         <div className="w-full h-24 items-start flex-col  flex pb-2 justify-between mb-3 ">
           <button

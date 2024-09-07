@@ -21,6 +21,7 @@ module.exports = {
     extend: {
       screens: {
         "1xl": "1440px",
+        "1xzl": "1435px",
         "1xxl": "1355px",
         "1xlx": "1280px",
         "1xll": "1200px",
@@ -49,6 +50,7 @@ module.exports = {
           "0 -5px 5px rgba(0,0,0,0.2),0 5px 5px #ffffff,inset 0 -20px 30px #ffffffe5,inset 0 10px 20px rgba(0,0,0,0.2)",
         sliderShadow2:
           " 0 -5px 5px rgba(255,255,255,0.4),inset 0 5px 3px rgba(255,255,255,0.8),inset 0 -5px 5px rgba(0,0,0,0.2),0 11px 18px rgba(0,0,0,0.18),0 -20px 30px rgba(255,255,255,0.8)",
+        reviewShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)",
       },
       colors: {
         pink: "#ff385c",

@@ -31,7 +31,7 @@ import UpdatedPaymentForm from "./UpdatePaymentForm";
 import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import AddGuestModal from "../Modals/AddGuestModal";
-import { setCancelGuestUpdate } from "../Main/AppSlice";
+import { setBookingDate, setCancelGuestUpdate } from "../Main/AppSlice";
 import { update } from "@react-spring/web";
 
 const CheckoutForm = () => {
@@ -205,8 +205,6 @@ const CheckoutForm = () => {
     formattedEndDate.current,
   ]);
 
-  console.log(updateBookingData);
-
   function updateBookingDataFn() {
     if (userBookingData?.success) {
       if (allBookingDataTruthy(updateBookingData)) {
@@ -272,7 +270,8 @@ const CheckoutForm = () => {
 
   let load = updateLoading || bookingLoading;
 
-  const [bookingDate, setBookingDate] = useState("");
+  // const [bookingDate, setBookingDate] = useState("");
+  const bookingDate = useSelector((store) => store.app.bookingDate);
 
   let dateChange = useRef(false);
 
@@ -292,11 +291,13 @@ const CheckoutForm = () => {
     };
 
     if (!dateChange.current) {
-      setBookingDate(
-        formatDateRange(
-          formatStartDate?.current || userBookingData?.booking?.startDate,
+      dispatch(
+        setBookingDate(
+          formatDateRange(
+            formatStartDate?.current || userBookingData?.booking?.startDate,
 
-          formattedEndDate?.current || userBookingData?.booking?.endDate
+            formattedEndDate?.current || userBookingData?.booking?.endDate
+          )
         )
       );
     }

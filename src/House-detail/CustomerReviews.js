@@ -19,16 +19,27 @@ const CustomerReviews = () => {
   ];
 
   return (
-    <div className="grid w-full max-h-[38.87rem]  grid-cols-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+    <div
+      style={{
+        scrollSnapType: "x mandatory",
+        scrollBehavior: "smooth",
+      }}
+      className="1smm:grid flex overflow-x-auto  px-5 1smm:px-0 gap-x-5 1smm:w-full max-h-[38.87rem]  1smm:grid-cols-2 "
+    >
       {Array.from({ length: totalCards }).map((_, index) => (
         <div
+          style={{
+            scrollSnapAlign: "center",
+            flexShrink: 0,
+            scrollSnapStop: "always",
+          }}
           key={index}
-          className="min-h-[10rem] max-h-[14rem]  px-2 mr-[5.91rem] "
+          className="min-h-[10rem]   1smm:mr-[5.91rem] "
         >
           <div
             className={` ${
               index < totalCards - 2 ? "mb-10" : ""
-            } mb-10 overflow-hidden  min-h-[6.62rem] max-h-[11.40rem] `}
+            } mb-10 overflow-hidden 1smm:w-auto w-[calc(100vw-5rem)]   1xs:w-[calc(100vw-8rem)]   min-h-[6.62rem] 1smm:shadow-none rounded-xl mt-2 shadow-reviewShadow bg-white  p-5 1smm:p-0  h-[90%] `}
           >
             <div className="h-[4.8rem] flex flex-col justify-between mb-1">
               <div className="h-12 gap-2 flex items-center ">
