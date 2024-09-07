@@ -89,28 +89,31 @@ const LongFooter = () => {
       >
         <div className="1xz:mx-20 mx-5  h-full">
           <div className=" h-full py-6 flex gap-y-2 1md:gap-y-0 flex-col 1md:flex-row justify-center 1md:justify-between items-center w-full">
-            <div className=" items-center  flex gap-x-3 h-full">
-              <span className="text-sm text-nowrap font-light">
+            <div className=" items-center  flex flex-col 1xs:flex-row  gap-x-3 h-full">
+              <span className="text-sm pb-2 1xs:pb-0 text-nowrap font-light">
                 © 2024 Airbnb, Inc.
               </span>
-              <span className=" flex items-center justify-center">
+
+              <span className=" hidden 1xs:flex items-center justify-center">
                 <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
               </span>
-              <span className="text-sm font-light">Privacy</span>
-              <span className=" flex items-center justify-center">
-                <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-              </span>
-              <span className="text-sm font-light">terms</span>
-              <span className=" flex items-center justify-center">
-                <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-              </span>
-              <span className="text-sm font-light">Sitemap</span>
-              <span className=" flex items-center justify-center">
-                <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-              </span>
-              <span className="text-sm text-nowrap font-light">
-                Company details
-              </span>
+              <div className="flex items-center gap-x-2">
+                <span className="text-sm font-light">Privacy</span>
+                <span className=" flex items-center justify-center">
+                  <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+                </span>
+                <span className="text-sm font-light">terms</span>
+                <span className=" flex items-center justify-center">
+                  <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+                </span>
+                <span className="text-sm font-light">Sitemap</span>
+                <span className=" flex items-center justify-center">
+                  <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+                </span>
+                <span className="text-sm text-nowrap font-light">
+                  Company details
+                </span>
+              </div>
             </div>
             <div className="w-10rem items-center flex gap-x-3 h-full">
               <div className="flex gap-x-2">

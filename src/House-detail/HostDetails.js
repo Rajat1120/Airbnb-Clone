@@ -74,8 +74,8 @@ const HostDetails = () => {
         </div>
       </div>
       <div
-        className={` w-[41.31rem]  flex flex-col gap-y-5 justify-between  ${
-          hostDescription ? "max-h-[22rem] h-full" : "max-h-[18rem] h-full"
+        className={`   flex flex-col gap-y-5 justify-between  ${
+          hostDescription ? "max-h-[24rem] h-full" : "max-h-[18rem] h-full"
         }`}
       >
         {hostDescription && (
@@ -86,7 +86,7 @@ const HostDetails = () => {
                 ? cleanString(houseInfo?.host_name)
                 : "Carl"}
             </span>
-            <span className="font-light whitespace-pre-wrap w-full h-[4.8rem] overflow-scroll">
+            <span className="font-light whitespace-pre-wrap w-full h-full max-h-[6rem] overflow-scroll">
               {houseInfo?.host_description}
             </span>
           </div>

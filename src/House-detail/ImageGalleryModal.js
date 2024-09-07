@@ -94,9 +94,9 @@ const ImageGalleryModal = ({ isOpen, onClose, children }) => {
               {arrowLeft}
             </button>
           </div>
-          <div className="pl-8 pt-10 h-full pb-20 overflow-auto pr-8 w-full">
+          <div className="1smd:pl-8 pt-10 h-full pb-20 overflow-auto 1smd:pr-8 w-full">
             <div
-              className="grid-gallery px-28 mx-36"
+              className="grid-gallery 1xz:px-5 1smm:px-10  1xz:mx-5 1smm:mx-10 1xlx:px-28 1xlx:mx-36"
               style={{
                 display: "grid",
                 gridTemplateAreas: gridAreas,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import star from "../data/Icons svg/star.svg";
 import spray from "../data/Icons svg/Spray.svg";
@@ -7,13 +7,15 @@ import key from "../data/Icons svg/key.svg";
 import msg from "../data/Icons svg/msg.svg";
 import location from "../data/Icons svg/location.svg";
 import value from "../data/Icons svg/value.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomerReviews from "./CustomerReviews";
+import { setActiveInput } from "../Header/Form/mainFormSlice";
+import { setMinimize } from "../Main/AppSlice";
 
 const Review = () => {
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
   let houseRating = Boolean(houseInfo?.house_rating > 2);
-
+  const dispatch = useDispatch();
   function formatSingleDigit(number) {
     // Convert the number to a string
     let numStr = number.toString();
@@ -41,15 +43,43 @@ const Review = () => {
     return number > 10;
   }
 
+  const [showReviewSection, setShowReviewSection] = useState(true);
+
+  useEffect(() => {
+    function handleResize() {
+      dispatch(setActiveInput(""));
+      dispatch(setMinimize(false));
+      if (
+        window.innerWidth <= 824 &&
+        houseInfo.guest_favorite !== "Guest favourite"
+      ) {
+        setShowReviewSection(false);
+      } else {
+        setShowReviewSection(true);
+      }
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [houseInfo.guest_favorite, dispatch]);
+
+  console.log(houseInfo);
+
   return (
     <div
       id="Reviews"
-      className="pt-12 scroll-mt-16 relative border-t 1xz:border-none border-grey-dim  bg-shadow-gray-light 1xz:bg-white   w-full ]"
+      className={`
+      ${
+        showReviewSection ? "pt-12 " : " "
+      } scroll-mt-16 relative border-t 1xz:border-none w-full border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
     >
       {/* Guest favourite */}
       {houseInfo.guest_favorite === "Guest favourite" && (
         <div className=" mt-4 mb-16 flex flex-col justify-between items-center">
-          <div className="h-[8.25rem] items-start flex w-[23.86rem] ">
+          <div className="h-[8.25rem] items-start flex ">
             <img
               className="h-full"
               src="https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/78b7687c-5acf-4ef8-a5ea-eda732ae3b2f.png"
@@ -66,10 +96,10 @@ const Review = () => {
               alt=""
             />
           </div>
-          <div className="pb-2 h-[1.62rem] flex-center   w-[10.21rem]">
+          <div className="pb-2  flex-center   ">
             <span className="text-xl font-medium"> Guest favourite</span>
           </div>
-          <div className="w-[23.75rem] flex-center h-12 ">
+          <div className="max-w-96 flex-center  ">
             <span className="text-center leading-6 font-extralight text-grey  w-full px-2 text-base 1xz:text-lg">
               One of the most loved homes on Airbnb based on ratings, reviews
               and reliability
@@ -79,7 +109,11 @@ const Review = () => {
       )}
 
       {/* reviews count section */}
-      <div className="1smm:pb-12 1smm:mb-12   1smm:border-b-[1px] border-grey-dim w-full">
+      <div
+        className={`1smm:pb-12 1smm:mb-12   1smm:border-b-[1px] border-grey-dim w-full ${
+          showReviewSection ? "" : "hidden"
+        }`}
+      >
         <div className="h-[1.87rem] px-5 1smm:px-0 mb-10 gap-x-2 flex items-center  w-full">
           <div className="flex items-center gap-x-2 ">
             <span>
@@ -232,7 +266,9 @@ const Review = () => {
       </div>
       {/* reviews section */}
       {isNumberGreaterThanTen(houseInfo?.rating_count) && (
-        <CustomerReviews></CustomerReviews>
+        <CustomerReviews
+          showReviewSection={showReviewSection}
+        ></CustomerReviews>
       )}
     </div>
   );

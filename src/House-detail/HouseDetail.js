@@ -24,6 +24,7 @@ const HouseDetail = () => {
   const dispatch = useDispatch();
   const minimize = useSelector((store) => store.app.minimize);
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
+  const houseInfoDetails = useSelector((store) => store.houseDetail.houseInfo);
 
   const userData = useSelector((store) => store.app.userData);
   const startDate = useSelector((store) => store.form.selectedStartDate);
@@ -108,7 +109,7 @@ const HouseDetail = () => {
   }, []);
 
   return (
-    <div className="relative  overflow-x-hidden 1xz:overflow-x-visible">
+    <div className="relative pb-20 1xz:pb-0  overflow-x-hidden 1xz:overflow-x-visible">
       <div
         ref={headerRef}
         id="header"
@@ -138,9 +139,9 @@ const HouseDetail = () => {
           {dateSelected && (
             <span className="text-normal font-medium ">
               $
-              {Math.ceil(houseInfo?.price * Math.abs(numOfDays)) +
+              {Math.ceil(houseInfoDetails?.price * Math.abs(numOfDays)) +
                 Math.floor(
-                  0.1 * Math.ceil(houseInfo?.price * Math.abs(numOfDays))
+                  0.1 * Math.ceil(houseInfoDetails?.price * Math.abs(numOfDays))
                 )}{" "}
               <span className="font-light text-sm">night</span>
             </span>
@@ -163,7 +164,7 @@ const HouseDetail = () => {
         </div>
         <div>
           <Link
-            to={userData && dateSelected ? `/${houseInfo.id}/book` : "#"}
+            to={userData && dateSelected ? `/${houseInfo?.id}/book` : "#"}
             onClick={(e) => {
               if (!dateSelected) {
                 scrollToSection("calendar");

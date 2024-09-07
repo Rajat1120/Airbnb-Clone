@@ -1,6 +1,13 @@
 export function svg(itemId, favListings, userData) {
-  const svgColor =
-    favListings?.includes(itemId) && userData ? "red" : "rgba(0, 0, 0, 0.5)";
+  const path = window.location.pathname;
+
+  let onHouseDetailPage = path.includes("/house");
+
+  let isFavorite = favListings?.includes(itemId) && userData;
+
+  const svgColor = isFavorite
+    ? "#ff385c"
+    : `${onHouseDetailPage ? "rgba(0, 0, 0, 0)" : "rgba(0,0,0,0.3)"}`;
 
   return (
     <svg
@@ -12,10 +19,12 @@ export function svg(itemId, favListings, userData) {
       style={{
         display: "block",
         fill: svgColor,
-        height: "24px",
-        width: "24px",
-        stroke: "white",
-        strokeWidth: "2",
+        height: `${onHouseDetailPage ? "18px" : "24px"}`,
+        width: `${onHouseDetailPage ? "18px" : "24px"}`,
+        stroke: `${
+          onHouseDetailPage ? `${isFavorite ? "#ff385c" : "black"}` : "white"
+        }`,
+        strokeWidth: `${onHouseDetailPage ? "1.8" : "2"}`,
         overflow: "visible",
       }}
     >

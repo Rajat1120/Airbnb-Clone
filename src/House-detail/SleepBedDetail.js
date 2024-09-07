@@ -54,8 +54,8 @@ const SleepBedDetail = () => {
   // Usage:
 
   return (
-    <div>
-      <div className="w-full relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+    <div className="w-full">
+      <div className="w-full relative border-b border-grey-dim">
         <div className="py-12 w-full  flex justify-between flex-col">
           <h3 className="text-2xl leading-6 font-medium pb-6">
             Where you'll sleep
@@ -71,10 +71,21 @@ const SleepBedDetail = () => {
               </div>
             </div>
           ) : (
-            <div className="flex  gap-4">
-              <div className="h-[16.79rem] w-1/2 flex justify-center flex-col ">
-                <div className="h-[13.25rem] flex items-center justify-center w-full">
+            <div
+              style={{
+                scrollSnapType: "x mandatory",
+                scrollBehavior: "smooth",
+              }}
+              className="flex  gap-4 w-full overflow-x-auto min-w-5rem"
+            >
+              <div className=" w-80 shrink-0 flex justify-center flex-col ">
+                <div className=" h-52 flex items-center justify-center w-full">
                   <img
+                    style={{
+                      scrollSnapAlign: "start",
+                      flexShrink: 0,
+                      scrollSnapStop: "always",
+                    }}
                     className="rounded-xl object-cover  w-full h-full"
                     src={houseInfo?.sleep_bed_1_link}
                     alt=""
@@ -86,9 +97,14 @@ const SleepBedDetail = () => {
                 </div>
               </div>
               {houseInfo?.sleep_bed_2_link && (
-                <div className="h-[16.79rem] w-1/2 flex justify-center  flex-col ">
-                  <div className="h-[13.25rem] flex  items-center justify-center w-full">
+                <div className=" w-80 shrink-0 flex justify-center  flex-col ">
+                  <div className=" flex h-52  items-center justify-center w-full">
                     <img
+                      style={{
+                        scrollSnapAlign: "start",
+                        flexShrink: 0,
+                        scrollSnapStop: "always",
+                      }}
                       className="rounded-xl object-cover w-full h-full "
                       src={houseInfo?.sleep_bed_2_link}
                       alt=""
