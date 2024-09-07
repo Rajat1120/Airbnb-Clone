@@ -77,7 +77,7 @@ module.exports = {
         },
         expand: {
           "0%": { height: "4.9rem" },
-          "100%": { height: "11rem", "z-index": "10" },
+          "100%": { height: "var(--expanded-height)", "z-index": "10" },
         },
         collapse: {
           "0%": { height: "9.8rem" },
@@ -110,7 +110,17 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(function ({ addUtilities }) {
+    plugin(function ({ addUtilities, addBase }) {
+      addBase({
+        ":root": {
+          "--expanded-height": "14rem",
+        },
+        "@screen 1md": {
+          ":root": {
+            "--expanded-height": "11rem",
+          },
+        },
+      });
       const newUtilities = {
         ".border-blur": {
           "border-left-width": "10px",

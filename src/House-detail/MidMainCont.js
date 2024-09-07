@@ -224,7 +224,7 @@ const MidMainCont = () => {
             </div>
           )}
           <div>
-            <div className="py-8 flex flex-col gap-y-5 h-[19.5rem]">
+            <div className="py-8 flex border-b border-grey-dim flex-col gap-y-5 ">
               <div className="flex items-start gap-8">
                 <div className="flex items-start">
                   <img className="w-6 h-6" src={room} alt="" />
@@ -270,7 +270,6 @@ const MidMainCont = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[1px] bg-grey-dim"></div>
           </div>
           <HouseDescription></HouseDescription>
           <SleepBed></SleepBed>

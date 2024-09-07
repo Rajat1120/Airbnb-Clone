@@ -87,9 +87,9 @@ const Map = () => {
   return (
     <div
       id="Location"
-      className="w-full px-5 1smm:px-0 relative scroll-mt-20 after:content-[''] after:absolute after:bottom-0 after:w-full after:h-[1px] after:bg-grey-dim z-10"
+      className="w-full px-5 1smm:px-0 relative scroll-mt-20  z-10"
     >
-      <div className="max-h-[50rem] w-full py-12">
+      <div className="max-h-[50rem] w-full border-b border-grey-dim py-10 1xz:pb-8">
         <div className="pb-6 w-full flex justify-start">
           <span className="w-full text-2xl font-medium">Where you'll be</span>
         </div>

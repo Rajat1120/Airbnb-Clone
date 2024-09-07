@@ -36,7 +36,7 @@ const HouseDescription = () => {
   if (!houseInfo?.house_description) return null;
   return (
     <div>
-      <div className="pt-8 h-64 flex flex-col  justify-center  pb-11 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+      <div className="pt-8 h-60 flex flex-col  justify-center  pb-11 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
         <p className="flex-grow overflow-hidden relative">
           <span
             ref={paragraphRef}
@@ -53,7 +53,7 @@ const HouseDescription = () => {
             >
               <span className="underline font-medium ">Show more</span>
               <span>
-                <img className="h-6 w-6 " src={showMore} alt="" />
+                <img className="h-4 w-4 " src={showMore} alt="" />
               </span>
             </button>
           </div>
