@@ -17,7 +17,7 @@ const HostDetails = () => {
   }
 
   return (
-    <div className="flex 1xz:flex-row flex-col gap-y-10 py-10 gap-x-20 w-full  justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
+    <div className="flex px-5 1smm:px-0 1xz:flex-row flex-col gap-y-10 py-10 gap-x-20 w-full  justify-between relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
       <div className=" w-[24.68rem] max-h-80 h-full ">
         <div className="mb-6">
           <h1 className="text-[25px]   font-[460]">Meet your host</h1>
@@ -74,8 +74,8 @@ const HostDetails = () => {
         </div>
       </div>
       <div
-        className={` w-[41.31rem]  flex flex-col gap-y-5 justify-between  ${
-          hostDescription ? "max-h-[22rem] h-full" : "max-h-[18rem] h-full"
+        className={`   flex flex-col gap-y-5 justify-between  ${
+          hostDescription ? "max-h-[24rem] h-full" : "max-h-[18rem] h-full"
         }`}
       >
         {hostDescription && (
@@ -86,7 +86,7 @@ const HostDetails = () => {
                 ? cleanString(houseInfo?.host_name)
                 : "Carl"}
             </span>
-            <span className="font-light whitespace-pre-wrap w-full h-[4.8rem] overflow-scroll">
+            <span className="font-light whitespace-pre-wrap w-full h-full max-h-[6rem] overflow-scroll">
               {houseInfo?.host_description}
             </span>
           </div>

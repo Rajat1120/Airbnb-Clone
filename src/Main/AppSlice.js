@@ -9,6 +9,7 @@ let appState = {
   isLoading: true,
   city: "",
   hoveredItem: null,
+  bookingDate: "",
   hoveredItems: [],
   hitSearch: 0,
   scrollPositions: {},
@@ -32,6 +33,9 @@ const AppSlice = createSlice({
     },
     setMinimize(state, action) {
       state.minimize = action.payload;
+    },
+    setBookingDate(state, action) {
+      state.bookingDate = action.payload;
     },
     setHitSearch(state, action) {
       state.hitSearch = action.payload;
@@ -123,6 +127,7 @@ export const {
   setShowMobileForm,
   setUserFavListing,
   setItemId,
+  setBookingDate,
   setHitSearch,
   removeUserFavListing,
   setIsLoading,

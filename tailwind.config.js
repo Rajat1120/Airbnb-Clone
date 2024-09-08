@@ -50,6 +50,7 @@ module.exports = {
           "0 -5px 5px rgba(0,0,0,0.2),0 5px 5px #ffffff,inset 0 -20px 30px #ffffffe5,inset 0 10px 20px rgba(0,0,0,0.2)",
         sliderShadow2:
           " 0 -5px 5px rgba(255,255,255,0.4),inset 0 5px 3px rgba(255,255,255,0.8),inset 0 -5px 5px rgba(0,0,0,0.2),0 11px 18px rgba(0,0,0,0.18),0 -20px 30px rgba(255,255,255,0.8)",
+        reviewShadow: "0px 6px 16px rgba(0, 0, 0, 0.12)",
       },
       colors: {
         pink: "#ff385c",
@@ -76,7 +77,7 @@ module.exports = {
         },
         expand: {
           "0%": { height: "4.9rem" },
-          "100%": { height: "11rem", "z-index": "10" },
+          "100%": { height: "var(--expanded-height)", "z-index": "10" },
         },
         collapse: {
           "0%": { height: "9.8rem" },
@@ -109,7 +110,17 @@ module.exports = {
     },
   },
   plugins: [
-    plugin(function ({ addUtilities }) {
+    plugin(function ({ addUtilities, addBase }) {
+      addBase({
+        ":root": {
+          "--expanded-height": "14rem",
+        },
+        "@screen 1md": {
+          ":root": {
+            "--expanded-height": "11rem",
+          },
+        },
+      });
       const newUtilities = {
         ".border-blur": {
           "border-left-width": "10px",

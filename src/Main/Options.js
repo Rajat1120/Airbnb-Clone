@@ -107,7 +107,7 @@ const Options = () => {
     <div
       className={`1sm:bg-white ${
         minimize ? "hidden" : ""
-      } z-10 justify-self-center  w-full 1xzl:px-3 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
+      } z-10 justify-self-center  w-full  1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
     >
       <div
         className={`1sm:h-20 1sm:py-6 flex w-full relative items-center justify-between space-x-10`}

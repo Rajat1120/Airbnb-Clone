@@ -59,11 +59,11 @@ const NavBar = () => {
 
   return (
     <div
-      className={`w-full px-20 h-20 bg-white fixed top-0  z-50 ${
-        showNav ? "" : "hidden"
+      className={`w-full   h-20 bg-white fixed top-0  z-50 ${
+        showNav ? "flex-center" : "hidden"
       } border-b-[1px] border-b-grey-dim`}
     >
-      <nav className="h-full mx-20 flex items-center justify-between ">
+      <nav className="h-full  max-w-7xl 1lg:px-20 px-10 w-full flex items-center justify-between ">
         <div className="h-full gap-x-6 w-[20rem] flex items-center ">
           <a
             onClick={scrollToSection("header")}

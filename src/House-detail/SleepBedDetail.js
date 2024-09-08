@@ -112,7 +112,7 @@ const SleepBedDetail = () => {
           <h3 className="text-2xl leading-6 font-medium pb-6">
             What this place offers
           </h3>
-          <div className="flex flex-wrap ">
+          <div className="flex flex-col 1smm:flex-row 1xz:flex-wrap ">
             <div className="w-1/2 pb-4 gap-4 flex">
               <img className="h-6 w-6" src={kitchen} alt="" />
               <span className="font-light">Kitchen</span>
@@ -135,7 +135,7 @@ const SleepBedDetail = () => {
             </div>
             <div className="w-1/2 pb-4 gap-4 flex">
               <img className="h-6 w-6" src={tv} alt="" />
-              <span className="font-light">
+              <span className="font-light text-nowrap">
                 TV with standard cable/satellite
               </span>
             </div>
@@ -160,7 +160,7 @@ const SleepBedDetail = () => {
           </div>
         </div>
       </div>
-      <div className="py-12">
+      <div className="1xz:py-12 pt-12  ">
         <div className="flex flex-col">
           <h3 id="calendar" className="text-2xl leading-6 font-medium ">
             {calendarTitle()}

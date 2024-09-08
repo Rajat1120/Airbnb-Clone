@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import star from "../data/Icons svg/star.svg";
 import spray from "../data/Icons svg/Spray.svg";
@@ -7,13 +7,15 @@ import key from "../data/Icons svg/key.svg";
 import msg from "../data/Icons svg/msg.svg";
 import location from "../data/Icons svg/location.svg";
 import value from "../data/Icons svg/value.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomerReviews from "./CustomerReviews";
+import { setActiveInput } from "../Header/Form/mainFormSlice";
+import { setMinimize } from "../Main/AppSlice";
 
 const Review = () => {
   const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
   let houseRating = Boolean(houseInfo?.house_rating > 2);
-
+  const dispatch = useDispatch();
   function formatSingleDigit(number) {
     // Convert the number to a string
     let numStr = number.toString();
@@ -41,11 +43,41 @@ const Review = () => {
     return number > 10;
   }
 
+  const [showReviewSection, setShowReviewSection] = useState(true);
+
+  useEffect(() => {
+    function handleResize() {
+      dispatch(setActiveInput(""));
+      dispatch(setMinimize(false));
+      if (
+        window.innerWidth <= 824 &&
+        houseInfo.guest_favorite !== "Guest favourite"
+      ) {
+        setShowReviewSection(false);
+      } else {
+        setShowReviewSection(true);
+      }
+    }
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [houseInfo.guest_favorite, dispatch]);
+
+  console.log(houseInfo);
+
   return (
-    <div id="Reviews" className="pt-12 scroll-mt-16 relative   w-full ]">
+    <div
+      id="Reviews"
+      className={`
+      ${
+        showReviewSection ? "pt-12 w-full" : "w-[calc(100%-3rem)]"
+      } scroll-mt-16 relative border-t 1xz:border-none border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
+    >
       {/* Guest favourite */}
       {houseInfo.guest_favorite === "Guest favourite" && (
-        <div className="h-[13.38rem] mt-4 mb-16 flex flex-col justify-between items-center">
+        <div className=" mt-4 mb-16 flex flex-col justify-between items-center">
           <div className="h-[8.25rem] items-start flex w-[23.86rem] ">
             <img
               className="h-full"
@@ -67,7 +99,7 @@ const Review = () => {
             <span className="text-xl font-medium"> Guest favourite</span>
           </div>
           <div className="w-[23.75rem] flex-center h-12 ">
-            <span className="text-center leading-6 font-extralight text-grey  w-full px-2 text-lg">
+            <span className="text-center leading-6 font-extralight text-grey  w-full px-2 text-base 1xz:text-lg">
               One of the most loved homes on Airbnb based on ratings, reviews
               and reliability
             </span>
@@ -76,8 +108,12 @@ const Review = () => {
       )}
 
       {/* reviews count section */}
-      <div className="pb-12 mb-12 border-b-[1px] border-grey-dim w-full">
-        <div className="h-[1.87rem] mb-10 gap-x-2 flex items-center  w-full">
+      <div
+        className={`1smm:pb-12 1smm:mb-12   1smm:border-b-[1px] border-grey-dim w-full ${
+          showReviewSection ? "" : "hidden"
+        }`}
+      >
+        <div className="h-[1.87rem] px-5 1smm:px-0 mb-10 gap-x-2 flex items-center  w-full">
           <div className="flex items-center gap-x-2 ">
             <span>
               <img className="w-6 h-6" src={star} alt="" />
@@ -99,7 +135,7 @@ const Review = () => {
           </span>
         </div>
 
-        <div className="w-full grid  grid-cols-7 h-[6.90rem]   ">
+        <div className="w-full hidden 1smm:grid  grid-cols-7 h-[6.90rem]   ">
           <div className=" border-r-[1px] border-grey-dim  flex justify-center  h-full">
             <div className="w-full mr-8  h-full">
               <div className="flex flex-col justify-between">

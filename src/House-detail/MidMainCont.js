@@ -147,7 +147,7 @@ const MidMainCont = () => {
 
   return (
     <div className="max-w-7xl w-full px-2 1xsss:px-5 1xz:px-10 1lg:px-20 mx-auto    relative  ">
-      <div className="flex w-full border-b border-grey-dim justify-between">
+      <div className="flex w-full 1xz:border-b 1xz:border-grey-dim justify-between">
         <div className="max-w-[40.83rem] min-w-[100%] 1xz:min-w-[60%]  mb-16  flex flex-col ">
           <div className={`1xz:py-8 py-4  `}>
             <>
@@ -224,7 +224,7 @@ const MidMainCont = () => {
             </div>
           )}
           <div>
-            <div className="py-8 flex flex-col gap-y-5 h-[19.5rem]">
+            <div className="py-8 flex border-b border-grey-dim flex-col gap-y-5 ">
               <div className="flex items-start gap-8">
                 <div className="flex items-start">
                   <img className="w-6 h-6" src={room} alt="" />
@@ -270,7 +270,6 @@ const MidMainCont = () => {
                 </div>
               </div>
             </div>
-            <div className="h-[1px] bg-grey-dim"></div>
           </div>
           <HouseDescription></HouseDescription>
           <SleepBed></SleepBed>
