@@ -418,7 +418,7 @@ const Calendar = () => {
           onCheckOutPage && "!left-[1.1rem]"
         } ${
           (onHouseDetailPage && !minimize) || onCheckOutPage
-            ? "left-0 hidden 1xlx:block "
+            ? "left-0 1md:left-1 hidden 1xlx:block "
             : "left-[2.2rem] hidden 1md:block"
         }`}
       >
@@ -435,7 +435,7 @@ const Calendar = () => {
       </div>
       <button
         disabled={currentIndex === 0}
-        className={`  absolute ${
+        className={` ${onCheckOutPage ? "hidden 1xz:block" : ""} absolute ${
           currentIndex === 0
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
@@ -458,6 +458,8 @@ const Calendar = () => {
           (onHouseDetailPage && !minimize) || onCheckOutPage
             ? "right-0"
             : "1md:right-8 right-0 hidden 1xz:block"
+        } ${
+          onCheckOutPage ? "hidden 1xz:block" : ""
         } top-[1.2rem]  transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
@@ -481,8 +483,8 @@ const Calendar = () => {
             onHouseDetailPage
               ? "  1xlx:w-full  1xlx:overflow-visible "
               : "w-full"
-          }  h-[calc(100vh-20rem)] 1xz:h-auto  ${
-            (onHouseDetailPage && !minimize) || onCheckOutPage
+          }  h-[calc(100vh-15rem)]  1xz:h-auto ${
+            onHouseDetailPage && !minimize
               ? "1xlx:gap-x-0 gap-x-10 flex-row h-full"
               : "1md:gap-x-8 gap-x-0 flex-col 1xz:flex-row"
           }`}
@@ -494,7 +496,9 @@ const Calendar = () => {
                 (onHouseDetailPage && !minimize) || onCheckOutPage
                   ? `w-full flex !mx-1  flex-col 
                    h-full  ${
-                     index <= 0 ? "1xlx:pl-0 1xs:pl-3 " : "1xlx:pl-[4.6rem] "
+                     index <= 0
+                       ? "1xlx:pl-0 1xs:pl-3 pl-1 "
+                       : "1xlx:pl-[4.6rem] "
                    }`
                   : ` w-full flex  flex-col ${
                       index <= 0 ? "1md:pl-8 " : "1md:pl-16 "

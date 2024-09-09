@@ -7,28 +7,34 @@ const Footer = () => {
   let onCheckoutPage = location.pathname.includes("book");
   return (
     <div
-      className={` w-[calc(100%-10rem)] flex justify-between items-center  ${
+      className={` w-full px-10 py-4  flex 1smd:flex-row flex-col-reverse justify-between items-start gap-y-1 1smd:items-center  ${
         onCheckoutPage ? "bg-shadow-gray-light" : "bg-white"
       }  h-full `}
     >
-      <div className="max-w-[60%] flex">
-        <span className="text-sm font-light">© 2024 Airbnb, Inc</span>
-        <span className="mx-2 flex items-center justify-center">
-          <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+      <div className=" flex-col 1md:flex-row flex">
+        <span className="text-sm text-nowrap font-light">
+          © 2024 Airbnb, Inc
         </span>
-        <span className="text-sm font-light">Privacy</span>
-        <span className="mx-2 flex items-center justify-center">
-          <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-        </span>
-        <span className="text-sm font-light">Terms</span>
-        <span className="mx-2 flex items-center justify-center">
-          <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-        </span>
-        <span className="text-sm font-light">Sitemap</span>
-        <span className="mx-2 flex items-center justify-center">
-          <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
-        </span>
-        <span className="text-sm font-light">Company details</span>
+        <div className="flex items-center ">
+          <span className="mx-2 hidden 1md:flex items-center justify-center">
+            <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+          </span>
+          <span className="text-sm font-light">Privacy</span>
+          <span className="mx-2 flex items-center justify-center">
+            <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+          </span>
+          <span className="text-sm font-light">Terms</span>
+          <span className="mx-2 flex items-center justify-center">
+            <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+          </span>
+          <span className="text-sm font-light">Sitemap</span>
+          <span className="mx-2 flex items-center justify-center">
+            <span className="w-[2px] h-[2px] bg-current rounded-full"></span>
+          </span>
+          <span className="text-sm text-nowrap font-light">
+            Company details
+          </span>
+        </div>
       </div>
       <div className="flex gap-x-5">
         <div className="flex items-center gap-x-2">

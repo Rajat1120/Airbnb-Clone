@@ -46,11 +46,28 @@ const CircularSlider = () => {
     dispatch(setCalendarModalOpen(false));
   };
 
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 743px)");
+    setIsSmallScreen(mediaQuery.matches);
+
+    const handleResize = (event) => {
+      setIsSmallScreen(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, []);
+
   return (
-    <div className="h-[28rem] flex flex-col items-center justify-center">
+    <div className=" flex h-full 1xz:gap-y-10  pt-5 1xz:pt-0 flex-col items-center justify-between">
       <p>When's your trip?</p>
-      <div className="h-[23rem] relative flex items-center justify-center w-[23rem]">
-        <div className="h-[18.12rem] flex items-center justify-center bg-[#E6E6E6] bg-clip-border rounded-[50%] w-[18.12rem] shadow-sliderShadow relative">
+      <div className=" relative flex items-center justify-center ">
+        <div className="1xz:h-[18.12rem] h-[16.12rem] flex items-center justify-center bg-[#E6E6E6] bg-clip-border rounded-[50%] 1xz:w-[18.12rem] w-[16.12rem] shadow-sliderShadow relative">
           <div className="absolute inset-0 flex items-center justify-center">
             {/* Dots */}
             {[...Array(dotCount)].map((_, index) => (
@@ -64,7 +81,7 @@ const CircularSlider = () => {
                   height: "5rem",
                   transform: `rotate(${
                     index * (360 / dotCount)
-                  }deg) translate(0, -7rem)`,
+                  }deg) translate(0, ${isSmallScreen ? "-6rem" : "-7rem"})`,
                 }}
                 onClick={() => handleClick(index)}
               >
@@ -89,12 +106,12 @@ const CircularSlider = () => {
               transition: "transform 0.2s ease",
               transform: `rotate(${
                 currentDot === 0 ? 360 : currentDot * (360 / dotCount)
-              }deg) translate(0, -7rem)`,
+              }deg) translate(0, ${isSmallScreen ? "-6rem" : "-7rem"})`,
             }}
           ></div>
-          <div className="h-[10.62rem] flex items-center justify-center bg-white rounded-[50%] shadow-sliderShadow2 w-[10.62rem]">
+          <div className="1xz:h-[10.62rem] h-[8.62rem] flex items-center justify-center bg-white rounded-[50%] shadow-sliderShadow2 1xz:w-[10.62rem] w-[8.62rem]">
             <span className="flex  flex-col items-center justify-center">
-              <p className="text-[6rem] h-[7rem] mb-2 font-bold p-0 m-0">
+              <p className="1xz:text-[6rem] text-[5rem] 1xz:h-[7rem] h-[5.5rem] mb-2 font-bold p-0 m-0">
                 {currentDot === 0 ? 12 : NumOfMonths}
               </p>{" "}
               <p className="mb-6 font-bold text-lg">
@@ -121,7 +138,7 @@ const CircularSlider = () => {
           </span>
         </p>
         <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <div className="w-[53rem]">
+          <div className="   flex-center max-w-[53rem]">
             <Calendar />
           </div>
         </CalendarModal>

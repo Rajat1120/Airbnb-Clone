@@ -341,6 +341,25 @@ const CheckoutForm = () => {
     }, 1000);
   }, [userData, navigate]);
 
+  const rating = data?.rating_count.match(/\d+/);
+
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 920px)");
+    setIsSmallScreen(mediaQuery.matches);
+
+    const handleResize = (event) => {
+      setIsSmallScreen(event.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleResize);
+    };
+  }, []);
+
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false}></Toaster>
@@ -349,7 +368,7 @@ const CheckoutForm = () => {
           <div className="cssLoader  absolute top-1/2 left-1/2  w-12 h-3"></div>
         </div>
       )}
-      <header>
+      <header className="hidden 1xz:block">
         <div className="pl-6 border-b border-shadow-gray ">
           <div className="w-8 ">
             <a href="/">
@@ -368,22 +387,22 @@ const CheckoutForm = () => {
         </div>
       </header>
       <main>
-        <div className="w-full px-20 h-[9.25rem] px-auto">
-          <div className="mx-20 relative pb-8">
-            <span className="pt-16 block  text-[2rem] font-medium pb-4">
-              Request to book
-            </span>
+        <div className="w-full max-w-7xl px-14 1xz:mt-16 mt-0 border-b border-grey-dim 1xz:border-none   1lg:px-20 mx-auto ">
+          <div className="w-full  flex pb-2 pt-2 1xz:pt-0 1xz:pb-8">
             <button
               onClick={() => navigate(-1)}
-              className="absolute -left-14 hover:bg-shadow-gray-light h-12 w-12 flex-center rounded-full top-16"
+              className=" hover:bg-shadow-gray-light -ml-12 h-12 w-12 flex-center rounded-full "
             >
               <img className="h-4 w-4" src={arrowLeft} alt="" />
             </button>
+            <span className=" block w-full 1xz:w-auto flex-center text-lg 1xz:text-[2rem] font-medium ">
+              Request to book
+            </span>
           </div>
         </div>
 
-        <div className="w-[calc(100%-10rem)]  flex px-20  mx-auto">
-          <section className="w-1/2 ">
+        <div className=" w-full flex-col-reverse 1xz:flex-row px-5 1xz:px-14 gap-x-12 1md:gap-x-28 1lg:px-20 flex max-w-7xl mx-auto">
+          <section className="1xz:w-1/2 w-full ">
             {hasError && (
               <div className="p-4 mb-10 flex space-x-2  border border-shadow-gray rounded-xl">
                 <div className="bg-red-700 flex-center h-[2.8rem] w-[2.8rem] rounded-full">
@@ -611,19 +630,25 @@ const CheckoutForm = () => {
               </button>
             </div>
           </section>
-          <section className="w-1/2 mb-32">
-            <div className="ml-[5.83rem] sticky top-52 ">
-              <div className="mb-[5.5rem]  p-6 border border-grey-light-50 rounded-lg">
-                <div className="w-full  border-b border-grey-light-50 grid-cols-3 items-center grid-flow-col  pb-6 grid">
-                  <div className="w-28 h-28">
+          <section className="1xz:w-1/2 w-full 1md:pl-10 1xz:mb-32">
+            <div className=" 1xz:sticky  1xz:top-52 ">
+              <div className="1xz:mb-[5.5rem]  py-5 1xz:p-6 border-0 1xz:border border-grey-light-50 rounded-lg">
+                <div className="w-full  border-b border-grey-light-50  items-center flex gap-x-5 pb-6 ">
+                  <div className="max-w-28 min-w-24 min-h-24 max-h-28">
                     <img
-                      className="w-full object-cover rounded-xl h-full"
+                      className="w-full object-cover rounded-xl h-full aspect-square"
                       src={data?.images[0]}
                       alt=""
                     />
                   </div>
                   <div className="w-full justify-center flex space-y-1 flex-col">
-                    <span className="block text-sm font-medium">
+                    <span
+                      className={`block ${
+                        isSmallScreen
+                          ? "1xz:max-w-28  1xz:truncate 1xz:text-ellipsis"
+                          : ""
+                      }  text-sm font-medium`}
+                    >
                       At{" "}
                       {data?.host_name
                         ? data?.host_name?.replace(/about/gi, "")
@@ -639,7 +664,7 @@ const CheckoutForm = () => {
                         {data?.house_rating}
                       </span>
                       <span className="text-sm font-light">
-                        ({data?.rating_count})
+                        {isSmallScreen ? `(${rating})` : `(${rating} reviews)`}
                       </span>
                     </div>
                   </div>
@@ -698,7 +723,7 @@ const CheckoutForm = () => {
                 </div>
               </div>
               <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <div className="w-[41.31rem]">
+                <div className="w-full 1xz:w-[41.31rem]">
                   <Calendar />
                 </div>
               </CalendarModal>
@@ -710,7 +735,7 @@ const CheckoutForm = () => {
           </section>
         </div>
       </main>
-      <div className="w-screen border-t border-grey-light-50 flex-center bg-shadow-gray-light h-16">
+      <div className="w-screen border-t border-grey-light-50 flex-center bg-shadow-gray-light">
         <Footer></Footer>
       </div>
     </div>

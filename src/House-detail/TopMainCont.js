@@ -28,12 +28,8 @@ const TopMainCont = () => {
   const isFavorite = useSelector((store) => store.app.isFavorite);
 
   useEffect(() => {
-    dispatch({ type: "FETCH_LATEST_STATE" });
-  }, [dispatch]);
-
-  useEffect(() => {
     const handleUpdate = async () => {
-      if (houseInfo?.id) {
+      if (houseInfo?.id && userData) {
         if (isFavorite) {
           await saveFavorite(houseInfo.id);
         } else {
@@ -43,7 +39,7 @@ const TopMainCont = () => {
     };
 
     handleUpdate();
-  }, [favListings, isFavorite, houseInfo?.id]);
+  }, [favListings, isFavorite, userData, houseInfo?.id]);
 
   // Pre-define the grid layout
   const gridLayout = [
