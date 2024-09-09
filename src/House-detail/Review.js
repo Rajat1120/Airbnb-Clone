@@ -58,6 +58,7 @@ const Review = () => {
         setShowReviewSection(true);
       }
     }
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
@@ -72,13 +73,13 @@ const Review = () => {
       id="Reviews"
       className={`
       ${
-        showReviewSection ? "pt-12 w-full" : "w-[calc(100%-3rem)]"
-      } scroll-mt-16 relative border-t 1xz:border-none border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
+        showReviewSection ? "pt-12 " : " "
+      } scroll-mt-16 relative border-t 1xz:border-none w-full border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
     >
       {/* Guest favourite */}
       {houseInfo.guest_favorite === "Guest favourite" && (
         <div className=" mt-4 mb-16 flex flex-col justify-between items-center">
-          <div className="h-[8.25rem] items-start flex w-[23.86rem] ">
+          <div className="h-[8.25rem] items-start flex ">
             <img
               className="h-full"
               src="https://a0.muscache.com/im/pictures/airbnb-platform-assets/AirbnbPlatformAssets-GuestFavorite/original/78b7687c-5acf-4ef8-a5ea-eda732ae3b2f.png"
@@ -95,10 +96,10 @@ const Review = () => {
               alt=""
             />
           </div>
-          <div className="pb-2 h-[1.62rem] flex-center   w-[10.21rem]">
+          <div className="pb-2  flex-center   ">
             <span className="text-xl font-medium"> Guest favourite</span>
           </div>
-          <div className="w-[23.75rem] flex-center h-12 ">
+          <div className="max-w-96 flex-center  ">
             <span className="text-center leading-6 font-extralight text-grey  w-full px-2 text-base 1xz:text-lg">
               One of the most loved homes on Airbnb based on ratings, reviews
               and reliability
@@ -265,7 +266,9 @@ const Review = () => {
       </div>
       {/* reviews section */}
       {isNumberGreaterThanTen(houseInfo?.rating_count) && (
-        <CustomerReviews></CustomerReviews>
+        <CustomerReviews
+          showReviewSection={showReviewSection}
+        ></CustomerReviews>
       )}
     </div>
   );

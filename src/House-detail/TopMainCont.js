@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import share from "../../src/data/Icons svg/shareIcon.svg";
 import heart from "../../src/data/Icons svg/heart.svg";
 import dots from "../data/Icons svg/dots.svg";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import arrowLeft from "../data/Icons svg/arrow-left.svg";
 import { useDispatch, useSelector } from "react-redux";
 import ImageGalleryModal from "./ImageGalleryModal";
 import { svg } from "../data/HeartIconSvg";
@@ -17,6 +18,7 @@ import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
 
 const TopMainCont = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
   const [isModalOpen, setIsModalOpen] = useState(false);
   let userData = useSelector((store) => store.app.userData);
@@ -55,7 +57,39 @@ const TopMainCont = () => {
   return (
     <div className="flex-center flex-col">
       <div className="w-full 1xz:hidden">
-        <div className="w-full h-16"></div>
+        <div className="w-full px-3 flex items-center  justify-between h-16">
+          <button
+            onClick={() => navigate(-1)}
+            className=" h-8 w-8 rounded-full hover:bg-grey-dim flex-center"
+          >
+            <img src={arrowLeft} className="w-4 h-4" alt="" />
+          </button>
+          <div className="  space-x-2 items-center flex justify-between ">
+            <button className="underline cursor-auto rounded-full h-8 w-8 flex-center hover:bg-shadow-gray-light text-sm font-medium justify-center  gap-2 items-center flex">
+              <img className="w-5 h-5 py-[1px]" src={share} alt="" />
+            </button>
+            <button
+              onClick={() => {
+                if (!userData) {
+                  dispatch(setShowLogin(true));
+                } else {
+                  if (favListings.includes(houseInfo.id)) {
+                    dispatch(removeUserFavListing(houseInfo.id));
+                    dispatch(setIsFavorite(false));
+                    dispatch(setItemId(houseInfo.id));
+                  } else {
+                    dispatch(setUserFavListing(houseInfo.id));
+                    dispatch(setIsFavorite(true));
+                    dispatch(setItemId(houseInfo.id));
+                  }
+                }
+              }}
+              className="underline  rounded-full w-8 h-8 flex-center hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex"
+            >
+              {svg(houseInfo?.id, favListings, userData)}
+            </button>
+          </div>
+        </div>
         <div className="w-full  ">
           <div
             style={{
@@ -101,11 +135,11 @@ const TopMainCont = () => {
           <div className="pt-6 w-[10rem] h-5"></div>
         ) : (
           <div className="pt-6 hidden  1xz:flex justify-between w-[10rem]">
-            <span className="underline w-[5.2rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
+            <button className="underline w-[5.2rem] rounded-md h-8 hover:bg-shadow-gray-light text-sm font-medium justify-center hover:cursor-pointer gap-2 items-center flex">
               <img className="w-[1.2rem] h-[1.2rem] pt-1" src={share} alt="" />
               <span className="h-[1.2rem]">Share</span>
-            </span>
-            <span
+            </button>
+            <button
               onClick={() => {
                 if (!userData) {
                   dispatch(setShowLogin(true));
@@ -125,7 +159,7 @@ const TopMainCont = () => {
             >
               {svg(houseInfo?.id, favListings, userData)}
               <span className="h-[1.2rem]">Save</span>
-            </span>
+            </button>
           </div>
         )}
       </div>

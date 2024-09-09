@@ -68,17 +68,17 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
   if (!shouldRender) return null;
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-end 1xz:items-center justify-center z-50">
       <div
         id="calendar"
         ref={ref}
         className={`bg-white ${
-          visible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
+          visible ? "translate-y-0  opacity-100" : "translate-y-16 opacity-0"
         } transition-all fixed p-6 ${
-          onCheckOutPage ? "rounded-xl" : "rounded-3xl"
-        } duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
+          onCheckOutPage ? "rounded-xl" : " rounded-t-3xl 1xz:rounded-3xl"
+        } duration-[0.4s]  w-full  1xz:w-[70%] 1md:w-auto flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
       >
-        <div className="w-full items-center justify-center flex pb-2 mb-3 ">
+        <div className="w-full  items-center justify-center flex pb-2 mb-3 ">
           <button
             onClick={onClose}
             className="w-6 h-6 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
@@ -90,7 +90,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
           </p>
         </div>
         <div></div>
-        <div className="">{children}</div>
+        <div className="w-full 1xz:max-w-max max-w-[26rem]">{children}</div>
         {!onCheckOutPage && (
           <div className="h-[2px] m-4 bg-grey-light w-full"></div>
         )}
