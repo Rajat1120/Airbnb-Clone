@@ -481,7 +481,7 @@ const Calendar = () => {
             onHouseDetailPage
               ? "  1xlx:w-full  1xlx:overflow-visible "
               : "w-full"
-          }  h-[calc(100vh-20rem)] 1xz:h-auto  ${
+          }  h-[calc(100vh-15rem)]  1xz:h-auto ${
             (onHouseDetailPage && !minimize) || onCheckOutPage
               ? "1xlx:gap-x-0 gap-x-10 flex-row h-full"
               : "1md:gap-x-8 gap-x-0 flex-col 1xz:flex-row"
