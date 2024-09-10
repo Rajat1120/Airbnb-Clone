@@ -147,8 +147,8 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     function handleResize() {
-      /*  handleCloseModal();
-      setOpenGuestModal(false); */
+      handleCloseModal();
+      setOpenGuestModal(false);
     }
 
     window.addEventListener("resize", handleResize);
