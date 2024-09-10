@@ -417,13 +417,14 @@ const Calendar = () => {
 
   return (
     <div
-      className={`flex w-full   h-full 1md:w-full 
-       1xz:w-96
+      className={`flex w-full   h-full 
+      
        flex-col justify-center relative`}
     >
       <div
         className={`absolute   top-[3.6rem] ${
-          onCheckOutPage && "!left-[1.2rem]"
+          onCheckOutPage &&
+          "1xz:!left-[1.2rem]  1xz:!top-[3.6rem] !-top-5 left-[4rem] !block"
         } ${
           onHouseDetailPage && !minimize
             ? "left-0 1md:left-1 hidden 1xlx:block "
@@ -433,7 +434,9 @@ const Calendar = () => {
         {renderDays()}
       </div>
       <div
-        className={`absolute   ${onCheckOutPage && "!right-[0.8rem]"}  ${
+        className={`absolute   ${
+          onCheckOutPage && "!right-[0.8rem] !translate-x-0"
+        }  ${
           onHouseDetailPage && !minimize
             ? "1xlx:right-0 mx-auto w-full 1xlx:w-auto top-[4rem] 1xz:top-[3.6rem] "
             : "1md:right-[2.2rem] hidden  1xz:block top-[3.6rem] right-[50%] 1md:translate-x-0 1xz:translate-x-1/2"
@@ -443,7 +446,9 @@ const Calendar = () => {
       </div>
       <button
         disabled={currentIndex === 0}
-        className={` ${onCheckOutPage ? "hidden 1xz:block" : ""} absolute ${
+        className={` ${
+          onCheckOutPage ? "hidden 1xz:block !left-8" : ""
+        } absolute ${
           currentIndex === 0
             ? "opacity-30 cursor-not-allowed"
             : "hover:bg-gray-100"
@@ -467,7 +472,7 @@ const Calendar = () => {
             ? "right-0"
             : "1md:right-8 right-0 hidden 1xz:block"
         } ${
-          onCheckOutPage ? "hidden 1xz:block" : ""
+          onCheckOutPage ? "hidden 1xz:block !right-8" : ""
         } top-[1.2rem]  transform -translate-y-1/2 z-10 bg-white p-2 rounded-full `}
         onClick={() => handleScroll("right")}
       >
@@ -487,7 +492,7 @@ const Calendar = () => {
             transition: `transform ${scrollSpeed}ms ease-out`,
             transform: `translateX(-${scrollPosition}px)`,
           }}
-          className={`inline-flex  w-full ${
+          className={`inline-flex ${onCheckOutPage ? "!gap-x-8" : ""}  w-full ${
             onHouseDetailPage
               ? "  1xlx:w-full  1xlx:overflow-visible "
               : "w-full"
@@ -501,7 +506,9 @@ const Calendar = () => {
             <div
               key={`${index}-current`}
               className={`   justify-center w-80 ${
-                onCheckOutPage ? `${index <= 0 ? "!pl-4" : "!pl-0"}  ` : ""
+                onCheckOutPage
+                  ? `${index <= 0 ? "1xz:!pl-4" : "!pl-0"} !mx-1 `
+                  : ""
               }  items-center ${
                 onHouseDetailPage && !minimize
                   ? `w-full flex !mx-1  flex-col 
@@ -510,7 +517,7 @@ const Calendar = () => {
                        ? "1xlx:pl-0 1xs:pl-3 pl-1 "
                        : "1xlx:pl-[4.6rem] "
                    }`
-                  : ` w-full flex  flex-col ${
+                  : ` w-full flex  flex-col  ${
                       index <= 0 ? "1md:pl-8 " : "1md:pl-16 "
                     } justify-between h-full ${
                       onHouseDetailPage && minimize
