@@ -152,7 +152,7 @@ function Window({ children, name, modalRef, resetRef }) {
       ref={ref}
     >
       <div
-        className="bg-white shadow-modalShadow rounded-[2rem] z-100"
+        className="bg-white overflow-x-hidden shadow-modalShadow rounded-[2rem] z-100"
         ref={modalRef}
       >
         {cloneElement(children)}

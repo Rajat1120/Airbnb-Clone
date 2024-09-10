@@ -417,9 +417,11 @@ const Calendar = () => {
 
   return (
     <div
-      className={`flex w-full   h-full 
+      className={`flex w-full ${
+        !onCheckOutPage && "1xz:w-96"
+      } 1md:w-full h-full 
       
-       flex-col justify-center relative`}
+       flex-col justify-center  relative`}
     >
       <div
         className={`absolute   top-[3.6rem] ${
@@ -428,7 +430,7 @@ const Calendar = () => {
         } ${
           onHouseDetailPage && !minimize
             ? "left-0 1md:left-1 hidden 1xlx:block "
-            : "left-[2.2rem] hidden 1md:block"
+            : "left-[2.2rem]  hidden  1md:block"
         }`}
       >
         {renderDays()}
@@ -438,8 +440,8 @@ const Calendar = () => {
           onCheckOutPage && "!right-[0.8rem] !translate-x-0"
         }  ${
           onHouseDetailPage && !minimize
-            ? "1xlx:right-0 mx-auto w-full 1xlx:w-auto top-[4rem] 1xz:top-[3.6rem] "
-            : "1md:right-[2.2rem] hidden  1xz:block top-[3.6rem] right-[50%] 1md:translate-x-0 1xz:translate-x-1/2"
+            ? "1xlx:right-0 mx-auto w-full  1xlx:w-auto top-[4rem] 1xz:top-[3.6rem] "
+            : "1md:right-[2.2rem] hidden   1xz:block top-[3.6rem] right-[50%] pl-4 1md:translate-x-0 1xz:translate-x-1/2"
         }`}
       >
         {renderDays()}
@@ -480,10 +482,10 @@ const Calendar = () => {
       </button>
       <div
         ref={scrollContainerRef}
-        className={` h-full    ${
+        className={` h-full  ${onCheckOutPage && "!w-full"}  ${
           onHouseDetailPage && !minimize
             ? "1smd:w-[30rem] w-[22rem] 1xs:w-[30rem] 1xz:w-[23rem] 1xlx:w-full mx-auto overflow-x-hidden"
-            : "w-full 1md:w-auto 1xz:overflow-x-hidden 1md:block"
+            : "1xz:w-[23rem] w-full mx-auto 1md:w-auto 1xz:overflow-x-hidden 1md:block"
         }   flex 1xz:block justify-center overflow-y-auto  1xz:overflow-y-clip scrollbar-hide`}
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
