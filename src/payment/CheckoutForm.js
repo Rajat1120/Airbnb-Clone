@@ -145,6 +145,18 @@ const CheckoutForm = () => {
     updateDates();
   };
 
+  useEffect(() => {
+    function handleResize() {
+      /*  handleCloseModal();
+      setOpenGuestModal(false); */
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [dispatch]);
+
   let formattedEndDate = useRef();
   let formatStartDate = useRef();
   let numOfDays = useRef();

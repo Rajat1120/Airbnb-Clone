@@ -76,7 +76,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
           visible ? "translate-y-0  opacity-100" : "translate-y-16 opacity-0"
         } transition-all fixed  pt-6 ${
           onCheckOutPage ? "rounded-xl" : " rounded-t-3xl 1xz:rounded-3xl"
-        } duration-[0.4s]  w-full  1xz:w-[70%] 1md:w-auto flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
+        } duration-[0.4s]  w-full  1xz:w-auto 1md:w-auto flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
       >
         <div className="w-full px-6 items-center justify-center flex pb-2 mb-3 ">
           <button
