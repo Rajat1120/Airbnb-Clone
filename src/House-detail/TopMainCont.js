@@ -28,12 +28,8 @@ const TopMainCont = () => {
   const isFavorite = useSelector((store) => store.app.isFavorite);
 
   useEffect(() => {
-    dispatch({ type: "FETCH_LATEST_STATE" });
-  }, [dispatch]);
-
-  useEffect(() => {
     const handleUpdate = async () => {
-      if (houseInfo?.id) {
+      if (houseInfo?.id && userData) {
         if (isFavorite) {
           await saveFavorite(houseInfo.id);
         } else {
@@ -43,7 +39,7 @@ const TopMainCont = () => {
     };
 
     handleUpdate();
-  }, [favListings, isFavorite, houseInfo?.id]);
+  }, [favListings, isFavorite, userData, houseInfo?.id]);
 
   // Pre-define the grid layout
   const gridLayout = [
@@ -59,7 +55,7 @@ const TopMainCont = () => {
       <div className="w-full 1xz:hidden">
         <div className="w-full px-3 flex items-center  justify-between h-16">
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/")}
             className=" h-8 w-8 rounded-full hover:bg-grey-dim flex-center"
           >
             <img src={arrowLeft} className="w-4 h-4" alt="" />

@@ -56,17 +56,21 @@ const AddGuestModal = ({ isOpen, onClose }) => {
 
   if (!shouldRender) return null;
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed 1xz:w-auto w-full inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
-        id="calendar"
+        style={{
+          animation: "alternate-reverse",
+        }}
         ref={ref}
         className={`bg-white ${
-          visible ? "translate-y-0  opacity-100" : "translate-y-16 opacity-0"
+          visible
+            ? "1xz:translate-y-0 1xz:bottom-auto bottom-0  opacity-100"
+            : " 1xz:translate-y-16 bottom-0 1xz:bottom-auto translate-y-full  opacity-0"
         } transition-all fixed  ${
           onCheckOutPage ? "rounded-xl" : "rounded-3xl"
-        } duration-[0.4s] flex flex-col ease-in-out items-center justify-center shadow-md z-50`}
+        } duration-[0.3s]  flex flex-col ease-in-out items-center 1xz:w-auto w-full justify-center shadow-md z-50`}
       >
-        <div className="p-5">
+        <div className="p-5 1xz:w-auto w-full">
           <div className="w-full space-y-4 flex flex-col  ">
             <button
               onClick={onClose}

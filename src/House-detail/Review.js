@@ -66,8 +66,6 @@ const Review = () => {
     };
   }, [houseInfo.guest_favorite, dispatch]);
 
-  console.log(houseInfo);
-
   return (
     <div
       id="Reviews"
