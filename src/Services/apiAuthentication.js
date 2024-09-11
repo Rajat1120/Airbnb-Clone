@@ -4,7 +4,11 @@ import supabase from "./Supabase";
 import { setUserData, setUserFavListing } from "../Main/AppSlice";
 
 export const signInWithGoogle = async () => {
+  // Get the current URL
   let redirectUrl = window.location.href;
+
+  // Remove any existing auth parameters from the URL
+  redirectUrl = redirectUrl.split("#")[0].split("?")[0];
 
   // If the URL contains '/login', change the redirect URL to the home page ('/')
   if (redirectUrl.includes("/login")) {
@@ -25,6 +29,11 @@ export const signInWithGoogle = async () => {
   } else {
     // Dispatch user data to the store and log user/session information
     store.dispatch(setUserData(user));
+
+    // Clean up the URL after successful sign-in
+    if (window.history.replaceState) {
+      window.history.replaceState({}, document.title, redirectUrl);
+    }
   }
 };
 
