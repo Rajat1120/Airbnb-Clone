@@ -1,70 +1,105 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Airbnb Clone
 
-## Available Scripts
+This project is an Airbnb clone built with React, Redux, and Supabase, designed to mimic core features of the Airbnb platform. Users can search for listings, log in/log out, save favourite listings, book trips, and view listings with infinite scroll. The app also supports Google Sign-In for authentication and is highly responsive, providing a seamless experience across devices.
 
-In the project directory, you can run:
+## Table of Contents
 
-### `npm start`
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Setup Instructions](#setup-instructions)
+- [Known Issues](#known-issues)
+- [Contributing](#contributing)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- **User Authentication:** Google Sign-In via Supabase.
+- **Search Functionality:** Filter listings by city.
+- **Listings:** View available listings with infinite scroll.
+- **Favorite Listings:** Save and view favorite properties.
+- **Bookings:** Book trips directly within the app.
+- **Responsive Design:** Fully responsive for mobile and desktop.
+- **Data Management:** Efficient state management using Redux.
+- **Real-Time Sync:** State synchronization across tabs using `redux-state-sync`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Tech Stack
 
-### `npm run build`
+- **Frontend:**
+  - React
+  - React Router DOM
+  - Redux & Redux Toolkit
+  - TanStack Query (React Query)
+  - CSS/Styled Components (Tailwind)
+  - React Hot Toast (for notifications)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Backend:**
+  - Supabase (PostgreSQL database and authentication)
+  - Google Sign-In (OAuth)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Others:**
+  - Stripe (for handling payments)
+  - Jest (for testing)
+  - ESlint & Prettier (for code quality)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Setup Instructions
 
-### `npm run eject`
+### Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Node.js (>= 14.x.x)
+- npm 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Installation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Clone the repository:
 
-## Learn More
+   ```bash
+   git clone https://github.com/Rajat1120/airbnb-clone.git
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. Navigate to the project directory:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   ```bash
+   cd airbnb-clone
+   ```
 
-### Code Splitting
+3. Install the dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+   ```bash
+   npm install
+   ```
 
-### Analyzing the Bundle Size
+4. Start the development server:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   ```bash
+   npm start
+   ```
 
-### Making a Progressive Web App
+   The app will be available at `http://localhost:3000`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Known Issues
 
-### Deployment
+- The search functionality may not always return accurate results.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contributing
+
+Feel free to open issues and submit pull requests to improve the project!
+
+
+### To contribute:
+
+1. Fork the repository.
+2. Create a new feature branch.
+3. Make your changes.
+4. Submit a pull request.
+
+   
+
+## Show Your Support
+
+If you find this project helpful, please give it a ⭐️ on GitHub! Your support is appreciated.

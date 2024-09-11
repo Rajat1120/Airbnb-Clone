@@ -138,7 +138,7 @@ const CircularSlider = () => {
           </span>
         </p>
         <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <div className="   flex-center max-w-[53rem]">
+          <div className="  overflow-x-hidden flex-center max-w-[53rem]">
             <Calendar />
           </div>
         </CalendarModal>
