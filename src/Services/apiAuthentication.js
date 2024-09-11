@@ -73,23 +73,42 @@ export const getUserData = async () => {
 getUserData();
 
 export const loginWithEmail = async (Email, Password) => {
+  if (!Email || !Password) {
+    console.error("Email and password are required!");
+    throw new Error("Email and password are required.");
+  }
+  // Get the current URL
+  let redirectUrl = window.location.href;
+
+  // Remove any existing auth parameters from the URL
+  redirectUrl = redirectUrl.split("#")[0].split("?")[0];
+
+  // If the URL contains '/login', change the redirect URL to the home page ('/')
+  if (redirectUrl.includes("/login")) {
+    redirectUrl = `${window.location.origin}/`;
+  }
   try {
     // Step 1: Log the user in with email and password
     const { data: loginData, error: loginError } =
       await supabase.auth.signInWithPassword({
         email: Email,
         password: Password,
+        options: {
+          redirectTo: redirectUrl,
+        },
       });
 
     // Step 2: Check if login was successful
     if (loginError) {
+      console.log(loginError);
+
       throw loginError;
     }
 
     // Step 3: Update the user metadata with the name "Guest"
     const { data: updateData, error: updateError } =
       await supabase.auth.updateUser({
-        data: { name: "Guest" },
+        data: { name: "Guest", email: "rajat@airbnb.com" },
       });
 
     if (updateError) {
@@ -98,7 +117,12 @@ export const loginWithEmail = async (Email, Password) => {
     }
 
     // Step 4: Return the login data or updated user data
+    window.location.reload();
     store.dispatch(setUserData(loginData));
+    // Clean up the URL after successful sign-in
+    if (window.history.replaceState) {
+      window.history.replaceState({}, document.title, redirectUrl);
+    }
   } catch (error) {
     console.error("Error during login:", error.message);
     throw error; // Re-throw error for further handling

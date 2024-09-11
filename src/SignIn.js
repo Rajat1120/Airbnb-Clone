@@ -1,16 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LongFooter from "./House-detail/LongFooter";
 import Header from "./Header/Header";
-
-import { signInWithGoogle } from "./Services/apiAuthentication";
+import person from "../src/data/Icons svg/Person.svg";
+import { loginWithEmail, signInWithGoogle } from "./Services/apiAuthentication";
 import google from "./data/Icons svg/Google.svg";
 import MobileFooter from "./MobileFooter";
+
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+
 const SignIn = () => {
   const [activeInput, setActiveInput] = useState("");
-
+  const [signIn, setSignIn] = useState(false);
   const [showLine, setShowLine] = useState(true);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const userData = useSelector((store) => store.app.userData);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (email && password && signIn) {
+      loginWithEmail(email, password);
+    }
+  }, [email, signIn, password]);
+
+  if (userData) navigate("/");
   return (
     <div className="w-full ">
       <div
@@ -106,7 +119,10 @@ const SignIn = () => {
                   </div>
                 </div>
               </form>
-              <button className="w-full h-12 mt-2 rounded-lg text-white btnColor ">
+              <button
+                onClick={() => setSignIn(true)}
+                className="w-full h-12 mt-2 rounded-lg text-white btnColor "
+              >
                 Continue
               </button>
               <div className="py-5 flex items-center">
@@ -115,7 +131,7 @@ const SignIn = () => {
                 <div className="h-[1px] w-full bg-grey-light"></div>
               </div>
 
-              <div
+              <button
                 onClick={() => signInWithGoogle()}
                 className="w-full cursor-pointer h-14 border px-5 py-5 border-black rounded-lg flex items-center justify-between"
               >
@@ -124,7 +140,19 @@ const SignIn = () => {
                   Continue with Google
                 </span>
                 <div className="px-2"></div>
-              </div>
+              </button>
+              <button
+                onClick={() => {
+                  setEmail("rajat@airbnb.com");
+                  setPassword("guestuser");
+                  setSignIn(true);
+                }}
+                className="w-full text-center  cursor-pointer mt-2 h-14 border px-5 py-5 border-black rounded-lg flex items-center justify-between"
+              >
+                <img src={person} className="h-5 w-5" alt="" />
+                <span> Sign in as a Guest user</span>
+                <div className="px-2"></div>
+              </button>
             </div>
           </div>
         </div>

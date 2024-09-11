@@ -8,6 +8,7 @@ import {
   loginWithEmail,
   signInWithGoogle,
 } from "../Services/apiAuthentication";
+import person from "../data/Icons svg/Person.svg";
 
 const AuthenticationModal = () => {
   const [visible, setVisible] = useState(false);
@@ -45,6 +46,12 @@ const AuthenticationModal = () => {
       document.body.style.overflow = "unset"; // Cleanup on component unmount
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    if (email && password && !isOpen) {
+      loginWithEmail(email, password);
+    }
+  }, [email, dispatch, isOpen, password]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -171,14 +178,26 @@ const AuthenticationModal = () => {
               <div className="h-[1px] w-full bg-grey-light"></div>
             </div>
 
-            <div
+            <button
               onClick={() => signInWithGoogle()}
               className="w-full cursor-pointer h-14 border px-5 py-5 border-black rounded-lg flex items-center justify-between"
             >
               <img src={google} className="h-5 w-5" alt="" />
               <span className="text-sm font-medium">Continue with Google</span>
               <div className="px-2"></div>
-            </div>
+            </button>
+            <button
+              onClick={() => {
+                setEmail("rajat@airbnb.com");
+                setPassword("guestuser");
+                dispatch(setShowLogin(false));
+              }}
+              className="w-full text-center  cursor-pointer mt-2 h-14 border px-5 py-5 border-black rounded-lg flex items-center justify-between"
+            >
+              <img src={person} className="h-5 w-5" alt="" />
+              <span> Sign in as a Guest user</span>
+              <div className="px-2"></div>
+            </button>
           </div>
         </div>
       </div>
