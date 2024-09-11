@@ -73,15 +73,35 @@ export const getUserData = async () => {
 getUserData();
 
 export const loginWithEmail = async (Email, Password) => {
-  let { data, error } = await supabase.auth.signInWithPassword({
-    email: Email,
-    password: Password,
-  });
+  try {
+    // Step 1: Log the user in with email and password
+    const { data: loginData, error: loginError } =
+      await supabase.auth.signInWithPassword({
+        email: Email,
+        password: Password,
+      });
 
-  if (data) {
-    return data;
-  } else {
-    throw error;
+    // Step 2: Check if login was successful
+    if (loginError) {
+      throw loginError;
+    }
+
+    // Step 3: Update the user metadata with the name "Guest"
+    const { data: updateData, error: updateError } =
+      await supabase.auth.updateUser({
+        data: { name: "Guest" },
+      });
+
+    if (updateError) {
+      console.error("Error updating user metadata:", updateError.message);
+      // Optionally, handle updateError (e.g., return or throw it)
+    }
+
+    // Step 4: Return the login data or updated user data
+    store.dispatch(setUserData(loginData));
+  } catch (error) {
+    console.error("Error during login:", error.message);
+    throw error; // Re-throw error for further handling
   }
 };
 

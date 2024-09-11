@@ -83,7 +83,7 @@ const UpdatedPaymentForm = ({
   let paymentDetails = {
     amount: totalAmount,
 
-    customer_name: userId?.user_metadata.full_name,
+    customer_name: userId?.user_metadata.name,
     user_email: userId?.email,
     currency: "usd",
     room_id: id,
@@ -142,7 +142,7 @@ const UpdatedPaymentForm = ({
           },
           body: JSON.stringify({
             amount: totalAmount, // Amount in cents
-            customerName: userId?.user_metadata.full_name,
+            customerName: userId?.user_metadata.name,
             customerAddress: {
               line1: "2034",
               city: "Los angeles",
@@ -167,7 +167,7 @@ const UpdatedPaymentForm = ({
         payment_method: {
           card: elements.getElement(CardNumberElement),
           billing_details: {
-            name: userId?.user_metadata.full_name,
+            name: userId?.user_metadata.name,
 
             address: {
               line1: "2034",
@@ -188,7 +188,7 @@ const UpdatedPaymentForm = ({
         // Update the database or perform any post-payment actions
         setStripePaymentId(result.paymentIntent.id);
 
-        setSuccess("Payment successful!");
+        setSuccess("Payment successfull!");
       } else {
         throw new Error("Payment failed. Please try again.");
       }
@@ -212,7 +212,7 @@ const UpdatedPaymentForm = ({
     if (paymentError) {
       toast.error("Payment failed, please try again");
     }
-  }, [success, refetch, stripePaymentId]);
+  }, [success, refetch, queryClient, paymentError, stripePaymentId]);
 
   const navigate = useNavigate();
 

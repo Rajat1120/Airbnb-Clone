@@ -4,7 +4,10 @@ import cross from "../data/Icons svg/cross.svg";
 import google from "../data/Icons svg/Google.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowLogin } from "../Main/AppSlice";
-import { signInWithGoogle } from "../Services/apiAuthentication";
+import {
+  loginWithEmail,
+  signInWithGoogle,
+} from "../Services/apiAuthentication";
 
 const AuthenticationModal = () => {
   const [visible, setVisible] = useState(false);
@@ -156,7 +159,10 @@ const AuthenticationModal = () => {
                 </div>
               </div>
             </form>
-            <button className="w-full h-12 mt-2 rounded-lg text-white btnColor ">
+            <button
+              onClick={() => loginWithEmail(email, password)}
+              className="w-full h-12 mt-2 rounded-lg text-white btnColor "
+            >
               Continue
             </button>
             <div className="py-5 flex items-center">

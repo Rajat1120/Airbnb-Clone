@@ -71,7 +71,7 @@ const UserDashboard = () => {
             <img src={person} className="h-8 opacity-50 w-8" alt="" />
           ) : (
             <span className="h-8 w-8 rounded-full text-white text-center flex items-center justify-center bg-black text-[9.5px]">
-              {userData?.user_metadata?.name.charAt(0).toUpperCase()}
+              {userData?.user_metadata?.name?.charAt(0).toUpperCase()}
             </span>
           )}
         </button>
