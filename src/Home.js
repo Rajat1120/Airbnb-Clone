@@ -1,12 +1,11 @@
 import Header from "./Header/Header";
 import Options from "./Main/Options";
-import styles from "./input.css";
-
 import House from "./Main/House";
+import Footer from "./Footer";
+import MobileFooter from "./MobileFooter";
 import { useEffect, useRef } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useDispatch, useSelector } from "react-redux";
-import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
 import { getAllRows } from "./Services/apiRooms";
 import { addDays } from "date-fns";
@@ -14,70 +13,84 @@ import {
   setSelectedEndDate,
   setSelectedStartDate,
 } from "./Header/Form/mainFormSlice";
-import MobileFooter from "./MobileFooter";
+
+import styles from "./input.css";
+
 export default function Home() {
-  const startScroll = useSelector((store) => store.app.startScroll);
-  const minimize = useSelector((store) => store.app.minimize);
-  const userData = useSelector((store) => store.app.userData);
+  const startScroll = useSelector((state) => state.app.startScroll);
+  const minimize = useSelector((state) => state.app.minimize);
+  const userData = useSelector((state) => state.app.userData);
   const dispatch = useDispatch();
-  useEffect(() => {
+  const headerRef = useRef(null);
+
+  // Function to calculate and dispatch start and end dates
+  const setInitialDates = () => {
     const today = new Date();
+    const startDate = addDays(today, 1); // Tomorrow's date
+    const endDate = addDays(startDate, 5); // 5 days after tomorrow
 
-    // Get tomorrow's date
-    const tomorrow = addDays(today, 1);
+    dispatch(setSelectedStartDate(startDate));
+    dispatch(setSelectedEndDate(endDate));
+  };
 
-    // Get the date that is 5 days after tomorrow
-    const tomorrowPlusFive = addDays(tomorrow, 5);
-    dispatch(setSelectedStartDate(tomorrow));
-    dispatch(setSelectedEndDate(tomorrowPlusFive));
-  }, [dispatch]);
+  // Trigger date setting on component mount
+  useEffect(() => {
+    setInitialDates();
+  }, []);
 
+  // Fetch all rows from the backend
   useQuery({
     queryKey: ["allRows"],
-    queryFn: () => getAllRows(),
+    queryFn: getAllRows,
   });
 
-  let headerRef = useRef();
-
-  let animateHeaderClass1 = minimize ? "animate-expand" : "h-[5rem]";
-
-  let animateHeaderClass2 = minimize ? "animate-collapse" : "1sm:h-[11rem]";
+  // Define dynamic class names based on conditions
+  const minimizedHeaderClass = minimize ? "animate-expand" : "h-[5rem]";
+  const expandedHeaderClass = minimize ? "animate-collapse" : "1sm:h-[11rem]";
+  const headerVisibilityClass = startScroll
+    ? "1md:translate-y-0 1sm:translate-y-[3rem]"
+    : "1sm:-translate-y-[5.9rem] !shadow-md";
 
   return (
-    <div className="flex items-center  justify-center flex-col relative">
+    <div className="flex flex-col items-center justify-center relative">
+      {/* Header Section */}
       <div
         ref={headerRef}
         id="header"
-        className={` fixed ${
-          minimize ? "z-50" : "z-10"
-        }  transition-all duration-[0.3s] ease-in-out ${
-          !startScroll ? `${animateHeaderClass1}` : `${animateHeaderClass2}`
-        } bg-white   w-full flex items-start justify-center top-0 `}
+        className={`fixed ${minimize ? "z-50" : "z-10"} 
+        transition-all duration-300 ease-in-out 
+        ${startScroll ? expandedHeaderClass : minimizedHeaderClass} 
+        bg-white w-full flex items-start justify-center top-0`}
       >
-        <Header headerRef={headerRef}></Header>
+        <Header headerRef={headerRef} />
       </div>
 
+      {/* Options Section */}
       <div
-        className={`  transition-all duration-[0.3s] ease-in-out flex-center  fixed z-10 w-full  bg-white shadow-md 1sm:shadow-none  ${
-          !startScroll
-            ? "1sm:-translate-y-[5.9rem] !shadow-md"
-            : "1md:translate-y-[0rem] 1sm:translate-y-[3rem] "
-        }   1sm:top-[10.8rem] top-[5.7rem]  flex-center  `}
+        className={`transition-all duration-300 ease-in-out fixed z-10 w-full 
+        bg-white shadow-md 1sm:shadow-none ${headerVisibilityClass} 
+        1sm:top-[10.8rem] top-[5.7rem] flex-center`}
       >
-        <Options></Options>
+        <Options />
       </div>
 
-      <div className="1sm:mt-[12rem] w-full mt-[7rem]  flex justify-center items-center ">
-        <House></House>
+      {/* Main Content (House Component) */}
+      <div className="w-full flex justify-center items-center mt-[7rem] 1sm:mt-[12rem]">
+        <House />
       </div>
+
+      {/* Footer (Visible for logged-in users) */}
       {userData && (
-        <div className="w-full hidden  bg-white 1smd:flex-center border-t-[1px] border-grey-light-50 fixed bottom-0 h-10 ">
-          <Footer></Footer>
+        <div className="w-full hidden 1smd:flex-center bg-white border-t border-grey-light-50 fixed bottom-0 h-10">
+          <Footer />
         </div>
       )}
-      <MobileFooter></MobileFooter>
 
-      <SpeedInsights></SpeedInsights>
+      {/* Mobile Footer */}
+      <MobileFooter />
+
+      {/* Performance Insights (Vercel) */}
+      <SpeedInsights />
     </div>
   );
 }
