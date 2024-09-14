@@ -1,98 +1,88 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
 import FilterHome from "./buttons/FilterHome";
 import arrow_left from "./../data/Icons svg/arrow-left.svg";
 import arrow_right from "./../data/Icons svg/arrow-right.svg";
-import { useDispatch, useSelector } from "react-redux";
 import optionImgs from "../OptionsImgs";
 import { setSelectedIcon } from "./AppSlice";
 import { getRooms } from "../Services/apiRooms";
-import { useQuery } from "@tanstack/react-query";
 
 const Options = () => {
   const [uniqueFilters, setUniqueFilters] = useState([]);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const optionsRef = useRef(null);
   const itemRefs = useRef([]);
-  const selectedCountry = useSelector((store) => store.app.selectedCountry);
-  const selectedIcon = useSelector((store) => store.app.selectedIcon);
-  const hitSearch = useSelector((store) => store.app.hitSearch);
-  const ids = useSelector((store) => store.app.inputSearchIds);
 
-  const city = useSelector((store) => store.app.city);
-  const minimize = useSelector((store) => store.app.minimize);
+  // Helper function to normalize strings
+  const normalizeString = (str) => str.replace(/[-'/]/g, "").toLowerCase();
+  // Redux selectors
+  const {
+    selectedCountry,
+    selectedIcon,
+    hitSearch,
+    inputSearchIds: ids,
+    city,
+    minimize,
+  } = useSelector((store) => store.app);
 
-  const normalizedFilters = uniqueFilters.map((filter) =>
-    filter.replace(/[-'/]/g, "").toLowerCase()
+  // Normalize filters and options
+  const normalizedFilters = uniqueFilters.map(normalizeString);
+  const filteredOptions = optionImgs.filter((item) =>
+    normalizedFilters.includes(normalizeString(item.iconName))
   );
 
-  const options = optionImgs.filter((item) => {
-    const normalizedIconName = item?.iconName
-      ?.replace(/[-'/]/g, "")
-      .toLowerCase();
-    return normalizedFilters.includes(normalizedIconName);
-  });
-
-  const { isLoading, data } = useQuery({
+  // API query
+  const { isLoading, data: roomsData } = useQuery({
     queryKey: ["rooms", ids, selectedCountry, city],
     queryFn: () => getRooms(ids, selectedCountry, city),
   });
 
   useEffect(() => {
-    if (data) {
-      const findUniqueFilters = (data) => {
-        const filters = data.map((item) => item.filter);
-        const uniqueFilters = [...new Set(filters)];
-        return uniqueFilters;
-      };
-      const uniqueFilterValues = findUniqueFilters(data);
+    if (roomsData) {
+      const uniqueFilterValues = [
+        ...new Set(roomsData.map((item) => item.filter)),
+      ];
       setUniqueFilters(uniqueFilterValues);
 
-      // Always set the first option from the new list as the selected icon
+      // Set the first option from the new list as the selected icon
       const newOptions = optionImgs.filter((item) =>
         uniqueFilterValues
-          .map((filter) => filter.replace(/[-'/]/g, "").toLowerCase())
-          .includes(item.iconName.replace(/[-'/]/g, "").toLowerCase())
+          .map(normalizeString)
+          .includes(normalizeString(item.iconName))
       );
 
       if (newOptions.length > 0) {
         dispatch(setSelectedIcon(newOptions[0].iconName));
       }
     }
-  }, [data, dispatch, hitSearch]);
-
-  const handleScroll = () => {
-    const container = optionsRef.current;
-    if (container) {
-      const { scrollLeft, scrollWidth, clientWidth } = container;
-
-      // Check if there are any items before accessing their properties
-      if (itemRefs.current.length > 0) {
-        const firstItemWidth = itemRefs.current[0]?.offsetWidth || 0;
-        const lastItemWidth =
-          itemRefs.current[itemRefs.current.length - 1]?.offsetWidth || 0;
-
-        setIsAtStart(scrollLeft < firstItemWidth);
-        setIsAtEnd(
-          Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
-        );
-      }
-    }
-  };
+  }, [roomsData, dispatch, hitSearch]);
 
   useEffect(() => {
     const optionRef = optionsRef?.current;
     if (optionRef) {
       optionRef.addEventListener("scroll", handleScroll);
+      return () => optionRef.removeEventListener("scroll", handleScroll);
     }
-    return () => {
-      if (optionRef) {
-        optionRef.removeEventListener("scroll", handleScroll);
-      }
-    };
   }, [isLoading]);
+
+  const handleScroll = () => {
+    const container = optionsRef.current;
+    if (container && itemRefs.current.length > 0) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const firstItemWidth = itemRefs.current[0]?.offsetWidth || 0;
+      const lastItemWidth =
+        itemRefs.current[itemRefs.current.length - 1]?.offsetWidth || 0;
+
+      setIsAtStart(scrollLeft < firstItemWidth);
+      setIsAtEnd(
+        Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
+      );
+    }
+  };
 
   const handleScrollBtn = (direction) => {
     const container = optionsRef.current;
@@ -107,96 +97,29 @@ const Options = () => {
     <div
       className={`1sm:bg-white ${
         minimize ? "hidden" : ""
-      } z-10 justify-self-center  w-full  1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)]  mx-auto`}
+      } z-10 justify-self-center w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)] mx-auto`}
     >
       <div
         className={`1sm:h-20 1sm:py-6 flex w-full relative items-center justify-between space-x-10`}
       >
-        <div className="w-full flex  items-center overflow-hidden rounded-lg">
+        <div className="w-full flex items-center overflow-hidden rounded-lg">
           {isLoading ? (
-            <div className="flex space-x-10 items-center justify-start inset-shadow w-full">
-              {Array.from({ length: 9 }).map((item, i) => {
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-col space-y-2 items-center justify-between "
-                  >
-                    <div className="h-8 w-8 imgLoader rounded-[50%] "></div>
-                    <div className="h-3 w-20 imgLoader rounded-2xl"></div>
-                  </div>
-                );
-              })}
-            </div>
+            <LoadingPlaceholder />
           ) : (
             <div className="flex items-center justify-start inset-shadow w-full">
-              <div
-                id="options"
-                ref={optionsRef}
-                className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 justify-start h-16 1sm:h-24 w-full overflow-x-auto scroll-smooth"
-                style={{
-                  scrollBehavior: "smooth",
-                }}
-              >
-                {options.map((item, i) => (
-                  <div
-                    ref={(el) => {
-                      if (el) itemRefs.current[i] = el;
-                    }}
-                    onClick={() => dispatch(setSelectedIcon(item.iconName))}
-                    key={i}
-                    className={`   flex-center   h-16 my-[12px] border-b-2 ${
-                      selectedIcon === item.iconName
-                        ? "border-black cursor-default opacity-100"
-                        : "border-white cursor-pointer opacity-75 hover:border-grey-light-50 hover:opacity-100"
-                    } py-[4px]   `}
-                    style={{
-                      scrollSnapAlign: "start",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <div className="flex-col space-y-2 h-full items-center justify-center flex">
-                      <img src={item.link} className="h-6 w-6 " alt="" />
-                      <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block  whitespace-nowrap">
-                        {item.iconName}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              {!isAtStart && options.length > 8 && (
-                <>
-                  <div className="absolute -left-1 hidden 1sm:flex items-center justify-center    w-10 h-20 bg-white">
-                    <div className="absolute left-4 w-full h-full bg-white blur-right"></div>
-                  </div>
-                  <button
-                    onClick={() => handleScrollBtn("left")}
-                    className="absolute z-30 hidden 1sm:flex items-center justify-center  top-[30%] left-0 h-9 w-9 bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%]  border-[1px] border-grey-dim"
-                  >
-                    <img
-                      src={arrow_left}
-                      className="h-4 w-6"
-                      alt="Scroll left"
-                    />
-                  </button>
-                </>
-              )}
-              {!isAtEnd && options.length > 8 && (
-                <>
-                  <div className="absolute right-[21.7rem] hidden 1sm:flex items-center justify-center w-10 h-20 bg-white">
-                    <div className="absolute -left-4 w-full h-full bg-white blur-left"></div>
-                  </div>
-                  <button
-                    onClick={() => handleScrollBtn("right")}
-                    className="absolute hidden 1sm:flex items-center justify-center top-[30%] z-50 right-[22rem] h-9 w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-[1px]"
-                  >
-                    <img
-                      src={arrow_right}
-                      className="h-4 w-6 "
-                      alt="Scroll right"
-                    />
-                  </button>
-                </>
-              )}
+              <OptionsContainer
+                options={filteredOptions}
+                selectedIcon={selectedIcon}
+                dispatch={dispatch}
+                optionsRef={optionsRef}
+                itemRefs={itemRefs}
+              />
+              <ScrollButtons
+                isAtStart={isAtStart}
+                isAtEnd={isAtEnd}
+                optionsLength={filteredOptions.length}
+                handleScrollBtn={handleScrollBtn}
+              />
             </div>
           )}
         </div>
@@ -205,5 +128,123 @@ const Options = () => {
     </div>
   );
 };
+
+// Component for rendering loading placeholders
+const LoadingPlaceholder = () => (
+  <div className="flex space-x-10 items-center justify-start inset-shadow w-full">
+    {Array.from({ length: 9 }).map((_, i) => (
+      <div
+        key={i}
+        className="flex flex-col space-y-2 items-center justify-between"
+      >
+        <div className="h-8 w-8 imgLoader rounded-[50%]"></div>
+        <div className="h-3 w-20 imgLoader rounded-2xl"></div>
+      </div>
+    ))}
+  </div>
+);
+
+// Component for rendering options
+const OptionsContainer = ({
+  options,
+  selectedIcon,
+  dispatch,
+  optionsRef,
+  itemRefs,
+}) => (
+  <div
+    id="options"
+    ref={optionsRef}
+    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 justify-start h-16 1sm:h-24 w-full overflow-x-auto scroll-smooth"
+    style={{ scrollBehavior: "smooth" }}
+  >
+    {options.map((item, i) => (
+      <OptionItem
+        key={i}
+        item={item}
+        isSelected={selectedIcon === item.iconName}
+        onClick={() => dispatch(setSelectedIcon(item.iconName))}
+        ref={(el) => {
+          if (el) itemRefs.current[i] = el;
+        }}
+      />
+    ))}
+  </div>
+);
+
+// Component for individual option items
+const OptionItem = React.forwardRef(({ item, isSelected, onClick }, ref) => (
+  <div
+    ref={ref}
+    onClick={onClick}
+    className={`flex-center h-16 my-[12px] border-b-2 ${
+      isSelected
+        ? "border-black cursor-default opacity-100"
+        : "border-white cursor-pointer opacity-75 hover:border-grey-light-50 hover:opacity-100"
+    } py-[4px]`}
+    style={{
+      scrollSnapAlign: "start",
+      flexShrink: 0,
+    }}
+  >
+    <div className="flex-col space-y-2 h-full items-center justify-center flex">
+      <img src={item.link} className="h-6 w-6" alt="" />
+      <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block whitespace-nowrap">
+        {item.iconName}
+      </span>
+    </div>
+  </div>
+));
+
+// Component for scroll buttons
+const ScrollButtons = ({
+  isAtStart,
+  isAtEnd,
+  optionsLength,
+  handleScrollBtn,
+}) => (
+  <>
+    {!isAtStart && optionsLength > 8 && (
+      <ScrollButton direction="left" onClick={() => handleScrollBtn("left")} />
+    )}
+    {!isAtEnd && optionsLength > 8 && (
+      <ScrollButton
+        direction="right"
+        onClick={() => handleScrollBtn("right")}
+      />
+    )}
+  </>
+);
+
+// Component for individual scroll button
+const ScrollButton = ({ direction, onClick }) => (
+  <>
+    <div
+      className={`absolute ${
+        direction === "left" ? "-left-1" : "right-[21.7rem]"
+      } hidden 1sm:flex items-center justify-center w-10 h-20 bg-white`}
+    >
+      <div
+        className={`absolute ${
+          direction === "left" ? "left-4" : "-left-4"
+        } w-full h-full bg-white ${
+          direction === "left" ? "blur-right" : "blur-left"
+        }`}
+      ></div>
+    </div>
+    <button
+      onClick={onClick}
+      className={`absolute hidden 1sm:flex items-center justify-center top-[30%] z-50 ${
+        direction === "left" ? "left-0" : "right-[22rem]"
+      } h-9 w-9 border-grey-dim bg-white hover:scale-110 hover:drop-shadow-md rounded-[50%] border-[1px]`}
+    >
+      <img
+        src={direction === "left" ? arrow_left : arrow_right}
+        className="h-4 w-6"
+        alt={`Scroll ${direction}`}
+      />
+    </button>
+  </>
+);
 
 export default Options;
