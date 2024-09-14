@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import FilterHome from "./buttons/FilterHome";
 import arrow_left from "./../data/Icons svg/arrow-left.svg";
 import arrow_right from "./../data/Icons svg/arrow-right.svg";
@@ -19,6 +19,7 @@ const Options = () => {
 
   // Helper function to normalize strings
   const normalizeString = (str) => str.replace(/[-'/]/g, "").toLowerCase();
+
   // Redux selectors
   const {
     selectedCountry,
@@ -35,16 +36,33 @@ const Options = () => {
     normalizedFilters.includes(normalizeString(item.iconName))
   );
 
-  // API query
-  const { isLoading, data: roomsData } = useQuery({
+  // Fetch function for rooms (used with infinite query)
+  const {
+    data: roomsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
     queryKey: ["rooms", ids, selectedCountry, city],
-    queryFn: () => getRooms(ids, selectedCountry, city),
+    queryFn: ({ pageParam = 0 }) =>
+      getRooms(ids, selectedCountry, city, 1000, pageParam * 1000),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage && lastPage.length < 1000) return undefined;
+      return pages.length;
+    },
+    enabled: true,
   });
 
+  let isLoading = status === "pending";
+
+  // Effect to update unique filters and set initial selected icon
   useEffect(() => {
     if (roomsData) {
       const uniqueFilterValues = [
-        ...new Set(roomsData.map((item) => item.filter)),
+        ...new Set(
+          roomsData.pages.flatMap((page) => page.map((item) => item.filter))
+        ),
       ];
       setUniqueFilters(uniqueFilterValues);
 
@@ -61,15 +79,7 @@ const Options = () => {
     }
   }, [roomsData, dispatch, hitSearch]);
 
-  useEffect(() => {
-    const optionRef = optionsRef?.current;
-    if (optionRef) {
-      optionRef.addEventListener("scroll", handleScroll);
-      return () => optionRef.removeEventListener("scroll", handleScroll);
-    }
-  }, [isLoading]);
-
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     const container = optionsRef.current;
     if (container && itemRefs.current.length > 0) {
       const { scrollLeft, scrollWidth, clientWidth } = container;
@@ -81,17 +91,71 @@ const Options = () => {
       setIsAtEnd(
         Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
       );
-    }
-  };
 
-  const handleScrollBtn = (direction) => {
+      // Check if we're near the end of the scroll and fetch more data if needed
+      if (scrollWidth - (scrollLeft + clientWidth) < clientWidth * 0.5) {
+        if (hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, itemRefs, optionsRef]);
+
+  // Handle scroll event
+  useEffect(() => {
+    const optionRef = optionsRef?.current;
+    if (optionRef) {
+      optionRef.addEventListener("scroll", handleScroll);
+      return () => optionRef.removeEventListener("scroll", handleScroll);
+    }
+  }, [hasNextPage, isFetchingNextPage, handleScroll]);
+
+  const handleScrollBtn = useCallback(
+    (direction) => {
+      const container = optionsRef.current;
+      if (container) {
+        const itemWidth = itemRefs.current[0]?.offsetWidth * 7 || 0;
+        const scrollAmount = direction === "right" ? itemWidth : -itemWidth;
+        container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+
+        // Immediately update isAtStart and isAtEnd
+        setTimeout(() => {
+          const { scrollLeft, scrollWidth, clientWidth } = container;
+          setIsAtStart(scrollLeft < itemWidth);
+          setIsAtEnd(
+            Math.abs(scrollWidth - clientWidth - scrollLeft) < itemWidth
+          );
+
+          if (scrollWidth - (scrollLeft + clientWidth) < clientWidth * 0.5) {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }
+        }, 100); // A short delay to ensure the scroll has started
+      }
+    },
+    [
+      hasNextPage,
+      isFetchingNextPage,
+      fetchNextPage,
+      itemRefs,
+      optionsRef,
+      setIsAtStart,
+      setIsAtEnd,
+    ]
+  );
+
+  useEffect(() => {
     const container = optionsRef.current;
     if (container) {
-      const itemWidth = itemRefs.current[0]?.offsetWidth * 8 || 0;
-      const scrollAmount = direction === "right" ? itemWidth : -itemWidth;
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const lastItemWidth =
+        itemRefs.current[itemRefs.current.length - 1]?.offsetWidth || 0;
+      setIsAtEnd(
+        Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
+      );
     }
-  };
+  }, [filteredOptions]);
 
   return (
     <div

@@ -1,30 +1,28 @@
 import supabase from "./Supabase";
 
-export async function getRooms(ids, country, city) {
-  // Start building the query
-  let query = supabase.from("Rooms").select("*");
+export async function getRooms(ids, country, city, limit, offset) {
+  let query = supabase
+    .from("Rooms")
+    .select("*")
+    .range(offset, offset + limit - 1);
 
-  // Add ids filter if provided
   if (ids && ids.length > 0) {
     query = query.in("id", ids);
   }
 
-  // Add country filter if provided
   if (country) {
     query = query.ilike("country", country);
   }
 
-  // Add city filter if provided
   if (city) {
     query = query.ilike("city", city);
   }
 
-  // Execute the query
   const { data, error } = await query;
 
   if (error) {
     console.error("Error fetching rooms:", error);
-    throw error; // Throw the error to be handled by the caller
+    throw error;
   } else {
     return data;
   }
