@@ -36,6 +36,12 @@ const Options = () => {
     normalizedFilters.includes(normalizeString(item.iconName))
   );
 
+  function fetchNext() {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }
+
   // Fetch function for rooms (used with infinite query)
   const {
     data: roomsData,
@@ -179,6 +185,7 @@ const Options = () => {
                 itemRefs={itemRefs}
               />
               <ScrollButtons
+                fetchNext={fetchNext}
                 isAtStart={isAtStart}
                 isAtEnd={isAtEnd}
                 optionsLength={filteredOptions.length}
@@ -262,6 +269,7 @@ const OptionItem = React.forwardRef(({ item, isSelected, onClick }, ref) => (
 
 // Component for scroll buttons
 const ScrollButtons = ({
+  fetchNext,
   isAtStart,
   isAtEnd,
   optionsLength,
@@ -273,6 +281,7 @@ const ScrollButtons = ({
     )}
     {!isAtEnd && optionsLength > 8 && (
       <ScrollButton
+        fetchNext={fetchNext}
         direction="right"
         onClick={() => handleScrollBtn("right")}
       />
@@ -281,7 +290,7 @@ const ScrollButtons = ({
 );
 
 // Component for individual scroll button
-const ScrollButton = ({ direction, onClick }) => (
+const ScrollButton = ({ fetchNext, direction, onClick }) => (
   <>
     <div
       className={`absolute ${
@@ -297,6 +306,7 @@ const ScrollButton = ({ direction, onClick }) => (
       ></div>
     </div>
     <button
+      onMouseEnter={() => fetchNext()}
       onClick={onClick}
       className={`absolute hidden 1sm:flex items-center justify-center top-[30%] z-50 ${
         direction === "left" ? "left-0" : "right-[22rem]"

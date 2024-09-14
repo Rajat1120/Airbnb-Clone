@@ -17,7 +17,7 @@ const MobileFooter = () => {
     } else if (location.pathname.includes("account-settings")) {
       dispatch(setMobileNavOption("Profile"));
     }
-  }, []);
+  }, [dispatch, location.pathname]);
 
   function handleNavOption(option) {
     dispatch(setMobileNavOption(option));

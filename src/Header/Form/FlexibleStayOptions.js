@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMonths, format } from "date-fns";
 import {
-  setHoverInput,
   setMonths,
   setStayDuration,
   setTextForFlexibleInput,

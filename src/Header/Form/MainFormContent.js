@@ -38,14 +38,7 @@ import Destination from "./FormFields/Destination";
 
 import Month from "./Month";
 import Flexible from "./Flexible";
-import {
-  setCity,
-  setHitSearch,
-  setInputSearchIds,
-  setMinimize,
-  setSelectedCountry,
-  setSelectedIcon,
-} from "../../Main/AppSlice";
+import { setHitSearch, setMinimize } from "../../Main/AppSlice";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { handleSearchInput } from "./HandleSearch";
 const MainFormContent = () => {

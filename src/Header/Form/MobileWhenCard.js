@@ -14,7 +14,6 @@ import {
   setSelectedStartDate,
   setStartDurationDate,
   setStayDuration,
-  setTextForFlexibleInput,
 } from "./mainFormSlice";
 import FlexibleStayOptions from "./FlexibleStayOptions";
 

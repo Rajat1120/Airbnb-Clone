@@ -16,7 +16,7 @@ export const signInWithGoogle = async () => {
   }
 
   // Attempt to sign in with Google
-  const { user, session, error } = await supabase.auth.signInWithOAuth({
+  const { user, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
       redirectTo: redirectUrl,
@@ -106,10 +106,9 @@ export const loginWithEmail = async (Email, Password) => {
     }
 
     // Step 3: Update the user metadata with the name "Guest"
-    const { data: updateData, error: updateError } =
-      await supabase.auth.updateUser({
-        data: { name: "Guest", email: "rajat@airbnb.com" },
-      });
+    const { error: updateError } = await supabase.auth.updateUser({
+      data: { name: "Guest", email: "rajat@airbnb.com" },
+    });
 
     if (updateError) {
       console.error("Error updating user metadata:", updateError.message);

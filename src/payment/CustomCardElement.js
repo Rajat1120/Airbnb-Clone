@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import copySvg from "../data/Icons svg/copy.svg";
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCvcElement,
 } from "@stripe/react-stripe-js";
-import { GoTrueAdminApi } from "@supabase/supabase-js";
+
 import { useDispatch, useSelector } from "react-redux";
 import {
   setIsCardNumEmpty,
@@ -13,7 +13,6 @@ import {
   setError,
   setIsExpEmpty,
 } from "./CardSlice";
-import { set } from "date-fns";
 
 const CustomCardElement = () => {
   const dispatch = useDispatch();

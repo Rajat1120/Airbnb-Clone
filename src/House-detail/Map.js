@@ -1,18 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MapContainer, TileLayer, Marker, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+
 import LocationDescriptionModal from "./LocationDescriptionModal";
 import showMore from "../data/Icons svg/arrow-right.svg";
 import { useSelector } from "react-redux";
-
-// Custom house icon
-const houseIcon = new L.Icon({
-  iconUrl: "/path/to/house-icon.png", // Provide your icon path here
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
-  popupAnchor: [0, -32],
-});
 
 const Map = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);

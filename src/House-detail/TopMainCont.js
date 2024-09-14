@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import share from "../../src/data/Icons svg/shareIcon.svg";
-import heart from "../../src/data/Icons svg/heart.svg";
+
 import dots from "../data/Icons svg/dots.svg";
 import { useNavigate, useParams } from "react-router";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";

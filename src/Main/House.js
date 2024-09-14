@@ -11,7 +11,7 @@ import arrow_left from "../data/Icons svg/arrow-left.svg";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchRowsWithOptions } from "../Services/apiRooms";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   removeUserFavListing,
   setHoveredItem,

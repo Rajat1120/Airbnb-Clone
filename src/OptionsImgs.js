@@ -1,5 +1,3 @@
-import React from "react";
-
 let arr = [
   {
     link: "https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg",

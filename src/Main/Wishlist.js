@@ -15,7 +15,7 @@ import { getWishList } from "../Services/apiRooms";
 
 import LongFooter from "../House-detail/LongFooter";
 import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
-import { useNavigate } from "react-router";
+
 import MobileFooter from "../MobileFooter";
 import { Link } from "react-router-dom";
 

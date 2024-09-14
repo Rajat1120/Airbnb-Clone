@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+
 import {
   useStripe,
   useElements,
@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHasError } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
-import { differenceInCalendarDays } from "date-fns";
+
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookRoom } from "../Services/apiRooms";
 
@@ -37,6 +37,7 @@ const UpdatedPaymentForm = ({
   const stripe = useStripe();
   const elements = useElements();
   const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const isCardNumEmpty = useSelector((store) => store.card.isCardNumEmpty);
 
   const isExpEmpty = useSelector((store) => store.card.isExpEmpty);
@@ -46,21 +47,25 @@ const UpdatedPaymentForm = ({
 
   let fieldEmpty = !isCardNumEmpty || !isExpEmpty || !isCvcEmpty;
 
-  let childData = {
-    stripe: stripe,
-    processing: processing,
-    session: session,
-    error: error,
-    success: success,
-  };
+  let childData = useMemo(
+    () => ({
+      stripe: stripe,
+      processing: processing,
+      session: session,
+      error: error,
+      success: success,
+      isSubmitting: isSubmitting,
+    }),
+    [stripe, processing, session, error, isSubmitting, success]
+  );
 
-  const sendDataToParent = () => {
+  const sendDataToParent = useCallback(() => {
     onSendData(childData);
-  };
+  }, [childData, onSendData]);
 
   useEffect(() => {
     sendDataToParent();
-  }, [stripe, processing, session, error, success]);
+  }, [stripe, processing, session, sendDataToParent, error, success]);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -76,32 +81,43 @@ const UpdatedPaymentForm = ({
     return () => subscription.unsubscribe();
   }, []);
 
-  function fieldEmptyFun() {
+  const fieldEmptyFun = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+  }, []);
 
-  let paymentDetails = {
-    amount: totalAmount,
-
-    customer_name: userId?.user_metadata.name,
-    user_email: userId?.email,
-    currency: "usd",
-    room_id: id,
-    startDate: startDate,
-    endDate: endDate,
-    numOfDays: numOfDays,
-    payment_method: "card",
-    status: "successful",
-    stripe_payment_intent_id: stripePaymentId,
-    Guest: guestCount,
-    address: {
-      line1: "2034",
-      city: "Los angeles",
-      state: "California",
-      postal_code: "67854",
-      country: "US",
-    },
-  };
+  const paymentDetails = useMemo(
+    () => ({
+      amount: totalAmount,
+      customer_name: userId?.user_metadata.name,
+      user_email: userId?.email,
+      currency: "usd",
+      room_id: id,
+      startDate: startDate,
+      endDate: endDate,
+      numOfDays: numOfDays,
+      payment_method: "card",
+      status: "successful",
+      stripe_payment_intent_id: stripePaymentId,
+      Guest: guestCount,
+      address: {
+        line1: "2034",
+        city: "Los Angeles",
+        state: "California",
+        postal_code: "67854",
+        country: "US",
+      },
+    }),
+    [
+      totalAmount,
+      userId,
+      id,
+      startDate,
+      endDate,
+      numOfDays,
+      stripePaymentId,
+      guestCount,
+    ]
+  );
 
   function areAllKeysTruthy(obj) {
     return Object.values(obj).every((value) => Boolean(value));
@@ -113,91 +129,113 @@ const UpdatedPaymentForm = ({
     enabled: false,
   });
 
-  const onSubmit = async (formData) => {
-    if (fieldEmpty) {
-      dispatch(setHasError(true));
-      setOnSubmitReference(false);
-      fieldEmptyFun();
-      return;
-    } else {
+  const onSubmit = useCallback(
+    async (formData) => {
+      if (isSubmitting) return; // Prevent multiple submissions
+      setIsSubmitting(true);
+
+      if (fieldEmpty) {
+        dispatch(setHasError(true));
+        setOnSubmitReference(false);
+        fieldEmptyFun();
+        setIsSubmitting(false);
+        return;
+      }
+
       dispatch(setHasError(false));
-    }
-    sendDataToParent();
-    setProcessing(true);
+      sendDataToParent();
+      setProcessing(true);
+      if (!stripe || !elements || !session) {
+        setProcessing(false);
+        setIsSubmitting(false);
+        return;
+      }
 
-    if (!stripe || !elements || !session) {
-      setProcessing(false);
-      return;
-    }
-
-    try {
-      // Call Supabase function to create payment intent
-      const response = await fetch(
-        "https://xailnuaqpfvjojptkpgh.supabase.co/functions/v1/create-payment-intent",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.access_token}`,
-          },
-          body: JSON.stringify({
-            amount: totalAmount, // Amount in cents
-            customerName: userId?.user_metadata.name,
-            customerAddress: {
-              line1: "2034",
-              city: "Los angeles",
-              state: "California",
-              postal_code: "67854",
-              country: "US",
+      try {
+        // Call Supabase function to create payment intent
+        const response = await fetch(
+          "https://xailnuaqpfvjojptkpgh.supabase.co/functions/v1/create-payment-intent",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.access_token}`,
             },
-          }),
+            body: JSON.stringify({
+              amount: totalAmount, // Amount in cents
+              customerName: userId?.user_metadata.name,
+              customerAddress: {
+                line1: "2034",
+                city: "Los Angeles",
+                state: "California",
+                postal_code: "67854",
+                country: "US",
+              },
+            }),
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.status !== 200) {
+          throw new Error(data.error);
         }
-      );
 
-      const data = await response.json();
+        const { clientSecret } = data;
 
-      if (response.status !== 200) {
-        throw new Error(data.error);
-      }
-
-      const { clientSecret } = data;
-
-      // Confirm the payment with Stripe
-      const result = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardNumberElement),
-          billing_details: {
-            name: userId?.user_metadata.name,
-
-            address: {
-              line1: "2034",
-              city: "Los angeles",
-              state: "California",
-              postal_code: "67854",
-              country: "US",
+        // Confirm the payment with Stripe
+        const result = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: elements.getElement(CardNumberElement),
+            billing_details: {
+              name: userId?.user_metadata.name,
+              address: {
+                line1: "2034",
+                city: "Los Angeles",
+                state: "California",
+                postal_code: "67854",
+                country: "US",
+              },
             },
           },
-        },
-      });
+        });
 
-      if (result.error) {
-        throw new Error(result.error.message);
+        if (result.error) {
+          throw new Error(result.error.message);
+        }
+
+        if (result.paymentIntent.status === "succeeded") {
+          // Update the database or perform any post-payment actions
+          setStripePaymentId(result.paymentIntent.id);
+          setSuccess("Payment successful!");
+        } else {
+          throw new Error("Payment failed. Please try again.");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setProcessing(false);
+        setIsSubmitting(false);
       }
-
-      if (result.paymentIntent.status === "succeeded") {
-        // Update the database or perform any post-payment actions
-        setStripePaymentId(result.paymentIntent.id);
-
-        setSuccess("Payment successfull!");
-      } else {
-        throw new Error("Payment failed. Please try again.");
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setProcessing(false);
-    }
-  };
+    },
+    [
+      dispatch,
+      stripe,
+      elements,
+      session,
+      totalAmount,
+      userId,
+      setOnSubmitReference,
+      isSubmitting,
+      fieldEmpty,
+      fieldEmptyFun,
+      sendDataToParent,
+      setProcessing,
+      setStripePaymentId,
+      setSuccess,
+      setError,
+    ]
+  );
 
   const queryClient = useQueryClient();
 
@@ -212,7 +250,14 @@ const UpdatedPaymentForm = ({
     if (paymentError) {
       toast.error("Payment failed, please try again");
     }
-  }, [success, refetch, queryClient, paymentError, stripePaymentId]);
+  }, [
+    success,
+    refetch,
+    queryClient,
+    paymentError,
+    paymentDetails,
+    stripePaymentId,
+  ]);
 
   const navigate = useNavigate();
 
@@ -252,7 +297,7 @@ const UpdatedPaymentForm = ({
     if (onSubmitReference) {
       onSubmit();
     }
-  }, [onSubmitReference]);
+  }, [onSubmitReference, onSubmit]);
 
   return (
     <>

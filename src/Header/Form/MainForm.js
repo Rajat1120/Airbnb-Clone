@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainFormContent from "./MainFormContent";
 import ReactDOM from "react-dom";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
@@ -14,7 +14,6 @@ import { useLocation } from "react-router";
 
 const MainForm = ({ headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [button, setButton] = useState("");
   const data = useSelector((store) => store.form.curSelectInput);
   const minimizeFormBtn = useSelector((store) => store.form.minimizeFormBtn);
   const dateOption = useSelector((store) => store.form.dateOption);
@@ -245,7 +244,6 @@ const MainForm = ({ headerRef }) => {
                 <div
                   onClick={() => {
                     dispatch(setMinimize(true));
-                    setButton("");
                   }}
                   className={` w-[4rem]  flex items-center justify-center bg-pink justify-self-end transition-all duration-[0.2s]   rounded-full h-[4rem] `}
                 >

@@ -3,7 +3,7 @@ import LongFooter from "../House-detail/LongFooter";
 import Header from "../Header/Header";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import star from "../data/Icons svg/star.svg";
+
 import { useQuery } from "@tanstack/react-query";
 import { getPayments, getWishList } from "../Services/apiRooms";
 import MobileFooter from "../MobileFooter";
@@ -13,11 +13,7 @@ import person from "../data/Icons svg/Person.svg";
 const Trips = () => {
   const userData = useSelector((store) => store.app.userData);
   const navigate = useNavigate();
-  const {
-    data: paymentsData,
-    error,
-    isLoading,
-  } = useQuery({
+  const { data: paymentsData } = useQuery({
     queryFn: () => getPayments(userData?.email),
     queryKey: ["payments"],
     enabled: !!userData?.email,

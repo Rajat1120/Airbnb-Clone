@@ -3,7 +3,7 @@ import Options from "./Main/Options";
 import House from "./Main/House";
 import Footer from "./Footer";
 import MobileFooter from "./MobileFooter";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
@@ -24,19 +24,19 @@ export default function Home() {
   const headerRef = useRef(null);
 
   // Function to calculate and dispatch start and end dates
-  const setInitialDates = () => {
+  const setInitialDates = useCallback(() => {
     const today = new Date();
     const startDate = addDays(today, 1); // Tomorrow's date
     const endDate = addDays(startDate, 5); // 5 days after tomorrow
 
     dispatch(setSelectedStartDate(startDate));
     dispatch(setSelectedEndDate(endDate));
-  };
+  }, [dispatch]);
 
   // Trigger date setting on component mount
   useEffect(() => {
     setInitialDates();
-  }, []);
+  }, [setInitialDates]);
 
   // Fetch all rows from the backend
   useQuery({

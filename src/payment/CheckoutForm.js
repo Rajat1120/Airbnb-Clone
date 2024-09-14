@@ -1,24 +1,28 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useLayoutEffect,
+  useCallback,
+} from "react";
+
 import icon from "../data/airbnbLogo.svg";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
 import star from "../data/Icons svg/star.svg";
 import errorImg from "../data/Icons svg/Error.svg";
 import card from "../data/Icons svg/card.svg";
-import supabase from "../Services/Supabase";
-import CustomCardElement from "./CustomCardElement";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import {
   booking,
-  bookRoom,
   getBooking,
   getPayments,
   getRoomInfo,
   updateBooking,
 } from "../Services/apiRooms";
-import { differenceInDays, format, isSameMonth, set } from "date-fns";
+import { differenceInDays, format, isSameMonth } from "date-fns";
 import CalendarModal from "../Header/Form/CalendarModal";
 import Calendar from "../Header/Form/FormFields/Calendar";
 import {
@@ -32,7 +36,6 @@ import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import AddGuestModal from "../Modals/AddGuestModal";
 import { setBookingDate, setCancelGuestUpdate } from "../Main/AppSlice";
-import { update } from "@react-spring/web";
 
 const CheckoutForm = () => {
   const [guestCount, setGuestCount] = useState("");
@@ -63,12 +66,7 @@ const CheckoutForm = () => {
   const userData = useSelector((store) => store.app.userData);
   const cancelGuestUpdate = useSelector((store) => store.app.cancelGuestUpdate);
 
-  const {
-    data: paymentData,
-    refetch: refetchPayment,
-    isLoading: paymentLoading,
-    isStale,
-  } = useQuery({
+  const { data: paymentData, refetch: refetchPayment } = useQuery({
     queryFn: () => getPayments(userData?.email),
     queryKey: ["payments"],
     enabled: false,
@@ -117,7 +115,7 @@ const CheckoutForm = () => {
       await refetchPayment();
 
       if (paymentData?.length && id) {
-        let isBooked = paymentData.some((item) => item.room_id == id);
+        let isBooked = paymentData.some((item) => item.room_id === id);
 
         if (isBooked) {
           setBookingStatus("found");
@@ -134,16 +132,28 @@ const CheckoutForm = () => {
     };
 
     checkBookingStatus();
-  }, [paymentData, bookingStatus, id]);
+  }, [paymentData, refetchPayment, bookingStatus, id]);
 
   const handleEditClick = () => {
     dispatch(setCalendarModalOpen(true));
   };
 
-  const handleCloseModal = () => {
+  const updateDates = useCallback(() => {
+    if (startDate && endDate) {
+      numOfDays.current = differenceInDays(startDate, endDate);
+      if (endDate) {
+        formattedEndDate.current = format(endDate, "EEE MMM dd, yyyy");
+      }
+      if (startDate) {
+        formatStartDate.current = format(startDate, "EEE MMM dd, yyyy");
+      }
+    }
+  }, [endDate, startDate]);
+
+  const handleCloseModal = useCallback(() => {
     dispatch(setCalendarModalOpen(false));
     updateDates();
-  };
+  }, [updateDates, dispatch]);
 
   useEffect(() => {
     function handleResize() {
@@ -155,30 +165,13 @@ const CheckoutForm = () => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [dispatch]);
+  }, [dispatch, handleCloseModal]);
 
   let formattedEndDate = useRef();
   let formatStartDate = useRef();
   let numOfDays = useRef();
 
-  function updateDates() {
-    if (startDate && endDate) {
-      numOfDays.current = differenceInDays(startDate, endDate);
-      if (endDate) {
-        formattedEndDate.current = format(endDate, "EEE MMM dd, yyyy");
-      }
-      if (startDate) {
-        formatStartDate.current = format(startDate, "EEE MMM dd, yyyy");
-      }
-    }
-  }
-
-  const {
-    data: updateData,
-    isLoading: updateLoading,
-    refetch: updateUserBooking,
-    isError: updateError,
-  } = useQuery({
+  const { isLoading: updateLoading, refetch: updateUserBooking } = useQuery({
     queryFn: () => updateBooking(updateBookingData),
     queryKey: ["updateBookingData"],
     enabled: false,
@@ -246,7 +239,6 @@ const CheckoutForm = () => {
     refetch: insertBooking,
 
     isLoading: bookingLoading,
-    isError: bookingError,
   } = useQuery({
     queryFn: () => booking(bookingData),
     queryKey: ["booking"],
@@ -260,7 +252,7 @@ const CheckoutForm = () => {
   });
 
   const navigate = useNavigate();
-  const { data, isLoading, isError } = useQuery({
+  const { data } = useQuery({
     queryKey: ["roomInfo", id],
     queryFn: () => getRoomInfo(id),
     enabled: !!id,
@@ -313,7 +305,7 @@ const CheckoutForm = () => {
         )
       );
     }
-  }, [startDate, endDate, dateChange.current, userBookingData]);
+  }, [startDate, endDate, dateChange.current, dispatch, userBookingData]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -332,7 +324,13 @@ const CheckoutForm = () => {
       }
       dateChange.current = false;
     }
-  }, [isModalOpen, userBookingData, dispatch, updateBookingData]);
+  }, [
+    isModalOpen,
+    userBookingData,
+    dispatch,
+    updateUserBooking,
+    updateBookingData,
+  ]);
 
   // navigate to login page if user is not logged in
   let userDataLoaded = useRef(false);
@@ -638,7 +636,9 @@ const CheckoutForm = () => {
                     : "cursor-pointer  "
                 } font-medium rounded-lg text-white w-56 h-14`}
               >
-                {dataFromChild.processing ? "Processing..." : "Request to book"}
+                {dataFromChild.processing || dataFromChild.isSubmitting
+                  ? "Processing..."
+                  : "Request to book"}
               </button>
             </div>
           </section>

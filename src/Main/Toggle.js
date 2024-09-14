@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 
-const Toggle = ({ isChecked, setIsChecked, handleToggle }) => {
+const Toggle = ({ isChecked, handleToggle }) => {
   return (
     <label
       htmlFor="toggleA"

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHitSearch, setShowMobileForm } from "../../Main/AppSlice";
 import crossIcon from "../../data/Icons svg/cross.svg";
 import { motion } from "framer-motion";
-import { format, setMonth } from "date-fns";
+import { format } from "date-fns";
 import { handleSearchInput } from "./HandleSearch";
 import MobileWhereCard from "./MobileWhereCard";
 import {
@@ -12,7 +12,6 @@ import {
   setChildCount,
   setCurrentDot,
   setDateOption,
-  setEndDateToShow,
   setInfantCount,
   setMonths,
   setOpenName,
@@ -23,7 +22,6 @@ import {
   setRegion,
   setSelectedEndDate,
   setSelectedStartDate,
-  setStartDateToShow,
   setStartDurationDate,
   setStayDuration,
 } from "./mainFormSlice";

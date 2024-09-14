@@ -141,7 +141,6 @@ const Calendar = () => {
     const startDate = startOfWeek(monthStart);
     const endDate = endOfWeek(monthEnd);
     const today = new Date();
-    let rowCount = 0;
 
     const dateFormat = "d";
     const rows = [];
@@ -288,7 +287,7 @@ const Calendar = () => {
           {days}
         </div>
       );
-      rowCount++;
+
       days = [];
     }
     return (
@@ -372,7 +371,6 @@ const Calendar = () => {
   };
 
   const handleScroll = (direction) => {
-    const container = scrollContainerRef.current;
     const maxIndex = 20; // Assuming 12 months are rendered
 
     if (direction === "left" && currentIndex > 0) {

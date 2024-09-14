@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Header from "../Header/Header";
-import { setMinimize, setShowLogin, setStartScroll } from "../Main/AppSlice";
+import { setMinimize, setShowLogin } from "../Main/AppSlice";
 import { useLocation, useParams } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
@@ -51,7 +51,7 @@ const HouseDetail = () => {
     setTripDurationDate(formatDateRange(startDate, endDate));
   }, [startDate, endDate]);
 
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data } = useQuery({
     queryKey: ["roomInfo", id],
     queryFn: () => getRoomInfo(id),
   });

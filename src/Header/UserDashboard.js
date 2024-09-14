@@ -2,9 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import menu from "../data/Menu-Icon.svg";
 import person from "../data/person.svg";
 import UserDmodal from "./UserDmodal";
-import { getUserData } from "../Services/apiAuthentication";
-import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../Main/AppSlice";
+
+import { useSelector } from "react-redux";
 
 const UserDashboard = () => {
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);

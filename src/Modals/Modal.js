@@ -10,12 +10,8 @@ import React, {
 
 import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
-import {
-  setActiveInput,
-  setCurrentMonth,
-  setOpenName,
-} from "../Header/Form/mainFormSlice";
-import { setMinimize } from "../Main/AppSlice";
+import { setOpenName } from "../Header/Form/mainFormSlice";
+
 import AddDays from "../Header/Form/AddDays";
 
 export const modalContext = createContext();
@@ -136,7 +132,7 @@ function Window({ children, name, modalRef, resetRef }) {
 
     document.addEventListener("click", handleClick, true);
     return () => document.removeEventListener("click", handleClick, true);
-  }, [close, isModalOpen]);
+  }, [close, resetRef, isModalOpen]);
 
   if (name !== openName || !position || !isRendered) return null;
 
