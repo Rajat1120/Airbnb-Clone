@@ -7,6 +7,7 @@ import arrow_right from "./../data/Icons svg/arrow-right.svg";
 import optionImgs from "../OptionsImgs";
 import { setSelectedIcon } from "./AppSlice";
 import { getRooms } from "../Services/apiRooms";
+import { motion } from "framer-motion";
 
 const Options = () => {
   const [uniqueFilters, setUniqueFilters] = useState([]);
@@ -220,6 +221,7 @@ const OptionsContainer = ({
   >
     {options.map((item, i) => (
       <OptionItem
+        index={i}
         key={i}
         item={item}
         isSelected={selectedIcon === item.iconName}
@@ -233,28 +235,33 @@ const OptionsContainer = ({
 );
 
 // Component for individual option items
-const OptionItem = React.forwardRef(({ item, isSelected, onClick }, ref) => (
-  <div
-    ref={ref}
-    onClick={onClick}
-    className={`flex-center h-16 my-[12px] border-b-2 ${
-      isSelected
-        ? "border-black cursor-default opacity-100"
-        : "border-white cursor-pointer opacity-75 hover:border-grey-light-50 hover:opacity-100"
-    } py-[4px]`}
-    style={{
-      scrollSnapAlign: "start",
-      flexShrink: 0,
-    }}
-  >
-    <div className="flex-col space-y-2 h-full items-center justify-center flex">
-      <img src={item.link} className="h-6 w-6" alt="" />
-      <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block whitespace-nowrap">
-        {item.iconName}
-      </span>
-    </div>
-  </div>
-));
+const OptionItem = React.forwardRef(
+  ({ index, item, isSelected, onClick }, ref) => (
+    <motion.div
+      ref={ref}
+      onClick={onClick}
+      className={`flex-center h-16 my-[12px] border-b-2 ${
+        isSelected
+          ? "border-black cursor-default opacity-100"
+          : "border-white cursor-pointer opacity-75 hover:border-grey-light-50 hover:opacity-100"
+      } py-[4px]`}
+      style={{
+        scrollSnapAlign: "start",
+        flexShrink: 0,
+      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+    >
+      <div className="flex-col space-y-2 h-full items-center justify-center flex">
+        <img src={item.link} className="h-6 w-6" alt="" />
+        <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block whitespace-nowrap">
+          {item.iconName}
+        </span>
+      </div>
+    </motion.div>
+  )
+);
 
 // Component for scroll buttons
 const ScrollButtons = ({
