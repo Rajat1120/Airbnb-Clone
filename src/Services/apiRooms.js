@@ -3,7 +3,7 @@ import supabase from "./Supabase";
 export async function getRooms(ids, country, city, limit, offset) {
   let query = supabase
     .from("Rooms")
-    .select("*")
+    .select("filter", { count: "exact" })
     .range(offset, offset + limit - 1);
 
   if (ids && ids.length > 0) {
@@ -21,7 +21,7 @@ export async function getRooms(ids, country, city, limit, offset) {
   const { data, error } = await query;
 
   if (error) {
-    console.error("Error fetching rooms:", error);
+    console.error("Error fetching distinct room filters:", error);
     throw error;
   } else {
     return data;

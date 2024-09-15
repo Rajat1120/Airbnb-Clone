@@ -36,12 +36,6 @@ const Options = () => {
     normalizedFilters.includes(normalizeString(item.iconName))
   );
 
-  function fetchNext() {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }
-
   // Fetch function for rooms (used with infinite query)
   const {
     data: roomsData,
@@ -61,6 +55,13 @@ const Options = () => {
   });
 
   let isLoading = status === "pending";
+
+  // function to fetch the data from next 1k rows
+  const fetchNext = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   // Effect to update unique filters and set initial selected icon
   useEffect(() => {
@@ -100,12 +101,10 @@ const Options = () => {
 
       // Check if we're near the end of the scroll and fetch more data if needed
       if (scrollWidth - (scrollLeft + clientWidth) < clientWidth * 0.5) {
-        if (hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
+        fetchNext();
       }
     }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, itemRefs, optionsRef]);
+  }, [fetchNext, itemRefs, optionsRef]);
 
   // Handle scroll event
   useEffect(() => {
@@ -133,22 +132,12 @@ const Options = () => {
           );
 
           if (scrollWidth - (scrollLeft + clientWidth) < clientWidth * 0.5) {
-            if (hasNextPage && !isFetchingNextPage) {
-              fetchNextPage();
-            }
+            fetchNext();
           }
         }, 100); // A short delay to ensure the scroll has started
       }
     },
-    [
-      hasNextPage,
-      isFetchingNextPage,
-      fetchNextPage,
-      itemRefs,
-      optionsRef,
-      setIsAtStart,
-      setIsAtEnd,
-    ]
+    [fetchNext, itemRefs, optionsRef, setIsAtStart, setIsAtEnd]
   );
 
   useEffect(() => {
