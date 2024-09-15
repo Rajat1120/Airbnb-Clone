@@ -8,7 +8,7 @@ import React, {
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
-
+import { motion } from "framer-motion";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchRowsWithOptions } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
@@ -219,16 +219,19 @@ const House = () => {
               </div>
             ))
           : data?.pages.flatMap((page) =>
-              page.map((item) =>
+              page.map((item, index) =>
                 isSmallScreen ? (
                   <Link key={item.id} to={`/house/${item.id}`}>
-                    <div
+                    <motion.div
                       className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
                       onMouseEnter={() => {
                         dispatch(setHoveredItem(item.id));
                         dispatch(setHoveredItems([...hoveredItems, item.id]));
                       }}
                       onMouseLeave={() => dispatch(setHoveredItem(null))}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.05 }}
                     >
                       {item.guest_favorite === "Guest favourite" && (
                         <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
@@ -359,7 +362,7 @@ const House = () => {
                           </span>
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                   </Link>
                 ) : (
                   <a
@@ -369,13 +372,16 @@ const House = () => {
                     rel="noopener noreferrer"
                     className="block "
                   >
-                    <div
+                    <motion.div
                       className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
                       onMouseEnter={() => {
                         dispatch(setHoveredItem(item.id));
                         dispatch(setHoveredItems([...hoveredItems, item.id]));
                       }}
                       onMouseLeave={() => dispatch(setHoveredItem(null))}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.2, delay: index * 0.07 }}
                     >
                       {item.guest_favorite === "Guest favourite" && (
                         <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
@@ -506,7 +512,7 @@ const House = () => {
                           </span>
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                   </a>
                 )
               )

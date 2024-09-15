@@ -110,7 +110,7 @@ const CheckoutForm = () => {
     }
   }, [openGuestModal, dispatch]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const checkBookingStatus = async () => {
       await refetchPayment();
 

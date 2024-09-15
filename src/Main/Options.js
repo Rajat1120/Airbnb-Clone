@@ -13,6 +13,7 @@ const Options = () => {
   const [uniqueFilters, setUniqueFilters] = useState([]);
   const [isAtStart, setIsAtStart] = useState(true);
   const [isAtEnd, setIsAtEnd] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState([]);
 
   const dispatch = useDispatch();
   const optionsRef = useRef(null);
@@ -33,9 +34,22 @@ const Options = () => {
 
   // Normalize filters and options
   const normalizedFilters = uniqueFilters.map(normalizeString);
-  const filteredOptions = optionImgs.filter((item) =>
+  const curFilteredOptions = optionImgs.filter((item) =>
     normalizedFilters.includes(normalizeString(item.iconName))
   );
+
+  useEffect(() => {
+    const newOptions = curFilteredOptions.filter(
+      (curItem) =>
+        !filteredOptions.some(
+          (filteredItem) => filteredItem.iconName === curItem.iconName
+        )
+    );
+
+    if (newOptions.length > 0) {
+      setFilteredOptions((prevOptions) => [...prevOptions, ...newOptions]);
+    }
+  }, [curFilteredOptions, filteredOptions]);
 
   // Fetch function for rooms (used with infinite query)
   const {
@@ -100,10 +114,7 @@ const Options = () => {
         Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
       );
 
-      // Check if we're near the end of the scroll and fetch more data if needed
-      if (scrollWidth - (scrollLeft + clientWidth) < clientWidth * 0.5) {
-        fetchNext();
-      }
+      fetchNext();
     }
   }, [fetchNext, itemRefs, optionsRef]);
 
@@ -302,7 +313,7 @@ const ScrollButton = ({ fetchNext, direction, onClick }) => (
       ></div>
     </div>
     <button
-      onMouseEnter={() => fetchNext()}
+      onMouseEnter={() => fetchNext && fetchNext()}
       onClick={onClick}
       className={`absolute hidden 1sm:flex items-center justify-center top-[30%] z-50 ${
         direction === "left" ? "left-0" : "right-[22rem]"
