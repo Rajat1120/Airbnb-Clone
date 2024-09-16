@@ -87,7 +87,7 @@ const MobileWhereCard = () => {
           )}
         </label>
       </div>
-      <div className="flex w-full overflow-x-scroll gap-x-4 ">
+      <div className="flex w-full overflow-y-hidden hide-scrollbar overflow-x-scroll gap-x-4 ">
         {Destination.map((item, i) => (
           <div
             onClick={() => {

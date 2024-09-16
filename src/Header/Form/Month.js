@@ -20,12 +20,18 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
     ? format(startDurationDate, "MMM d")
     : "";
 
-  let endDate = addMonths(formattedStartDate, currentDot);
+  let endDate = startDurationDate
+    ? addMonths(startDurationDate, currentDot)
+    : null;
 
-  const formatEndDate = format(endDate, "MMM d");
+  // Then format the new date
+  const formatEndDate = endDate ? format(endDate, "MMM d") : "";
 
   useEffect(() => {
-    let textToDisplay = `${formattedStartDate} - ${formatEndDate}`;
+    let textToDisplay =
+      formattedStartDate && formatEndDate
+        ? `${formattedStartDate} - ${formatEndDate}`
+        : "Any time";
 
     dispatch(setTextForInputDuration(textToDisplay));
   }, [formatEndDate, dispatch, formattedStartDate]);

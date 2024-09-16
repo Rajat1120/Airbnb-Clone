@@ -161,7 +161,7 @@ const Calendar = () => {
           if (isModalOpen && onCheckOutPage) {
             onCheckoutDateClick(isPastDate ? undefined : cloneDay);
           } else if (isModalOpen) {
-            onCalendarModalDateClick(cloneDay + 1);
+            onCalendarModalDateClick(cloneDay);
           } else {
             onDateClick(isPastDate ? undefined : cloneDay);
           }
