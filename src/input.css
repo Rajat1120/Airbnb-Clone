@@ -220,7 +220,7 @@
   }
 
   .my-grid-cols-four-col {
-    grid-template-columns: repeat(4, minmax(10rem, 20rem));
+    grid-template-columns: repeat(4, minmax(10rem, 40rem));
   }
 
   .grid-cols-two-col {

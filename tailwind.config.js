@@ -20,6 +20,7 @@ module.exports = {
     },
     extend: {
       screens: {
+        "2xl": "1920px",
         "1xl": "1440px",
         "1xzl": "1435px",
         "1xxl": "1355px",

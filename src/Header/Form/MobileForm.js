@@ -38,21 +38,27 @@ const MobileForm = () => {
         <div className="flex flex-col space-y-1">
           <h3 className="text-sm font-medium">Where to?</h3>
           <div className="flex items-center space-x-1">
-            <span className="text-xs text-nowrap leading-none text-grey font-light">
-              Anywhere
-            </span>
-            <div className="flex items-center justify-center h-full">
-              <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
+            <div className="flex items-center justify-between space-x-1 flex-1">
+              <span className="text-xs truncate min-w-2 w-full text-ellipsis leading-none text-grey font-light">
+                Anywhere
+              </span>
+              <div className="flex items-center justify-center h-full">
+                <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
+              </div>
             </div>
-            <span className="text-xs text-nowrap leading-none text-grey font-light">
-              Any week
-            </span>
-            <div className="flex items-center justify-center h-full">
-              <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
+            <div className="flex items-center justify-between space-x-1 flex-1">
+              <span className="text-xs truncate text-ellipsis leading-none text-grey font-light">
+                Any week
+              </span>
+              <div className="flex items-center justify-center h-full">
+                <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
+              </div>
             </div>
-            <span className="text-xs text-nowrap leading-none text-grey font-light">
-              Add guests
-            </span>
+            <div className="flex items-center justify-between space-x-1 flex-1">
+              <span className="text-xs truncate text-ellipsis leading-none text-grey font-light">
+                Add guests
+              </span>
+            </div>
           </div>
         </div>
       </div>

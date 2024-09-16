@@ -301,7 +301,7 @@ const House = () => {
                             </button>
                           )}
                         <img
-                          className="rounded-[20px] flex-center  w-full h-full object-cover scroll-snap-align-start"
+                          className="rounded-[20px]  flex-center  w-full h-full object-cover scroll-snap-align-start"
                           src={item.images[0]}
                           rel="preload"
                           as="image"
@@ -451,7 +451,7 @@ const House = () => {
                             </button>
                           )}
                         <img
-                          className="rounded-[20px] flex-center  w-full h-full object-cover scroll-snap-align-start"
+                          className="rounded-[20px] flex-center 2xl:rounded-[30px]  w-full h-full object-cover scroll-snap-align-start"
                           src={item.images[0]}
                           rel="preload"
                           as="image"
@@ -465,7 +465,7 @@ const House = () => {
                         {hoveredItems?.includes(item.id) &&
                           item.images.slice(1).map((img, i) => (
                             <img
-                              className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
+                              className="rounded-[20px] 2xl:rounded-[30px] flex-center w-full  h-full object-cover scroll-snap-align-start"
                               src={img}
                               rel="preload"
                               as="image"
