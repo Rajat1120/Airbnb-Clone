@@ -61,9 +61,9 @@ const Options = () => {
   } = useInfiniteQuery({
     queryKey: ["rooms", ids, selectedCountry, city],
     queryFn: ({ pageParam = 0 }) =>
-      getRooms(ids, selectedCountry, city, 1000, pageParam * 1000),
+      getRooms(ids, selectedCountry, city, 2000, pageParam * 2000),
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage && lastPage.length < 1000) return undefined;
+      if (lastPage && lastPage.length < 2000) return undefined;
       return pages.length;
     },
     enabled: true,
@@ -171,7 +171,7 @@ const Options = () => {
       } z-10 justify-self-center w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)] mx-auto`}
     >
       <div
-        className={`1sm:h-20 1sm:py-6 flex w-full relative items-center justify-between space-x-10`}
+        className={`h-auto  flex w-full relative items-center justify-between space-x-10`}
       >
         <div className="w-full flex items-center overflow-hidden rounded-lg">
           {isLoading ? (
@@ -203,8 +203,8 @@ const Options = () => {
 
 // Component for rendering loading placeholders
 const LoadingPlaceholder = () => (
-  <div className="flex space-x-10 items-center justify-start inset-shadow w-full">
-    {Array.from({ length: 9 }).map((_, i) => (
+  <div className="flex space-x-10 mt-5 items-center justify-start inset-shadow w-full">
+    {Array.from({ length: 28 }).map((_, i) => (
       <div
         key={i}
         className="flex flex-col space-y-2 items-center justify-between"
@@ -227,7 +227,7 @@ const OptionsContainer = ({
   <div
     id="options"
     ref={optionsRef}
-    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 justify-start h-16 1sm:h-24 w-full overflow-x-auto scroll-smooth"
+    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 2xl:space-x-16 justify-start h-16 2xl:h-28 1sm:h-24 w-full overflow-x-auto scroll-smooth"
     style={{ scrollBehavior: "smooth" }}
   >
     {options.map((item, i) => (
@@ -265,8 +265,8 @@ const OptionItem = React.forwardRef(
       transition={{ duration: 0.5, delay: index * 0.05 }}
     >
       <div className="flex-col space-y-2 h-full items-center justify-center flex">
-        <img src={item.link} className="h-6 w-6" alt="" />
-        <span className="text-xs text-black opacity-80 hover:opacity-100 font-medium text-center block whitespace-nowrap">
+        <img src={item.link} className="h-6 2xl:h-10 1xl:w-10 w-6" alt="" />
+        <span className="text-xs 2xl:text-base text-black opacity-80 hover:opacity-100 font-medium text-center block whitespace-nowrap">
           {item.iconName}
         </span>
       </div>

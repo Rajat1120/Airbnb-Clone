@@ -75,7 +75,7 @@ export default function Home() {
       </div>
 
       {/* Main Content (House Component) */}
-      <div className="w-full flex justify-center items-center mt-[7rem] 1sm:mt-[12rem]">
+      <div className="w-full flex justify-center items-center mt-[7rem] 2xl:mt-[14rem]  1sm:mt-[13rem]">
         <House />
       </div>
 
