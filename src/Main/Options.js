@@ -125,7 +125,7 @@ const Options = () => {
       optionRef.addEventListener("scroll", handleScroll);
       return () => optionRef.removeEventListener("scroll", handleScroll);
     }
-  }, [hasNextPage, isFetchingNextPage, handleScroll]);
+  }, [handleScroll, isLoading]);
 
   const handleScrollBtn = useCallback(
     (direction) => {
@@ -227,7 +227,7 @@ const OptionsContainer = ({
   <div
     id="options"
     ref={optionsRef}
-    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 2xl:space-x-16 justify-start h-16 2xl:h-28 1sm:h-24 w-full overflow-x-auto scroll-smooth"
+    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 2xl:space-x-16  justify-start h-16 1xz:h-20 2xl:h-28  w-full overflow-x-auto scroll-smooth"
     style={{ scrollBehavior: "smooth" }}
   >
     {options.map((item, i) => (
@@ -251,22 +251,26 @@ const OptionItem = React.forwardRef(
     <motion.div
       ref={ref}
       onClick={onClick}
-      className={`flex-center h-16 my-[12px] border-b-2 ${
+      className={`flex-center h-16 border-b-2 ${
         isSelected
-          ? "border-black cursor-default opacity-100"
-          : "border-white cursor-pointer opacity-75 hover:border-grey-light-50 hover:opacity-100"
-      } py-[4px]`}
+          ? "border-black cursor-default"
+          : "border-white cursor-pointer hover:border-grey-light-50 "
+      }`}
       style={{
         scrollSnapAlign: "start",
         flexShrink: 0,
       }}
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: isSelected ? 1 : 0.65 }}
+      whileHover={{
+        opacity: 1,
+        transition: { duration: 0 },
+      }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
     >
       <div className="flex-col space-y-2 h-full items-center justify-center flex">
-        <img src={item.link} className="h-6 2xl:h-10 1xl:w-10 w-6" alt="" />
-        <span className="text-xs 2xl:text-base text-black opacity-80 hover:opacity-100 font-medium text-center block whitespace-nowrap">
+        <img src={item.link} className="h-6 2xl:h-10 2xl:w-10 w-6" alt="" />
+        <span className="text-xs text-black font-medium text-center block whitespace-nowrap">
           {item.iconName}
         </span>
       </div>

@@ -13,6 +13,7 @@ let formState = {
   adultCount: 0,
   curDot: 3,
   hoverInput: null,
+  isSearch: false,
   childCount: 0,
   minimizeFormBtn: "",
   displaySearch: null,
@@ -55,6 +56,9 @@ const formSlice = createSlice({
     },
     setOpenWhereCard: (state, action) => {
       state.openWhereCard = action.payload;
+    },
+    setIsSearch: (state, action) => {
+      state.isSearch = action.payload;
     },
     setDurationDate: (state, action) => {
       state.durationDate = action.payload;
@@ -192,6 +196,7 @@ export const {
   setHoverInput,
   setPetsCount,
   setOpenName,
+  setIsSearch,
   setTextForFlexibleInput,
   setCalendarModalOpen,
   setStartDurationDate,

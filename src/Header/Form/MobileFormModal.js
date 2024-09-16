@@ -12,7 +12,9 @@ import {
   setChildCount,
   setCurrentDot,
   setDateOption,
+  setEndDateToShow,
   setInfantCount,
+  setIsSearch,
   setMonths,
   setOpenName,
   setOpenWhenCard,
@@ -22,11 +24,14 @@ import {
   setRegion,
   setSelectedEndDate,
   setSelectedStartDate,
+  setStartDateToShow,
   setStartDurationDate,
   setStayDuration,
+  setTextForGuestInput,
 } from "./mainFormSlice";
 import MobileWhenCard from "./MobileWhenCard";
 import MobileWhoCard from "./MobileWhoCard";
+import { handleSearch } from "./MainFormContent";
 
 const MobileFormModal = () => {
   const dispatch = useDispatch();
@@ -43,16 +48,62 @@ const MobileFormModal = () => {
   const region = useSelector((state) => state.form.region);
   const durationDate = useSelector((state) => state.form.durationDate);
   const combinedString = useSelector((store) => store.form.combinedString);
+  const data = useSelector((store) => store.form.curSelectInput);
   const dateOption = useSelector((state) => state.form.dateOption);
-  const textForFlexibleInput = useSelector(
-    (state) => state.form.textForFlexibleInput
+  const startDateToShow = useSelector((store) => store.form.startDateToShow);
+  const hoverInput = useSelector((store) => store.form.hoverInput);
+  const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
+  const selectedStartDate = useSelector(
+    (store) => store.form.selectedStartDate
   );
+  const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
+
+  const textForGuestInput = useSelector(
+    (store) => store.form.textForGuestInput
+  );
+  const textForFlexibleInput = useSelector(
+    (store) => store.form.textForFlexibleInput
+  );
+  const textForInputDuration = useSelector(
+    (store) => store.form.textForInputDuration
+  );
+
   const hitSearch = useSelector((state) => state.app.hitSearch);
   const destinationInputVal = useSelector(
     (state) => state.form.destinationInputVal
   );
   const startDate = useSelector((state) => state.form.selectedStartDate);
   const endDate = useSelector((state) => state.form.selectedEndDate);
+  const formattedStartDate = startDate
+    ? format(new Date(startDate), "dd MMM")
+    : "";
+  const formattedEndDate = endDate ? format(new Date(endDate), "dd MMM") : "";
+
+  useEffect(() => {
+    dispatch(setStartDateToShow(formattedStartDate));
+    dispatch(setEndDateToShow(formattedEndDate));
+  }, [formattedStartDate, dispatch, formattedEndDate, startDate, endDate]);
+
+  useEffect(() => {
+    let textForGuestInput = `${
+      adultCount + childCount > 0
+        ? `${adultCount + childCount} guest${
+            adultCount + childCount >= 2 ? "s" : ""
+          }`
+        : "Add guest"
+    }`;
+
+    dispatch(setTextForGuestInput(textForGuestInput));
+  }, [
+    adultCount,
+    dispatch,
+    childCount,
+    data,
+    infantCount,
+    petCount,
+    petPlural,
+    guestPlural,
+  ]);
 
   let dateInput =
     startDate || endDate
@@ -323,6 +374,7 @@ const MobileFormModal = () => {
           <button
             onClick={() => {
               dispatch(setShowMobileForm(false));
+              dispatch(setIsSearch(true));
               dispatch(setHitSearch(hitSearch + 1));
               handleSearchInput(
                 region,
@@ -330,6 +382,19 @@ const MobileFormModal = () => {
                 combinedString,
                 dispatch
               );
+              handleSearch({
+                region,
+                dispatch,
+                dateOption,
+                startDateToShow,
+                EndDateToShow,
+                selectedStartDate,
+                selectedEndDate,
+                destinationInputVal,
+                textForInputDuration,
+                textForFlexibleInput,
+                textForGuestInput,
+              });
             }}
             className="px-6 py-3 gap-x-2 rounded-lg bg-dark-pink flex text-white"
           >

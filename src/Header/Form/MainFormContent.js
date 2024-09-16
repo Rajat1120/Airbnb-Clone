@@ -203,6 +203,8 @@ const MainFormContent = () => {
     if (inputField === "checkIn" || inputField === "checkOut") {
       dispatch(setSelectedStartDate(null));
       dispatch(setSelectedEndDate(null));
+      dispatch(setActiveInput("checkIn"));
+      dispatch(setOpenName("checkIn"));
     }
 
     if (inputField === "guest") {
@@ -256,51 +258,6 @@ const MainFormContent = () => {
     extraGuest,
     guestPlural,
   ]);
-
-  function handleSearch() {
-    if (region !== "all") {
-      dispatch(setDisplaySearch(region));
-    } else {
-      dispatch(setDisplaySearch(destinationInputVal));
-    }
-
-    if (dateOption === "dates") {
-      if (startDateToShow && !EndDateToShow) {
-        let endDate = addDays(selectedStartDate, 1);
-        dispatch(setSelectedEndDate(endDate));
-
-        let inputText = `${startDateToShow} - ${format(endDate, "dd MMM")}`;
-        dispatch(setDisplaySearchWeek(inputText));
-      } else if (!startDateToShow && EndDateToShow) {
-        let startDate = subDays(selectedEndDate, 1);
-        dispatch(setSelectedStartDate(startDate));
-
-        let inputText = `${format(startDate, "dd MMM")} - ${EndDateToShow}`;
-        dispatch(setDisplaySearchWeek(inputText));
-      } else if (startDateToShow && EndDateToShow) {
-        let inputText = `${startDateToShow} - ${EndDateToShow}`;
-        dispatch(setDisplaySearchWeek(inputText));
-      } else {
-        dispatch(setDisplaySearchWeek(""));
-      }
-    } else if (dateOption === "month") {
-      if (textForInputDuration) {
-        dispatch(setDisplaySearchWeek(textForInputDuration));
-      } else {
-        dispatch(setDisplaySearchWeek(""));
-      }
-    } else if (dateOption === "flexible") {
-      if (textForFlexibleInput) {
-        dispatch(setDisplaySearchWeek(textForFlexibleInput));
-      } else {
-        dispatch(setDisplaySearchWeek(""));
-      }
-    }
-
-    if (textForGuestInput) {
-      dispatch(setDisplayGuestInput(textForGuestInput));
-    }
-  }
 
   const queryClient = useQueryClient();
   const isFetching = useIsFetching({ queryKey: ["allRows"] });
@@ -731,7 +688,19 @@ const MainFormContent = () => {
               onClick={() => {
                 data && dispatch(setActiveInput(""));
                 dispatch(setHitSearch(hitSearch + 1));
-                handleSearch();
+                handleSearch({
+                  region,
+                  dispatch,
+                  dateOption,
+                  startDateToShow,
+                  EndDateToShow,
+                  selectedStartDate,
+                  selectedEndDate,
+                  destinationInputVal,
+                  textForInputDuration,
+                  textForFlexibleInput,
+                  textForGuestInput,
+                });
                 handleSearchInput(
                   region,
                   destinationInputVal,
@@ -780,3 +749,60 @@ const MainFormContent = () => {
 };
 
 export default MainFormContent;
+
+export function handleSearch({
+  region,
+  dispatch,
+  dateOption,
+  startDateToShow,
+  EndDateToShow,
+  selectedStartDate,
+  selectedEndDate,
+  destinationInputVal,
+  textForInputDuration,
+  textForFlexibleInput,
+  textForGuestInput,
+}) {
+  if (region !== "all") {
+    dispatch(setDisplaySearch(region));
+  } else {
+    dispatch(setDisplaySearch(destinationInputVal));
+  }
+
+  if (dateOption === "dates") {
+    if (startDateToShow && !EndDateToShow) {
+      let endDate = addDays(selectedStartDate, 1);
+      dispatch(setSelectedEndDate(endDate));
+
+      let inputText = `${startDateToShow} - ${format(endDate, "dd MMM")}`;
+      dispatch(setDisplaySearchWeek(inputText));
+    } else if (!startDateToShow && EndDateToShow) {
+      let startDate = subDays(selectedEndDate, 1);
+      dispatch(setSelectedStartDate(startDate));
+
+      let inputText = `${format(startDate, "dd MMM")} - ${EndDateToShow}`;
+      dispatch(setDisplaySearchWeek(inputText));
+    } else if (startDateToShow && EndDateToShow) {
+      let inputText = `${startDateToShow} - ${EndDateToShow}`;
+      dispatch(setDisplaySearchWeek(inputText));
+    } else {
+      dispatch(setDisplaySearchWeek(""));
+    }
+  } else if (dateOption === "month") {
+    if (textForInputDuration) {
+      dispatch(setDisplaySearchWeek(textForInputDuration));
+    } else {
+      dispatch(setDisplaySearchWeek(""));
+    }
+  } else if (dateOption === "flexible") {
+    if (textForFlexibleInput) {
+      dispatch(setDisplaySearchWeek(textForFlexibleInput));
+    } else {
+      dispatch(setDisplaySearchWeek(""));
+    }
+  }
+
+  if (textForGuestInput) {
+    dispatch(setDisplayGuestInput(textForGuestInput));
+  }
+}

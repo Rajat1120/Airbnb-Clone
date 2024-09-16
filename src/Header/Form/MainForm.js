@@ -27,6 +27,7 @@ const MainForm = ({ headerRef }) => {
   const displayGuestInput = useSelector(
     (store) => store.form.displayGuestInput
   );
+
   const dispatch = useDispatch();
   const displaySearchWeek = useSelector(
     (store) => store.form.displaySearchWeek

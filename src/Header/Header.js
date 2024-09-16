@@ -89,7 +89,7 @@ function LogoSection() {
     <div className="w-8">
       <a href="/">
         <div className="1xz:flex hidden h-20 items-center">
-          <img className="mr-2 h-34 scale-[1.2]" src={icon} alt="Airbnb Logo" />
+          <img className="mr-2 h-36 " src={icon} alt="Airbnb Logo" />
           <h1 className="text-2xl 1lg:flex-center hidden leading-8 text-pink text-start font-semibold">
             airbnb
           </h1>
