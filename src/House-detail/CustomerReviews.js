@@ -30,7 +30,7 @@ const CustomerReviews = ({ showReviewSection }) => {
         }}
         className={`${
           showReviewSection ? "" : "pt-3"
-        } 1smm:grid flex overflow-x-auto  px-5 1smm:px-0 gap-x-5 1smm:w-full   1smm:grid-cols-2 `}
+        } 1smm:grid flex overflow-x-auto hide-scrollbar overflow-y-hidden  px-5 1smm:px-0 gap-x-5 1smm:w-full   1smm:grid-cols-2 `}
       >
         {Array.from({ length: totalCards }).map((_, index) => (
           <div

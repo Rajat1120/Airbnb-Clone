@@ -215,6 +215,21 @@
     }
   }
 
+  /* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Firefox */
+  .hide-scrollbar {
+    scrollbar-width: none;
+  }
+
+  /* Hide scrollbar for IE and Edge */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+  }
+
   .grid-cols-three-col {
     grid-template-columns: repeat(3, minmax(10rem, 20.87rem));
   }

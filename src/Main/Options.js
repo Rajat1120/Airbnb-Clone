@@ -227,7 +227,7 @@ const OptionsContainer = ({
   <div
     id="options"
     ref={optionsRef}
-    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 2xl:space-x-16  justify-start h-16 1xz:h-20 2xl:h-28  w-full overflow-x-auto scroll-smooth"
+    className="flex items-center pr-5 pl-6 1xs:pl-10 1xz:pl-2 1xs:pr-10 1xz:pr-0 overflow-y-hidden space-x-10 2xl:space-x-16 hide-scrollbar  justify-start h-16 1xz:h-20 2xl:h-28  w-full overflow-x-auto scroll-smooth"
     style={{ scrollBehavior: "smooth" }}
   >
     {options.map((item, i) => (

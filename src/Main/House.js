@@ -242,7 +242,7 @@ const House = () => {
                       )}
                       <div
                         ref={(el) => (houseImagesRefs.current[item.id] = el)}
-                        className="w-full flex items-center justify-start overflow-x-auto h-[75%] scroll-smooth"
+                        className="w-full flex items-center justify-start overflow-x-auto hide-scrollbar h-[75%] scroll-smooth"
                         style={{
                           scrollSnapType: "x mandatory",
                           scrollBehavior: "smooth",
@@ -392,7 +392,7 @@ const House = () => {
                       )}
                       <div
                         ref={(el) => (houseImagesRefs.current[item.id] = el)}
-                        className="w-full flex items-center justify-start overflow-x-auto h-[75%] scroll-smooth"
+                        className="w-full flex items-center justify-start overflow-x-auto hide-scrollbar h-[75%] scroll-smooth"
                         style={{
                           scrollSnapType: "x mandatory",
                           scrollBehavior: "smooth",

@@ -185,7 +185,7 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
         </span>
         <div
           ref={monthRef}
-          className={`w-full h-full overflow-x-auto ${
+          className={`w-full h-full hide-scrollbar overflow-x-auto ${
             !showHorPadding ? "px-5" : ""
           }`}
         >

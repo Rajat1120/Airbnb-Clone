@@ -30,7 +30,6 @@ module.exports = {
         "1md": "956px",
         "1smd": "936px",
         "1smm": "824px",
-
         "1sm": "751px",
         "1xz": "744px",
         "1xsm": "620px",
@@ -56,7 +55,7 @@ module.exports = {
       colors: {
         pink: "#ff385c",
         "dark-pink": "#e63253",
-        grey: "#717171;",
+        grey: "#717171",
         "grey-light": "#B3B3B3",
         "grey-light-50": "#cacaca",
         "grey-dim": "#DBDBDB",
@@ -95,7 +94,6 @@ module.exports = {
         },
         formBlur: {
           "0%": { opacity: 0 },
-
           "100%": { opacity: 1 },
         },
       },
@@ -122,6 +120,7 @@ module.exports = {
           },
         },
       });
+
       const newUtilities = {
         ".border-blur": {
           "border-left-width": "10px",
@@ -134,11 +133,7 @@ module.exports = {
           left: "0",
           right: "0",
         },
-        ".remove-scrollbar": {
-          "::-webkit-scrollbar": {
-            display: "none", // Hides the scrollbar in WebKit browsers
-          },
-        },
+
         ".flex-center": {
           display: "flex",
           justifyContent: "center",

@@ -72,7 +72,7 @@ const Review = () => {
       className={`
       ${
         showReviewSection ? "pt-12 " : " "
-      } scroll-mt-16 relative border-t 1xz:border-none w-full border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
+      }  relative border-t 1xz:border-none w-full border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
     >
       {/* Guest favourite */}
       {houseInfo.guest_favorite === "Guest favourite" && (
