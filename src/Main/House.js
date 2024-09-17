@@ -29,29 +29,33 @@ import { svg } from "../data/HeartIconSvg";
 import { Link } from "react-router-dom";
 
 const House = () => {
-  const isFavorite = useSelector((store) => store.app.isFavorite);
-  const itemId = useSelector((store) => store.app.itemId);
-  const imageWidth = 301.91;
+  const IMAGE_WIDTH = 301.91;
+  const ITEMS_PER_PAGE = 16;
   const houseImagesRefs = useRef({});
   const containerRef = useRef(null);
   const dispatch = useDispatch();
-  const selectedIcon = useSelector((store) => store.app.selectedIcon);
-  const selectedCountry = useSelector((store) => store.app.selectedCountry);
-  const hoveredItem = useSelector((store) => store.app.hoveredItem);
-  const startScroll = useSelector((store) => store.app.startScroll);
-  const hoveredItems = useSelector((store) => store.app.hoveredItems);
-
-  let userData = useSelector((store) => store.app.userData);
-  let favListings = useSelector((store) => store.app.userFavListing);
-
-  let showMore = useRef(true);
-  const city = useSelector((store) => store.app.city);
 
   const [localScrollPositions, setLocalScrollPositions] = useState({});
-  const ids = useSelector((store) => store.app.inputSearchIds);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const {
+    isFavorite,
+    itemId,
+    selectedIcon,
+    selectedCountry,
+    hoveredItem,
+    startScroll,
+    hoveredItems,
+    userData,
+    userFavListing: favListings,
+    city,
+    inputSearchIds: ids,
+  } = useSelector((store) => store.app);
 
+  let showMore = useRef(true);
+
+  // Handle favorite status updates
   useEffect(() => {
-    const handleUpdate = async () => {
+    const handleFavoriteUpdate = async () => {
       if (itemId && userData) {
         if (isFavorite) {
           await saveFavorite(itemId);
@@ -61,34 +65,41 @@ const House = () => {
       }
     };
 
-    handleUpdate();
+    handleFavoriteUpdate();
   }, [favListings, isFavorite, userData, itemId]);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useInfiniteQuery({
-      queryKey: ["iconFilter", ids, selectedIcon, selectedCountry, city],
-      queryFn: ({ pageParam = 0 }) =>
-        fetchRowsWithOptions(
-          ids,
-          selectedIcon,
-          selectedCountry,
-          city,
-          pageParam * 16,
-          (pageParam + 1) * 16 - 1
-        ),
-      getNextPageParam: (lastPage, pages) => {
-        if (lastPage && lastPage.length < 16) return undefined;
-        return pages.length;
-      },
-      enabled: !!selectedIcon,
-    });
+  // Fetch house data
+  const {
+    data: houseListingData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["iconFilter", ids, selectedIcon, selectedCountry, city],
+    queryFn: ({ pageParam = 0 }) =>
+      fetchRowsWithOptions(
+        ids,
+        selectedIcon,
+        selectedCountry,
+        city,
+        pageParam * ITEMS_PER_PAGE,
+        (pageParam + 1) * ITEMS_PER_PAGE - 1
+      ),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage && lastPage.length < ITEMS_PER_PAGE) return undefined;
+      return pages.length;
+    },
+    enabled: !!selectedIcon,
+  });
 
+  // Handle image scroll
   const handleScrollBtn = (e, direction, itemId) => {
     e.preventDefault();
     e.stopPropagation();
     const container = houseImagesRefs.current[itemId];
     if (container) {
-      const scrollAmount = direction === "right" ? imageWidth : -imageWidth;
+      const scrollAmount = direction === "right" ? IMAGE_WIDTH : -IMAGE_WIDTH;
       container.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
@@ -109,9 +120,9 @@ const House = () => {
 
   // Initialize scroll positions for all items
   useEffect(() => {
-    if (data) {
+    if (houseListingData) {
       const initialScrollPositions = {};
-      data.pages.forEach((page) => {
+      houseListingData.pages.forEach((page) => {
         page.forEach((item) => {
           initialScrollPositions[item.id] = {
             isAtStart: true,
@@ -121,8 +132,9 @@ const House = () => {
       });
       setLocalScrollPositions(initialScrollPositions);
     }
-  }, [data]);
+  }, [houseListingData]);
 
+  // Handle window scroll
   const handleWindowScroll = useCallback(() => {
     const currentScrollPosition = window.scrollY;
 
@@ -149,6 +161,7 @@ const House = () => {
     }
   }, [dispatch, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
+  // Set up event listeners and initial states
   useEffect(() => {
     window.addEventListener("scroll", handleWindowScroll);
 
@@ -167,8 +180,6 @@ const House = () => {
   useEffect(() => {
     showMore.current = true;
   }, [selectedIcon]);
-
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 743px)");
@@ -218,7 +229,7 @@ const House = () => {
                 </div>
               </div>
             ))
-          : data?.pages.flatMap((page) =>
+          : houseListingData?.pages.flatMap((page) =>
               page.map((item, index) =>
                 isSmallScreen ? (
                   <Link key={item.id} to={`/house/${item.id}`}>
@@ -518,7 +529,7 @@ const House = () => {
               )
             )}
       </div>
-      {!!data && showMore.current && hasNextPage && (
+      {!!houseListingData && showMore.current && hasNextPage && (
         <div className="w-full flex flex-col mt-10 gap-y-2 justify-center items-center h-20">
           <span className="text-lg font-medium">
             {`Continue exploring ${selectedIcon} 
@@ -538,7 +549,14 @@ const House = () => {
       )}
 
       {isFetchingNextPage && (
-        <div className="w-full text-center mt-4 loader h-[24.5rem] flex-center"></div>
+        <div className="grid gap-x-6 mt-5 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:my-grid-cols-four-col 2xl:my-grid-cols-six-col justify-center w-full items-start 1xs:grid-cols-two-col  1lg:gap-y-4 xl:gap-y-8 1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
+          {Array.from({ length: 12 }).map((_, index) => (
+            <div
+              key={index}
+              className="skeleton rounded-2xl aspect-square skeleton-item"
+            ></div>
+          ))}
+        </div>
       )}
     </div>
   );
