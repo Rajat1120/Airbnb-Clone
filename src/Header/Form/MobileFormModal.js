@@ -36,23 +36,24 @@ import { handleSearch } from "./MainFormContent";
 const MobileFormModal = () => {
   const dispatch = useDispatch();
   const showMobileForm = useSelector((state) => state.app.showMobileForm);
-  const openWhereCard = useSelector((state) => state.form.openWhereCard);
-  const openWhenCard = useSelector((state) => state.form.openWhenCard);
-  const openWhoCard = useSelector((state) => state.form.openWhoCard);
-  const adultCount = useSelector((state) => state.form.adultCount);
-  const childCount = useSelector((state) => state.form.childCount);
-  const guestPlural = useSelector((state) => state.form.guestPlural);
-  const petCount = useSelector((state) => state.form.petsCount);
-  const petPlural = useSelector((state) => state.form.petPlural);
-  const infantCount = useSelector((state) => state.form.infantCount);
-  const region = useSelector((state) => state.form.region);
-  const durationDate = useSelector((state) => state.form.durationDate);
-  const combinedString = useSelector((store) => store.form.combinedString);
-  const data = useSelector((store) => store.form.curSelectInput);
-  const dateOption = useSelector((state) => state.form.dateOption);
-  const startDateToShow = useSelector((store) => store.form.startDateToShow);
-  const hoverInput = useSelector((store) => store.form.hoverInput);
-  const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
+  const {
+    openWhereCard,
+    openWhenCard,
+    openWhoCard,
+    adultCount,
+    childCount,
+    guestPlural,
+    petsCount: petCount,
+    petPlural,
+    infantCount,
+    region,
+    durationDate,
+    combinedString,
+    curSelectInput: data,
+    dateOption,
+    startDateToShow,
+    EndDateToShow,
+  } = useSelector((state) => state.form);
   const selectedStartDate = useSelector(
     (store) => store.form.selectedStartDate
   );

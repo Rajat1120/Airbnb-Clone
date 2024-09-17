@@ -44,42 +44,33 @@ import { handleSearchInput } from "./HandleSearch";
 const MainFormContent = () => {
   const dispatch = useDispatch();
 
-  const data = useSelector((store) => store.form.curSelectInput);
-  const guestPlural = useSelector((store) => store.form.guestPlural);
-  const petPlural = useSelector((store) => store.form.petPlural);
-  const extraGuest = useSelector((store) => store.form.extraGuest);
-  const hitSearch = useSelector((store) => store.app.hitSearch);
+  const {
+    curSelectInput: data,
+    guestPlural,
+    petPlural,
+    extraGuest,
+    destinationInputVal,
+    startDateToShow,
+    hoverInput,
+    EndDateToShow,
+    selectedStartDate,
+    selectedEndDate,
+    textForGuestInput,
+    textForFlexibleInput,
+    region,
+    adultCount,
+    textForInputDuration,
+    childCount,
+    infantCount,
+    petsCount: petCount,
+    dateOption,
+    isCalendarModalOpen,
+    combinedString,
+  } = useSelector((store) => store.form);
 
-  const destinationInputVal = useSelector(
-    (store) => store.form.destinationInputVal
+  const { hitSearch, minimize, startScroll } = useSelector(
+    (store) => store.app
   );
-  const startDateToShow = useSelector((store) => store.form.startDateToShow);
-  const hoverInput = useSelector((store) => store.form.hoverInput);
-  const EndDateToShow = useSelector((store) => store.form.EndDateToShow);
-  const selectedStartDate = useSelector(
-    (store) => store.form.selectedStartDate
-  );
-  const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
-
-  const textForGuestInput = useSelector(
-    (store) => store.form.textForGuestInput
-  );
-  const textForFlexibleInput = useSelector(
-    (store) => store.form.textForFlexibleInput
-  );
-
-  const minimize = useSelector((store) => store.app.minimize);
-  const startScroll = useSelector((store) => store.app.startScroll);
-  const region = useSelector((store) => store.form.region);
-  const adultCount = useSelector((store) => store.form.adultCount);
-  const textForInputDuration = useSelector(
-    (store) => store.form.textForInputDuration
-  );
-  const childCount = useSelector((store) => store.form.childCount);
-  const infantCount = useSelector((store) => store.form.infantCount);
-  const petCount = useSelector((store) => store.form.petsCount);
-
-  const dateOption = useSelector((state) => state.form.dateOption);
 
   useEffect(() => {
     if (childCount + adultCount === 1 && petCount + infantCount === 0) {
@@ -131,20 +122,23 @@ const MainFormContent = () => {
     }
   }, [region, data]);
 
-  const startDate = useSelector((store) => store.form.selectedStartDate);
-  const endDate = useSelector((store) => store.form.selectedEndDate);
-
-  const formattedStartDate = startDate
-    ? format(new Date(startDate), "dd MMM")
+  const formattedStartDate = selectedStartDate
+    ? format(new Date(selectedStartDate), "dd MMM")
     : "";
-  const formattedEndDate = endDate ? format(new Date(endDate), "dd MMM") : "";
+  const formattedEndDate = selectedEndDate
+    ? format(new Date(selectedEndDate), "dd MMM")
+    : "";
 
   useEffect(() => {
     dispatch(setStartDateToShow(formattedStartDate));
     dispatch(setEndDateToShow(formattedEndDate));
-  }, [formattedStartDate, dispatch, formattedEndDate, startDate, endDate]);
-
-  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+  }, [
+    formattedStartDate,
+    dispatch,
+    formattedEndDate,
+    selectedStartDate,
+    selectedEndDate,
+  ]);
 
   // to minimize the form input fields, on clicking outside of the form
   useEffect(
@@ -152,7 +146,7 @@ const MainFormContent = () => {
       function handleClick(e) {
         // if user click outside the form and open modal, minimize the active input field
 
-        if (isModalOpen) {
+        if (isCalendarModalOpen) {
           return;
         } else if (
           !modalRef.current?.contains(e.target) &&
@@ -170,7 +164,7 @@ const MainFormContent = () => {
 
         // if user has selected the interval (both start and end date, do not reset the current month)
 
-        if (startDate && endDate) {
+        if (selectedStartDate && selectedEndDate) {
           return;
         } else if (
           checkInRef?.current &&
@@ -189,7 +183,7 @@ const MainFormContent = () => {
 
       return () => document.removeEventListener("click", handleClick, true);
     },
-    [dispatch, startDate, isModalOpen, endDate]
+    [dispatch, selectedStartDate, isCalendarModalOpen, selectedEndDate]
   );
 
   function handleCrossClick(e, inputField) {
@@ -225,7 +219,6 @@ const MainFormContent = () => {
     dispatch(setMinimizeFormBtn(""));
     if (data === input) {
       dispatch(setActiveInput(""));
-      // dispatch(setOpenName(""));
     } else {
       dispatch(setActiveInput(input));
     }
@@ -264,11 +257,9 @@ const MainFormContent = () => {
 
   const [cachedData, setCachedData] = useState(null);
 
-  const combinedString = useSelector((store) => store.form.combinedString);
-
   useEffect(() => {
     const data = queryClient.getQueryData(["allRows"]);
-    setCachedData(data); // Should log data if it has been cached
+    setCachedData(data);
   }, [queryClient, isFetching]);
 
   useEffect(() => {
