@@ -14,30 +14,28 @@ import { useLocation } from "react-router";
 
 const MainForm = ({ headerRef }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const data = useSelector((store) => store.form.curSelectInput);
-  const minimizeFormBtn = useSelector((store) => store.form.minimizeFormBtn);
-  const dateOption = useSelector((store) => store.form.dateOption);
+
+  const {
+    curSelectInput,
+    minimizeFormBtn,
+    dateOption,
+    displaySearch,
+    displayGuestInput,
+    displaySearchWeek,
+    openName,
+    isCalendarModalOpen,
+  } = useSelector((store) => store.form);
+
   const location = useLocation();
+
   let onHouseDetailPage = location.pathname.includes("/house/");
 
   let sliceName = onHouseDetailPage ? "houseSlice" : "app";
   const startScroll = useSelector((store) => store[sliceName]?.startScroll);
 
-  const displaySearch = useSelector((store) => store.form.displaySearch);
-  const displayGuestInput = useSelector(
-    (store) => store.form.displayGuestInput
-  );
-
   const dispatch = useDispatch();
-  const displaySearchWeek = useSelector(
-    (store) => store.form.displaySearchWeek
-  );
-  const curSelectInput = useSelector((store) => store.form.curSelectInput);
+
   const minimize = useSelector((store) => store.app.minimize);
-  const openName = useSelector((store) => store.form.openName);
-  const isCalendarModalOpen = useSelector(
-    (store) => store.form.isCalendarModalOpen
-  );
 
   useEffect(() => {
     if (location.pathname === "/house") {
@@ -65,12 +63,6 @@ const MainForm = ({ headerRef }) => {
     },
     [startScroll, dispatch]
   );
-
-  useEffect(() => {
-    if (!openName) {
-      // dispatch(dispatch(setMinimize(false)));
-    }
-  }, [openName, dispatch]);
 
   useEffect(() => {
     if (minimizeFormBtn === "anywhere") {
@@ -173,7 +165,7 @@ const MainForm = ({ headerRef }) => {
     "translate-y-[-5.5rem] 1md:translate-x-0 translate-x-6 border-[3px]    scale-[.5] self-center inline-block h-[5.7rem] shadow-[0_3px_12px_0px_rgba(0,0,0,0.1)]  ";
 
   let onScrollBack = `1md:translate-y-[0.2rem] 1sm:translate-y-[3rem] border-[1.5px] scale-100 self-center 1xz:w-auto 1smd:left-auto 1smd:right-auto 1xz:left-10 1xz:right-10  1smd:w-[53rem] h-[4rem]
-    ${data ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
+    ${curSelectInput ? "" : "shadow-[0_3px_8px_0px_rgba(0,0,0,0.1)]"}
    `;
 
   let animateForm = minimize ? onScrollBack : onScrollProperty;
@@ -185,7 +177,7 @@ const MainForm = ({ headerRef }) => {
   } ease-in-out border-gray-250 flex ${
     !startScroll ? `${animateForm} ` : onScrollBack
   }  mb-5   rounded-full ${
-    !startScroll ? "" : data ? styleForBefore : ""
+    !startScroll ? "" : curSelectInput ? styleForBefore : ""
   }  absolute ${!startScroll ? "" : ""} flex-center ${
     minimize ? styleForBefore : ""
   } `;
