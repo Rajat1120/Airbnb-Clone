@@ -289,7 +289,7 @@
   }
 
   .skeleton-item {
-    max-height: 30rem;
+    max-height: 100%;
     width: 100%;
   }
 }

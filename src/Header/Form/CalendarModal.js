@@ -6,14 +6,15 @@ import { useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedEndDate, setSelectedStartDate } from "./mainFormSlice";
 
+const TRANSITION_DURATION = 200;
 const CalendarModal = ({ isOpen, onClose, children }) => {
-  const [visible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
   const dispatch = useDispatch();
-  const ref = useRef();
+  const modalRef = useRef(null);
 
-  const startDate = useSelector((store) => store.form.selectedStartDate);
-  const endDate = useSelector((store) => store.form.selectedEndDate);
+  const { selectedStartDate: startDate, selectedEndDate: endDate } =
+    useSelector((store) => store.form);
 
   function clearDates() {
     dispatch(setSelectedEndDate(null));
@@ -29,13 +30,13 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
     if (isOpen) {
       setShouldRender(true);
       setTimeout(() => {
-        setVisible(true);
+        setIsVisible(true);
       }, 50); // Small delay to ensure transition is noticeable
     } else {
-      setVisible(false);
+      setIsVisible(false);
       setTimeout(() => {
         setShouldRender(false);
-      }, 200);
+      }, TRANSITION_DURATION);
     }
   }, [isOpen]);
 
@@ -53,7 +54,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
 
   useEffect(() => {
     const handleClick = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
         onClose();
       }
     };
@@ -71,9 +72,9 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
     <div className="fixed inset-0 bg-black  bg-opacity-50 flex items-end 1xz:items-center justify-center z-50">
       <div
         id="calendar"
-        ref={ref}
+        ref={modalRef}
         className={`bg-white ${
-          visible ? "translate-y-0  opacity-100" : "translate-y-16 opacity-0"
+          isVisible ? "translate-y-0  opacity-100" : "translate-y-16 opacity-0"
         } transition-all fixed  pt-6 ${
           onCheckOutPage ? "rounded-xl" : " rounded-t-3xl 1xz:rounded-3xl"
         } duration-[0.4s]  w-full  1xz:w-auto 1md:w-auto flex flex-col ease-in-out items-center justify-center  shadow-md z-50`}
