@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMonths, format } from "date-fns";
 import {
@@ -11,113 +11,122 @@ import monthSelected from "../../data/Icons svg/month-checked.svg";
 import arrow_left from "../../data/Icons svg/arrowLeftDark.svg";
 import arrow_right from "../../data/Icons svg/arrowRightDark.svg";
 
-const FlexibleStayOptions = ({ showHorPadding = true }) => {
+const SCROLL_DISTANCE = 760;
+const MONTHS_TO_DISPLAY = 12;
+const SMALL_SCREEN_BREAKPOINT = "(max-width: 743px)";
+
+function getNext12Months() {
+  const months = [];
+  const currentDate = new Date();
+
+  for (let i = 0; i < MONTHS_TO_DISPLAY; i++) {
+    const nextMonthDate = addMonths(currentDate, i);
+    const formattedMonth = format(nextMonthDate, "MMMM");
+    const formattedYear = format(nextMonthDate, "yyyy");
+    months.push({ month: formattedMonth, year: formattedYear });
+  }
+
+  return months;
+}
+
+const FlexibleStayOptions = ({ showHovrPadding = true }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
-  const curSelectedMonths = useSelector((store) => store.form.months);
-  const curSelectedInput = useSelector((store) => store.form.curSelectInput);
-  const stayDuration = useSelector((store) => store.form.stayDuration);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  const {
+    months: curSelectedMonths,
+    curSelectInput: curSelectedInput,
+    stayDuration,
+  } = useSelector((store) => store.form);
+
   const dispatch = useDispatch();
   let monthRef = useRef();
   let rightScrollBtnRef = useRef();
   let leftScrollBtnRef = useRef();
 
-  function getNext12Months() {
-    const months = [];
-    const currentDate = new Date();
-
-    for (let i = 0; i < 12; i++) {
-      const nextMonthDate = addMonths(currentDate, i);
-      const formattedMonth = format(nextMonthDate, "MMMM");
-      const formattedYear = format(nextMonthDate, "yyyy");
-      months.push({ month: formattedMonth, year: formattedYear });
-    }
-
-    return months;
-  }
-
-  let result = getNext12Months();
+  const months = useMemo(() => getNext12Months(), []);
 
   let selectedMonthsName = curSelectedMonths
-    .map((index) => result[index])
+    .map((index) => months[index])
     .filter(Boolean);
 
   useEffect(() => {
     const month = monthRef.current;
+    const leftScrollButton = leftScrollBtnRef.current;
+    const rightScrollButton = rightScrollBtnRef.current;
+
     const handleScroll = () => {
       if (month) {
         setScrollPosition(month.scrollLeft);
       }
     };
 
+    const handleScrollLeftBtn = () => {
+      const newPosition = scrollPosition - SCROLL_DISTANCE;
+      month.scrollTo({
+        left: newPosition,
+        behavior: "smooth",
+      });
+      setScrollPosition(newPosition);
+    };
+
+    const handleScrollRightBtn = () => {
+      const newPosition = scrollPosition + SCROLL_DISTANCE;
+      month.scrollTo({
+        left: newPosition,
+        behavior: "smooth",
+      });
+      setScrollPosition(newPosition);
+    };
+
+    // Attach event listeners
     if (month) {
       month.addEventListener("scroll", handleScroll);
     }
+    if (leftScrollButton) {
+      leftScrollButton.addEventListener("click", handleScrollLeftBtn);
+    }
+    if (rightScrollButton) {
+      rightScrollButton.addEventListener("click", handleScrollRightBtn);
+    }
 
+    // Clean up event listeners on unmount
     return () => {
       if (month) {
         month.removeEventListener("scroll", handleScroll);
       }
-    };
-  }, []);
-
-  useEffect(() => {
-    let leftScrollButtonRef = leftScrollBtnRef.current;
-    function handleScrollLeftBtn() {
-      const newPosition = scrollPosition - 760;
-      monthRef.current.scrollTo({
-        left: newPosition,
-        behavior: "smooth",
-      });
-      setScrollPosition(newPosition);
-    }
-
-    if (leftScrollButtonRef) {
-      leftScrollButtonRef.addEventListener("click", handleScrollLeftBtn);
-    }
-
-    return () => {
-      if (leftScrollButtonRef) {
-        leftScrollButtonRef.removeEventListener("click", handleScrollLeftBtn);
+      if (leftScrollButton) {
+        leftScrollButton.removeEventListener("click", handleScrollLeftBtn);
+      }
+      if (rightScrollButton) {
+        rightScrollButton.removeEventListener("click", handleScrollRightBtn);
       }
     };
   }, [scrollPosition]);
 
   useEffect(() => {
-    let rightScrollBtn = rightScrollBtnRef.current;
-    function handleScrollRightBtn() {
-      const newPosition = scrollPosition + 760;
-      monthRef.current.scrollTo({
-        left: newPosition,
-        behavior: "smooth",
-      });
-      setScrollPosition(newPosition);
-    }
-
-    if (rightScrollBtn) {
-      rightScrollBtn.addEventListener("click", handleScrollRightBtn);
-    }
-
-    return () => {
-      if (rightScrollBtn) {
-        rightScrollBtn.removeEventListener("click", handleScrollRightBtn);
-      }
+    // Function to format the stay duration
+    const formatStayDuration = (duration) => {
+      return duration
+        ? duration.charAt(0).toUpperCase() + duration.slice(1)
+        : "";
     };
-  }, [scrollPosition]);
 
-  useEffect(() => {
-    let inputText = `${
+    // Function to get the formatted months
+    const getFormattedMonths = (months) => {
+      if (!months || months.length === 0) return "";
+      return months.length === 1
+        ? months[0]?.month
+        : months.map((item) => item.month?.substring(0, 3)).join(", ");
+    };
+
+    // Construct the input text
+    const inputText =
       curSelectedMonths?.length > 0
-        ? `${
-            stayDuration?.charAt(0).toUpperCase() + stayDuration?.slice(1)
-          } in ${
-            selectedMonthsName?.length === 1
-              ? selectedMonthsName[0]?.month
-              : selectedMonthsName
-                  .map((item) => item.month?.substring(0, 3))
-                  .join(", ")
-          }`
-        : ` Any ${stayDuration}`
-    }`;
+        ? `${formatStayDuration(stayDuration)} in ${getFormattedMonths(
+            selectedMonthsName
+          )}`
+        : `Any ${stayDuration}`;
 
     dispatch(setTextForFlexibleInput(inputText));
   }, [
@@ -128,19 +137,29 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
     stayDuration,
   ]);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(SMALL_SCREEN_BREAKPOINT);
+    setIsSmallScreen(mediaQuery.matches);
+
+    const handleResize = (event) => setIsSmallScreen(event.matches);
+    mediaQuery.addEventListener("change", handleResize);
+
+    return () => mediaQuery.removeEventListener("change", handleResize);
+  }, []);
+
   let btnLeftClassName = `absolute ${
-    scrollPosition < 1 ? "hidden" : "flex-center"
+    scrollPosition < 1 || isSmallScreen ? "hidden" : "flex-center"
   } top-[65%] left-5 h-8 w-8  bg-white z-30 rounded-[50%] hover:scale-110 hidden hover:drop-shadow-md border-[1px] border-grey-dim-light `;
 
   let btnRightClassName = `absolute  ${
-    scrollPosition > 758 ? "hidden" : "flex-center"
+    scrollPosition > 758 || isSmallScreen ? "hidden" : "flex-center"
   } top-[65%] right-5 h-8 w-8  bg-white z-30 rounded-[50%] hover:scale-110 hover:drop-shadow-md border-[1px] border-grey-dim-light `;
 
   return (
     <div className="flex relative flex-col w-full  justify-center items-center">
       <div
         className={`w-full mt-4  flex-col flex ${
-          !showHorPadding ? "border-b border-grey-light-50" : ""
+          !showHovrPadding ? "border-b border-grey-light-50" : ""
         }  items-center`}
       >
         <span className="text-lg font-medium">
@@ -186,11 +205,11 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
         <div
           ref={monthRef}
           className={`w-full h-full hide-scrollbar overflow-x-auto ${
-            !showHorPadding ? "px-5" : ""
+            !showHovrPadding ? "px-5" : ""
           }`}
         >
           <div className="inline-flex h-full items-center gap-x-2 pb-4">
-            {result.map((item, index) => (
+            {months.map((item, index) => (
               <div
                 onClick={() => dispatch(setMonths(index))}
                 key={index}
@@ -199,9 +218,9 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
                     ? " border-black bg-shadow-gray-light border-[2px]"
                     : "border-grey-dim border-[1px] "
                 } rounded-2xl flex-center flex-col ${
-                  index === 0 && showHorPadding ? "ml-10" : ""
+                  index === 0 && showHovrPadding ? "1xz:ml-10 ml-2" : ""
                 } ${
-                  index === 11 && showHorPadding ? "mr-10" : ""
+                  index === 11 && showHovrPadding ? "1xz:mr-10 mr-2" : ""
                 }  w-[7.5rem]   hover:border-black h-[8.5rem]`}
               >
                 <div className="">
@@ -222,21 +241,21 @@ const FlexibleStayOptions = ({ showHorPadding = true }) => {
               </div>
             ))}
           </div>
-          {showHorPadding && (
+          {showHovrPadding && (
             <button ref={leftScrollBtnRef} className={btnLeftClassName}>
               <img src={arrow_left} className="h-3 w-3 " alt="" />
             </button>
           )}
-          {scrollPosition > 0 && showHorPadding && (
-            <div className="w-12 h-40 absolute   top-[50%] left-0 bg-white border-r-[0.8rem] border-white "></div>
+          {scrollPosition > 0 && showHovrPadding && !isSmallScreen && (
+            <div className="w-12 h-40 absolute  hidden 1xz:block top-[50%] left-0 bg-white border-r-[0.8rem] border-white "></div>
           )}
-          {showHorPadding && (
+          {showHovrPadding && (
             <button ref={rightScrollBtnRef} className={btnRightClassName}>
               <img src={arrow_right} className="h-3 w-3 " alt="" />
             </button>
           )}
-          {scrollPosition < 758 && showHorPadding && (
-            <div className="w-12 h-40 absolute   top-[50%] right-0 bg-white border-r-[0.8rem] border-white "></div>
+          {scrollPosition < 758 && showHovrPadding && !isSmallScreen && (
+            <div className="w-12 h-40 absolute hidden 1xz:block  top-[50%] right-0 bg-white border-r-[0.8rem] border-white "></div>
           )}
         </div>
       </div>
