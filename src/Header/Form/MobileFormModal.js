@@ -35,7 +35,7 @@ import { handleSearch } from "./MainFormContent";
 
 const MobileFormModal = () => {
   const dispatch = useDispatch();
-  const showMobileForm = useSelector((state) => state.app.showMobileForm);
+
   const {
     openWhereCard,
     openWhenCard,
@@ -53,37 +53,33 @@ const MobileFormModal = () => {
     dateOption,
     startDateToShow,
     EndDateToShow,
+    selectedStartDate,
+    selectedEndDate,
+    textForGuestInput,
+    textForFlexibleInput,
+    textForInputDuration,
+    destinationInputVal,
   } = useSelector((state) => state.form);
-  const selectedStartDate = useSelector(
-    (store) => store.form.selectedStartDate
-  );
-  const selectedEndDate = useSelector((store) => store.form.selectedEndDate);
 
-  const textForGuestInput = useSelector(
-    (store) => store.form.textForGuestInput
-  );
-  const textForFlexibleInput = useSelector(
-    (store) => store.form.textForFlexibleInput
-  );
-  const textForInputDuration = useSelector(
-    (store) => store.form.textForInputDuration
-  );
+  const { hitSearch, showMobileForm } = useSelector((state) => state.app);
 
-  const hitSearch = useSelector((state) => state.app.hitSearch);
-  const destinationInputVal = useSelector(
-    (state) => state.form.destinationInputVal
-  );
-  const startDate = useSelector((state) => state.form.selectedStartDate);
-  const endDate = useSelector((state) => state.form.selectedEndDate);
-  const formattedStartDate = startDate
-    ? format(new Date(startDate), "dd MMM")
+  const formattedStartDate = selectedStartDate
+    ? format(new Date(selectedStartDate), "dd MMM")
     : "";
-  const formattedEndDate = endDate ? format(new Date(endDate), "dd MMM") : "";
+  const formattedEndDate = selectedEndDate
+    ? format(new Date(selectedEndDate), "dd MMM")
+    : "";
 
   useEffect(() => {
     dispatch(setStartDateToShow(formattedStartDate));
     dispatch(setEndDateToShow(formattedEndDate));
-  }, [formattedStartDate, dispatch, formattedEndDate, startDate, endDate]);
+  }, [
+    formattedStartDate,
+    dispatch,
+    formattedEndDate,
+    selectedStartDate,
+    selectedEndDate,
+  ]);
 
   useEffect(() => {
     let textForGuestInput = `${
@@ -107,10 +103,10 @@ const MobileFormModal = () => {
   ]);
 
   let dateInput =
-    startDate || endDate
-      ? `${startDate ? format(startDate, "d MMM") : ""} ${
-          startDate && endDate ? "-" : ""
-        } ${endDate ? format(endDate, "d MMM") : ""}`
+    selectedStartDate || selectedEndDate
+      ? `${selectedStartDate ? format(selectedStartDate, "d MMM") : ""} ${
+          selectedStartDate && selectedEndDate ? "-" : ""
+        } ${selectedEndDate ? format(selectedEndDate, "d MMM") : ""}`
       : "Add dates";
 
   function whenToShowInput(dateOption) {
@@ -124,7 +120,7 @@ const MobileFormModal = () => {
         return durationDate;
 
       case "dates":
-        return startDate || endDate ? dateInput : "Add dates";
+        return selectedStartDate || selectedEndDate ? dateInput : "Add dates";
 
       default:
         return "Add dates";
