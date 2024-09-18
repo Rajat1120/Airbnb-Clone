@@ -64,13 +64,15 @@ const MobileForm = () => {
                 <div className="flex items-center space-x-2 ">
                   <div className=" flex  ">
                     <span className="text-xs text-grey font-medium">
-                      {displaySearchWeek}
+                      {displaySearchWeek ? displaySearchWeek : "Any week"}
                     </span>
                   </div>
                   <div className="flex items-center justify-center h-full">
                     <div className="h-[3px] w-[3px] bg-grey rounded-full"></div>
                   </div>
-                  <span className="text-xs text-grey">{displayGuestInput}</span>
+                  <span className="text-xs text-grey">
+                    {displayGuestInput ? displayGuestInput : "Add guests"}
+                  </span>
                 </div>
               </div>
             </div>
