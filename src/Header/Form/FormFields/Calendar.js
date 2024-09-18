@@ -28,7 +28,7 @@ import { useLocation } from "react-router";
 const Calendar = () => {
   const selectedInput = useSelector((store) => store.form.curSelectInput);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [isFirstRender, setIsFirstRender] = useState(true);
+
   const [monthWidth, setmonthWidth] = useState(0);
   const scrollContainerRef = useRef(null);
   const minimize = useSelector((store) => store.app.minimize);
@@ -89,13 +89,6 @@ const Calendar = () => {
   );
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    // Disable the initial render animation
-    if (isFirstRender) {
-      setIsFirstRender(false);
-    }
-  }, [isFirstRender]);
 
   const renderHeader = (currentMonth) => {
     const dateFormat = "MMMM yyyy";
