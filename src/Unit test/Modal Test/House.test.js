@@ -10,11 +10,11 @@ beforeAll(() => {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
     value: jest.fn().mockImplementation((query) => ({
-      matches: false, // or true based on your test requirement
+      matches: false,
       media: query,
       onchange: null,
-      addListener: jest.fn(), // Deprecated but might be needed for older browsers
-      removeListener: jest.fn(), // Deprecated but might be needed for older browsers
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
       dispatchEvent: jest.fn(),
