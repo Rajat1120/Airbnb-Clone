@@ -59,6 +59,7 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.4.6",
+    "redux-mock-store": "^1.5.4",
     "tailwindcss": "^3.4.1"
   }
 }
