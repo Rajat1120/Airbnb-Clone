@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import star from "../data/Icons svg/star.svg";
+import SkeletonLoaderList from "./HouseSkeleton";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
 import { motion } from "framer-motion";
@@ -27,6 +28,7 @@ import { setActiveInput } from "../Header/Form/mainFormSlice";
 import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
 import { svg } from "../data/HeartIconSvg";
 import { Link } from "react-router-dom";
+import HouseCard from "./RoomsDesktop";
 
 const House = () => {
   const IMAGE_WIDTH = 301.91;
@@ -98,6 +100,7 @@ const House = () => {
     e.preventDefault();
     e.stopPropagation();
     const container = houseImagesRefs.current[itemId];
+
     if (container) {
       const scrollAmount = direction === "right" ? IMAGE_WIDTH : -IMAGE_WIDTH;
       container.scrollBy({ left: scrollAmount, behavior: "smooth" });
@@ -209,328 +212,170 @@ const House = () => {
       ref={containerRef}
     >
       <div className="grid    gap-x-6 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:my-grid-cols-four-col 2xl:my-grid-cols-six-col justify-center w-full items-start 1xs:grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
-        {status === "pending"
-          ? Array.from({ length: 50 }).map((_, i) => (
-              <div
-                data-testid="skeleton-loader"
-                key={i}
-                className="1xs:w-full w-[calc(100vw-40px)]"
-              >
-                <div className="relative  w-full aspect-square mb-4">
-                  <div className="w-full h-full animate-shimmer bg-gray-200 rounded-[20px]"></div>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div className="w-[80%]">
-                    <div className="w-[90%] h-5 animate-shimmer bg-gray-200 mb-2"></div>
-                    <div className="w-[70%] h-4 animate-shimmer bg-gray-200 mb-1"></div>
-                    <div className="w-[60%] h-4 animate-shimmer bg-gray-200 mb-1"></div>
-                    <div className="w-[40%] h-4 animate-shimmer bg-gray-200"></div>
-                  </div>
-                  <div className="w-[20%] flex justify-end">
-                    <div className="w-8 h-6 animate-shimmer bg-gray-200 rounded-sm"></div>
-                  </div>
-                </div>
-              </div>
-            ))
-          : houseListingData?.pages.flatMap((page) =>
-              page.map((item, index) =>
-                isSmallScreen ? (
-                  <Link key={item.id} to={`/house/${item.id}`}>
-                    <motion.div
-                      className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
-                      onMouseEnter={() => {
-                        dispatch(setHoveredItem(item.id));
-                        dispatch(setHoveredItems([...hoveredItems, item.id]));
-                      }}
-                      onMouseLeave={() => dispatch(setHoveredItem(null))}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5, delay: index * 0.05 }}
-                    >
-                      {item.guest_favorite === "Guest favourite" && (
-                        <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
-                          <span className="text-sm font-medium">
-                            Guest favourite
-                          </span>
-                        </div>
-                      )}
-                      <div
-                        ref={(el) => (houseImagesRefs.current[item.id] = el)}
-                        className="w-full flex items-center justify-start overflow-x-auto hide-scrollbar h-[75%] scroll-smooth"
-                        style={{
-                          scrollSnapType: "x mandatory",
-                          scrollBehavior: "smooth",
-                        }}
-                        onScroll={() => handleScroll(item.id)}
-                      >
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (!userData) {
-                              dispatch(setShowLogin(true));
-                            } else {
-                              if (favListings.includes(item.id)) {
-                                dispatch(removeUserFavListing(item.id));
-                                dispatch(setIsFavorite(false));
-                                dispatch(setItemId(item.id));
-                              } else {
-                                dispatch(setUserFavListing(item.id));
-                                dispatch(setIsFavorite(true));
-                                dispatch(setItemId(item.id));
-                              }
-                            }
-                          }}
-                          className="absolute hover:scale-110 top-3 right-4"
-                        >
-                          {svg(item.id, favListings, userData)}
-                        </button>
-                        {hoveredItem === item.id &&
-                          !localScrollPositions[item.id]?.isAtStart && (
-                            <button
-                              onClick={(e) =>
-                                handleScrollBtn(e, "left", item.id)
-                              }
-                              className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
-                            >
-                              <img
-                                className="h-4 w-6 "
-                                src={arrow_left}
-                                alt="Scroll left"
-                              />
-                            </button>
-                          )}
-                        {hoveredItem === item.id &&
-                          !localScrollPositions[item.id]?.isAtEnd && (
-                            <button
-                              onClick={(e) =>
-                                handleScrollBtn(e, "right", item.id)
-                              }
-                              className="z-10 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
-                            >
-                              <img
-                                className="h-4 w-6 "
-                                src={arrow_right}
-                                alt="Scroll right"
-                              />
-                            </button>
-                          )}
-                        <img
-                          className="rounded-[20px]  flex-center  w-full h-full object-cover scroll-snap-align-start"
-                          src={item.images[0]}
-                          rel="preload"
-                          as="image"
-                          alt=""
-                          style={{
-                            scrollSnapAlign: "start",
-                            flexShrink: 0,
-                            aspectRatio: "1/1",
-                          }}
-                        />
-                        {hoveredItems?.includes(item.id) &&
-                          item.images.slice(1).map((img, i) => (
-                            <img
-                              className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
-                              src={img}
-                              rel="preload"
-                              as="image"
-                              key={i}
-                              alt=""
-                              style={{
-                                scrollSnapAlign: "start",
-                                flexShrink: 0,
-                                scrollSnapStop: "always",
-                                aspectRatio: "1/1",
-                              }}
-                            />
-                          ))}
-                      </div>
-                      <div className="flex w-full justify-between items-start h-[25%]">
-                        <div className="w-[80%]">
-                          <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
-                            {item["house-title"]}
-                          </p>
-                          <p className="font-light text-grey text-[15px]">
-                            {Math.ceil(item.price / 83 + 150)} kilometers away
-                          </p>
-                          <p className="font-light text-grey text-[15px]">
-                            16-21 May
-                          </p>
-                          <p className="text-[15px] font-medium">
-                            ${Math.ceil(item.price / 83)}
-                            <span className="font-light text-[15px]">
-                              {" "}
-                              night
-                            </span>
-                          </p>
-                        </div>
-                        <p className="flex gap-x-1 w-[20%] justify-end items-center">
-                          {item.house_rating > 2 && (
-                            <img
-                              src={star}
-                              className="w-[15px] h-[15px]"
-                              alt=""
-                            />
-                          )}
-                          <span className="font-light text-[15px]">
-                            {item.house_rating > 2 && item.house_rating}
-                          </span>
-                        </p>
-                      </div>
-                    </motion.div>
-                  </Link>
-                ) : (
-                  <a
-                    key={item.id}
-                    href={`/house/${item.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block "
+        {status === "pending" ? (
+          <SkeletonLoaderList></SkeletonLoaderList>
+        ) : (
+          houseListingData?.pages.flatMap((page) =>
+            page.map((item, index) =>
+              isSmallScreen ? (
+                <Link key={item.id} to={`/house/${item.id}`}>
+                  <motion.div
+                    className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
+                    onMouseEnter={() => {
+                      dispatch(setHoveredItem(item.id));
+                      dispatch(setHoveredItems([...hoveredItems, item.id]));
+                    }}
+                    onMouseLeave={() => dispatch(setHoveredItem(null))}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
                   >
-                    <motion.div
-                      className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
-                      onMouseEnter={() => {
-                        dispatch(setHoveredItem(item.id));
-                        dispatch(setHoveredItems([...hoveredItems, item.id]));
-                      }}
-                      onMouseLeave={() => dispatch(setHoveredItem(null))}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.2, delay: index * 0.07 }}
-                    >
-                      {item.guest_favorite === "Guest favourite" && (
-                        <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
-                          <span className="text-sm font-medium">
-                            Guest favourite
-                          </span>
-                        </div>
-                      )}
-                      <div
-                        ref={(el) => (houseImagesRefs.current[item.id] = el)}
-                        className="w-full flex items-center justify-start overflow-x-auto hide-scrollbar h-[75%] scroll-smooth"
-                        style={{
-                          scrollSnapType: "x mandatory",
-                          scrollBehavior: "smooth",
-                        }}
-                        onScroll={() => handleScroll(item.id)}
-                      >
-                        <button
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (!userData) {
-                              dispatch(setShowLogin(true));
-                            } else {
-                              if (favListings.includes(item.id)) {
-                                dispatch(removeUserFavListing(item.id));
-                                dispatch(setIsFavorite(false));
-                                dispatch(setItemId(item.id));
-                              } else {
-                                dispatch(setUserFavListing(item.id));
-                                dispatch(setIsFavorite(true));
-                                dispatch(setItemId(item.id));
-                              }
-                            }
-                          }}
-                          className="absolute hover:scale-110 top-3 right-4"
-                        >
-                          {svg(item.id, favListings, userData)}
-                        </button>
-                        {hoveredItem === item.id &&
-                          !localScrollPositions[item.id]?.isAtStart && (
-                            <button
-                              onClick={(e) =>
-                                handleScrollBtn(e, "left", item.id)
-                              }
-                              className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
-                            >
-                              <img
-                                className="h-4 w-6 "
-                                src={arrow_left}
-                                alt="Scroll left"
-                              />
-                            </button>
-                          )}
-                        {hoveredItem === item.id &&
-                          !localScrollPositions[item.id]?.isAtEnd && (
-                            <button
-                              onClick={(e) =>
-                                handleScrollBtn(e, "right", item.id)
-                              }
-                              className="z-10 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
-                            >
-                              <img
-                                className="h-4 w-6 "
-                                src={arrow_right}
-                                alt="Scroll right"
-                              />
-                            </button>
-                          )}
-                        <img
-                          className="rounded-[20px] flex-center 2xl:rounded-[30px]  w-full h-full object-cover scroll-snap-align-start"
-                          src={item.images[0]}
-                          rel="preload"
-                          as="image"
-                          alt=""
-                          style={{
-                            scrollSnapAlign: "start",
-                            flexShrink: 0,
-                            aspectRatio: "1/1",
-                          }}
-                        />
-                        {hoveredItems?.includes(item.id) &&
-                          item.images.slice(1).map((img, i) => (
-                            <img
-                              className="rounded-[20px] 2xl:rounded-[30px] flex-center w-full  h-full object-cover scroll-snap-align-start"
-                              src={img}
-                              rel="preload"
-                              as="image"
-                              key={i}
-                              alt=""
-                              style={{
-                                scrollSnapAlign: "start",
-                                flexShrink: 0,
-                                scrollSnapStop: "always",
-                                aspectRatio: "1/1",
-                              }}
-                            />
-                          ))}
+                    {item.guest_favorite === "Guest favourite" && (
+                      <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
+                        <span className="text-sm font-medium">
+                          Guest favourite
+                        </span>
                       </div>
-                      <div className="flex w-full justify-between items-start h-[25%]">
-                        <div className="w-[80%]">
-                          <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
-                            {item["house-title"]}
-                          </p>
-                          <p className="font-light text-grey text-[15px]">
-                            {Math.ceil(item.price / 83 + 150)} kilometers away
-                          </p>
-                          <p className="font-light text-grey text-[15px]">
-                            16-21 May
-                          </p>
-                          <p className="text-[15px] font-medium">
-                            ${Math.ceil(item.price / 83)}
-                            <span className="font-light text-[15px]">
-                              {" "}
-                              night
-                            </span>
-                          </p>
-                        </div>
-                        <p className="flex gap-x-1 w-[20%] justify-end items-center">
-                          {item.house_rating > 2 && (
+                    )}
+                    <div
+                      ref={(el) => (houseImagesRefs.current[item.id] = el)}
+                      className="w-full flex items-center justify-start overflow-x-auto hide-scrollbar h-[75%] scroll-smooth"
+                      style={{
+                        scrollSnapType: "x mandatory",
+                        scrollBehavior: "smooth",
+                      }}
+                      onScroll={() => handleScroll(item.id)}
+                    >
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (!userData) {
+                            dispatch(setShowLogin(true));
+                          } else {
+                            if (favListings.includes(item.id)) {
+                              dispatch(removeUserFavListing(item.id));
+                              dispatch(setIsFavorite(false));
+                              dispatch(setItemId(item.id));
+                            } else {
+                              dispatch(setUserFavListing(item.id));
+                              dispatch(setIsFavorite(true));
+                              dispatch(setItemId(item.id));
+                            }
+                          }
+                        }}
+                        className="absolute hover:scale-110 top-3 right-4"
+                      >
+                        {svg(item.id, favListings, userData)}
+                      </button>
+                      {hoveredItem === item.id &&
+                        !localScrollPositions[item.id]?.isAtStart && (
+                          <button
+                            onClick={(e) => handleScrollBtn(e, "left", item.id)}
+                            className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
+                          >
                             <img
-                              src={star}
-                              className="w-[15px] h-[15px]"
-                              alt=""
+                              className="h-4 w-6 "
+                              src={arrow_left}
+                              alt="Scroll left"
                             />
-                          )}
-                          <span className="font-light text-[15px]">
-                            {item.house_rating > 2 && item.house_rating}
-                          </span>
+                          </button>
+                        )}
+                      {hoveredItem === item.id &&
+                        !localScrollPositions[item.id]?.isAtEnd && (
+                          <button
+                            onClick={(e) =>
+                              handleScrollBtn(e, "right", item.id)
+                            }
+                            className="z-10 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
+                          >
+                            <img
+                              className="h-4 w-6 "
+                              src={arrow_right}
+                              alt="Scroll right"
+                            />
+                          </button>
+                        )}
+                      <img
+                        className="rounded-[20px]  flex-center  w-full h-full object-cover scroll-snap-align-start"
+                        src={item.images[0]}
+                        rel="preload"
+                        as="image"
+                        alt=""
+                        style={{
+                          scrollSnapAlign: "start",
+                          flexShrink: 0,
+                          aspectRatio: "1/1",
+                          backgroundColor: "#DBDBDB",
+                        }}
+                      />
+                      {hoveredItems?.includes(item.id) &&
+                        item.images.slice(1).map((img, i) => (
+                          <img
+                            className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
+                            src={img}
+                            rel="preload"
+                            as="image"
+                            key={i}
+                            alt=""
+                            style={{
+                              scrollSnapAlign: "start",
+                              flexShrink: 0,
+                              scrollSnapStop: "always",
+                              aspectRatio: "1/1",
+                              backgroundColor: "#DBDBDB",
+                            }}
+                          />
+                        ))}
+                    </div>
+                    <div className="flex w-full justify-between items-start h-[25%]">
+                      <div className="w-[80%]">
+                        <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
+                          {item["house-title"]}
+                        </p>
+                        <p className="font-light text-grey text-[15px]">
+                          {Math.ceil(item.price / 83 + 150)} kilometers away
+                        </p>
+                        <p className="font-light text-grey text-[15px]">
+                          16-21 May
+                        </p>
+                        <p className="text-[15px] font-medium">
+                          ${Math.ceil(item.price / 83)}
+                          <span className="font-light text-[15px]"> night</span>
                         </p>
                       </div>
-                    </motion.div>
-                  </a>
-                )
+                      <p className="flex gap-x-1 w-[20%] justify-end items-center">
+                        {item.house_rating > 2 && (
+                          <img
+                            src={star}
+                            className="w-[15px] h-[15px]"
+                            alt=""
+                          />
+                        )}
+                        <span className="font-light text-[15px]">
+                          {item.house_rating > 2 && item.house_rating}
+                        </span>
+                      </p>
+                    </div>
+                  </motion.div>
+                </Link>
+              ) : (
+                <HouseCard
+                  key={item.id}
+                  item={item}
+                  hoveredItem={hoveredItem}
+                  hoveredItems={hoveredItems}
+                  localScrollPositions={localScrollPositions}
+                  userData={userData}
+                  favListings={favListings}
+                  handleScroll={handleScroll}
+                  handleScrollBtn={handleScrollBtn}
+                  houseImagesRefs={houseImagesRefs}
+                  index={index}
+                />
               )
-            )}
+            )
+          )
+        )}
       </div>
       {!!houseListingData && showMore.current && hasNextPage && (
         <div className="w-full flex flex-col mt-10 gap-y-2 justify-center items-center h-20">
