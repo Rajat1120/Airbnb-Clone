@@ -5,40 +5,247 @@ import React, {
   useRef,
   useState,
 } from "react";
-import star from "../data/Icons svg/star.svg";
+
 import SkeletonLoaderList from "./HouseSkeleton";
-import arrow_right from "../data/Icons svg/arrow-right.svg";
-import arrow_left from "../data/Icons svg/arrow-left.svg";
-import { motion } from "framer-motion";
+
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchRowsWithOptions } from "../Services/apiRooms";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  removeUserFavListing,
-  setHoveredItem,
-  setHoveredItems,
-  setIsFavorite,
-  setItemId,
-  setMinimize,
-  setShowLogin,
-  setStartScroll,
-  setUserFavListing,
-} from "./AppSlice";
+import { setMinimize, setStartScroll } from "./AppSlice";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
 import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
-import { svg } from "../data/HeartIconSvg";
-import { Link } from "react-router-dom";
-import HouseCard from "./RoomsDesktop";
 
-const House = () => {
-  const IMAGE_WIDTH = 301.91;
-  const ITEMS_PER_PAGE = 16;
-  const houseImagesRefs = useRef({});
-  const containerRef = useRef(null);
+import HouseCard from "./RoomsDesktop";
+import MobileHouseCard from "./RoomsMobile";
+
+const ContinueExploring = ({
+  selectedIcon,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  showMore,
+}) => {
+  return (
+    <div className="w-full flex flex-col mt-10 gap-y-2 justify-center items-center h-20">
+      <span className="text-lg font-medium">
+        {`Continue exploring ${selectedIcon} ${
+          selectedIcon.endsWith("s") ? "" : "homes"
+        }`}
+      </span>
+      <button
+        className="bg-black text-white h-12 w-32 rounded-lg"
+        onClick={() => {
+          fetchNextPage();
+          showMore.current = false;
+        }}
+        disabled={!hasNextPage || isFetchingNextPage}
+      >
+        Show More
+      </button>
+    </div>
+  );
+};
+
+const SkeletonGrid = ({ itemCount = 12, gridClasses = "" }) => {
+  return (
+    <div className={`grid gap-x-6 mt-5 ${gridClasses}`}>
+      {Array.from({ length: itemCount }).map((_, index) => (
+        <div
+          key={index}
+          className="skeleton rounded-2xl aspect-square skeleton-item"
+        ></div>
+      ))}
+    </div>
+  );
+};
+
+const IMAGE_WIDTH = 301.91;
+const ITEMS_PER_PAGE = 16;
+
+const useCustomEffects = ({
+  itemId,
+  userData,
+  isFavorite,
+  favListings,
+  saveFavorite,
+  deleteFavorite,
+  houseListingData,
+  handleWindowScroll,
+  selectedIcon,
+  startScroll,
+  showMore,
+}) => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [localScrollPositions, setLocalScrollPositions] = useState({});
+
+  // Favorite update effect
+  useEffect(() => {
+    const handleFavoriteUpdate = async () => {
+      if (itemId && userData) {
+        if (isFavorite) {
+          await saveFavorite(itemId);
+        } else {
+          await deleteFavorite(itemId);
+        }
+      }
+    };
+
+    handleFavoriteUpdate();
+  }, [favListings, isFavorite, userData, saveFavorite, deleteFavorite, itemId]);
+
+  // Initialize scroll positions
+  useEffect(() => {
+    if (houseListingData) {
+      const initialScrollPositions = {};
+      houseListingData.pages.forEach((page) => {
+        page.forEach((item) => {
+          initialScrollPositions[item.id] = {
+            isAtStart: true,
+            isAtEnd: false,
+          };
+        });
+      });
+      setLocalScrollPositions(initialScrollPositions);
+    }
+  }, [houseListingData]);
+
+  // Set up window scroll event
+  useEffect(() => {
+    window.addEventListener("scroll", handleWindowScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleWindowScroll);
+    };
+  }, [handleWindowScroll]);
+
+  // Scroll restoration effect
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Manage showMore
+  useEffect(() => {
+    showMore.current = true;
+  }, [selectedIcon, showMore]);
+
+  // Media query effect
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 743px)");
+    setIsSmallScreen(mediaQuery?.matches);
+
+    const handleResize = (event) => {
+      setIsSmallScreen(event.matches);
+    };
+
+    mediaQuery?.addEventListener("change", handleResize);
+    return () => {
+      mediaQuery?.removeEventListener("change", handleResize);
+    };
+  }, []);
+
+  // Scroll position effect
+  useLayoutEffect(() => {
+    if (!startScroll) window.scrollTo(0, 10);
+  }, [selectedIcon, startScroll]);
+
+  return {
+    isSmallScreen,
+    showMore,
+    localScrollPositions,
+    setLocalScrollPositions,
+  };
+};
+
+const useScrollHandlers = ({
+  setLocalScrollPositions,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+  showMore,
+  houseImagesRefs,
+  containerRef,
+}) => {
   const dispatch = useDispatch();
 
+  // Handle item scroll
+  const handleScroll = useCallback(
+    (itemId) => {
+      const container = houseImagesRefs.current[itemId];
+      if (container) {
+        const { scrollLeft, scrollWidth, clientWidth } = container;
+        setLocalScrollPositions((prev) => ({
+          ...prev,
+          [itemId]: {
+            isAtStart: scrollLeft === 0,
+            isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
+          },
+        }));
+      }
+    },
+    [setLocalScrollPositions, houseImagesRefs]
+  );
+
+  const handleScrollBtn = (e, direction, itemId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const container = houseImagesRefs.current[itemId];
+
+    if (container) {
+      const scrollAmount = direction === "right" ? IMAGE_WIDTH : -IMAGE_WIDTH;
+      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  // Handle window scroll
+  const handleWindowScroll = useCallback(() => {
+    const currentScrollPosition = window.scrollY;
+
+    dispatch(setMinimize(false));
+    dispatch(setActiveInput(""));
+
+    if (currentScrollPosition > 0) {
+      dispatch(setStartScroll(false));
+    } else if (currentScrollPosition < 22) {
+      dispatch(setStartScroll(true));
+    }
+
+    if (!showMore.current) {
+      if (
+        containerRef.current &&
+        containerRef.current.getBoundingClientRect().bottom <=
+          window.innerHeight + 500
+      ) {
+        if (hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      }
+    }
+  }, [
+    dispatch,
+    fetchNextPage,
+    containerRef,
+    showMore,
+    hasNextPage,
+    isFetchingNextPage,
+  ]);
+
+  return {
+    handleScroll,
+    handleWindowScroll,
+    handleScrollBtn,
+  };
+};
+
+// Main house component
+const House = () => {
   const [localScrollPositions, setLocalScrollPositions] = useState({});
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const houseImagesRefs = useRef({});
+  const containerRef = useRef(null);
+  const showMore = useRef(true);
+
   const {
     isFavorite,
     itemId,
@@ -52,23 +259,6 @@ const House = () => {
     city,
     inputSearchIds: ids,
   } = useSelector((store) => store.app);
-
-  let showMore = useRef(true);
-
-  // Handle favorite status updates
-  useEffect(() => {
-    const handleFavoriteUpdate = async () => {
-      if (itemId && userData) {
-        if (isFavorite) {
-          await saveFavorite(itemId);
-        } else {
-          await deleteFavorite(itemId);
-        }
-      }
-    };
-
-    handleFavoriteUpdate();
-  }, [favListings, isFavorite, userData, itemId]);
 
   // Fetch house data
   const {
@@ -95,112 +285,30 @@ const House = () => {
     enabled: !!selectedIcon,
   });
 
-  // Handle image scroll
-  const handleScrollBtn = (e, direction, itemId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const container = houseImagesRefs.current[itemId];
+  const { handleScroll, handleWindowScroll, handleScrollBtn } =
+    useScrollHandlers({
+      setLocalScrollPositions,
+      hasNextPage,
+      isFetchingNextPage,
+      fetchNextPage,
+      houseImagesRefs,
+      containerRef,
+      showMore,
+    });
 
-    if (container) {
-      const scrollAmount = direction === "right" ? IMAGE_WIDTH : -IMAGE_WIDTH;
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
-
-  const handleScroll = useCallback((itemId) => {
-    const container = houseImagesRefs.current[itemId];
-    if (container) {
-      const { scrollLeft, scrollWidth, clientWidth } = container;
-      setLocalScrollPositions((prev) => ({
-        ...prev,
-        [itemId]: {
-          isAtStart: scrollLeft === 0,
-          isAtEnd: Math.abs(scrollWidth - clientWidth - scrollLeft) < 1,
-        },
-      }));
-    }
-  }, []);
-
-  // Initialize scroll positions for all items
-  useEffect(() => {
-    if (houseListingData) {
-      const initialScrollPositions = {};
-      houseListingData.pages.forEach((page) => {
-        page.forEach((item) => {
-          initialScrollPositions[item.id] = {
-            isAtStart: true,
-            isAtEnd: false,
-          };
-        });
-      });
-      setLocalScrollPositions(initialScrollPositions);
-    }
-  }, [houseListingData]);
-
-  // Handle window scroll
-  const handleWindowScroll = useCallback(() => {
-    const currentScrollPosition = window.scrollY;
-
-    dispatch(setMinimize(false));
-    dispatch(setActiveInput(""));
-
-    if (currentScrollPosition > 0) {
-      dispatch(setStartScroll(false));
-    } else if (currentScrollPosition < 22) {
-      dispatch(setStartScroll(true));
-    }
-
-    if (!showMore.current) {
-      // Check if we're near the bottom of the page
-      if (
-        containerRef.current &&
-        containerRef.current.getBoundingClientRect().bottom <=
-          window.innerHeight + 500
-      ) {
-        if (hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      }
-    }
-  }, [dispatch, fetchNextPage, hasNextPage, isFetchingNextPage]);
-
-  // Set up event listeners and initial states
-  useEffect(() => {
-    window.addEventListener("scroll", handleWindowScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleWindowScroll);
-    };
-  }, [handleWindowScroll]);
-
-  useLayoutEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo(0, 0);
-  }, []);
-
-  useEffect(() => {
-    showMore.current = true;
-  }, [selectedIcon]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 743px)");
-    setIsSmallScreen(mediaQuery?.matches);
-
-    const handleResize = (event) => {
-      setIsSmallScreen(event.matches);
-    };
-
-    mediaQuery?.addEventListener("change", handleResize);
-    return () => {
-      mediaQuery?.removeEventListener("change", handleResize);
-    };
-  }, []);
-
-  useLayoutEffect(() => {
-    if (!startScroll) window.scrollTo(0, 10);
-  }, [selectedIcon, startScroll]);
+  const { isSmallScreen } = useCustomEffects({
+    itemId,
+    userData,
+    isFavorite,
+    favListings,
+    saveFavorite,
+    deleteFavorite,
+    houseListingData,
+    handleWindowScroll,
+    selectedIcon,
+    startScroll,
+    showMore,
+  });
 
   return (
     <div
@@ -218,146 +326,19 @@ const House = () => {
           houseListingData?.pages.flatMap((page) =>
             page.map((item, index) =>
               isSmallScreen ? (
-                <Link key={item.id} to={`/house/${item.id}`}>
-                  <motion.div
-                    className="1xl:w-full   relative 1xl:h-full   flex gap-y-4 items-center justify-center flex-col"
-                    onMouseEnter={() => {
-                      dispatch(setHoveredItem(item.id));
-                      dispatch(setHoveredItems([...hoveredItems, item.id]));
-                    }}
-                    onMouseLeave={() => dispatch(setHoveredItem(null))}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.05 }}
-                  >
-                    {item.guest_favorite === "Guest favourite" && (
-                      <div className="absolute w-32 shadow-2xl h-7 flex-center top-3 py-2 left-3 rounded-2xl bg-white">
-                        <span className="text-sm font-medium">
-                          Guest favourite
-                        </span>
-                      </div>
-                    )}
-                    <div
-                      ref={(el) => (houseImagesRefs.current[item.id] = el)}
-                      className="w-full flex items-center justify-start overflow-x-auto hide-scrollbar h-[75%] scroll-smooth"
-                      style={{
-                        scrollSnapType: "x mandatory",
-                        scrollBehavior: "smooth",
-                      }}
-                      onScroll={() => handleScroll(item.id)}
-                    >
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          if (!userData) {
-                            dispatch(setShowLogin(true));
-                          } else {
-                            if (favListings.includes(item.id)) {
-                              dispatch(removeUserFavListing(item.id));
-                              dispatch(setIsFavorite(false));
-                              dispatch(setItemId(item.id));
-                            } else {
-                              dispatch(setUserFavListing(item.id));
-                              dispatch(setIsFavorite(true));
-                              dispatch(setItemId(item.id));
-                            }
-                          }
-                        }}
-                        className="absolute hover:scale-110 top-3 right-4"
-                      >
-                        {svg(item.id, favListings, userData)}
-                      </button>
-                      {hoveredItem === item.id &&
-                        !localScrollPositions[item.id]?.isAtStart && (
-                          <button
-                            onClick={(e) => handleScrollBtn(e, "left", item.id)}
-                            className="z-10 bg-white hover:scale-105 w-8 h-8 hover:bg-opacity-100 bg-opacity-80 absolute hover:drop-shadow-md flex-center rounded-[50%] border-[1px] left-2 border-grey-dim"
-                          >
-                            <img
-                              className="h-4 w-6 "
-                              src={arrow_left}
-                              alt="Scroll left"
-                            />
-                          </button>
-                        )}
-                      {hoveredItem === item.id &&
-                        !localScrollPositions[item.id]?.isAtEnd && (
-                          <button
-                            onClick={(e) =>
-                              handleScrollBtn(e, "right", item.id)
-                            }
-                            className="z-10 bg-white hover:scale-105 w-8 flex-center hover:bg-opacity-100 bg-opacity-80 h-8 absolute hover:drop-shadow-md right-2 rounded-[50%] border-[1px] border-grey-dim"
-                          >
-                            <img
-                              className="h-4 w-6 "
-                              src={arrow_right}
-                              alt="Scroll right"
-                            />
-                          </button>
-                        )}
-                      <img
-                        className="rounded-[20px]  flex-center  w-full h-full object-cover scroll-snap-align-start"
-                        src={item.images[0]}
-                        rel="preload"
-                        as="image"
-                        alt=""
-                        style={{
-                          scrollSnapAlign: "start",
-                          flexShrink: 0,
-                          aspectRatio: "1/1",
-                          backgroundColor: "#DBDBDB",
-                        }}
-                      />
-                      {hoveredItems?.includes(item.id) &&
-                        item.images.slice(1).map((img, i) => (
-                          <img
-                            className="rounded-[20px] flex-center w-full  h-full object-cover scroll-snap-align-start"
-                            src={img}
-                            rel="preload"
-                            as="image"
-                            key={i}
-                            alt=""
-                            style={{
-                              scrollSnapAlign: "start",
-                              flexShrink: 0,
-                              scrollSnapStop: "always",
-                              aspectRatio: "1/1",
-                              backgroundColor: "#DBDBDB",
-                            }}
-                          />
-                        ))}
-                    </div>
-                    <div className="flex w-full justify-between items-start h-[25%]">
-                      <div className="w-[80%]">
-                        <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
-                          {item["house-title"]}
-                        </p>
-                        <p className="font-light text-grey text-[15px]">
-                          {Math.ceil(item.price / 83 + 150)} kilometers away
-                        </p>
-                        <p className="font-light text-grey text-[15px]">
-                          16-21 May
-                        </p>
-                        <p className="text-[15px] font-medium">
-                          ${Math.ceil(item.price / 83)}
-                          <span className="font-light text-[15px]"> night</span>
-                        </p>
-                      </div>
-                      <p className="flex gap-x-1 w-[20%] justify-end items-center">
-                        {item.house_rating > 2 && (
-                          <img
-                            src={star}
-                            className="w-[15px] h-[15px]"
-                            alt=""
-                          />
-                        )}
-                        <span className="font-light text-[15px]">
-                          {item.house_rating > 2 && item.house_rating}
-                        </span>
-                      </p>
-                    </div>
-                  </motion.div>
-                </Link>
+                <MobileHouseCard
+                  key={item.id}
+                  item={item}
+                  hoveredItem={hoveredItem}
+                  hoveredItems={hoveredItems}
+                  localScrollPositions={localScrollPositions}
+                  userData={userData}
+                  favListings={favListings}
+                  handleScroll={handleScroll}
+                  handleScrollBtn={handleScrollBtn}
+                  houseImagesRefs={houseImagesRefs}
+                  index={index}
+                ></MobileHouseCard>
               ) : (
                 <HouseCard
                   key={item.id}
@@ -377,34 +358,24 @@ const House = () => {
           )
         )}
       </div>
-      {!!houseListingData && showMore.current && hasNextPage && (
-        <div className="w-full flex flex-col mt-10 gap-y-2 justify-center items-center h-20">
-          <span className="text-lg font-medium">
-            {`Continue exploring ${selectedIcon} 
-            ${selectedIcon.endsWith("s") ? "" : "homes"}`}
-          </span>
-          <button
-            className="bg-black text-white h-12 w-32 rounded-lg"
-            onClick={() => {
-              fetchNextPage();
-              showMore.current = false;
-            }}
-            disabled={!hasNextPage || isFetchingNextPage}
-          >
-            Show More
-          </button>
-        </div>
+      {!!houseListingData && showMore?.current && hasNextPage && (
+        <ContinueExploring
+          selectedIcon={selectedIcon}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          showMore={showMore}
+        />
       )}
 
       {isFetchingNextPage && (
-        <div className="grid gap-x-6 mt-5 1md:grid-cols-three-col grid-cols-1 gap-y-10 1lg:my-grid-cols-four-col 2xl:my-grid-cols-six-col justify-center w-full items-start 1xs:grid-cols-two-col  1lg:gap-y-4 xl:gap-y-8 1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
-          {Array.from({ length: 12 }).map((_, index) => (
-            <div
-              key={index}
-              className="skeleton rounded-2xl aspect-square skeleton-item"
-            ></div>
-          ))}
-        </div>
+        <SkeletonGrid
+          itemCount={12}
+          gridClasses="1md:grid-cols-three-col grid-cols-1 gap-y-10 
+        1lg:my-grid-cols-four-col 2xl:my-grid-cols-six-col 
+        justify-center w-full items-start 1xs:grid-cols-two-col 
+        1lg:gap-y-4 xl:gap-y-8 1md:gap-y-10 1xs:gap-y-10 grid-flow-row"
+        />
       )}
     </div>
   );

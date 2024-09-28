@@ -15,6 +15,7 @@ import {
   setUserFavListing,
 } from "./AppSlice";
 import { svg as favSvg } from "../data/HeartIconSvg";
+import { Link } from "react-router-dom";
 
 // Utility component to render rating stars and rating value
 const Rating = ({ rating }) => (
@@ -134,7 +135,7 @@ const RenderHouseImages = ({ hoveredItems, item }) => {
 };
 // Main HouseCard Component
 
-const HouseCard = ({
+const MobileHouseCard = ({
   item,
   hoveredItem,
   hoveredItems,
@@ -175,12 +176,7 @@ const HouseCard = ({
   );
 
   return (
-    <a
-      href={`/house/${item.id}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block"
-    >
+    <Link key={item.id} to={`/house/${item.id}`}>
       <motion.div
         className="1xl:w-full relative 1xl:h-full flex gap-y-4 items-center justify-center flex-col"
         onMouseEnter={handleMouseEnter}
@@ -220,8 +216,8 @@ const HouseCard = ({
 
         {renderHouseInfo()}
       </motion.div>
-    </a>
+    </Link>
   );
 };
 
-export default HouseCard;
+export default MobileHouseCard;
