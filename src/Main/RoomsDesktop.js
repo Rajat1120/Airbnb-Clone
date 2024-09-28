@@ -76,6 +76,7 @@ const ScrollButton = ({ direction, onClick }) => (
 );
 
 // Main HouseCard Component
+
 const HouseCard = ({
   item,
   hoveredItem,
@@ -97,9 +98,76 @@ const HouseCard = ({
 
   const handleMouseLeave = () => dispatch(setHoveredItem(null));
 
+  const renderScrollButtons = () => (
+    <>
+      {hoveredItem === item.id && !localScrollPositions[item.id]?.isAtStart && (
+        <ScrollButton
+          direction="left"
+          onClick={(e) => handleScrollBtn(e, "left", item.id)}
+        />
+      )}
+      {hoveredItem === item.id && !localScrollPositions[item.id]?.isAtEnd && (
+        <ScrollButton
+          direction="right"
+          onClick={(e) => handleScrollBtn(e, "right", item.id)}
+        />
+      )}
+    </>
+  );
+
+  const renderHouseImages = () => (
+    <>
+      <img
+        className="rounded-[20px] flex-center 2xl:rounded-[30px] w-full h-full object-cover scroll-snap-align-start"
+        src={item.images[0]}
+        alt={item["house-title"]}
+        style={{
+          scrollSnapAlign: "start",
+          flexShrink: 0,
+          aspectRatio: "1/1",
+          backgroundColor: "#DBDBDB",
+        }}
+      />
+      {hoveredItems?.includes(item.id) &&
+        item.images.slice(1).map((img, i) => (
+          <img
+            className="rounded-[20px] 2xl:rounded-[30px] flex-center w-full h-full object-cover scroll-snap-align-start"
+            src={img}
+            key={i}
+            alt={`${item["house-title"]} -  ${i + 2}`}
+            style={{
+              scrollSnapAlign: "start",
+              flexShrink: 0,
+              scrollSnapStop: "always",
+              aspectRatio: "1/1",
+              backgroundColor: "#DBDBDB",
+            }}
+          />
+        ))}
+    </>
+  );
+
+  const renderHouseInfo = () => (
+    <div className="flex w-full justify-between items-start h-[25%]">
+      <div className="w-[80%]">
+        <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
+          {item["house-title"]}
+        </p>
+        <p className="font-light text-grey text-[15px]">
+          {Math.ceil(item.price / 83 + 150)} kilometers away
+        </p>
+        <p className="font-light text-grey text-[15px]">16-21 May</p>
+        <p className="text-[15px] font-medium">
+          ${Math.ceil(item.price / 83)}
+          <span className="font-light text-[15px]"> night</span>
+        </p>
+      </div>
+      <Rating rating={item.house_rating} />
+    </div>
+  );
+
   return (
     <a
-      key={item.id}
       href={`/house/${item.id}`}
       target="_blank"
       rel="noopener noreferrer"
@@ -130,68 +198,11 @@ const HouseCard = ({
             userData={userData}
           />
 
-          {hoveredItem === item.id &&
-            !localScrollPositions[item.id]?.isAtStart && (
-              <ScrollButton
-                direction="left"
-                onClick={(e) => handleScrollBtn(e, "left", item.id)}
-              />
-            )}
-
-          {hoveredItem === item.id &&
-            !localScrollPositions[item.id]?.isAtEnd && (
-              <ScrollButton
-                direction="right"
-                onClick={(e) => handleScrollBtn(e, "right", item.id)}
-              />
-            )}
-
-          <img
-            className="rounded-[20px] flex-center 2xl:rounded-[30px] w-full h-full object-cover scroll-snap-align-start"
-            src={item.images[0]}
-            alt=""
-            style={{
-              scrollSnapAlign: "start",
-              flexShrink: 0,
-              aspectRatio: "1/1",
-              backgroundColor: "#DBDBDB",
-            }}
-          />
-          {hoveredItems?.includes(item.id) &&
-            item.images.slice(1).map((img, i) => (
-              <img
-                className="rounded-[20px] 2xl:rounded-[30px] flex-center w-full h-full object-cover scroll-snap-align-start"
-                src={img}
-                key={i}
-                alt=""
-                style={{
-                  scrollSnapAlign: "start",
-                  flexShrink: 0,
-                  scrollSnapStop: "always",
-                  aspectRatio: "1/1",
-                  backgroundColor: "#DBDBDB",
-                }}
-              />
-            ))}
+          {renderScrollButtons()}
+          {renderHouseImages()}
         </div>
 
-        <div className="flex w-full justify-between items-start h-[25%]">
-          <div className="w-[80%]">
-            <p className="text-ellipsis whitespace-nowrap overflow-hidden text-[15px] w-[90%] font-medium">
-              {item["house-title"]}
-            </p>
-            <p className="font-light text-grey text-[15px]">
-              {Math.ceil(item.price / 83 + 150)} kilometers away
-            </p>
-            <p className="font-light text-grey text-[15px]">16-21 May</p>
-            <p className="text-[15px] font-medium">
-              ${Math.ceil(item.price / 83)}
-              <span className="font-light text-[15px]"> night</span>
-            </p>
-          </div>
-
-          <Rating rating={item.house_rating} />
-        </div>
+        {renderHouseInfo()}
       </motion.div>
     </a>
   );
