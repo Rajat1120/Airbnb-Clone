@@ -9,75 +9,9 @@ import { setSelectedIcon } from "./AppSlice";
 import { getRooms } from "../Services/apiRooms";
 import { motion } from "framer-motion";
 
-const Options = () => {
+function useUniqueFilters({ roomsData, hitSearch, normalizeString }) {
   const [uniqueFilters, setUniqueFilters] = useState([]);
-  const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState([]);
-
   const dispatch = useDispatch();
-  const optionsRef = useRef(null);
-  const itemRefs = useRef([]);
-
-  // Helper function to normalize strings
-  const normalizeString = (str) => str.replace(/[-'/]/g, "").toLowerCase();
-
-  // Redux selectors
-  const {
-    selectedCountry,
-    selectedIcon,
-    hitSearch,
-    inputSearchIds: ids,
-    city,
-    minimize,
-  } = useSelector((store) => store.app);
-
-  // Normalize filters and options
-  const normalizedFilters = uniqueFilters.map(normalizeString);
-  const curFilteredOptions = optionImgs.filter((item) =>
-    normalizedFilters.includes(normalizeString(item.iconName))
-  );
-
-  useEffect(() => {
-    const newOptions = curFilteredOptions.filter(
-      (curItem) =>
-        !filteredOptions.some(
-          (filteredItem) => filteredItem.iconName === curItem.iconName
-        )
-    );
-
-    if (newOptions.length > 0) {
-      setFilteredOptions((prevOptions) => [...prevOptions, ...newOptions]);
-    }
-  }, [curFilteredOptions, filteredOptions]);
-
-  // Fetch function for rooms (used with infinite query)
-  const {
-    data: roomsData,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["rooms", ids, selectedCountry, city],
-    queryFn: ({ pageParam = 0 }) =>
-      getRooms(ids, selectedCountry, city, 2000, pageParam * 2000),
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage && lastPage.length < 2000) return undefined;
-      return pages.length;
-    },
-    enabled: true,
-  });
-
-  let isLoading = status === "pending";
-
-  // function to fetch the data from next 1k rows
-  const fetchNext = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
   // Effect to update unique filters and set initial selected icon
   useEffect(() => {
     if (roomsData) {
@@ -99,7 +33,20 @@ const Options = () => {
         dispatch(setSelectedIcon(newOptions[0].iconName));
       }
     }
-  }, [roomsData, dispatch, hitSearch]);
+  }, [roomsData, dispatch, hitSearch, normalizeString]);
+
+  return uniqueFilters;
+}
+
+function useAtStart({
+  optionsRef,
+  itemRefs,
+  isLoading,
+  fetchNext,
+  filteredOptions,
+}) {
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
 
   const handleScroll = useCallback(() => {
     const container = optionsRef.current;
@@ -118,6 +65,18 @@ const Options = () => {
     }
   }, [fetchNext, itemRefs, optionsRef]);
 
+  useEffect(() => {
+    const container = optionsRef.current;
+    if (container) {
+      const { scrollLeft, scrollWidth, clientWidth } = container;
+      const lastItemWidth =
+        itemRefs.current[itemRefs.current.length - 1]?.offsetWidth || 0;
+      setIsAtEnd(
+        Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
+      );
+    }
+  }, [filteredOptions, itemRefs, optionsRef]);
+
   // Handle scroll event
   useEffect(() => {
     const optionRef = optionsRef?.current;
@@ -125,7 +84,7 @@ const Options = () => {
       optionRef.addEventListener("scroll", handleScroll);
       return () => optionRef.removeEventListener("scroll", handleScroll);
     }
-  }, [handleScroll, isLoading]);
+  }, [handleScroll, isLoading, optionsRef]);
 
   const handleScrollBtn = useCallback(
     (direction) => {
@@ -152,54 +111,8 @@ const Options = () => {
     [fetchNext, itemRefs, optionsRef, setIsAtStart, setIsAtEnd]
   );
 
-  useEffect(() => {
-    const container = optionsRef.current;
-    if (container) {
-      const { scrollLeft, scrollWidth, clientWidth } = container;
-      const lastItemWidth =
-        itemRefs.current[itemRefs.current.length - 1]?.offsetWidth || 0;
-      setIsAtEnd(
-        Math.abs(scrollWidth - clientWidth - scrollLeft) < lastItemWidth
-      );
-    }
-  }, [filteredOptions]);
-
-  return (
-    <div
-      className={`1sm:bg-white ${
-        minimize ? "hidden" : ""
-      } z-10 justify-self-center w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)] mx-auto`}
-    >
-      <div
-        className={`h-auto  flex w-full relative items-center justify-between space-x-10`}
-      >
-        <div className="w-full flex items-center overflow-hidden rounded-lg">
-          {isLoading ? (
-            <LoadingPlaceholder />
-          ) : (
-            <div className="flex items-center justify-start inset-shadow w-full">
-              <OptionsContainer
-                options={filteredOptions}
-                selectedIcon={selectedIcon}
-                dispatch={dispatch}
-                optionsRef={optionsRef}
-                itemRefs={itemRefs}
-              />
-              <ScrollButtons
-                fetchNext={fetchNext}
-                isAtStart={isAtStart}
-                isAtEnd={isAtEnd}
-                optionsLength={filteredOptions.length}
-                handleScrollBtn={handleScrollBtn}
-              />
-            </div>
-          )}
-        </div>
-        <FilterHome />
-      </div>
-    </div>
-  );
-};
+  return [isAtStart, isAtEnd, handleScrollBtn];
+}
 
 // Component for rendering loading placeholders
 const LoadingPlaceholder = () => (
@@ -331,5 +244,128 @@ const ScrollButton = ({ fetchNext, direction, onClick }) => (
     </button>
   </>
 );
+
+// main
+
+const Options = () => {
+  const [filteredOptions, setFilteredOptions] = useState([]);
+
+  const dispatch = useDispatch();
+  const optionsRef = useRef(null);
+  const itemRefs = useRef([]);
+
+  const {
+    selectedCountry,
+    selectedIcon,
+    hitSearch,
+    inputSearchIds: ids,
+    city,
+    minimize,
+  } = useSelector((store) => store.app);
+
+  // Fetch function for rooms (used with infinite query)
+  const {
+    data: roomsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["rooms", ids, selectedCountry, city],
+    queryFn: ({ pageParam = 0 }) =>
+      getRooms(ids, selectedCountry, city, 2000, pageParam * 2000),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage && lastPage.length < 2000) return undefined;
+      return pages.length;
+    },
+    enabled: true,
+  });
+
+  // Helper function to normalize strings
+  const normalizeString = useCallback(
+    (str) => str.replace(/[-'/]/g, "").toLowerCase(),
+    []
+  );
+
+  // Redux selectors
+
+  const uniqueFilters = useUniqueFilters({
+    hitSearch,
+    normalizeString,
+    roomsData,
+  });
+
+  // Normalize filters and options
+  const normalizedFilters = uniqueFilters.map(normalizeString);
+  const curFilteredOptions = optionImgs.filter((item) =>
+    normalizedFilters.includes(normalizeString(item.iconName))
+  );
+
+  useEffect(() => {
+    const newOptions = curFilteredOptions.filter(
+      (curItem) =>
+        !filteredOptions.some(
+          (filteredItem) => filteredItem.iconName === curItem.iconName
+        )
+    );
+
+    if (newOptions.length > 0) {
+      setFilteredOptions((prevOptions) => [...prevOptions, ...newOptions]);
+    }
+  }, [curFilteredOptions, filteredOptions]);
+
+  let isLoading = status === "pending";
+
+  // function to fetch the data from next 1k rows
+  const fetchNext = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  const [isAtStart, isAtEnd, handleScrollBtn] = useAtStart({
+    optionsRef,
+    itemRefs,
+    isLoading,
+    fetchNext,
+    filteredOptions,
+  });
+
+  return (
+    <div
+      className={`1sm:bg-white ${
+        minimize ? "hidden" : ""
+      } z-10 justify-self-center w-full 1sm:w-[calc(100%-5rem)] 1xl:w-[calc(100%-10rem)] mx-auto`}
+    >
+      <div
+        className={`h-auto  flex w-full relative items-center justify-between space-x-10`}
+      >
+        <div className="w-full flex items-center overflow-hidden rounded-lg">
+          {isLoading ? (
+            <LoadingPlaceholder />
+          ) : (
+            <div className="flex items-center justify-start inset-shadow w-full">
+              <OptionsContainer
+                options={filteredOptions}
+                selectedIcon={selectedIcon}
+                dispatch={dispatch}
+                optionsRef={optionsRef}
+                itemRefs={itemRefs}
+              />
+              <ScrollButtons
+                fetchNext={fetchNext}
+                isAtStart={isAtStart}
+                isAtEnd={isAtEnd}
+                optionsLength={filteredOptions.length}
+                handleScrollBtn={handleScrollBtn}
+              />
+            </div>
+          )}
+        </div>
+        <FilterHome />
+      </div>
+    </div>
+  );
+};
 
 export default Options;
