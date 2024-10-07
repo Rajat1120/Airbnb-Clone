@@ -10,6 +10,24 @@ import MobileFooter from "../MobileFooter";
 import monthSvg from "../data/Icons svg/month.svg";
 import person from "../data/Icons svg/Person.svg";
 
+const NoTripsBooked = () => {
+  return (
+    <div className="py-10 flex flex-col gap-y-2 justify-center w-full items-start mb-96">
+      <h2 className="text-2xl font-normal">No trips Booked ... yet!</h2>
+      <p className="font-light">
+        Time to dust off your bags and start planning your next adventure.
+      </p>
+      <Link to="/">
+        <button className="px-6 mt-2 py-3 border-black border rounded-lg font-medium">
+          Start searching
+        </button>
+      </Link>
+
+      <div className="w-full mt-10 h-[1px] bg-grey-light-50"></div>
+    </div>
+  );
+};
+
 const Trips = () => {
   const userData = useSelector((store) => store.app.userData);
   const navigate = useNavigate();
@@ -93,21 +111,7 @@ const Trips = () => {
         <h1 className="text-3xl border-b border-grey-light-50 pb-5 font-medium">
           Trips
         </h1>
-        {!isTripAvailable && (
-          <div className=" py-10 flex flex-col gap-y-2 justify-center w-full items-start mb-96 ">
-            <h2 className="text-2xl font-normal">No trips Booked ... yet!</h2>
-            <p className="font-light">
-              Time to dust off your bags and start planning your next adventure.
-            </p>
-            <Link to={"/"}>
-              <button className="px-6 mt-2 py-3 border-black border rounded-lg font-medium">
-                Start searching
-              </button>
-            </Link>
-
-            <div className="w-full mt-10 h-[1px] bg-grey-light-50"></div>
-          </div>
-        )}
+        {!isTripAvailable && <NoTripsBooked></NoTripsBooked>}
         {isTripAvailable && (
           <div className="grid 1lg:gap-x-4 mt-5 mb-20  1xs:px-12 1xz:px-0 gap-x-4  gap-y-10 grid-cols-1 1xz:grid-cols-2 1xll:grid-cols-3 justify-center w-full items-start 1lg:gap-y-4 xl:gap-y-8   grid-flow-row">
             {bookedTrips?.map((data, i) => (
