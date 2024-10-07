@@ -9,75 +9,9 @@ import { setSelectedIcon } from "./AppSlice";
 import { getRooms } from "../Services/apiRooms";
 import { motion } from "framer-motion";
 
-const Options = () => {
+function useUniqueFilters({ roomsData, hitSearch, normalizeString }) {
   const [uniqueFilters, setUniqueFilters] = useState([]);
-  const [isAtStart, setIsAtStart] = useState(true);
-  const [isAtEnd, setIsAtEnd] = useState(false);
-  const [filteredOptions, setFilteredOptions] = useState([]);
-
   const dispatch = useDispatch();
-  const optionsRef = useRef(null);
-  const itemRefs = useRef([]);
-
-  // Helper function to normalize strings
-  const normalizeString = (str) => str.replace(/[-'/]/g, "").toLowerCase();
-
-  // Redux selectors
-  const {
-    selectedCountry,
-    selectedIcon,
-    hitSearch,
-    inputSearchIds: ids,
-    city,
-    minimize,
-  } = useSelector((store) => store.app);
-
-  // Normalize filters and options
-  const normalizedFilters = uniqueFilters.map(normalizeString);
-  const curFilteredOptions = optionImgs.filter((item) =>
-    normalizedFilters.includes(normalizeString(item.iconName))
-  );
-
-  useEffect(() => {
-    const newOptions = curFilteredOptions.filter(
-      (curItem) =>
-        !filteredOptions.some(
-          (filteredItem) => filteredItem.iconName === curItem.iconName
-        )
-    );
-
-    if (newOptions.length > 0) {
-      setFilteredOptions((prevOptions) => [...prevOptions, ...newOptions]);
-    }
-  }, [curFilteredOptions, filteredOptions]);
-
-  // Fetch function for rooms (used with infinite query)
-  const {
-    data: roomsData,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    status,
-  } = useInfiniteQuery({
-    queryKey: ["rooms", ids, selectedCountry, city],
-    queryFn: ({ pageParam = 0 }) =>
-      getRooms(ids, selectedCountry, city, 2000, pageParam * 2000),
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage && lastPage.length < 2000) return undefined;
-      return pages.length;
-    },
-    enabled: true,
-  });
-
-  let isLoading = status === "pending";
-
-  // function to fetch the data from next 1k rows
-  const fetchNext = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
   // Effect to update unique filters and set initial selected icon
   useEffect(() => {
     if (roomsData) {
@@ -99,7 +33,88 @@ const Options = () => {
         dispatch(setSelectedIcon(newOptions[0].iconName));
       }
     }
-  }, [roomsData, dispatch, hitSearch]);
+  }, [roomsData, dispatch, hitSearch, normalizeString]);
+
+  return uniqueFilters;
+}
+
+const Options = () => {
+  const [isAtStart, setIsAtStart] = useState(true);
+  const [isAtEnd, setIsAtEnd] = useState(false);
+  const [filteredOptions, setFilteredOptions] = useState([]);
+
+  const dispatch = useDispatch();
+  const optionsRef = useRef(null);
+  const itemRefs = useRef([]);
+
+  const {
+    selectedCountry,
+    selectedIcon,
+    hitSearch,
+    inputSearchIds: ids,
+    city,
+    minimize,
+  } = useSelector((store) => store.app);
+
+  // Fetch function for rooms (used with infinite query)
+  const {
+    data: roomsData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["rooms", ids, selectedCountry, city],
+    queryFn: ({ pageParam = 0 }) =>
+      getRooms(ids, selectedCountry, city, 2000, pageParam * 2000),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage && lastPage.length < 2000) return undefined;
+      return pages.length;
+    },
+    enabled: true,
+  });
+
+  // Helper function to normalize strings
+  const normalizeString = useCallback(
+    (str) => str.replace(/[-'/]/g, "").toLowerCase(),
+    []
+  );
+
+  // Redux selectors
+
+  const uniqueFilters = useUniqueFilters({
+    hitSearch,
+    normalizeString,
+    roomsData,
+  });
+
+  // Normalize filters and options
+  const normalizedFilters = uniqueFilters.map(normalizeString);
+  const curFilteredOptions = optionImgs.filter((item) =>
+    normalizedFilters.includes(normalizeString(item.iconName))
+  );
+
+  useEffect(() => {
+    const newOptions = curFilteredOptions.filter(
+      (curItem) =>
+        !filteredOptions.some(
+          (filteredItem) => filteredItem.iconName === curItem.iconName
+        )
+    );
+
+    if (newOptions.length > 0) {
+      setFilteredOptions((prevOptions) => [...prevOptions, ...newOptions]);
+    }
+  }, [curFilteredOptions, filteredOptions]);
+
+  let isLoading = status === "pending";
+
+  // function to fetch the data from next 1k rows
+  const fetchNext = useCallback(() => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleScroll = useCallback(() => {
     const container = optionsRef.current;
