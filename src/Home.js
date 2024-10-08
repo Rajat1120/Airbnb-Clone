@@ -1,96 +1,94 @@
+import React, { useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { addDays } from "date-fns";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+
 import Header from "./Header/Header";
 import Options from "./Main/Options";
 import House from "./Main/House";
 import Footer from "./Footer";
 import MobileFooter from "./MobileFooter";
-import { useCallback, useEffect, useRef } from "react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
 import { getAllRows } from "./Services/apiRooms";
-import { addDays } from "date-fns";
 import {
   setSelectedEndDate,
   setSelectedStartDate,
 } from "./Header/Form/mainFormSlice";
-
 import styles from "./input.css";
 
-export default function Home() {
-  const startScroll = useSelector((state) => state.app.startScroll);
-  const minimize = useSelector((state) => state.app.minimize);
-  const userData = useSelector((state) => state.app.userData);
+const Home = () => {
+  const { startScroll, minimize, userData } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const headerRef = useRef(null);
 
-  // Function to calculate and dispatch start and end dates
   const setInitialDates = useCallback(() => {
     const today = new Date();
-    const startDate = addDays(today, 1); // Tomorrow's date
-    const endDate = addDays(startDate, 5); // 5 days after tomorrow
+    const startDate = addDays(today, 1);
+    const endDate = addDays(startDate, 5);
 
     dispatch(setSelectedStartDate(startDate));
     dispatch(setSelectedEndDate(endDate));
   }, [dispatch]);
 
-  // Trigger date setting on component mount
   useEffect(() => {
     setInitialDates();
   }, [setInitialDates]);
 
-  // Fetch all rows from the backend
   useQuery({
     queryKey: ["allRows"],
     queryFn: getAllRows,
   });
 
-  // Define dynamic class names based on conditions
-  const minimizedHeaderClass = minimize ? "animate-expand" : "h-[5rem]";
-  const expandedHeaderClass = minimize ? "animate-collapse" : "1sm:h-[11rem]";
-  const headerVisibilityClass = startScroll
-    ? "1md:translate-y-0 1sm:translate-y-[3rem]"
-    : "1sm:-translate-y-[5.9rem] !shadow-md";
+  const getHeaderClasses = () => {
+    const baseClasses =
+      "fixed transition-all duration-300 ease-in-out bg-white w-full flex items-start justify-center top-0";
+    const zIndexClass = minimize ? "z-50" : "z-10";
+    const heightClass = startScroll
+      ? minimize
+        ? "animate-collapse"
+        : "1sm:h-[11rem]"
+      : minimize
+      ? "animate-expand"
+      : "h-[5rem]";
+
+    return `${baseClasses} ${zIndexClass} ${heightClass}`;
+  };
+
+  const getOptionsClasses = () => {
+    const baseClasses =
+      "transition-all duration-300 ease-in-out fixed z-10 w-full bg-white shadow-md 1sm:shadow-none flex-center";
+    const visibilityClass = startScroll
+      ? "1md:translate-y-0 1sm:translate-y-[3rem]"
+      : "1sm:-translate-y-[5.9rem] !shadow-md";
+    const positionClass = "1sm:top-[10.8rem] top-[5.7rem]";
+
+    return `${baseClasses} ${visibilityClass} ${positionClass}`;
+  };
 
   return (
     <div className="flex flex-col items-center justify-center relative">
-      {/* Header Section */}
-      <div
-        ref={headerRef}
-        id="header"
-        className={`fixed ${minimize ? "z-50" : "z-10"} 
-        transition-all duration-300 ease-in-out 
-        ${startScroll ? expandedHeaderClass : minimizedHeaderClass} 
-        bg-white w-full flex items-start justify-center top-0`}
-      >
+      <div ref={headerRef} id="header" className={getHeaderClasses()}>
         <Header headerRef={headerRef} />
       </div>
 
-      {/* Options Section */}
-      <div
-        className={`transition-all duration-300 ease-in-out fixed z-10 w-full 
-        bg-white shadow-md 1sm:shadow-none ${headerVisibilityClass} 
-        1sm:top-[10.8rem] top-[5.7rem] flex-center`}
-      >
+      <div className={getOptionsClasses()}>
         <Options />
       </div>
 
-      {/* Main Content (House Component) */}
-      <div className="w-full flex justify-center items-center mt-[7rem] 2xl:mt-[14rem]  1sm:mt-[13rem]">
+      <div className="w-full flex justify-center items-center mt-[7rem] 2xl:mt-[14rem] 1sm:mt-[13rem]">
         <House />
       </div>
 
-      {/* Footer (Visible for logged-in users) */}
       {userData && (
         <div className="w-full hidden 1smd:flex-center bg-white border-t border-grey-light-50 fixed bottom-0 h-10">
           <Footer />
         </div>
       )}
 
-      {/* Mobile Footer */}
       <MobileFooter />
-
-      {/* Performance Insights (Vercel) */}
       <SpeedInsights />
     </div>
   );
-}
+};
+
+export default Home;

@@ -16,12 +16,9 @@ import {
 
 const CustomCardElement = () => {
   const dispatch = useDispatch();
-  const isCardNumEmpty = useSelector((store) => store.card.isCardNumEmpty);
-  const error = useSelector((store) => store.card.error);
-  const isExpEmpty = useSelector((store) => store.card.isExpEmpty);
 
-  const isCvcEmpty = useSelector((store) => store.card.isCvcEmpty);
-  const firstBtnClick = useSelector((store) => store.card.firstBtnClick);
+  const { isCardNumEmpty, error, isExpEmpty, isCvcEmpty, firstBtnClick } =
+    useSelector((store) => store.card);
 
   let ccNumber = "4242 4242 4242 4242";
   let expirationDate = "02/28";
