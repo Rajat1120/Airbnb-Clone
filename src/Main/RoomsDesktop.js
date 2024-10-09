@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
@@ -136,8 +136,7 @@ const RenderHouseImages = ({ hoveredItems, item }) => {
 
 const HouseCard = ({
   item,
-  hoveredItem,
-  hoveredItems,
+
   localScrollPositions,
   userData,
   favListings,
@@ -146,11 +145,15 @@ const HouseCard = ({
   houseImagesRefs,
   index,
 }) => {
+  const { hoveredItem, hoveredItems } = useSelector((store) => store.app);
+
   const dispatch = useDispatch();
 
   const handleMouseEnter = () => {
-    dispatch(setHoveredItem(item.id));
-    dispatch(setHoveredItems([...hoveredItems, item.id]));
+    if (window.innerWidth > 550) {
+      dispatch(setHoveredItem(item.id));
+      dispatch(setHoveredItems([...new Set([...hoveredItems, item.id])]));
+    }
   };
 
   const handleMouseLeave = () => dispatch(setHoveredItem(null));

@@ -14,61 +14,55 @@ import {
   setIsExpEmpty,
 } from "./CardSlice";
 
+let ccNumber = "4242 4242 4242 4242";
+let expirationDate = "02/28";
+let cvc = "567";
+
+function copyDetails(btnName) {
+  if (btnName === "card") {
+    document.getElementById("copy-cc")?.addEventListener("click", function () {
+      // Get the text from the div
+      const textToCopy = ccNumber;
+      // Use the Clipboard API to copy the text
+      navigator.clipboard.writeText(textToCopy);
+    });
+  } else if (btnName === "expiry") {
+    document.getElementById("copy-exp")?.addEventListener("click", function () {
+      // Get the text from the div
+      const textToCopy = expirationDate;
+      // Use the Clipboard API to copy the text
+      navigator.clipboard.writeText(textToCopy);
+    });
+  } else {
+    document.getElementById("copy-cvc")?.addEventListener("click", function () {
+      // Get the text from the div
+      const textToCopy = cvc;
+      // Use the Clipboard API to copy the text
+      navigator.clipboard.writeText(textToCopy);
+    });
+  }
+}
+
+const options = {
+  style: {
+    base: {
+      fontSize: "16px",
+      color: "#424770",
+      "::placeholder": {
+        color: "#aab7c4",
+      },
+    },
+    invalid: {
+      color: "#424770",
+    },
+  },
+};
+
 const CustomCardElement = () => {
   const dispatch = useDispatch();
 
   const { isCardNumEmpty, error, isExpEmpty, isCvcEmpty, firstBtnClick } =
     useSelector((store) => store.card);
-
-  let ccNumber = "4242 4242 4242 4242";
-  let expirationDate = "02/28";
-  let cvc = "567";
-
-  function copyDetails(btnName) {
-    if (btnName === "card") {
-      document
-        .getElementById("copy-cc")
-        ?.addEventListener("click", function () {
-          // Get the text from the div
-          const textToCopy = ccNumber;
-          // Use the Clipboard API to copy the text
-          navigator.clipboard.writeText(textToCopy);
-        });
-    } else if (btnName === "expiry") {
-      document
-        .getElementById("copy-exp")
-        ?.addEventListener("click", function () {
-          // Get the text from the div
-          const textToCopy = expirationDate;
-          // Use the Clipboard API to copy the text
-          navigator.clipboard.writeText(textToCopy);
-        });
-    } else {
-      document
-        .getElementById("copy-cvc")
-        ?.addEventListener("click", function () {
-          // Get the text from the div
-          const textToCopy = cvc;
-          // Use the Clipboard API to copy the text
-          navigator.clipboard.writeText(textToCopy);
-        });
-    }
-  }
-
-  const options = {
-    style: {
-      base: {
-        fontSize: "16px",
-        color: "#424770",
-        "::placeholder": {
-          color: "#aab7c4",
-        },
-      },
-      invalid: {
-        color: "#424770",
-      },
-    },
-  };
 
   return (
     <div className="bg-white  rounded-lg p-4 w-full max-w-md">
