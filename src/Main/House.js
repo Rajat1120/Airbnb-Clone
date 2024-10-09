@@ -251,9 +251,7 @@ const House = () => {
     itemId,
     selectedIcon,
     selectedCountry,
-    hoveredItem,
     startScroll,
-    hoveredItems,
     userData,
     userFavListing: favListings,
     city,
@@ -329,8 +327,6 @@ const House = () => {
                 <MobileHouseCard
                   key={item.id}
                   item={item}
-                  hoveredItem={hoveredItem}
-                  hoveredItems={hoveredItems}
                   localScrollPositions={localScrollPositions}
                   userData={userData}
                   favListings={favListings}
@@ -343,8 +339,6 @@ const House = () => {
                 <HouseCard
                   key={item.id}
                   item={item}
-                  hoveredItem={hoveredItem}
-                  hoveredItems={hoveredItems}
                   localScrollPositions={localScrollPositions}
                   userData={userData}
                   favListings={favListings}

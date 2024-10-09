@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import star from "../data/Icons svg/star.svg";
 import arrow_right from "../data/Icons svg/arrow-right.svg";
 import arrow_left from "../data/Icons svg/arrow-left.svg";
@@ -100,36 +100,41 @@ const RenderScrollButtons = ({
   );
 };
 
+const ImageItem = ({ src, alt, index }) => (
+  <img
+    className="rounded-[20px] flex-center 2xl:rounded-[30px] w-full h-full object-cover scroll-snap-align-start"
+    src={src}
+    alt={`${alt}${index > 0 ? ` - ${index + 1}` : ""}`}
+    style={{
+      scrollSnapAlign: "start",
+      scrollSnapStop: "always",
+      flexShrink: 0,
+      aspectRatio: "1/1",
+      backgroundColor: "#DBDBDB",
+    }}
+  />
+);
+
 const RenderHouseImages = ({ hoveredItems, item }) => {
+  const { images, id, "house-title": houseTitle } = item;
+  const isHovered = hoveredItems?.includes(id);
+
   return (
     <>
-      <img
-        className="rounded-[20px] flex-center 2xl:rounded-[30px] w-full h-full object-cover scroll-snap-align-start"
-        src={item.images[0]}
-        alt={item["house-title"]}
-        style={{
-          scrollSnapAlign: "start",
-          flexShrink: 0,
-          aspectRatio: "1/1",
-          backgroundColor: "#DBDBDB",
-        }}
-      />
-      {hoveredItems?.includes(item.id) &&
-        item.images.slice(1).map((img, i) => (
-          <img
-            className="rounded-[20px] 2xl:rounded-[30px] flex-center w-full h-full object-cover scroll-snap-align-start"
-            src={img}
-            key={i}
-            alt={`${item["house-title"]} -  ${i + 2}`}
-            style={{
-              scrollSnapAlign: "start",
-              flexShrink: 0,
-              scrollSnapStop: "always",
-              aspectRatio: "1/1",
-              backgroundColor: "#DBDBDB",
-            }}
-          />
-        ))}
+      {images.slice(0, 2).map((img, index) => (
+        <ImageItem key={index} src={img} alt={houseTitle} index={index} />
+      ))}
+      {isHovered &&
+        images
+          .slice(2)
+          .map((img, index) => (
+            <ImageItem
+              key={index + 2}
+              src={img}
+              alt={houseTitle}
+              index={index + 2}
+            />
+          ))}
     </>
   );
 };
@@ -137,8 +142,6 @@ const RenderHouseImages = ({ hoveredItems, item }) => {
 
 const MobileHouseCard = ({
   item,
-  hoveredItem,
-  hoveredItems,
   localScrollPositions,
   userData,
   favListings,
@@ -147,12 +150,8 @@ const MobileHouseCard = ({
   houseImagesRefs,
   index,
 }) => {
+  const { hoveredItem, hoveredItems } = useSelector((store) => store.app);
   const dispatch = useDispatch();
-
-  const handleMouseEnter = () => {
-    dispatch(setHoveredItem(item.id));
-    dispatch(setHoveredItems([...hoveredItems, item.id]));
-  };
 
   const handleMouseLeave = () => dispatch(setHoveredItem(null));
 
@@ -179,7 +178,6 @@ const MobileHouseCard = ({
     <Link key={item.id} to={`/house/${item.id}`}>
       <motion.div
         className="1xl:w-full relative 1xl:h-full flex gap-y-4 items-center justify-center flex-col"
-        onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -194,7 +192,10 @@ const MobileHouseCard = ({
             scrollSnapType: "x mandatory",
             scrollBehavior: "smooth",
           }}
-          onScroll={() => handleScroll(item.id)}
+          onScroll={() => {
+            handleScroll(item.id);
+            dispatch(setHoveredItems([...new Set([...hoveredItems, item.id])]));
+          }}
         >
           <FavoriteButton
             item={item}
