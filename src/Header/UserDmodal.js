@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 
 import { setShowLogin } from "../Main/AppSlice";
@@ -7,11 +7,37 @@ import { getUserLogout } from "../Services/apiAuthentication";
 import { Link } from "react-router-dom";
 
 const UserDmodal = ({ isOpen }) => {
-  let userData = useSelector((store) => store.app.userData);
   const dispatch = useDispatch();
+  const [position, setPosition] = useState(null);
+  let userData = useSelector((store) => store.app.userData);
+
+  useEffect(() => {
+    function updatePosition() {
+      const userDashBoardEl = document.getElementById("user-dashboard");
+
+      if (userDashBoardEl) {
+        let rect = userDashBoardEl.getBoundingClientRect();
+        console.log(rect);
+
+        setPosition({
+          right: `${
+            ((window.innerWidth - rect.right) / window.innerWidth) * 100
+          }%`,
+          top: `${(rect.bottom / window.innerHeight) * 100}%`,
+        });
+      }
+    }
+    updatePosition();
+    window.addEventListener("resize", updatePosition);
+    return () => window.removeEventListener("resize", updatePosition);
+  }, []);
+
   if (!isOpen) return null;
   return ReactDOM.createPortal(
-    <div className="fixed top-[4.5rem] hidden 1xz:flex flex-col shadow-2xl justify-between rounded-xl w-60 z-50  bg-white 1xl:right-20 right-10">
+    <div
+      style={position}
+      className="fixed mt-2 hidden 1xz:flex flex-col shadow-2xl justify-between rounded-xl w-60 z-50  bg-white "
+    >
       {userData ? (
         <div>
           <div className="w-full flex mt-2 flex-col justify-between">
