@@ -71,7 +71,7 @@ const Wishlist = () => {
   }, [data]);
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <div
         id="header"
         className={`  z-50 bg-white hidden fixed top-0  w-full 1xz:flex items-start justify-center  `}
@@ -97,7 +97,7 @@ const Wishlist = () => {
           </div>
         )}
         {userData && (
-          <div className="grid  pt-5 pb-10  gap-x-4 1md:grid-cols-three-col  gap-y-10 1lg:my-grid-cols-four-col justify-center w-full items-start mobile-grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
+          <div className="grid overflow-y-auto  pt-5 pb-10 min-h-[37rem] gap-x-4 1md:grid-cols-three-col  gap-y-10 1lg:my-grid-cols-four-col justify-center w-full items-start mobile-grid-cols-two-col 1lg:gap-y-4 xl:gap-y-8  1md:gap-y-10 1xs:gap-y-10 grid-flow-row">
             {!wishList || wishList?.length <= 0 ? (
               <div className="w-full flex gap-y-5 flex-col">
                 <span className="text-nowrap">
