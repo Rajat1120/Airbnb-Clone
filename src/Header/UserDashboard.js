@@ -39,6 +39,18 @@ const UserDashboard = () => {
   }, []);
 
   useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setIsUserModalOpen(false);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", () => {
+        setIsUserModalOpen(false);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         buttonRef.current &&
@@ -58,6 +70,7 @@ const UserDashboard = () => {
   return (
     <>
       <div
+        id="user-dashboard"
         ref={buttonRef}
         onClick={toggleModal}
         className={`py-[7px] pl-[14px] ml-[0.75rem] pr-[8px] hover:shadow-3xl transition-all rounded-3xl border-[1px] border-grey-light ${
