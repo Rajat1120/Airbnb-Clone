@@ -18,12 +18,12 @@ const HostDetails = () => {
 
   return (
     <div className="flex px-5 1smm:px-0 1xz:flex-row flex-col gap-y-10 py-10 gap-x-20 w-full   relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px]  after:bg-grey-dim">
-      <div className=" w-[24.68rem] max-h-80 h-full ">
+      <div className=" max-w-[22rem] w-full max-h-80 h-full ">
         <div className="mb-6">
           <h1 className="text-[25px]   font-[460]">Meet your host</h1>
         </div>
         <div className=" ">
-          <div className="h-full py-5 shadow-2xl rounded-3xl w-[23.75rem] grid grid-cols-3">
+          <div className="h-full py-5 shadow-2xl rounded-3xl  grid grid-cols-3">
             <div className="col-span-2 w-full   grid-cols-1 grid ">
               <div className="w-full  flex justify-center items-end">
                 <img
