@@ -122,8 +122,8 @@ const LoadingPlaceholder = () => (
         key={i}
         className="flex flex-col space-y-2 items-center justify-between"
       >
-        <div className="h-8 w-8 imgLoader rounded-[50%]"></div>
-        <div className="h-3 w-20 imgLoader rounded-2xl"></div>
+        <div className="h-8 w-8  bg-gray-200 animate-pulse  rounded-[50%]"></div>
+        <div className="h-3 w-20  bg-gray-200 animate-pulse  rounded-2xl"></div>
       </div>
     ))}
   </div>
