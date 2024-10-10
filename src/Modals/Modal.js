@@ -42,11 +42,10 @@ function Open({ children, opens: opensWindowName }) {
 }
 
 function Window({ children, name, modalRef, resetRef }) {
-  const selectedInput = useSelector((store) => store.form.curSelectInput);
+  const { curSelectInput: selectedInput, isCalendarModalOpen: isModalOpen } =
+    useSelector((store) => store.form);
+  const { startScroll } = useSelector((store) => store.app);
   const { openName, close } = useContext(modalContext);
-  const data = useSelector((store) => store.form.curSelectInput);
-  const startScroll = useSelector((store) => store.app.startScroll);
-  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
   const ref = useRef();
 
   const [position, setPosition] = useState(null);
@@ -86,7 +85,7 @@ function Window({ children, name, modalRef, resetRef }) {
           let addGuestPosition = addGuestModal ? 416 - rect.width : 0;
 
           setPosition({
-            top: `${(rect.top / window.innerHeight) * 100 + 9}%`,
+            top: `${(rect.bottom / window.innerHeight) * 100}%`,
             left: `${
               ((rect.left - addGuestPosition) / window.innerWidth) * 100
             }%`,
@@ -143,7 +142,7 @@ function Window({ children, name, modalRef, resetRef }) {
         opacity: isRendered ? 1 : 0,
         transition: "opacity 0.3s ease-in-out",
       }}
-      className={`${modalStyle[data]}`}
+      className={`${modalStyle[selectedInput]} mt-2`}
       id="formModal"
       ref={ref}
     >

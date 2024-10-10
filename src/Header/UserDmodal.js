@@ -6,6 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserLogout } from "../Services/apiAuthentication";
 import { Link } from "react-router-dom";
 
+const MenuItem = ({ text, to, isLink, onClick }) => {
+  const cursorClass = to || onClick ? "cursor-pointer" : "cursor-default";
+
+  const content = (
+    <span
+      onClick={onClick} // Handle click events if provided
+      className={`text-sm font-medium flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full ${cursorClass}`}
+    >
+      {text}
+    </span>
+  );
+
+  return isLink ? <Link to={to}>{content}</Link> : content;
+};
+
 const UserDmodal = ({ isOpen }) => {
   const dispatch = useDispatch();
   const [position, setPosition] = useState(null);
@@ -17,7 +32,6 @@ const UserDmodal = ({ isOpen }) => {
 
       if (userDashBoardEl) {
         let rect = userDashBoardEl.getBoundingClientRect();
-        console.log(rect);
 
         setPosition({
           right: `${
@@ -41,72 +55,39 @@ const UserDmodal = ({ isOpen }) => {
       {userData ? (
         <div>
           <div className="w-full flex mt-2 flex-col justify-between">
-            <span className="text-sm  w-full flex items-center font-medium hover:bg-shadow-gray-light h-10 px-5">
-              Messages
-            </span>
-            <span className="text-sm font-medium  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Notification
-            </span>
-            <Link to={"/trips"}>
-              <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-                Trips
-              </span>
-            </Link>
-            <Link to={"/wishlist"}>
-              <span className="text-sm font-medium cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-                Wishlist
-              </span>
-            </Link>
+            <MenuItem text="Messages" />
+            <MenuItem text="Notification" />
+            <MenuItem text="Trips" to="/trips" isLink />
+            <MenuItem text="Wishlist" to="/wishlist" isLink />
           </div>
           <div className="w-full py-[0.5px] my-2 z-30 bg-grey-light-50"></div>
           <div>
-            <span className="text-sm  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Manage Listings
-            </span>
-            <span className="text-sm  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Refer a host
-            </span>
-            <span className="text-sm  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Account
-            </span>
+            <MenuItem text="Manage Listings"></MenuItem>
+            <MenuItem text="Refer a host"></MenuItem>
+            <MenuItem text="Account"></MenuItem>
           </div>
           <div className="w-full py-[0.5px] my-2 z-30 bg-grey-light-50"></div>
-          <div>
-            <span className="text-sm  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full">
-              Help center
-            </span>
-            <span
-              onClick={() => getUserLogout()}
-              className="text-sm mb-2 cursor-pointer  flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full"
-            >
-              Log out
-            </span>
+          <div className="mb-2">
+            <MenuItem text="Help center"></MenuItem>
+            <MenuItem text="Log out" onClick={getUserLogout} />
           </div>
         </div>
       ) : (
         <>
           <div className="w-full flex mt-2 flex-col justify-between">
-            <span
+            <MenuItem
+              text="Sign up"
               onClick={() => dispatch(setShowLogin(true))}
-              className="text-sm cursor-pointer w-full flex items-center font-medium hover:bg-shadow-gray-light h-10 px-5"
-            >
-              Sign up
-            </span>
-            <span
+            ></MenuItem>
+            <MenuItem
+              text="Log in"
               onClick={() => dispatch(setShowLogin(true))}
-              className="text-sm cursor-pointer flex items-center hover:bg-shadow-gray-light px-5 h-10 w-full"
-            >
-              Log in
-            </span>
+            ></MenuItem>
           </div>
           <div className="w-full py-[0.5px] z-30 bg-grey-light-50"></div>
           <div className="w-full flex mb-2 mt-2 flex-col justify-between">
-            <span className="text-sm hover:bg-shadow-gray-light px-5 flex items-center h-10 w-full">
-              Airbnb your home
-            </span>
-            <span className="text-sm hover:bg-shadow-gray-light px-5 h-10 flex items-center w-full">
-              Help center
-            </span>
+            <MenuItem text="Airbnb your home"></MenuItem>
+            <MenuItem text="Help center"></MenuItem>
           </div>
         </>
       )}
