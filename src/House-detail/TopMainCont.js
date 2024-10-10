@@ -16,10 +16,32 @@ import {
 } from "../Main/AppSlice";
 import { deleteFavorite, saveFavorite } from "../Services/apiAuthentication";
 
+const ImageCarouselSkeleton = () => {
+  return (
+    <div className="w-full">
+      <div className="w-full h-full flex overflow-x-auto">
+        {[...Array(3)].map((_, i) => (
+          <div
+            key={i}
+            style={{
+              flexShrink: 0,
+              aspectRatio: "16/10",
+              width: "100%",
+              height: "100%",
+            }}
+            className="bg-gray-200 animate-pulse"
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const TopMainCont = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   let userData = useSelector((store) => store.app.userData);
   const dispatch = useDispatch();
@@ -87,32 +109,36 @@ const TopMainCont = () => {
           </div>
         </div>
         <div className="w-full  ">
-          <div
-            style={{
-              scrollSnapType: "x mandatory",
-              scrollBehavior: "smooth",
-            }}
-            className="w-full  h-full  flex overflow-x-auto"
-          >
-            {houseInfo?.images.map((img, i) => {
-              return (
-                <img
-                  key={i}
-                  style={{
-                    scrollSnapAlign: "start",
-                    scrollSnapStop: "always",
-                    flexShrink: 0,
-                    aspectRatio: "16/10",
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
-                  src={img}
-                  alt=""
-                />
-              );
-            })}
-          </div>
+          {isLoading ? (
+            <ImageCarouselSkeleton></ImageCarouselSkeleton>
+          ) : (
+            <div
+              style={{
+                scrollSnapType: "x mandatory",
+                scrollBehavior: "smooth",
+              }}
+              className="w-full  h-full  flex overflow-x-auto"
+            >
+              {houseInfo?.images.map((img, i) => {
+                return (
+                  <img
+                    key={i}
+                    style={{
+                      scrollSnapAlign: "start",
+                      scrollSnapStop: "always",
+                      flexShrink: 0,
+                      aspectRatio: "16/10",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                    src={img}
+                    alt=""
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       <div className="max-w-7xl  w-full px-5 1xz:px-10 1lg:px-20  flex justify-between ">
