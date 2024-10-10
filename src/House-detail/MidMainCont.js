@@ -152,7 +152,7 @@ const MidMainCont = () => {
           <div className={`1xz:py-8 py-4  `}>
             <>
               {isLoading ? (
-                <div className="max-w-[26rem] w-full h-8 imgLoader"></div>
+                <div className="max-w-[26rem] w-full h-8  bg-gray-200 animate-pulse "></div>
               ) : (
                 <h1 className=" text-[25px]   font-[460]">
                   {houseInfo?.title_2}
@@ -161,7 +161,7 @@ const MidMainCont = () => {
             </>
             <div className="flex items-center">
               {isLoading ? (
-                <div className="max-w-80 w-full h-5 mt-2 imgLoader"></div>
+                <div className="max-w-80 w-full h-5 mt-2  bg-gray-200 animate-pulse "></div>
               ) : (
                 <div className="flex w-full items-center">
                   {houseInfoDetails.length > 0 &&
@@ -277,8 +277,8 @@ const MidMainCont = () => {
         <div className="max-w-[26.32rem] 1smd:ml-20 ml-10   w-full">
           {isLoading ? (
             <div className="">
-              <div className="w-40 mt-8 ml-20 h-10 imgLoader"></div>
-              <div className="w-80 mt-4 ml-20 h-10 imgLoader"></div>
+              <div className="w-40 mt-8 ml-20 h-10  bg-gray-200 animate-pulse "></div>
+              <div className="w-80 mt-4 ml-20 h-10  bg-gray-200 animate-pulse "></div>
             </div>
           ) : (
             <div
