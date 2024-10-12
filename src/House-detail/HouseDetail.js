@@ -22,13 +22,16 @@ const HouseDetail = () => {
   let onHouseDetailPage = location.pathname.includes("/house/");
 
   const dispatch = useDispatch();
-  const minimize = useSelector((store) => store.app.minimize);
-  const houseInfo = useSelector((store) => store.houseDetail.houseInfo[id]);
-  const houseInfoDetails = useSelector((store) => store.houseDetail.houseInfo);
 
-  const userData = useSelector((store) => store.app.userData);
-  const startDate = useSelector((store) => store.form.selectedStartDate);
-  const endDate = useSelector((store) => store.form.selectedEndDate);
+  const { minimize, userData } = useSelector((store) => store.app);
+  const { houseInfo: allHouseInfo, houseInfoDetails } = useSelector(
+    (store) => store.houseDetail
+  );
+  const { selectedStartDate: startDate, selectedEndDate: endDate } =
+    useSelector((store) => store.form);
+
+  const houseInfo = allHouseInfo[id];
+
   const [tripDurationDate, setTripDurationDate] = useState(null);
   let numOfDays = differenceInDays(startDate, endDate);
   let dateSelected = startDate && endDate;
