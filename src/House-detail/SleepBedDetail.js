@@ -45,7 +45,7 @@ const BedroomCard = ({ imageUrl, bedType, bedroomName }) => (
 const EmptyBedroomPlaceholder = ({ bedType }) => (
   <div className="border-[1px] max-w-56 w-full flex-center rounded-xl h-36">
     <div className="w-44 flex justify-between flex-col h-24">
-      <img src={bed} className="w-7 h-7 bg-gray-200" alt="bed icon" />
+      <img src={bed} className="w-7 h-7" alt="bed icon" />
       <div className="flex flex-col">
         <span className="text-lg font-medium">Bedroom 1</span>
         <span className="text-sm font-light">{bedType}</span>

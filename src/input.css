@@ -8,11 +8,6 @@
   display: none; /* Hide the scrollbar */
 }
 
-/* .inset-shadow {
-  box-shadow: inset -45px 0px 30px -31px #e8e8e8,
-    inset 32px 2px 33px -31px #dddddb;
-} */
-
 @layer components {
   .halfRightColor {
     background: linear-gradient(to right, transparent 50%, #f5f5f5 50%);
