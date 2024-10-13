@@ -16,6 +16,41 @@ import LongFooter from "./LongFooter";
 import { Link } from "react-router-dom";
 import { differenceInDays, format, isSameMonth } from "date-fns";
 
+// custom hook
+const useFormattedDateRange = (startDate, endDate) => {
+  const [tripDurationDate, setTripDurationDate] = useState(null);
+
+  useEffect(() => {
+    const formatDateRange = (start, end) => {
+      const startD = new Date(start);
+      const endD = new Date(end);
+
+      if (start && end) {
+        if (isSameMonth(startD, endD)) {
+          return `${format(startD, "dd")} - ${format(endD, "dd MMM")}`;
+        } else {
+          return `${format(startD, "dd MMM")} - ${format(endD, "dd MMM")}`;
+        }
+      }
+      return null;
+    };
+
+    setTripDurationDate(formatDateRange(startDate, endDate));
+  }, [startDate, endDate]);
+
+  return tripDurationDate;
+};
+
+const scrollToSection = (sectionId) => {
+  const section = document.getElementById(sectionId);
+  if (section) {
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+};
+
 const HouseDetail = () => {
   const location = useLocation();
   const { id } = useParams();
@@ -24,35 +59,17 @@ const HouseDetail = () => {
   const dispatch = useDispatch();
 
   const { minimize, userData } = useSelector((store) => store.app);
-  const { houseInfo: allHouseInfo, houseInfoDetails } = useSelector(
-    (store) => store.houseDetail
-  );
+  const { houseInfo: allHouseInfo } = useSelector((store) => store.houseDetail);
   const { selectedStartDate: startDate, selectedEndDate: endDate } =
     useSelector((store) => store.form);
 
   const houseInfo = allHouseInfo[id];
 
-  const [tripDurationDate, setTripDurationDate] = useState(null);
+  const tripDurationDate = useFormattedDateRange(startDate, endDate);
+
   let numOfDays = differenceInDays(startDate, endDate);
   let dateSelected = startDate && endDate;
   let headerRef = useRef();
-
-  useEffect(() => {
-    const formatDateRange = (start, end) => {
-      const startDate = new Date(start);
-      const endDate = new Date(end);
-      if (start && end)
-        if (isSameMonth(startDate, endDate)) {
-          return `${format(startDate, "dd")} - ${format(endDate, "dd MMM")}`;
-        } else {
-          return `${format(startDate, "dd MMM")} - ${format(
-            endDate,
-            "dd MMM"
-          )}`;
-        }
-    };
-    setTripDurationDate(formatDateRange(startDate, endDate));
-  }, [startDate, endDate]);
 
   const { isLoading, data } = useQuery({
     queryKey: ["roomInfo", id],
@@ -74,16 +91,6 @@ const HouseDetail = () => {
   let animateHeaderClass2 = minimize
     ? "animate-collapse"
     : "max-h-[11rem] h-full";
-
-  const scrollToSection = (sectionId) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -142,9 +149,9 @@ const HouseDetail = () => {
           {dateSelected && (
             <span className="text-normal font-medium ">
               $
-              {Math.ceil(houseInfoDetails?.price * Math.abs(numOfDays)) +
+              {Math.ceil(allHouseInfo?.price * Math.abs(numOfDays)) +
                 Math.floor(
-                  0.1 * Math.ceil(houseInfoDetails?.price * Math.abs(numOfDays))
+                  0.1 * Math.ceil(allHouseInfo?.price * Math.abs(numOfDays))
                 )}{" "}
               <span className="font-light text-sm">night</span>
             </span>
