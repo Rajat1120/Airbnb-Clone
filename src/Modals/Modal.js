@@ -6,12 +6,11 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
+  useCallback,
 } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { createPortal } from "react-dom";
 import { setOpenName } from "../Header/Form/mainFormSlice";
-
 import AddDays from "../Header/Form/AddDays";
 
 export const modalContext = createContext();
@@ -51,61 +50,79 @@ function Window({ children, name, modalRef, resetRef }) {
   const [position, setPosition] = useState(null);
   const [isRendered, setIsRendered] = useState(false);
 
-  useLayoutEffect(() => {
+  const updatePosition = useCallback(() => {
     if (name !== openName) {
       setIsRendered(false);
       return;
     }
 
-    const updatePosition = () => {
-      const targetEl = document.getElementById("destination-form");
-      const addGuestEl = document.getElementById("addGuest-form");
-      let addGuestModal = openName === "addGuest";
+    const targetEl = document.getElementById("destination-form");
+    const addGuestEl = document.getElementById("addGuest-form");
+    let addGuestModal = openName === "addGuest";
 
-      let calendarModalWidth =
-        openName === "checkIn" ||
-        openName === "checkOut" ||
-        openName === "month" ||
-        openName === "flexible";
+    let calendarModalWidth = [
+      "checkIn",
+      "checkOut",
+      "month",
+      "flexible",
+    ].includes(openName);
 
-      if (window.innerWidth <= 936 && calendarModalWidth) {
-        let modalWidth = "calc(100% - 80px)";
+    if (window.innerWidth <= 936 && calendarModalWidth) {
+      let modalWidth = "calc(100% - 80px)";
+
+      setPosition({
+        top: "202px",
+        left: "40px",
+        right: "40px",
+        position: "fixed",
+        width: modalWidth,
+      });
+    } else {
+      const relevantEl = addGuestModal ? addGuestEl : targetEl;
+      if (relevantEl) {
+        const rect = relevantEl.getBoundingClientRect();
+        let addGuestPosition = addGuestModal ? 416 - rect.width : 0;
 
         setPosition({
-          top: "202px",
-          left: "40px",
-          right: "40px",
+          top: `${(rect.bottom / window.innerHeight) * 100}%`,
+          left: `${
+            ((rect.left - addGuestPosition) / window.innerWidth) * 100
+          }%`,
           position: "fixed",
-          width: modalWidth,
+          width: null,
+          paddingLeft: "auto",
+          paddingRight: "auto",
         });
-      } else {
-        const relevantEl = addGuestModal ? addGuestEl : targetEl;
-        if (relevantEl) {
-          const rect = relevantEl.getBoundingClientRect();
-          let addGuestPosition = addGuestModal ? 416 - rect.width : 0;
-
-          setPosition({
-            top: `${(rect.bottom / window.innerHeight) * 100}%`,
-            left: `${
-              ((rect.left - addGuestPosition) / window.innerWidth) * 100
-            }%`,
-            position: "fixed",
-            width: null,
-            paddingLeft: "auto",
-            paddingRight: "auto",
-          });
-        }
       }
+    }
 
-      // Set isRendered to true after position is calculated
-      setTimeout(() => setIsRendered(true), 0);
+    setIsRendered(true);
+  }, [openName, name]);
+
+  useLayoutEffect(() => {
+    let animationFrameId;
+
+    const runUpdatePosition = () => {
+      updatePosition();
+      animationFrameId = requestAnimationFrame(runUpdatePosition);
     };
 
-    updatePosition();
+    if (name === openName) {
+      runUpdatePosition();
+    }
 
-    window.addEventListener("resize", updatePosition);
-    return () => window.removeEventListener("resize", updatePosition);
-  }, [openName, name, startScroll]);
+    setTimeout(() => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    }, 500);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [updatePosition, name, openName, startScroll]);
 
   let modalStyle = {
     checkIn: `fixed z-10 1smd:w-[53rem]  bg-black bg-opacity-50 rounded-[2rem]`,
