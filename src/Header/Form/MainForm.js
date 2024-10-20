@@ -96,18 +96,6 @@ const MainForm = ({ headerRef }) => {
     }
   }, [minimizeFormBtn, dispatch, minimize, isVisible, dateOption]);
 
-  function checkOpenModal(e) {
-    const modalElement = document.getElementById("formModal");
-    const calendarElement = document.getElementById("calendar");
-    if (openName && isCalendarModalOpen) {
-      return !calendarElement?.contains(e.target);
-    } else if (openName) {
-      return !modalElement?.contains(e.target);
-    } else {
-      return true;
-    }
-  }
-
   const Modal = () => {
     useEffect(() => {
       function handleClick(e) {
@@ -124,21 +112,6 @@ const MainForm = ({ headerRef }) => {
 
       document.addEventListener("click", handleClick, false);
       return () => document.removeEventListener("click", handleClick, false);
-    }, []);
-
-    useEffect(() => {
-      function handleClick(e) {
-        if (
-          headerRef?.current &&
-          !headerRef.current?.contains(e.target) &&
-          checkOpenModal(e)
-        ) {
-          dispatch(setMinimize(false));
-        }
-      }
-
-      document.addEventListener("click", handleClick, true);
-      return () => document.removeEventListener("click", handleClick, true);
     }, []);
 
     return ReactDOM.createPortal(
