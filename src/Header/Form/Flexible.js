@@ -22,7 +22,7 @@ const getNext12Months = () => {
   return months;
 };
 
-const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
+const Flexible = ({ modalRef, handleInputField, flexibleRef, onlyOneTime }) => {
   const dispatch = useDispatch();
 
   const {
@@ -82,7 +82,7 @@ const Flexible = ({ modalRef, handleInputField, flexibleRef }) => {
   };
 
   return (
-    <Modal>
+    <Modal onlyOneTime={onlyOneTime}>
       <Modal.Open opens="flexible">
         <div
           onMouseEnter={handleMouseEnter}

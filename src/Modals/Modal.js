@@ -15,7 +15,7 @@ import AddDays from "../Header/Form/AddDays";
 
 export const modalContext = createContext();
 
-function Modal({ children }) {
+function Modal({ children, onlyOneTime }) {
   const openName = useSelector((store) => store.form.openName);
   const dispatch = useDispatch();
   const close = () => {
@@ -24,7 +24,7 @@ function Modal({ children }) {
   const open = setOpenName;
 
   return (
-    <modalContext.Provider value={{ openName, close, open }}>
+    <modalContext.Provider value={{ openName, close, open, onlyOneTime }}>
       {children}
     </modalContext.Provider>
   );
@@ -44,7 +44,8 @@ function Window({ children, name, modalRef, resetRef }) {
   const { curSelectInput: selectedInput, isCalendarModalOpen: isModalOpen } =
     useSelector((store) => store.form);
   const { startScroll } = useSelector((store) => store.app);
-  const { openName, close } = useContext(modalContext);
+  const { openName, close, onlyOneTime } = useContext(modalContext);
+
   const ref = useRef();
 
   const [position, setPosition] = useState(null);
@@ -95,9 +96,10 @@ function Window({ children, name, modalRef, resetRef }) {
         });
       }
     }
-
-    setIsRendered(true);
-  }, [openName, name]);
+    if (!onlyOneTime?.current) {
+      setIsRendered(true);
+    }
+  }, [openName, onlyOneTime, name]);
 
   useLayoutEffect(() => {
     let animationFrameId;
@@ -115,14 +117,18 @@ function Window({ children, name, modalRef, resetRef }) {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
-    }, 500);
+      if (onlyOneTime?.current) {
+        onlyOneTime.current = false;
+        setIsRendered(true);
+      }
+    }, 300);
 
     return () => {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [updatePosition, name, openName, startScroll]);
+  }, [updatePosition, name, onlyOneTime, openName, startScroll]);
 
   let modalStyle = {
     checkIn: `fixed z-10 1smd:w-[53rem]  bg-black bg-opacity-50 rounded-[2rem]`,

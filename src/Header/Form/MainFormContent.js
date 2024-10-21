@@ -284,6 +284,7 @@ const MainFormContent = () => {
     dispatch(setCombinedString(resultArray));
     // Return the result array
   }, [cachedData, dispatch]);
+  let onlyOneTime = useRef(true);
 
   return (
     <div
@@ -294,7 +295,7 @@ const MainFormContent = () => {
       }  items-center transition-all duration-[0.4s]`}
     >
       <div id="destination-form">
-        <Modal>
+        <Modal onlyOneTime={onlyOneTime}>
           <Modal.Open opens="destination">
             <div
               ref={buttonRef}
@@ -401,7 +402,7 @@ const MainFormContent = () => {
         `}
         ></div>
         {(dateOption === "dates" || dateOption === "") && (
-          <Modal>
+          <Modal onlyOneTime={onlyOneTime}>
             <Modal.Open opens="checkIn">
               <div
                 ref={checkInRef}
@@ -477,6 +478,7 @@ const MainFormContent = () => {
         )}
         {dateOption === "month" && (
           <Month
+            onlyOneTime={onlyOneTime}
             monthRef={monthRef}
             modalRef={modalRef}
             handleInputField={handleInputField}
@@ -501,13 +503,14 @@ const MainFormContent = () => {
         )}
         {dateOption === "flexible" && (
           <Flexible
+            onlyOneTime={onlyOneTime}
             flexibleRef={flexibleRef}
             handleInputField={handleInputField}
             modalRef={modalRef}
           ></Flexible>
         )}
         {(dateOption === "dates" || dateOption === "") && (
-          <Modal>
+          <Modal onlyOneTime={onlyOneTime}>
             <Modal.Open opens="checkOut">
               <div
                 ref={checkOutRef}
@@ -608,7 +611,7 @@ const MainFormContent = () => {
         ></div>
       </div>
 
-      <Modal>
+      <Modal onlyOneTime={onlyOneTime}>
         <div
           id="addGuest-form"
           ref={addGuestRef}

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { format, addMonths } from "date-fns";
 import { setHoverInput, setTextForInputDuration } from "./mainFormSlice";
 
-const Month = ({ modalRef, handleInputField, monthRef }) => {
+const Month = ({ modalRef, handleInputField, onlyOneTime, monthRef }) => {
   const startDurationDate = useSelector(
     (store) => store.form.startDurationDate
   );
@@ -43,7 +43,7 @@ const Month = ({ modalRef, handleInputField, monthRef }) => {
   const curInput = useSelector((store) => store.form.curSelectInput);
 
   return (
-    <Modal>
+    <Modal onlyOneTime={onlyOneTime}>
       <Modal.Open opens="month">
         <div
           onMouseEnter={() => dispatch(setHoverInput("month"))}
