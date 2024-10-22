@@ -54,9 +54,9 @@ const LocationDescriptionModal = ({ isOpen, onClose, children, position }) => {
           <div className="w-full flex items-center pl-6 h-16">
             <button
               onClick={onClose}
-              className="w-7 h-7 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
+              className="w-8 h-8 flex items-center justify-center cursor-pointer hover:rounded-full hover:bg-grey-dim"
             >
-              <img className="w-full h-full" src={arrowLeft} alt="" />
+              <img className="w-4 h-4" src={arrowLeft} alt="" />
             </button>
           </div>
           <div className="pl-8 pr-8 h-full w-full pb-8">

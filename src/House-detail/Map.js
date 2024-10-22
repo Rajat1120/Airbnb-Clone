@@ -121,7 +121,7 @@ const Map = () => {
                 <span className="underline font-medium">Show more</span>
                 <span>
                   <img
-                    className="h-6 w-6"
+                    className="h-4 w-4"
                     src={showMore}
                     alt="Show more icon"
                   />
