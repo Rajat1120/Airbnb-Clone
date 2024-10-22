@@ -62,11 +62,97 @@ const SkeletonGrid = ({ itemCount = 12, gridClasses = "" }) => {
 const IMAGE_WIDTH = 301.91;
 const ITEMS_PER_PAGE = 16;
 
+// Handles favorite-related effects
+const useFavoriteEffect = (
+  itemId,
+  userData,
+  isFavorite,
+  saveFavorite,
+  deleteFavorite
+) => {
+  useEffect(() => {
+    const handleFavoriteUpdate = async () => {
+      if (!itemId || !userData) return;
+
+      if (isFavorite) {
+        await saveFavorite(itemId);
+      } else {
+        await deleteFavorite(itemId);
+      }
+    };
+
+    handleFavoriteUpdate();
+  }, [itemId, userData, isFavorite, saveFavorite, deleteFavorite]);
+};
+
+// Manages scroll positions for house listings
+const useScrollPositions = (houseListingData) => {
+  const [localScrollPositions, setLocalScrollPositions] = useState({});
+
+  useEffect(() => {
+    if (!houseListingData) return;
+
+    const initialScrollPositions = {};
+    houseListingData.pages.forEach((page) => {
+      page.forEach((item) => {
+        initialScrollPositions[item.id] = {
+          isAtStart: true,
+          isAtEnd: false,
+        };
+      });
+    });
+    setLocalScrollPositions(initialScrollPositions);
+  }, [houseListingData]);
+
+  return [localScrollPositions, setLocalScrollPositions];
+};
+
+// Handles window scroll event listeners
+const useWindowScrollEffect = (handleWindowScroll) => {
+  useEffect(() => {
+    window.addEventListener("scroll", handleWindowScroll);
+    return () => window.removeEventListener("scroll", handleWindowScroll);
+  }, [handleWindowScroll]);
+};
+
+// Manages screen size detection
+const useScreenSize = () => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 743px)");
+    setIsSmallScreen(mediaQuery?.matches);
+
+    const handleResize = (event) => setIsSmallScreen(event.matches);
+    mediaQuery?.addEventListener("change", handleResize);
+
+    return () => mediaQuery?.removeEventListener("change", handleResize);
+  }, []);
+
+  return isSmallScreen;
+};
+
+// Manages scroll restoration and position
+const useScrollRestoration = (selectedIcon, startScroll) => {
+  // Initial scroll restoration
+  useLayoutEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Handle scroll position based on startScroll
+  useLayoutEffect(() => {
+    if (!startScroll) window.scrollTo(0, 10);
+  }, [selectedIcon, startScroll]);
+};
+
+// Main hook that combines all functionality
 const useCustomEffects = ({
   itemId,
   userData,
   isFavorite,
-  favListings,
   saveFavorite,
   deleteFavorite,
   houseListingData,
@@ -75,81 +161,20 @@ const useCustomEffects = ({
   startScroll,
   showMore,
 }) => {
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
-  const [localScrollPositions, setLocalScrollPositions] = useState({});
+  // Initialize individual hooks
+  const isSmallScreen = useScreenSize();
+  const [localScrollPositions, setLocalScrollPositions] =
+    useScrollPositions(houseListingData);
 
-  // Favorite update effect
-  useEffect(() => {
-    const handleFavoriteUpdate = async () => {
-      if (itemId && userData) {
-        if (isFavorite) {
-          await saveFavorite(itemId);
-        } else {
-          await deleteFavorite(itemId);
-        }
-      }
-    };
+  // Set up all effects
+  useFavoriteEffect(itemId, userData, isFavorite, saveFavorite, deleteFavorite);
+  useWindowScrollEffect(handleWindowScroll);
+  useScrollRestoration(selectedIcon, startScroll);
 
-    handleFavoriteUpdate();
-  }, [favListings, isFavorite, userData, saveFavorite, deleteFavorite, itemId]);
-
-  // Initialize scroll positions
-  useEffect(() => {
-    if (houseListingData) {
-      const initialScrollPositions = {};
-      houseListingData.pages.forEach((page) => {
-        page.forEach((item) => {
-          initialScrollPositions[item.id] = {
-            isAtStart: true,
-            isAtEnd: false,
-          };
-        });
-      });
-      setLocalScrollPositions(initialScrollPositions);
-    }
-  }, [houseListingData]);
-
-  // Set up window scroll event
-  useEffect(() => {
-    window.addEventListener("scroll", handleWindowScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleWindowScroll);
-    };
-  }, [handleWindowScroll]);
-
-  // Scroll restoration effect
-  useLayoutEffect(() => {
-    if ("scrollRestoration" in window.history) {
-      window.history.scrollRestoration = "manual";
-    }
-    window.scrollTo(0, 0);
-  }, []);
-
-  // Manage showMore
+  // Handle showMore updates
   useEffect(() => {
     showMore.current = true;
   }, [selectedIcon, showMore]);
-
-  // Media query effect
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 743px)");
-    setIsSmallScreen(mediaQuery?.matches);
-
-    const handleResize = (event) => {
-      setIsSmallScreen(event.matches);
-    };
-
-    mediaQuery?.addEventListener("change", handleResize);
-    return () => {
-      mediaQuery?.removeEventListener("change", handleResize);
-    };
-  }, []);
-
-  // Scroll position effect
-  useLayoutEffect(() => {
-    if (!startScroll) window.scrollTo(0, 10);
-  }, [selectedIcon, startScroll]);
 
   return {
     isSmallScreen,
@@ -159,18 +184,9 @@ const useCustomEffects = ({
   };
 };
 
-const useScrollHandlers = ({
-  setLocalScrollPositions,
-  hasNextPage,
-  isFetchingNextPage,
-  fetchNextPage,
-  showMore,
-  houseImagesRefs,
-  containerRef,
-}) => {
-  const dispatch = useDispatch();
-
-  // Handle item scroll
+// Handles the item-level scroll logic
+const useItemScroll = (setLocalScrollPositions, houseImagesRefs) => {
+  // Track horizontal scroll position
   const handleScroll = useCallback(
     (itemId) => {
       const container = houseImagesRefs.current[itemId];
@@ -188,21 +204,38 @@ const useScrollHandlers = ({
     [setLocalScrollPositions, houseImagesRefs]
   );
 
-  const handleScrollBtn = (e, direction, itemId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const container = houseImagesRefs.current[itemId];
+  // Handle scroll button clicks
+  const handleScrollBtn = useCallback(
+    (e, direction, itemId) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const container = houseImagesRefs.current[itemId];
 
-    if (container) {
-      const scrollAmount = direction === "right" ? IMAGE_WIDTH : -IMAGE_WIDTH;
-      container.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    }
-  };
+      if (container) {
+        const scrollAmount = direction === "right" ? IMAGE_WIDTH : -IMAGE_WIDTH;
+        container.scrollBy({ left: scrollAmount, behavior: "smooth" });
+      }
+    },
+    [houseImagesRefs]
+  );
 
-  // Handle window scroll
+  return { handleScroll, handleScrollBtn };
+};
+
+// Handles the window-level scroll logic
+const useWindowScroll = (
+  containerRef,
+  showMore,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage
+) => {
+  const dispatch = useDispatch();
+
   const handleWindowScroll = useCallback(() => {
     const currentScrollPosition = window.scrollY;
 
+    // Handle UI state updates
     dispatch(setMinimize(false));
     dispatch(setActiveInput(""));
 
@@ -212,6 +245,7 @@ const useScrollHandlers = ({
       dispatch(setStartScroll(true));
     }
 
+    // Handle infinite scroll
     if (!showMore.current) {
       if (
         containerRef.current &&
@@ -232,10 +266,69 @@ const useScrollHandlers = ({
     isFetchingNextPage,
   ]);
 
+  return handleWindowScroll;
+};
+
+// Main hook that combines both scroll handlers
+const useScrollHandlers = ({
+  setLocalScrollPositions,
+  hasNextPage,
+  isFetchingNextPage,
+  fetchNextPage,
+  showMore,
+  houseImagesRefs,
+  containerRef,
+}) => {
+  const { handleScroll, handleScrollBtn } = useItemScroll(
+    setLocalScrollPositions,
+    houseImagesRefs
+  );
+  const handleWindowScroll = useWindowScroll(
+    containerRef,
+    showMore,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage
+  );
+
   return {
     handleScroll,
     handleWindowScroll,
     handleScrollBtn,
+  };
+};
+
+const useHouseListingData = (ids, selectedIcon, selectedCountry, city) => {
+  const {
+    data: houseListingData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["iconFilter", ids, selectedIcon, selectedCountry, city],
+    queryFn: ({ pageParam = 0 }) =>
+      fetchRowsWithOptions(
+        ids,
+        selectedIcon,
+        selectedCountry,
+        city,
+        pageParam * ITEMS_PER_PAGE,
+        (pageParam + 1) * ITEMS_PER_PAGE - 1
+      ),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage && lastPage.length < ITEMS_PER_PAGE) return undefined;
+      return pages.length;
+    },
+    enabled: !!selectedIcon,
+  });
+
+  return {
+    houseListingData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    status,
   };
 };
 
@@ -260,28 +353,12 @@ const House = () => {
 
   // Fetch house data
   const {
-    data: houseListingData,
+    houseListingData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     status,
-  } = useInfiniteQuery({
-    queryKey: ["iconFilter", ids, selectedIcon, selectedCountry, city],
-    queryFn: ({ pageParam = 0 }) =>
-      fetchRowsWithOptions(
-        ids,
-        selectedIcon,
-        selectedCountry,
-        city,
-        pageParam * ITEMS_PER_PAGE,
-        (pageParam + 1) * ITEMS_PER_PAGE - 1
-      ),
-    getNextPageParam: (lastPage, pages) => {
-      if (lastPage && lastPage.length < ITEMS_PER_PAGE) return undefined;
-      return pages.length;
-    },
-    enabled: !!selectedIcon,
-  });
+  } = useHouseListingData(ids, selectedIcon, selectedCountry, city);
 
   const { handleScroll, handleWindowScroll, handleScrollBtn } =
     useScrollHandlers({
