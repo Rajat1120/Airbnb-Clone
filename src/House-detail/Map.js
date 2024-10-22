@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import LocationDescriptionModal from "./LocationDescriptionModal";
 import showMore from "../data/Icons svg/arrow-right.svg";
 import { useSelector } from "react-redux";
+import TruncatedText from "./Truncatedtext";
 
 const Map = () => {
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -28,14 +29,11 @@ const Map = () => {
 
     if (paragraph.scrollHeight > maxHeight) {
       setIsOverflowing(true);
-      paragraph.style.maxHeight = `${maxHeight}px`;
-      paragraph.classList.add("truncateLocDes");
     } else {
       setIsOverflowing(false);
-      paragraph.style.maxHeight = "none";
-      paragraph.classList.remove("truncateLocDes");
     }
-  }, [houseInfo, maxLines]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [houseInfo, maxLines, paragraphRef.current]);
 
   useEffect(() => {
     const fetchCoordinates = async () => {
@@ -103,32 +101,15 @@ const Map = () => {
             <span className="mb-4 font-medium">
               {houseInfo?.house_location}
             </span>
-            {locationDescp && (
-              <span
-                ref={paragraphRef}
-                className="font-light h-12 whitespace-pre-wrap overflow-hidden"
-              >
-                {houseInfo?.location_description}
-              </span>
-            )}
+            <TruncatedText
+              text={houseInfo?.location_description}
+              textRef={paragraphRef}
+              maxLines={maxLines}
+              onShowMore={() => setIsModalOpen(true)}
+              isOverflowing={isOverflowing}
+              imgSrc={showMore}
+            ></TruncatedText>
           </div>
-          {isOverflowing && (
-            <div className="w-full flex justify-start">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="flex items-center"
-              >
-                <span className="underline font-medium">Show more</span>
-                <span>
-                  <img
-                    className="h-4 w-4"
-                    src={showMore}
-                    alt="Show more icon"
-                  />
-                </span>
-              </button>
-            </div>
-          )}
         </div>
       </div>
       <LocationDescriptionModal

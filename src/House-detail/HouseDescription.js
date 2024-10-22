@@ -4,6 +4,7 @@ import showMore from "../data/Icons svg/arrow-right.svg";
 import HouseDescriptionModal from "./HouseDescriptionModal";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
+import TruncatedText from "./Truncatedtext";
 
 //custom hook
 const useTruncateParagraph = (paragraphRef, maxLines, isLoading) => {
@@ -24,13 +25,9 @@ const useTruncateParagraph = (paragraphRef, maxLines, isLoading) => {
     if (paragraph.scrollHeight > maxHeight) {
       // If content overflows, set the overflowing state to true and apply truncation
       setIsOverflowing(true);
-      paragraph.style.maxHeight = `${maxHeight}px`; // Limit the visible height of the paragraph
-      paragraph.classList.add("truncatePara"); // Add custom class to handle additional styling (e.g., ellipsis)
     } else {
       // If content does not overflow, remove truncation and reset max height
       setIsOverflowing(false);
-      paragraph.style.maxHeight = "none"; // Allow full content to be visible
-      paragraph.classList.remove("truncatePara"); // Remove truncation styling
     }
   }, [isLoading, maxLines, paragraphRef]);
 
@@ -42,7 +39,7 @@ const DescriptionWithShowMore = ({ description, setIsModalOpen }) => {
 
   const isLoading = useSelector((store) => store.houseDetail.isLoading);
 
-  let maxLines = 5;
+  let maxLines = 3;
 
   const { isOverflowing } = useTruncateParagraph(
     paragraphRef,
@@ -52,27 +49,14 @@ const DescriptionWithShowMore = ({ description, setIsModalOpen }) => {
 
   return (
     <div className="pt-8 h-60 flex flex-col justify-center pb-11 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-grey-dim">
-      <p className="flex-grow overflow-hidden relative">
-        <span
-          ref={paragraphRef}
-          className="absolute whitespace-pre-wrap inset-0 overflow-hidden"
-        >
-          {description}
-        </span>
-      </p>
-      {isOverflowing && (
-        <div className="w-full flex justify-start">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center"
-          >
-            <span className="underline font-medium">Show more</span>
-            <span>
-              <img className="h-4 w-4" src={showMore} alt="Show more" />
-            </span>
-          </button>
-        </div>
-      )}
+      <TruncatedText
+        text={description}
+        textRef={paragraphRef}
+        maxLines={maxLines}
+        onShowMore={() => setIsModalOpen(true)}
+        isOverflowing={isOverflowing}
+        imgSrc={showMore}
+      ></TruncatedText>
     </div>
   );
 };
