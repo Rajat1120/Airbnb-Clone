@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomerReviews from "./CustomerReviews";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
@@ -7,62 +6,79 @@ import { setMinimize } from "../Main/AppSlice";
 import GuestFavouriteBadge from "./GuestFavouriteBadge";
 import RatingsSection from "./RatingSection";
 
-const Review = () => {
-  const [showReviewSection, setShowReviewSection] = useState(true);
-  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+// Utility function to check if rating count exceeds 10
+const hasMultipleReviews = (ratingCount) => {
+  const numberMatch = ratingCount?.match(/\d+/);
+  const number = numberMatch ? parseInt(numberMatch[0], 10) : 0;
 
+  return number > 10;
+};
+
+// Custom hook for responsive review section visibility
+const useReviewSectionVisibility = (guestFavorite) => {
+  const [showReviewSection, setShowReviewSection] = React.useState(true);
   const dispatch = useDispatch();
 
-  function isNumberGreaterThanTen(inputString) {
-    // Use a regular expression to extract the number from the string
-    const numberMatch = inputString?.match(/\d+/);
-
-    // If a number is found, convert it to an integer
-    const number = numberMatch ? parseInt(numberMatch[0], 10) : 0;
-
-    // Return true if the number is greater than 10, else return false
-    return number > 10;
-  }
-
   useEffect(() => {
-    function handleResize() {
+    const handleResize = () => {
+      // Reset form state
       dispatch(setActiveInput(""));
       dispatch(setMinimize(false));
-      if (
-        window.innerWidth <= 824 &&
-        houseInfo.guest_favorite !== "Guest favourite"
-      ) {
-        setShowReviewSection(false);
-      } else {
-        setShowReviewSection(true);
-      }
-    }
+
+      // Update review section visibility based on screen width
+      const shouldShowSection =
+        window.innerWidth > 824 || guestFavorite === "Guest favourite";
+
+      setShowReviewSection(shouldShowSection);
+    };
+
+    // Initial check
     handleResize();
+
+    // Add event listener
     window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [houseInfo.guest_favorite, dispatch]);
+    // Cleanup
+    return () => window.removeEventListener("resize", handleResize);
+  }, [guestFavorite, dispatch]);
 
+  return showReviewSection;
+};
+
+// Container component for review sections
+const ReviewSectionsContainer = ({ showReviewSection, children }) => {
   return (
     <div
       id="Reviews"
       className={`
-      ${
-        showReviewSection ? "pt-12 " : " "
-      }  relative border-t 1xz:border-none w-full border-grey-dim  bg-shadow-gray-light 1xz:bg-white    ]`}
+        ${showReviewSection ? "pt-12 " : " "}
+        relative border-t 1xz:border-none w-full border-grey-dim 
+        bg-shadow-gray-light 1xz:bg-white
+      `}
     >
-      <GuestFavouriteBadge></GuestFavouriteBadge>
-
-      <RatingsSection showReviewSection={showReviewSection}></RatingsSection>
-
-      {isNumberGreaterThanTen(houseInfo?.rating_count) && (
-        <CustomerReviews
-          showReviewSection={showReviewSection}
-        ></CustomerReviews>
-      )}
+      {children}
     </div>
+  );
+};
+
+// Main Review component
+const Review = () => {
+  const houseInfo = useSelector((store) => store.houseDetail.houseInfo);
+  const showReviewSection = useReviewSectionVisibility(
+    houseInfo.guest_favorite
+  );
+  const hasEnoughReviews = hasMultipleReviews(houseInfo?.rating_count);
+
+  return (
+    <ReviewSectionsContainer showReviewSection={showReviewSection}>
+      <GuestFavouriteBadge />
+
+      <RatingsSection showReviewSection={showReviewSection} />
+
+      {hasEnoughReviews && (
+        <CustomerReviews showReviewSection={showReviewSection} />
+      )}
+    </ReviewSectionsContainer>
   );
 };
 
