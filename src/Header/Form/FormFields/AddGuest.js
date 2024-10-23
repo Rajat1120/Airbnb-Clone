@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAdultCount,
@@ -8,209 +8,190 @@ import {
 } from "../mainFormSlice";
 import { useLocation } from "react-router";
 
-const AddGuest = () => {
-  const [Disable, setDisable] = useState(false);
+// Counter Button Component
+const CounterButton = ({ disabled, onClick, children, className = "" }) => (
+  <button
+    disabled={disabled}
+    onClick={onClick}
+    className={`w-8 h-8 m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey ${
+      disabled ? "cursor-disable" : ""
+    } ${className}`}
+  >
+    {children}
+  </button>
+);
 
-  const dispatch = useDispatch();
-  const adultCount = useSelector((store) => store.form.adultCount);
-  const childCount = useSelector((store) => store.form.childCount);
-  const infantCount = useSelector((store) => store.form.infantCount);
-  const petCount = useSelector((store) => store.form.petsCount);
-
-  useEffect(() => {
-    if (adultCount > 0 && infantCount + childCount + petCount === 0) {
-      setDisable(false);
-    } else if (adultCount > 1 && infantCount + childCount + petCount > 0) {
-      setDisable(false);
-    } else if (adultCount === 0 || infantCount + childCount + petCount > 0) {
-      setDisable(true);
-    }
-  }, [adultCount, childCount, infantCount, petCount]);
-  const location = useLocation();
-  let onCheckOutPage = location.pathname?.includes("/book");
-  return (
-    <div className=" w-full 1xz:py-5 1xz:px-5 flex-center ">
-      <div
-        className={` ${
-          onCheckOutPage ? "" : "1md:py-6"
-        }  flex-center w-full flex-col `}
-      >
-        <div className="flex  w-full flex-center flex-col">
-          <div className="w-full justify-between flex items-center">
-            <div className="">
-              <p>Adults</p>
-              <p className="text-sm text-grey"> Age 13 or above</p>
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                disabled={Disable}
-                onClick={() => {
-                  let count = adultCount - 1;
-                  dispatch(setAdultCount(count));
-                }}
-                className={`w-8 h-8  m-4 items-center justify-center ${
-                  Disable ? "cursor-disable" : ""
-                } rounded-full bg-white border-[1px] border-grey`}
-              >
-                -
-              </button>
-              <p className="w-3 flex-center font-light">
-                {adultCount}
-                <span className="text-sm ">
-                  {adultCount === 16 ? "+" : ""}
-                </span>{" "}
-              </p>
-              <button
-                disabled={adultCount + childCount === 16}
-                onClick={() => {
-                  let count = adultCount + 1;
-                  dispatch(setAdultCount(count));
-                }}
-                className={`w-8 h-8 flex ${
-                  adultCount + childCount === 16 ? "cursor-disable" : ""
-                }   m-4 items-center  justify-center rounded-full bg-white border-[1px] border-grey`}
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
-        </div>
-        <div className="flex w-full flex-center flex-col">
-          <div className="w-full justify-between flex items-center">
-            <div className="">
-              <p>Children</p>
-              <p className="text-sm text-grey"> Ages 2-12</p>
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                disabled={childCount === 0}
-                onClick={() => {
-                  let count = childCount - 1;
-                  dispatch(setChildCount(count));
-                }}
-                className={` w-8 h-8  m-4 
-              ${childCount === 0 ? "cursor-disable" : ""} 
-              items-center justify-center rounded-full bg-white border-[1px] border-grey `}
-              >
-                -
-              </button>
-              <p className="w-3 flex-center font-light">{childCount}</p>
-              <button
-                disabled={childCount + adultCount === 16}
-                onClick={() => {
-                  if (adultCount + childCount + infantCount + petCount === 0) {
-                    let curAdultCount = adultCount + 1;
-                    dispatch(setAdultCount(curAdultCount));
-
-                    let curPetCount = childCount + 1;
-                    dispatch(setChildCount(curPetCount));
-                  } else {
-                    let curPetCount = childCount + 1;
-                    dispatch(setChildCount(curPetCount));
-                  }
-                }}
-                className={`w-8 h-8 flex  m-4 items-center ${
-                  childCount + adultCount === 16 ? "cursor-disable" : ""
-                } justify-center rounded-full bg-white border-[1px] border-grey`}
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
-        </div>
-        <div className="flex w-full flex-center flex-col">
-          <div className="w-full justify-between flex items-center">
-            <div className="">
-              <p>Infants</p>
-              <p className="text-sm text-grey"> Under 2</p>
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                disabled={infantCount === 0}
-                onClick={() => {
-                  let count = infantCount - 1;
-                  dispatch(setInfantCount(count));
-                }}
-                className={` w-8 h-8 ${
-                  infantCount === 0 ? "cursor-disable" : ""
-                }  m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey`}
-              >
-                -
-              </button>
-              <p className="w-3 flex-center font-light">{infantCount}</p>
-              <button
-                disabled={infantCount === 5}
-                onClick={() => {
-                  if (adultCount + childCount + infantCount + petCount === 0) {
-                    let curAdultCount = adultCount + 1;
-                    dispatch(setAdultCount(curAdultCount));
-
-                    let curPetCount = infantCount + 1;
-                    dispatch(setInfantCount(curPetCount));
-                  } else {
-                    let curPetCount = infantCount + 1;
-                    dispatch(setInfantCount(curPetCount));
-                  }
-                }}
-                className={`w-8 ${
-                  infantCount === 5 ? "cursor-disable" : ""
-                }  h-8 flex  m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey `}
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div className="w-full mt-4 h-[1px] bg-shadow-gray"></div>
-        </div>
-        <div className="flex w-full flex-center flex-col">
-          <div className="w-full justify-between flex items-center">
-            <div className="">
-              <p>Pets</p>
-              <p className="text-sm hover:cursor-pointer  font-medium text-grey">
-                <u className="text-nowrap">Bringing a service animal?</u>
-              </p>
-            </div>
-            <div className="flex items-center justify-center">
-              <button
-                disabled={petCount === 0}
-                onClick={() => {
-                  let count = petCount - 1;
-                  dispatch(setPetsCount(count));
-                }}
-                className={` w-8 h-8  m-4 items-center justify-center 
-          ${petCount === 0 ? "cursor-disable" : ""}
-          rounded-full bg-white border-[1px] border-grey `}
-              >
-                -
-              </button>
-              <p className="w-3 flex-center font-light">{petCount}</p>
-              <button
-                disabled={petCount === 5}
-                onClick={() => {
-                  if (adultCount + childCount + infantCount + petCount === 0) {
-                    let curAdultCount = adultCount + 1;
-                    dispatch(setAdultCount(curAdultCount));
-
-                    let curPetCount = petCount + 1;
-                    dispatch(setPetsCount(curPetCount));
-                  } else {
-                    let curPetCount = petCount + 1;
-                    dispatch(setPetsCount(curPetCount));
-                  }
-                }}
-                className={` w-8 h-8 flex
-              ${
-                petCount === 5 ? "cursor-disable" : ""
-              }  m-4 items-center justify-center rounded-full bg-white border-[1px] border-grey `}
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
+// Guest Category Component
+const GuestCategory = ({
+  title,
+  subtitle,
+  count,
+  onDecrease,
+  onIncrease,
+  decreaseDisabled,
+  increaseDisabled,
+  showDivider = true,
+  extraContent,
+}) => (
+  <div className="flex w-full flex-center flex-col">
+    <div className="w-full justify-between flex items-center">
+      <div>
+        <p>{title}</p>
+        <p className="text-sm text-grey">{subtitle}</p>
+        {extraContent}
       </div>
+      <div className="flex items-center justify-center">
+        <CounterButton disabled={decreaseDisabled} onClick={onDecrease}>
+          -
+        </CounterButton>
+        <p className="w-3 flex-center font-light">
+          {count}
+          {title === "Adults" && count === 16 && (
+            <span className="text-sm">+</span>
+          )}
+        </p>
+        <CounterButton disabled={increaseDisabled} onClick={onIncrease}>
+          +
+        </CounterButton>
+      </div>
+    </div>
+    {showDivider && <div className="w-full mt-4 h-[1px] bg-shadow-gray" />}
+  </div>
+);
+
+const GuestCounter = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const {
+    adultCount,
+    childCount,
+    infantCount,
+    petsCount: petCount,
+  } = useSelector((store) => store.form);
+
+  const onCheckOutPage = location.pathname?.includes("/book");
+  const totalCount = adultCount + childCount + infantCount + petCount;
+
+  // Separate handlers for each guest type
+  const handleAdultDecrease = () => {
+    if (adultCount > 1) {
+      dispatch(setAdultCount(adultCount - 1));
+    }
+  };
+
+  const handleAdultIncrease = () => {
+    if (adultCount + childCount < 16) {
+      dispatch(setAdultCount(adultCount + 1));
+    }
+  };
+
+  const handleChildDecrease = () => {
+    if (childCount > 0) {
+      dispatch(setChildCount(childCount - 1));
+    }
+  };
+
+  const handleChildIncrease = () => {
+    if (childCount + adultCount < 16) {
+      if (totalCount === 0) {
+        dispatch(setAdultCount(1));
+      }
+      dispatch(setChildCount(childCount + 1));
+    }
+  };
+
+  const handleInfantDecrease = () => {
+    if (infantCount > 0) {
+      dispatch(setInfantCount(infantCount - 1));
+    }
+  };
+
+  const handleInfantIncrease = () => {
+    if (infantCount < 5) {
+      if (totalCount === 0) {
+        dispatch(setAdultCount(1));
+      }
+      dispatch(setInfantCount(infantCount + 1));
+    }
+  };
+
+  const handlePetDecrease = () => {
+    if (petCount > 0) {
+      dispatch(setPetsCount(petCount - 1));
+    }
+  };
+
+  const handlePetIncrease = () => {
+    if (petCount < 5) {
+      if (totalCount === 0) {
+        dispatch(setAdultCount(1));
+      }
+      dispatch(setPetsCount(petCount + 1));
+    }
+  };
+
+  const categories = [
+    {
+      title: "Adults",
+      subtitle: "Age 13 or above",
+      count: adultCount,
+      onDecrease: handleAdultDecrease,
+      onIncrease: handleAdultIncrease,
+      decreaseDisabled: adultCount <= 1,
+      increaseDisabled: adultCount + childCount === 16,
+    },
+    {
+      title: "Children",
+      subtitle: "Ages 2-12",
+      count: childCount,
+      onDecrease: handleChildDecrease,
+      onIncrease: handleChildIncrease,
+      decreaseDisabled: childCount === 0,
+      increaseDisabled: childCount + adultCount === 16,
+    },
+    {
+      title: "Infants",
+      subtitle: "Under 2",
+      count: infantCount,
+      onDecrease: handleInfantDecrease,
+      onIncrease: handleInfantIncrease,
+      decreaseDisabled: infantCount === 0,
+      increaseDisabled: infantCount === 5,
+    },
+    {
+      title: "Pets",
+      subtitle: "",
+      count: petCount,
+      onDecrease: handlePetDecrease,
+      onIncrease: handlePetIncrease,
+      decreaseDisabled: petCount === 0,
+      increaseDisabled: petCount === 5,
+      showDivider: false,
+      extraContent: (
+        <p className="text-sm hover:cursor-pointer font-medium text-grey">
+          <u className="text-nowrap">Bringing a service animal?</u>
+        </p>
+      ),
+    },
+  ];
+
+  return (
+    <div
+      className={`${
+        onCheckOutPage ? "" : "1md:py-6"
+      } flex-center w-full flex-col`}
+    >
+      {categories.map((category) => (
+        <GuestCategory key={category.title} {...category} />
+      ))}
+    </div>
+  );
+};
+
+const AddGuest = () => {
+  return (
+    <div className="w-full 1xz:py-5 1xz:px-5 flex-center">
+      <GuestCounter />
     </div>
   );
 };
