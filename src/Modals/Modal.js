@@ -101,6 +101,13 @@ function Window({ children, name, modalRef, resetRef }) {
     }
   }, [openName, onlyOneTime, name]);
 
+  useEffect(() => {
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [updatePosition]);
+
   useLayoutEffect(() => {
     let animationFrameId;
 
