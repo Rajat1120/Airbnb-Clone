@@ -41,8 +41,11 @@ function Open({ children, opens: opensWindowName }) {
 }
 
 function Window({ children, name, modalRef, resetRef }) {
-  const { curSelectInput: selectedInput, isCalendarModalOpen: isModalOpen } =
-    useSelector((store) => store.form);
+  const {
+    curSelectInput: selectedInput,
+    isCalendarModalOpen: isModalOpen,
+    dateOption,
+  } = useSelector((store) => store.form);
   const { startScroll } = useSelector((store) => store.app);
   const { openName, close, onlyOneTime } = useContext(modalContext);
 
@@ -100,6 +103,13 @@ function Window({ children, name, modalRef, resetRef }) {
       setIsRendered(true);
     }
   }, [openName, onlyOneTime, name]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+    };
+  }, [updatePosition]);
 
   useLayoutEffect(() => {
     let animationFrameId;
@@ -175,9 +185,8 @@ function Window({ children, name, modalRef, resetRef }) {
       >
         {cloneElement(children)}
         <div className="w-full flex justify-center items-center">
-          {(selectedInput === "checkIn" || selectedInput === "checkOut") && (
-            <AddDays />
-          )}
+          {(selectedInput === "checkIn" || selectedInput === "checkOut") &&
+            dateOption === "dates" && <AddDays />}
         </div>
       </div>
     </div>,

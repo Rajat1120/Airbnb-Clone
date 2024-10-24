@@ -158,10 +158,11 @@ const FooterComponent = ({
 
 // Custom hook for handling scroll behavior
 const useScrollBehavior = (dispatch) => {
-  React.useEffect(() => {
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollPosition = window.scrollY;
-      if (currentScrollPosition < 18) {
+
+      if (currentScrollPosition > 18) {
         setTimeout(() => {
           dispatch(setMinimize(false));
         }, 50);
@@ -182,7 +183,7 @@ const useHouseData = (id, houseInfo) => {
     queryFn: () => getRoomInfo(id),
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (data) {
       dispatch(setHouseInfo({ ...houseInfo, [id]: data }));
       dispatch(setIsLoading(false));

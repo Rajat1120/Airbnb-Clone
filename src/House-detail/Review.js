@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomerReviews from "./CustomerReviews";
 import { setActiveInput } from "../Header/Form/mainFormSlice";
@@ -16,7 +16,7 @@ const hasMultipleReviews = (ratingCount) => {
 
 // Custom hook for responsive review section visibility
 const useReviewSectionVisibility = (guestFavorite) => {
-  const [showReviewSection, setShowReviewSection] = React.useState(true);
+  const [showReviewSection, setShowReviewSection] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
