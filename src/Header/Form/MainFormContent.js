@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { format, addDays, subDays } from "date-fns";
 import searchIcon from "../../data/Icons svg/search-icon.svg";
 import Modal from "../../Modals/Modal";
@@ -10,7 +16,6 @@ import {
   setAdultCount,
   setChildCount,
   setCombinedString,
-  setCurrentMonth,
   setDestinationInputVal,
   setDisplayGuestInput,
   setDisplaySearch,
@@ -41,6 +46,9 @@ import Flexible from "./Flexible";
 import { setHitSearch, setMinimize } from "../../Main/AppSlice";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { handleSearchInput } from "./HandleSearch";
+import { useMinimizeFormOnOutsideClick } from "./MinimizeFormHook";
+import DestinationForm from "./DestinationForm";
+import DatesForm from "./DatesForm";
 
 const useGuestCount = ({
   adultCount,
@@ -92,8 +100,184 @@ const useGuestCount = ({
   ]);
 };
 
+// Custom hook to handle focus, cursor position, and blur logic on an input element
+const useAutoFocus = (inputRef, region, selectedInput) => {
+  useEffect(() => {
+    // Ensure the inputRef is attached to a valid element
+    if (inputRef.current) {
+      // Get the current length of the input's value
+      const length = inputRef.current.value.length;
+
+      // Set the cursor position to the end of the input's value
+      inputRef.current.setSelectionRange(length, length);
+
+      // Focus the input element
+      inputRef.current.focus();
+    }
+
+    // If the data is not "destination", blur the input element
+    if (selectedInput !== "destination") {
+      inputRef.current.blur();
+    }
+  }, [region, inputRef, selectedInput]);
+};
+
+// Custom hook to handle the cross button click actions for different input fields (e.g., destination, checkIn, guest).
+export const useHandleCrossClick = () => {
+  const dispatch = useDispatch();
+
+  const handleCrossClick = useCallback(
+    (e, inputField) => {
+      e.stopPropagation();
+
+      switch (inputField) {
+        case "destination":
+          // Reset destination related state
+          dispatch(setRegion("all"));
+          dispatch(setDestinationInputVal(null));
+          break;
+
+        case "checkIn":
+        case "checkOut":
+          // Reset date selection and activate checkIn field
+          dispatch(setSelectedStartDate(null));
+          dispatch(setSelectedEndDate(null));
+          dispatch(setActiveInput("checkIn"));
+          dispatch(setOpenName("checkIn"));
+          break;
+
+        case "guest":
+          // Reset guest-related state
+          dispatch(setAdultCount(0));
+          dispatch(setChildCount(0));
+          dispatch(setInfantCount(0));
+          dispatch(setPetsCount(0));
+          break;
+
+        default:
+          break;
+      }
+    },
+    [dispatch]
+  );
+
+  return handleCrossClick;
+};
+
+const useFormattedDates = () => {
+  const dispatch = useDispatch();
+  const { selectedStartDate, selectedEndDate } = useSelector(
+    (store) => store.form
+  );
+
+  // Format the dates using useMemo to avoid re-computation on every render
+  const formattedStartDate = useMemo(
+    () =>
+      selectedStartDate ? format(new Date(selectedStartDate), "dd MMM") : "",
+    [selectedStartDate]
+  );
+
+  const formattedEndDate = useMemo(
+    () => (selectedEndDate ? format(new Date(selectedEndDate), "dd MMM") : ""),
+    [selectedEndDate]
+  );
+
+  // Dispatch the formatted dates to the Redux store whenever they change
+  useEffect(() => {
+    dispatch(setStartDateToShow(formattedStartDate));
+    dispatch(setEndDateToShow(formattedEndDate));
+  }, [dispatch, formattedStartDate, formattedEndDate]);
+};
+
+const useProcessCombinedString = () => {
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+  const isFetching = useIsFetching({ queryKey: ["allRows"] });
+
+  const [cachedData, setCachedData] = useState(null);
+
+  useEffect(() => {
+    const data = queryClient.getQueryData(["allRows"]);
+    setCachedData(data);
+  }, [queryClient, isFetching]);
+
+  useEffect(() => {
+    let resultArray = [];
+
+    // Check if cachedData exists before processing
+    if (cachedData) {
+      // Loop over each item in the input array
+      cachedData.forEach((item) => {
+        // Combine city, country, and house-title into a single string
+        let combinedString = `${item.city}${item.country}${item["house-title"]}`;
+
+        // Remove all spaces and non-alphanumeric characters from the combined string
+        combinedString = combinedString.replace(/[^a-zA-Z0-9]/g, "");
+
+        // Create a new object with id as the key and combinedString as the value
+        const newObj = {
+          [item.id]: combinedString,
+        };
+
+        // Push the new object to the resultArray
+        resultArray.push(newObj);
+      });
+
+      // Dispatch the combined result array to Redux state
+      dispatch(setCombinedString(resultArray));
+    }
+  }, [cachedData, dispatch]);
+};
+
+const useGuestInputText = (curSelectInput) => {
+  const dispatch = useDispatch();
+  const {
+    adultCount,
+    childCount,
+    petCount,
+    infantCount,
+    petPlural,
+    extraGuest,
+    guestPlural,
+  } = useSelector((store) => store.form);
+  useEffect(() => {
+    // Create the guest input text based on the adult and child counts
+    let textForGuestInput = `${
+      adultCount + childCount > 0 && curSelectInput
+        ? `${adultCount + childCount} guest${
+            adultCount + childCount >= 2 ? "s" : ""
+          }`
+        : "Add guest"
+    }`;
+
+    dispatch(setTextForGuestInput(textForGuestInput));
+  }, [
+    adultCount,
+    dispatch,
+    childCount,
+    curSelectInput,
+    infantCount,
+    petCount,
+    petPlural,
+    extraGuest,
+    guestPlural,
+  ]);
+};
+
 const MainFormContent = () => {
   const dispatch = useDispatch();
+  const modalRef = useRef();
+  const checkInResetRef = useRef();
+  const checkOutResetRef = useRef();
+  const addGuestResetRef = useRef();
+  const buttonRef = useRef();
+  const checkInRef = useRef();
+  const checkOutRef = useRef();
+  const addGuestRef = useRef();
+  const flexibleRef = useRef();
+  const monthRef = useRef();
+  const inputRef = useRef(null);
+  let onlyOneTime = useRef(true);
 
   const {
     curSelectInput: data,
@@ -135,117 +319,36 @@ const MainFormContent = () => {
     setExtraGuest,
   });
 
-  const modalRef = useRef();
-  const checkInResetRef = useRef();
-  const checkOutResetRef = useRef();
-  const addGuestResetRef = useRef();
-  const buttonRef = useRef();
-  const checkInRef = useRef();
-  const checkOutRef = useRef();
-  const addGuestRef = useRef();
-  const flexibleRef = useRef();
-  const monthRef = useRef();
+  // custom hook for autofocus and blur behavior
+  useAutoFocus(inputRef, region, data);
 
-  const inputRef = useRef(null);
+  // custom hook for formatting dates
+  useFormattedDates();
 
-  useEffect(() => {
-    if (inputRef.current) {
-      const length = inputRef.current.value.length;
-      inputRef.current.setSelectionRange(length, length);
-      inputRef.current.focus();
-    }
-
-    if (data !== "destination") {
-      inputRef.current.blur();
-    }
-  }, [region, data]);
-
-  const formattedStartDate = selectedStartDate
-    ? format(new Date(selectedStartDate), "dd MMM")
-    : "";
-  const formattedEndDate = selectedEndDate
-    ? format(new Date(selectedEndDate), "dd MMM")
-    : "";
-
-  useEffect(() => {
-    dispatch(setStartDateToShow(formattedStartDate));
-    dispatch(setEndDateToShow(formattedEndDate));
-  }, [
-    formattedStartDate,
-    dispatch,
-    formattedEndDate,
-    selectedStartDate,
-    selectedEndDate,
-  ]);
-
-  // to minimize the form input fields, on clicking outside of the form
-  useEffect(
-    function () {
-      function handleClick(e) {
-        // if user click outside the form and open modal, minimize the active input field
-
-        if (isCalendarModalOpen) {
-          return;
-        } else if (
-          !modalRef.current?.contains(e.target) &&
-          !buttonRef.current?.contains(e.target) &&
-          !checkInRef.current?.contains(e.target) &&
-          !checkOutRef.current?.contains(e.target) &&
-          !addGuestRef.current?.contains(e.target) &&
-          !monthRef.current?.contains(e.target) &&
-          !flexibleRef.current?.contains(e.target)
-        ) {
-          dispatch(setActiveInput(""));
-          dispatch(setOpenName(""));
-          dispatch(setHoverInput(null));
-        }
-
-        // if user has selected the interval (both start and end date, do not reset the current month)
-
-        if (selectedStartDate && selectedEndDate) {
-          return;
-        } else if (
-          checkInRef?.current &&
-          !checkInRef.current?.contains(e.target) &&
-          checkOutRef?.current &&
-          !checkOutRef.current?.contains(e.target) &&
-          addGuestRef?.current &&
-          modalRef?.current &&
-          !modalRef.current?.contains(e.target)
-        ) {
-          dispatch(setCurrentMonth(new Date()));
-        }
-      }
-
-      document.addEventListener("click", handleClick, true);
-
-      return () => document.removeEventListener("click", handleClick, true);
+  //custom hook to minimize the form input fields, on clicking outside of the form
+  useMinimizeFormOnOutsideClick(
+    {
+      modalRef,
+      buttonRef,
+      checkInRef,
+      checkOutRef,
+      addGuestRef,
+      monthRef,
+      flexibleRef,
     },
-    [dispatch, selectedStartDate, isCalendarModalOpen, selectedEndDate]
+    isCalendarModalOpen,
+    selectedStartDate,
+    selectedEndDate
   );
 
-  function handleCrossClick(e, inputField) {
-    e.stopPropagation();
+  // custom hook
 
-    // dispatch(setActiveInput(""));
-    if (inputField === "destination") {
-      dispatch(setRegion("all"));
-      dispatch(setDestinationInputVal(null));
-    }
-    if (inputField === "checkIn" || inputField === "checkOut") {
-      dispatch(setSelectedStartDate(null));
-      dispatch(setSelectedEndDate(null));
-      dispatch(setActiveInput("checkIn"));
-      dispatch(setOpenName("checkIn"));
-    }
+  useProcessCombinedString();
 
-    if (inputField === "guest") {
-      dispatch(setAdultCount(0));
-      dispatch(setChildCount(0));
-      dispatch(setInfantCount(0));
-      dispatch(setPetsCount(0));
-    }
-  }
+  // custom hook for guest text input
+  useGuestInputText(data);
+
+  const handleCrossClick = useHandleCrossClick();
 
   useEffect(() => {
     if (!data) {
@@ -262,68 +365,6 @@ const MainFormContent = () => {
     }
   }
 
-  function handleDestinationField(input) {
-    if (input === "destination") {
-      dispatch(setActiveInput("destination"));
-    }
-  }
-
-  useEffect(() => {
-    let textForGuestInput = `${
-      adultCount + childCount > 0 && data
-        ? `${adultCount + childCount} guest${
-            adultCount + childCount >= 2 ? "s" : ""
-          }`
-        : "Add guest"
-    }`;
-
-    dispatch(setTextForGuestInput(textForGuestInput));
-  }, [
-    adultCount,
-    dispatch,
-    childCount,
-    data,
-    infantCount,
-    petCount,
-    petPlural,
-    extraGuest,
-    guestPlural,
-  ]);
-
-  const queryClient = useQueryClient();
-  const isFetching = useIsFetching({ queryKey: ["allRows"] });
-
-  const [cachedData, setCachedData] = useState(null);
-
-  useEffect(() => {
-    const data = queryClient.getQueryData(["allRows"]);
-    setCachedData(data);
-  }, [queryClient, isFetching]);
-
-  useEffect(() => {
-    let resultArray = [];
-
-    // Loop over each item in the input array
-    cachedData?.forEach((item) => {
-      // Combine city, country, and house-title into a single string
-      let combinedString = `${item.city}${item.country}${item["house-title"]}`;
-
-      // Remove all spaces and non-alphanumeric characters from the combined string
-      combinedString = combinedString.replace(/[^a-zA-Z0-9]/g, "");
-
-      // Create a new object with id as the key and combinedString as the value
-      const newObj = {
-        [item.id]: combinedString,
-      };
-
-      // Push the new object to the resultArray
-      resultArray.push(newObj);
-    });
-    dispatch(setCombinedString(resultArray));
-    // Return the result array
-  }, [cachedData, dispatch]);
-  let onlyOneTime = useRef(true);
-
   return (
     <div
       className={`1smd:flex w-full 1xz:grid 1xz:grid-cols-3  z-20   justify-center ${
@@ -332,85 +373,12 @@ const MainFormContent = () => {
           : "scale-100 opacity-1"
       }  items-center transition-all duration-[0.4s]`}
     >
-      <div id="destination-form">
-        <Modal onlyOneTime={onlyOneTime}>
-          <Modal.Open opens="destination">
-            <div
-              ref={buttonRef}
-              onMouseEnter={() => {
-                if (data !== "destination")
-                  dispatch(setHoverInput("destination"));
-              }}
-              onMouseLeave={() => {
-                if (data !== "destination") dispatch(setHoverInput(null));
-              }}
-              className={`flex 1xz:relative 1smd:static  ${
-                data === "destination"
-                  ? "shadow-destinationShadow rounded-full"
-                  : ""
-              } 1smd:justify-center 1xz:justify-start  items-center`}
-            >
-              <label
-                onClick={() => handleDestinationField("destination")}
-                htmlFor="destination"
-                className={`1smd:w-[17.67rem]  hover:before:content-[''] 1smd:before:w-[17.67rem] 1xz:before:w-full before:absolute before:top-0 before:h-[3.85rem] before:left-0 before:rounded-full
-
-                
-                ${data === "destination" ? "rounded-full w-full bg-white" : ""} 
-
-                 ${
-                   data === "destination"
-                     ? ""
-                     : "before:hover:bg-grey-light-50 "
-                 }
-                
-                before:hover:opacity-40   py-[0.8rem]  h-[3.85rem] px-[2rem] cursor-pointer`}
-              >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <div className="text-xs font-medium">Where</div>
-                    <input
-                      ref={inputRef}
-                      onChange={(e) => {
-                        dispatch(setRegion("all"));
-                        dispatch(setDestinationInputVal(e.target.value));
-                      }}
-                      type="text"
-                      className={`1smd:w-[10.62rem]  text-sm font-medium"
-                      outline-none focus:outline-none placeholder:text-sm ${
-                        data && data !== "destination" ? "bg-shadow-gray" : ""
-                      } placeholder:font-extralight placeholder:text-black`}
-                      id="destination"
-                      placeholder="Search Destinations"
-                      value={
-                        data
-                          ? destinationInputVal
-                            ? destinationInputVal
-                            : region !== "all"
-                            ? region
-                            : ""
-                          : ""
-                      }
-                    />
-                  </div>
-                  {(region !== "all" || destinationInputVal) &&
-                  data === "destination" ? (
-                    <div
-                      onClick={(e) => handleCrossClick(e, "destination")}
-                      className="w-[1.5rem] mr-[-1rem] self-center justify- flex justify-center  items-center z-50 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
-                    >
-                      <img className="h-4 w-4" src={cross} alt="" />
-                    </div>
-                  ) : null}
-                </div>
-              </label>
-            </div>
-          </Modal.Open>
-          <Modal.Window modalRef={modalRef} name="destination">
-            <Destination></Destination>
-          </Modal.Window>
-        </Modal>
-      </div>
+      <DestinationForm
+        onlyOneTime={onlyOneTime}
+        buttonRef={buttonRef}
+        inputRef={inputRef}
+        modalRef={modalRef}
+      ></DestinationForm>
 
       <div className="flex 1smd:justify-center 1xz:justify-between items-center">
         <div
@@ -440,79 +408,15 @@ const MainFormContent = () => {
         `}
         ></div>
         {(dateOption === "dates" || dateOption === "") && (
-          <Modal onlyOneTime={onlyOneTime}>
-            <Modal.Open opens="checkIn">
-              <div
-                ref={checkInRef}
-                onMouseEnter={() => dispatch(setHoverInput("checkIn"))}
-                onMouseLeave={() => dispatch(setHoverInput(null))}
-                className={`flex 1xz:w-full  1xz:relative 1smd:static ${
-                  data === "checkIn" ? "shadow-checkInShadow rounded-full" : ""
-                } justify-center  items-center`}
-              >
-                <div
-                  onClick={(e) => handleInputField(e.target, "checkIn")}
-                  className={`1smd:w-[8.67rem] hover:before:content-[''] 1smd:before:w-[8.67rem] 1xz:before:w-full before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full 
-
-                   ${
-                     data === "checkIn"
-                       ? "rounded-full w-full bg-white"
-                       : "before:hover:bg-grey-light-50 "
-                   }
-                  
-                  before:hover:opacity-40 
-                flex-col flex justify-center items-center 
-               h-[3.85rem] cursor-pointer`}
-                >
-                  <div
-                    className={`1smd:w-[5.62rem] 1smd:pl-0 1smd:pr-0 1xz:pl-6 1xz:pr-3  1xz:w-full outline-none flex justify-between items-center focus:outline-none h[2rem] placeholder:text-sm ${
-                      data && data !== "checkIn" ? "bg-shadow-gray" : ""
-                    } placeholder:font-extralight placeholder:text-black`}
-                  >
-                    <div
-                      className={` flex flex-col justify-center items-start ${
-                        startDateToShow && data === "checkIn"
-                          ? "ml-[-0.5rem]"
-                          : ""
-                      }`}
-                    >
-                      <p className="text-xs  font-medium">Check in</p>
-                      <p
-                        className={`${
-                          startDateToShow === "" || !data
-                            ? "font-extralight text-[0.9rem]"
-                            : "text-sm font-medium"
-                        }`}
-                      >
-                        {startDateToShow && data
-                          ? startDateToShow
-                          : "Add dates"}
-                      </p>
-                    </div>
-                    {startDateToShow !== "" && data === "checkIn" && (
-                      <div
-                        ref={checkInResetRef}
-                        onClick={(e) => handleCrossClick(e, "checkIn")}
-                        className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
-                      >
-                        <img className="h-4 w-4" src={cross} alt="" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </Modal.Open>
-            <Modal.Window
-              resetRef={checkInResetRef}
-              modalRef={modalRef}
-              name="checkIn"
-            >
-              <div className="flex  flex-col justify-center items-center ">
-                <CheckInOption></CheckInOption>
-                <Calendar></Calendar>
-              </div>
-            </Modal.Window>
-          </Modal>
+          <DatesForm
+            onlyOneTime={onlyOneTime}
+            checkInRef={checkInRef}
+            checkInResetRef={checkInResetRef}
+            modalRef={modalRef}
+            curSelectInput={data}
+            startDateToShow={startDateToShow}
+            handleInputField={handleInputField}
+          ></DatesForm>
         )}
         {dateOption === "month" && (
           <Month
