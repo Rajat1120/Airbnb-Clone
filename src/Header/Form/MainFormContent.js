@@ -92,8 +92,41 @@ const useGuestCount = ({
   ]);
 };
 
+// Custom hook to handle focus, cursor position, and blur logic on an input element
+const useAutoFocus = (inputRef, region, selectedInput) => {
+  useEffect(() => {
+    // Ensure the inputRef is attached to a valid element
+    if (inputRef.current) {
+      // Get the current length of the input's value
+      const length = inputRef.current.value.length;
+
+      // Set the cursor position to the end of the input's value
+      inputRef.current.setSelectionRange(length, length);
+
+      // Focus the input element
+      inputRef.current.focus();
+    }
+
+    // If the data is not "destination", blur the input element
+    if (selectedInput !== "destination") {
+      inputRef.current.blur();
+    }
+  }, [region, inputRef, selectedInput]);
+};
+
 const MainFormContent = () => {
   const dispatch = useDispatch();
+  const modalRef = useRef();
+  const checkInResetRef = useRef();
+  const checkOutResetRef = useRef();
+  const addGuestResetRef = useRef();
+  const buttonRef = useRef();
+  const checkInRef = useRef();
+  const checkOutRef = useRef();
+  const addGuestRef = useRef();
+  const flexibleRef = useRef();
+  const monthRef = useRef();
+  const inputRef = useRef(null);
 
   const {
     curSelectInput: data,
@@ -135,30 +168,8 @@ const MainFormContent = () => {
     setExtraGuest,
   });
 
-  const modalRef = useRef();
-  const checkInResetRef = useRef();
-  const checkOutResetRef = useRef();
-  const addGuestResetRef = useRef();
-  const buttonRef = useRef();
-  const checkInRef = useRef();
-  const checkOutRef = useRef();
-  const addGuestRef = useRef();
-  const flexibleRef = useRef();
-  const monthRef = useRef();
-
-  const inputRef = useRef(null);
-
-  useEffect(() => {
-    if (inputRef.current) {
-      const length = inputRef.current.value.length;
-      inputRef.current.setSelectionRange(length, length);
-      inputRef.current.focus();
-    }
-
-    if (data !== "destination") {
-      inputRef.current.blur();
-    }
-  }, [region, data]);
+  // custom hook for autofocus and blur behavior
+  useAutoFocus(inputRef, region, data);
 
   const formattedStartDate = selectedStartDate
     ? format(new Date(selectedStartDate), "dd MMM")
