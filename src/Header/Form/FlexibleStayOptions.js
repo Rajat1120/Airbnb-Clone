@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMonths, format } from "date-fns";
 import {
@@ -35,7 +35,7 @@ const getNext12Months = () => {
 
 // Custom hook for scroll functionality
 const useMonthScroll = (monthRef, leftScrollBtnRef, rightScrollBtnRef) => {
-  const [scrollPosition, setScrollPosition] = React.useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     const month = monthRef.current;
@@ -82,9 +82,9 @@ const useMonthScroll = (monthRef, leftScrollBtnRef, rightScrollBtnRef) => {
 
 // Custom hook for responsive design
 const useResponsiveDesign = () => {
-  const [isSmallScreen, setIsSmallScreen] = React.useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const mediaQuery = window.matchMedia(SMALL_SCREEN_BREAKPOINT);
     setIsSmallScreen(mediaQuery.matches);
 
@@ -212,9 +212,9 @@ const ScrollButtons = ({
 // Main component
 const FlexibleStayOptions = ({ showHovrPadding = true }) => {
   const dispatch = useDispatch();
-  const monthRef = React.useRef();
-  const rightScrollBtnRef = React.useRef();
-  const leftScrollBtnRef = React.useRef();
+  const monthRef = useRef();
+  const rightScrollBtnRef = useRef();
+  const leftScrollBtnRef = useRef();
 
   const { months: curSelectedMonths, stayDuration } = useSelector(
     (store) => store.form

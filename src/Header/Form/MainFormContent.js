@@ -41,6 +41,57 @@ import Flexible from "./Flexible";
 import { setHitSearch, setMinimize } from "../../Main/AppSlice";
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 import { handleSearchInput } from "./HandleSearch";
+
+const useGuestCount = ({
+  adultCount,
+  childCount,
+  petCount,
+  infantCount,
+  petPlural,
+  dispatch,
+  setGuestPlural,
+  setPetPlural,
+  setExtraGuest,
+}) => {
+  useEffect(() => {
+    // Calculate total primary guests (adults + children)
+    const primaryGuestCount = childCount + adultCount;
+    // Calculate total secondary guests (pets + infants)
+    const secondaryGuestCount = petCount + infantCount;
+
+    // Handle guest plural suffix
+    if (primaryGuestCount === 1 && secondaryGuestCount === 0) {
+      dispatch(setGuestPlural(""));
+    } else if (primaryGuestCount > 1 && secondaryGuestCount === 0) {
+      dispatch(setGuestPlural("s"));
+    } else if (primaryGuestCount > 1 && secondaryGuestCount > 0) {
+      dispatch(setGuestPlural("s,"));
+    } else if (primaryGuestCount === 1 && secondaryGuestCount > 0) {
+      dispatch(setGuestPlural(","));
+    }
+
+    // Handle pet plural suffix
+    dispatch(setPetPlural(petCount > 1 ? "s" : ""));
+
+    // Handle extra guest text
+    if (infantCount > 0) {
+      dispatch(setExtraGuest(`${infantCount} infant`));
+    } else if (petCount > 0) {
+      dispatch(setExtraGuest(`${petCount} pet${petPlural}`));
+    }
+  }, [
+    adultCount,
+    childCount,
+    petCount,
+    infantCount,
+    petPlural,
+    dispatch,
+    setGuestPlural,
+    setPetPlural,
+    setExtraGuest,
+  ]);
+};
+
 const MainFormContent = () => {
   const dispatch = useDispatch();
 
@@ -72,30 +123,17 @@ const MainFormContent = () => {
     (store) => store.app
   );
 
-  useEffect(() => {
-    if (childCount + adultCount === 1 && petCount + infantCount === 0) {
-      dispatch(setGuestPlural(""));
-    } else if (childCount + adultCount > 1 && petCount + infantCount === 0) {
-      dispatch(setGuestPlural("s"));
-    } else if (childCount + adultCount > 1 && petCount + infantCount > 0) {
-      dispatch(setGuestPlural("s,"));
-    } else if (childCount + adultCount === 1 && petCount + infantCount > 0) {
-      dispatch(setGuestPlural(","));
-    }
-    if (petCount > 1) {
-      dispatch(setPetPlural("s"));
-    } else if (petCount <= 1) {
-      dispatch(setPetPlural(""));
-    }
-
-    if (infantCount > 0) {
-      dispatch(setExtraGuest(`${infantCount} infant`));
-    }
-
-    if (petCount > 0 && infantCount === 0) {
-      dispatch(setExtraGuest(`${petCount} pet${petPlural}`));
-    }
-  }, [adultCount, childCount, dispatch, infantCount, petCount, petPlural]);
+  useGuestCount({
+    adultCount,
+    childCount,
+    petCount,
+    infantCount,
+    petPlural,
+    dispatch,
+    setGuestPlural,
+    setPetPlural,
+    setExtraGuest,
+  });
 
   const modalRef = useRef();
   const checkInResetRef = useRef();
