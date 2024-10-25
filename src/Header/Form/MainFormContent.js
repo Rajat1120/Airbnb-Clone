@@ -6,10 +6,7 @@ import React, {
   useState,
 } from "react";
 import { format, addDays, subDays } from "date-fns";
-import searchIcon from "../../data/Icons svg/search-icon.svg";
-import Modal from "../../Modals/Modal";
 
-import cross from "../../data/Icons svg/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveInput,
@@ -23,7 +20,6 @@ import {
   setEndDateToShow,
   setExtraGuest,
   setGuestPlural,
-  setHoverInput,
   setInfantCount,
   setMinimizeFormBtn,
   setOpenName,
@@ -35,16 +31,12 @@ import {
   setStartDateToShow,
   setTextForGuestInput,
 } from "./mainFormSlice";
-import Calendar from "../../Header/Form/FormFields/Calendar";
-import CheckInOption from "./DatesOption";
-
-import AddGuest from "./FormFields/AddGuest";
 
 import Month from "./Month";
 import Flexible from "./Flexible";
-import { setHitSearch, setMinimize } from "../../Main/AppSlice";
+
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
-import { handleSearchInput } from "./HandleSearch";
+
 import { useMinimizeFormOnOutsideClick } from "./MinimizeFormHook";
 import DestinationForm from "./DestinationForm";
 
@@ -282,7 +274,7 @@ const MainFormContent = () => {
   let onlyOneTime = useRef(true);
 
   const {
-    curSelectInput: data,
+    curSelectInput,
 
     petPlural,
 
@@ -317,7 +309,7 @@ const MainFormContent = () => {
   });
 
   // custom hook for autofocus and blur behavior
-  useAutoFocus(inputRef, region, data);
+  useAutoFocus(inputRef, region, curSelectInput);
 
   // custom hook for formatting dates
   useFormattedDates();
@@ -343,17 +335,17 @@ const MainFormContent = () => {
   useProcessCombinedString();
 
   // custom hook for guest text input
-  useGuestInputText(data);
+  useGuestInputText(curSelectInput);
 
   useEffect(() => {
-    if (!data) {
+    if (!curSelectInput) {
       dispatch(setOpenName(""));
     }
-  }, [data, dispatch]);
+  }, [curSelectInput, dispatch]);
 
   function handleInputField(target, input) {
     dispatch(setMinimizeFormBtn(""));
-    if (data === input) {
+    if (curSelectInput === input) {
       dispatch(setActiveInput(""));
     } else {
       dispatch(setActiveInput(input));
@@ -378,7 +370,7 @@ const MainFormContent = () => {
       <div className="flex 1smd:justify-center 1xz:justify-between items-center">
         <div
           className={`min-w-[0.05rem] ${
-            data
+            curSelectInput
               ? hoverInput === "destination" ||
                 hoverInput === "checkIn" ||
                 hoverInput === "month" ||
@@ -393,10 +385,10 @@ const MainFormContent = () => {
               : "bg-gray-300"
           } h-[2rem] 
         ${
-          data === "destination" ||
-          data === "checkIn" ||
-          data === "month" ||
-          data === "flexible"
+          curSelectInput === "destination" ||
+          curSelectInput === "checkIn" ||
+          curSelectInput === "month" ||
+          curSelectInput === "flexible"
             ? "hidden"
             : ""
         }
@@ -408,7 +400,7 @@ const MainFormContent = () => {
             checkInRef={checkInRef}
             checkInResetRef={checkInResetRef}
             modalRef={modalRef}
-            curSelectInput={data}
+            curSelectInput={curSelectInput}
             startDateToShow={startDateToShow}
             handleInputField={handleInputField}
           ></CheckInDateForm>
@@ -424,7 +416,7 @@ const MainFormContent = () => {
         {(dateOption === "dates" || dateOption === "") && (
           <div
             className={`w-[0.05rem] ${
-              data
+              curSelectInput
                 ? hoverInput === "checkOut" || hoverInput === "checkIn"
                   ? "bg-shadow-gray"
                   : " bg-gray-300"
@@ -434,7 +426,11 @@ const MainFormContent = () => {
             }
           
           h-[2rem]
-          ${data === "checkOut" || data === "checkIn" ? "hidden" : ""}
+          ${
+            curSelectInput === "checkOut" || curSelectInput === "checkIn"
+              ? "hidden"
+              : ""
+          }
           `}
           ></div>
         )}
@@ -452,14 +448,14 @@ const MainFormContent = () => {
             checkOutResetRef={checkOutResetRef}
             checkOutRef={checkOutRef}
             modalRef={modalRef}
-            curSelectInput={data}
+            curSelectInput={curSelectInput}
             EndDateToShow={EndDateToShow}
             handleInputField={handleInputField}
           ></CheckOutDateForm>
         )}
         <div
           className={`min-w-[0.05rem] ${
-            data
+            curSelectInput
               ? hoverInput === "checkOut" ||
                 hoverInput === "addGuest" ||
                 hoverInput === "month" ||
@@ -474,10 +470,10 @@ const MainFormContent = () => {
               : "bg-grey-light-50 "
           } h-[2rem]
         ${
-          data === "checkOut" ||
-          data === "addGuest" ||
-          data === "month" ||
-          data === "flexible"
+          curSelectInput === "checkOut" ||
+          curSelectInput === "addGuest" ||
+          curSelectInput === "month" ||
+          curSelectInput === "flexible"
             ? "hidden"
             : ""
         }
