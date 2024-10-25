@@ -271,7 +271,7 @@ const HouseDetail = () => {
   }, []);
 
   return (
-    <div className="relative pb-20 1xz:pb-0 overflow-x-hidden 1xz:overflow-x-visible">
+    <div className="relative pb-20 1xz:pb-0 overflow-x-clip">
       <HeaderWrapper
         headerRef={headerRef}
         minimize={minimize}
