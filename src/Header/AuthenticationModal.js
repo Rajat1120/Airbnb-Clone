@@ -66,7 +66,7 @@ const InputField = ({
     <label
       htmlFor={id}
       className={`w-full absolute text-grey font-light left-2 transition-all duration-[0.1s] ${
-        isActive || value ? "text-xs top-4" : "top-1/2 -translate-y-3"
+        isActive || value ? "text-xs top-1" : "top-1/2 -translate-y-3"
       }`}
     >
       {label}
