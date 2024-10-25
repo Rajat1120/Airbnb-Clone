@@ -6,15 +6,43 @@ import { useDispatch, useSelector } from "react-redux";
 import { format, addMonths } from "date-fns";
 import { setHoverInput, setTextForInputDuration } from "./mainFormSlice";
 
-const Month = ({ modalRef, handleInputField, onlyOneTime, monthRef }) => {
-  const startDurationDate = useSelector(
-    (store) => store.form.startDurationDate
+const DateDisplay = ({
+  curInput,
+  curSelectedInput,
+  formattedStartDate,
+  formatEndDate,
+  handleClick,
+}) => {
+  return (
+    <div
+      className={`1smd:w-[17.3rem] 1xz:before:left-0 1xz:before:w-full h-[3.85rem] hover:before:content-[''] 1smd:before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full ${
+        curInput === "month"
+          ? "rounded-full bg-white"
+          : "before:hover:bg-[#c0c0c0]"
+      } before:hover:opacity-40 flex items-center justify-center`}
+      onClick={handleClick}
+    >
+      <div className="flex flex-col 1smd:w-[14.8rem] items-start justify-center">
+        <p className="text-xs font-medium">When</p>
+        {curSelectedInput ? (
+          <p className="text-sm font-medium">
+            {formattedStartDate} - {formatEndDate}
+          </p>
+        ) : (
+          <span className="text-sm font-thin">Any time</span>
+        )}
+      </div>
+    </div>
   );
+};
 
+const Month = ({ modalRef, handleInputField, onlyOneTime, monthRef }) => {
+  const {
+    startDurationDate,
+    curSelectInput: curSelectedInput,
+    curDot: currentDot,
+  } = useSelector((store) => store.form);
   const dispatch = useDispatch();
-  const curSelectedInput = useSelector((store) => store.form.curSelectInput);
-
-  const currentDot = useSelector((store) => store.form.curDot);
 
   const formattedStartDate = startDurationDate
     ? format(startDurationDate, "MMM d")
@@ -55,25 +83,13 @@ const Month = ({ modalRef, handleInputField, onlyOneTime, monthRef }) => {
           } `}
           ref={monthRef}
         >
-          <div
-            className={`1smd:w-[17.3rem] 1xz:before:left-0 1xz:before:w-full h-[3.85rem] hover:before:content-[''] 1smd:before:w-[17.3rem] before:absolute before:top-0 before:h-[3.85rem] 1smd:before:left-[17.67rem] before:rounded-full  ${
-              curInput === "month"
-                ? "rounded-full bg-white"
-                : "before:hover:bg-[#c0c0c0] "
-            }  before:hover:opacity-40  flex items-center justify-center`}
-            onClick={handleClick}
-          >
-            <div className="flex flex-col 1smd:w-[14.8rem] items-start justify-center">
-              <p className="text-xs font-medium">When</p>
-              {curSelectedInput ? (
-                <p className="text-sm font-medium ">
-                  {formattedStartDate} - {formatEndDate}
-                </p>
-              ) : (
-                <span className="text-sm font-thin">Any time</span>
-              )}
-            </div>
-          </div>
+          <DateDisplay
+            curInput={curInput}
+            curSelectedInput={curSelectedInput}
+            formattedStartDate={formattedStartDate}
+            formatEndDate={formatEndDate}
+            handleClick={handleClick}
+          ></DateDisplay>
         </div>
       </Modal.Open>
       <Modal.Window modalRef={modalRef} name="month">
