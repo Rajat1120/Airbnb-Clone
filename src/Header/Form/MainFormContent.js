@@ -32,17 +32,11 @@ import {
   setTextForGuestInput,
 } from "./mainFormSlice";
 
-import Month from "./Month";
-import Flexible from "./Flexible";
-
 import { useIsFetching, useQueryClient } from "@tanstack/react-query";
 
 import { useMinimizeFormOnOutsideClick } from "./MinimizeFormHook";
-import DestinationForm from "./DestinationForm";
 
-import CheckInDateForm from "./CheckInDateForm";
-import CheckOutDateForm from "./CheckOutDateForm";
-import AddGuestForm from "./AddGuestForm";
+import SearchForm from "./SearchForm";
 
 const useGuestCount = ({
   adultCount,
@@ -261,9 +255,6 @@ const useGuestInputText = (curSelectInput) => {
 const MainFormContent = () => {
   const dispatch = useDispatch();
   const modalRef = useRef();
-  const checkInResetRef = useRef();
-  const checkOutResetRef = useRef();
-  const addGuestResetRef = useRef();
   const buttonRef = useRef();
   const checkInRef = useRef();
   const checkOutRef = useRef();
@@ -271,30 +262,19 @@ const MainFormContent = () => {
   const flexibleRef = useRef();
   const monthRef = useRef();
   const inputRef = useRef(null);
-  let onlyOneTime = useRef(true);
 
   const {
     curSelectInput,
-
     petPlural,
-
-    startDateToShow,
-    hoverInput,
-    EndDateToShow,
     selectedStartDate,
     selectedEndDate,
-
     region,
     adultCount,
-
     childCount,
     infantCount,
     petsCount: petCount,
-    dateOption,
     isCalendarModalOpen,
   } = useSelector((store) => store.form);
-
-  const { minimize, startScroll } = useSelector((store) => store.app);
 
   useGuestCount({
     adultCount,
@@ -353,143 +333,17 @@ const MainFormContent = () => {
   }
 
   return (
-    <div
-      className={`1smd:flex w-full 1xz:grid 1xz:grid-cols-3  z-20   justify-center ${
-        !minimize && !startScroll
-          ? "scale-[0.6] opacity-50"
-          : "scale-100 opacity-1"
-      }  items-center transition-all duration-[0.4s]`}
-    >
-      <DestinationForm
-        onlyOneTime={onlyOneTime}
-        buttonRef={buttonRef}
-        inputRef={inputRef}
-        modalRef={modalRef}
-      ></DestinationForm>
-
-      <div className="flex 1smd:justify-center 1xz:justify-between items-center">
-        <div
-          className={`min-w-[0.05rem] ${
-            curSelectInput
-              ? hoverInput === "destination" ||
-                hoverInput === "checkIn" ||
-                hoverInput === "month" ||
-                hoverInput === "flexible"
-                ? "bg-shadow-gray"
-                : "bg-gray-300"
-              : hoverInput === "destination" ||
-                hoverInput === "checkIn" ||
-                hoverInput === "month" ||
-                hoverInput === "flexible"
-              ? "bg-white"
-              : "bg-gray-300"
-          } h-[2rem] 
-        ${
-          curSelectInput === "destination" ||
-          curSelectInput === "checkIn" ||
-          curSelectInput === "month" ||
-          curSelectInput === "flexible"
-            ? "hidden"
-            : ""
-        }
-        `}
-        ></div>
-        {(dateOption === "dates" || dateOption === "") && (
-          <CheckInDateForm
-            onlyOneTime={onlyOneTime}
-            checkInRef={checkInRef}
-            checkInResetRef={checkInResetRef}
-            modalRef={modalRef}
-            curSelectInput={curSelectInput}
-            startDateToShow={startDateToShow}
-            handleInputField={handleInputField}
-          ></CheckInDateForm>
-        )}
-        {dateOption === "month" && (
-          <Month
-            onlyOneTime={onlyOneTime}
-            monthRef={monthRef}
-            modalRef={modalRef}
-            handleInputField={handleInputField}
-          ></Month>
-        )}
-        {(dateOption === "dates" || dateOption === "") && (
-          <div
-            className={`w-[0.05rem] ${
-              curSelectInput
-                ? hoverInput === "checkOut" || hoverInput === "checkIn"
-                  ? "bg-shadow-gray"
-                  : " bg-gray-300"
-                : hoverInput === "checkOut" || hoverInput === "checkIn"
-                ? "bg-white"
-                : " bg-gray-300"
-            }
-          
-          h-[2rem]
-          ${
-            curSelectInput === "checkOut" || curSelectInput === "checkIn"
-              ? "hidden"
-              : ""
-          }
-          `}
-          ></div>
-        )}
-        {dateOption === "flexible" && (
-          <Flexible
-            onlyOneTime={onlyOneTime}
-            flexibleRef={flexibleRef}
-            handleInputField={handleInputField}
-            modalRef={modalRef}
-          ></Flexible>
-        )}
-        {(dateOption === "dates" || dateOption === "") && (
-          <CheckOutDateForm
-            onlyOneTime={onlyOneTime}
-            checkOutResetRef={checkOutResetRef}
-            checkOutRef={checkOutRef}
-            modalRef={modalRef}
-            curSelectInput={curSelectInput}
-            EndDateToShow={EndDateToShow}
-            handleInputField={handleInputField}
-          ></CheckOutDateForm>
-        )}
-        <div
-          className={`min-w-[0.05rem] ${
-            curSelectInput
-              ? hoverInput === "checkOut" ||
-                hoverInput === "addGuest" ||
-                hoverInput === "month" ||
-                hoverInput === "flexible"
-                ? "bg-shadow-gray"
-                : "bg-grey-light-50 "
-              : hoverInput === "checkOut" ||
-                hoverInput === "addGuest" ||
-                hoverInput === "month" ||
-                hoverInput === "flexible"
-              ? "bg-white"
-              : "bg-grey-light-50 "
-          } h-[2rem]
-        ${
-          curSelectInput === "checkOut" ||
-          curSelectInput === "addGuest" ||
-          curSelectInput === "month" ||
-          curSelectInput === "flexible"
-            ? "hidden"
-            : ""
-        }
-        
-        `}
-        ></div>
-      </div>
-
-      <AddGuestForm
-        onlyOneTime={onlyOneTime}
-        handleInputField={handleInputField}
-        addGuestRef={addGuestRef}
-        addGuestResetRef={addGuestResetRef}
-        modalRef={modalRef}
-      ></AddGuestForm>
-    </div>
+    <SearchForm
+      handleInputField={handleInputField}
+      buttonRef={buttonRef}
+      inputRef={inputRef}
+      modalRef={modalRef}
+      checkInRef={checkInRef}
+      checkOutRef={checkOutRef}
+      monthRef={monthRef}
+      flexibleRef={flexibleRef}
+      addGuestRef={addGuestRef}
+    ></SearchForm>
   );
 };
 
