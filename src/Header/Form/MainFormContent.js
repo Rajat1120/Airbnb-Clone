@@ -50,6 +50,7 @@ import DestinationForm from "./DestinationForm";
 
 import CheckInDateForm from "./CheckInDateForm";
 import CheckOutDateForm from "./CheckOutDateForm";
+import AddGuestForm from "./AddGuestForm";
 
 const useGuestCount = ({
   adultCount,
@@ -282,31 +283,26 @@ const MainFormContent = () => {
 
   const {
     curSelectInput: data,
-    guestPlural,
+
     petPlural,
-    extraGuest,
-    destinationInputVal,
+
     startDateToShow,
     hoverInput,
     EndDateToShow,
     selectedStartDate,
     selectedEndDate,
-    textForGuestInput,
-    textForFlexibleInput,
+
     region,
     adultCount,
-    textForInputDuration,
+
     childCount,
     infantCount,
     petsCount: petCount,
     dateOption,
     isCalendarModalOpen,
-    combinedString,
   } = useSelector((store) => store.form);
 
-  const { hitSearch, minimize, startScroll } = useSelector(
-    (store) => store.app
-  );
+  const { minimize, startScroll } = useSelector((store) => store.app);
 
   useGuestCount({
     adultCount,
@@ -348,8 +344,6 @@ const MainFormContent = () => {
 
   // custom hook for guest text input
   useGuestInputText(data);
-
-  const handleCrossClick = useHandleCrossClick();
 
   useEffect(() => {
     if (!data) {
@@ -492,133 +486,13 @@ const MainFormContent = () => {
         ></div>
       </div>
 
-      <Modal onlyOneTime={onlyOneTime}>
-        <div
-          id="addGuest-form"
-          ref={addGuestRef}
-          onMouseEnter={() => {
-            if (data !== "addGuest") dispatch(setHoverInput("addGuest"));
-          }}
-          onMouseLeave={() => {
-            if (data !== "addGuest") dispatch(setHoverInput(null));
-          }}
-          className={`flex 1xz:relative 1smd:static 1smd:w-[17.7rem]  ${
-            data === "addGuest"
-              ? "rounded-full bg-white shadow-AddGuestShadow "
-              : ""
-          } 1xz:justify-between 1smd:justify-center items-center`}
-        >
-          <Modal.Open opens="addGuest">
-            <div className="flex justify-center  items-center">
-              <div
-                htmlFor="addGuest"
-                onClick={(e) => handleInputField(e.target, "addGuest")}
-                className={`${
-                  data
-                    ? "1smd:w-[12.2rem] flex items-center before:z-10 "
-                    : "1smd:w-[14.2rem]"
-                } hover:before:content-['']  1xz:before:w-full 1smd:before:w-[17.67rem] before:absolute before:top-0 before:h-[3.85rem]
-                  ${data === "addGuest" ? "" : "before:hover:bg-grey-light-50 "}
-              justify-between
-               1smd:before:left-[35.20rem] before:rounded-full before:hover:opacity-40    py-[0.8rem]  h-[3.85rem] 1smd:px-[1.5rem] cursor-pointer`}
-              >
-                <div className="flex flex-col 1xz:pl-6 1smd:pl-0 justify-center items-start">
-                  <div className="text-xs font-medium">Who</div>
-                  <div
-                    className={`1smd:w-[6.62rem] flex justify-between items-center outline-none focus:outline-none  
-                    ${data && data !== "addGuest" ? "bg-shadow-gray" : ""}
-                    `}
-                  >
-                    <p
-                      className={`text-sm mt-[2px] truncate ${
-                        adultCount + childCount > 0 && data
-                          ? "font-medium"
-                          : "font-extralight"
-                      } font-extralight text-black `}
-                    >
-                      {adultCount + childCount > 0 && data
-                        ? `${adultCount + childCount} guest${guestPlural} ${
-                            petCount + infantCount > 0 ? extraGuest : ""
-                          }`
-                        : "Add guest"}
-                    </p>
-                  </div>
-                </div>
-                {(adultCount || childCount || infantCount || petCount) &&
-                data === "addGuest" ? (
-                  <div
-                    ref={addGuestResetRef}
-                    onClick={(e) => handleCrossClick(e, "guest")}
-                    className="w-[1.5rem] flex justify-center items-center z-20 hover:rounded-full h-[1.5rem] hover:bg-grey-dim"
-                  >
-                    <img className="h-4 w-4" src={cross} alt="" />
-                  </div>
-                ) : null}
-                <div />
-              </div>
-            </div>
-          </Modal.Open>
-          {
-            <div
-              onClick={() => {
-                data && dispatch(setActiveInput(""));
-                dispatch(setHitSearch(hitSearch + 1));
-                handleSearch({
-                  region,
-                  dispatch,
-                  dateOption,
-                  startDateToShow,
-                  EndDateToShow,
-                  selectedStartDate,
-                  selectedEndDate,
-                  destinationInputVal,
-                  textForInputDuration,
-                  textForFlexibleInput,
-                  textForGuestInput,
-                });
-                handleSearchInput(
-                  region,
-                  destinationInputVal,
-                  combinedString,
-                  dispatch
-                );
-                dispatch(setMinimize(false));
-              }}
-              className={`hover:bg-dark-pink 1xz:mr-2  ${
-                data
-                  ? "1smd:w-[8rem] 1xz:w-[3rem]  z-50"
-                  : "w-[3rem] 1smd:mr-0 z-50 "
-              } hover:cursor-pointer flex items-center ${
-                data
-                  ? "1xz:justify-center 1smd:justify-start"
-                  : "justify-center"
-              } duration-200 ease-out ${
-                data ? "bg-dark-pink ml-[-1.6rem] mr-2" : "bg-pink ml-[-0.5rem]"
-              } rounded-full h-[3rem]`}
-            >
-              <img
-                className={` ${data ? "1smd:pl-2 1smd:pr-1" : ""} `}
-                src={searchIcon}
-                alt=""
-              />
-              {data ? (
-                <p className=" text-center 1xz:hidden 1smd:block text-white ">
-                  Search
-                </p>
-              ) : (
-                ""
-              )}
-            </div>
-          }
-        </div>
-        <Modal.Window
-          resetRef={addGuestResetRef}
-          modalRef={modalRef}
-          name="addGuest"
-        >
-          <AddGuest></AddGuest>
-        </Modal.Window>
-      </Modal>
+      <AddGuestForm
+        onlyOneTime={onlyOneTime}
+        handleInputField={handleInputField}
+        addGuestRef={addGuestRef}
+        addGuestResetRef={addGuestResetRef}
+        modalRef={modalRef}
+      ></AddGuestForm>
     </div>
   );
 };
