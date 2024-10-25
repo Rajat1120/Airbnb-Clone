@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveInput,
   setDestinationInputVal,
+  setMinimizeFormBtn,
   setOpenName,
   setRegion,
 } from "../mainFormSlice";
@@ -19,6 +20,7 @@ const useRegionSelection = () => {
   const dateOption = useSelector((store) => store.form.dateOption);
 
   const handleRegionSelect = (region) => {
+    dispatch(setMinimizeFormBtn(""));
     dispatch(setRegion(region));
     dispatch(setDestinationInputVal(""));
     dispatch(setActiveInput("checkIn"));
