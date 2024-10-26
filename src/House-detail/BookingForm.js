@@ -216,11 +216,7 @@ const BookingForm = () => {
 
               <Link
                 to={userData ? `/${houseInfo.id}/book` : "#"}
-                onClick={(e) =>
-                  !userData &&
-                  e.preventDefault() &&
-                  dispatch(setShowLogin(true))
-                }
+                onClick={(e) => !userData && dispatch(setShowLogin(true))}
               >
                 <button
                   ref={elementRef}
