@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import { addDays } from "date-fns";
+
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import Header from "./Header/Header";
@@ -10,29 +10,13 @@ import House from "./Main/House";
 import Footer from "./Footer";
 import MobileFooter from "./MobileFooter";
 import { getAllRows } from "./Services/apiRooms";
-import {
-  setSelectedEndDate,
-  setSelectedStartDate,
-} from "./Header/Form/mainFormSlice";
+
 import styles from "./input.css";
 
 const Home = () => {
   const { startScroll, minimize, userData } = useSelector((state) => state.app);
-  const dispatch = useDispatch();
+
   const headerRef = useRef(null);
-
-  const setInitialDates = useCallback(() => {
-    const today = new Date();
-    const startDate = addDays(today, 1);
-    const endDate = addDays(startDate, 5);
-
-    dispatch(setSelectedStartDate(startDate));
-    dispatch(setSelectedEndDate(endDate));
-  }, [dispatch]);
-
-  useEffect(() => {
-    setInitialDates();
-  }, [setInitialDates]);
 
   useQuery({
     queryKey: ["allRows"],
