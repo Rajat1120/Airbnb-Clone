@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useLayoutEffect,
-  useCallback,
-} from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 
 import icon from "../data/airbnbLogo.svg";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
@@ -13,20 +7,13 @@ import errorImg from "../data/Icons svg/Error.svg";
 import card from "../data/Icons svg/card.svg";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+
 import { useNavigate, useParams } from "react-router";
-import {
-  booking,
-  getBooking,
-  getPayments,
-  getRoomInfo,
-  updateBooking,
-} from "../Services/apiRooms";
-import { differenceInDays, format, isSameMonth } from "date-fns";
+
+import { format, isSameMonth } from "date-fns";
 import CalendarModal from "../Header/Form/CalendarModal";
 import Calendar from "../Header/Form/FormFields/Calendar";
 import {
-  setCalendarModalOpen,
   setSelectedEndDate,
   setSelectedStartDate,
 } from "../Header/Form/mainFormSlice";
@@ -36,43 +23,72 @@ import { setFirstBtnClick } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";
 import AddGuestModal from "../Modals/AddGuestModal";
 import { setBookingDate, setCancelGuestUpdate } from "../Main/AppSlice";
+import { useBookingHandlers } from "./BookingHandlers";
+import { useBookingQueries } from "./BookingQueries";
+
+const calculateTotalAmount = (price, numOfDays, userBookingData) => {
+  const days = Math.abs(numOfDays || userBookingData?.booking?.numOfDays) || 0;
+  const basePrice = Math.ceil(price / 83);
+  const stayCost = Math.ceil(basePrice * days);
+  const serviceFee = Math.floor(basePrice * 0.7);
+  const tax = Math.floor(0.11 * stayCost);
+
+  return stayCost + serviceFee + tax;
+};
+
+const useCheckBookingStatus = (refetchPayment, paymentData, id) => {
+  const [bookingStatus, setBookingStatus] = useState("NotFound");
+
+  useEffect(() => {
+    const checkBookingStatus = async () => {
+      // Fetch the latest payment data
+      await refetchPayment();
+
+      if (paymentData?.length && id) {
+        const isBooked = paymentData.some((item) => item.room_id === id);
+
+        if (isBooked) {
+          setBookingStatus("found");
+          toast.error("You have already booked this place", {
+            duration: 30000,
+          });
+        } else {
+          setBookingStatus("NotFound");
+        }
+      }
+    };
+
+    checkBookingStatus();
+  }, [paymentData, refetchPayment, id]);
+
+  return bookingStatus;
+};
 
 const CheckoutForm = () => {
   const [guestCount, setGuestCount] = useState("");
   const [openGuestModal, setOpenGuestModal] = useState(false);
   const { id } = useParams();
-  const [dataFromChild, setDataFromChild] = useState({});
+  const navigate = useNavigate();
+
   const [submitFormReference, setSubmitFormReference] = useState(false);
 
-  const handleDataFromChild = (data) => {
-    setDataFromChild(data);
-  };
-
   const dispatch = useDispatch();
-  const endDate = useSelector((store) => store.form.selectedEndDate);
-  const startDate = useSelector((store) => store.form.selectedStartDate);
-  const hasError = useSelector((store) => store.card.hasError);
-  const error = useSelector((store) => store.card.error);
 
-  const guestPlural = useSelector((store) => store.form.guestPlural);
-  const petPlural = useSelector((store) => store.form.petPlural);
+  const {
+    selectedEndDate: endDate,
+    selectedStartDate: startDate,
+    guestPlural,
+    petPlural,
+    adultCount,
+    childCount,
+    infantCount,
+    petsCount: petCount,
+    isCalendarModalOpen: isModalOpen,
+  } = useSelector((store) => store.form);
 
-  const adultCount = useSelector((store) => store.form.adultCount);
-  const childCount = useSelector((store) => store.form.childCount);
-  const infantCount = useSelector((store) => store.form.infantCount);
-  const petCount = useSelector((store) => store.form.petsCount);
-  const isModalOpen = useSelector((store) => store.form.isCalendarModalOpen);
+  const { hasError, error } = useSelector((store) => store.card);
 
-  const userData = useSelector((store) => store.app.userData);
-  const cancelGuestUpdate = useSelector((store) => store.app.cancelGuestUpdate);
-
-  const { data: paymentData, refetch: refetchPayment } = useQuery({
-    queryFn: () => getPayments(userData?.email),
-    queryKey: ["payments"],
-    enabled: false,
-  });
-
-  const [bookingStatus, setBookingStatus] = useState(null);
+  const { userData, cancelGuestUpdate } = useSelector((store) => store.app);
 
   useLayoutEffect(() => {
     let guestCount = `${adultCount + childCount} guest${guestPlural}${
@@ -110,50 +126,60 @@ const CheckoutForm = () => {
     }
   }, [openGuestModal, dispatch]);
 
+  const [bookingData, setBookingData] = useState({});
+  const [updateBookingData, setUpdateBookingData] = useState({});
+
   useEffect(() => {
-    const checkBookingStatus = async () => {
-      await refetchPayment();
+    window.scrollTo(0, 0);
+    updateDates();
 
-      if (paymentData?.length && id) {
-        let isBooked = paymentData.some((item) => item.room_id === id);
+    setTimeout(() => {
+      updateBookingDataFn();
+    }, 1000);
+  }, []);
 
-        if (isBooked) {
-          setBookingStatus("found");
-        } else {
-          setBookingStatus("NotFound");
-        }
-
-        if (bookingStatus === "found") {
-          toast.error("You have already booked this place", {
-            duration: 30000,
-          });
-        }
-      }
-    };
-
-    checkBookingStatus();
-  }, [paymentData, refetchPayment, bookingStatus, id]);
-
-  const handleEditClick = () => {
-    dispatch(setCalendarModalOpen(true));
+  const allBookingDataTruthy = (data) => {
+    return Object.values(data).every((value) => Boolean(value));
   };
 
-  const updateDates = useCallback(() => {
-    if (startDate && endDate) {
-      numOfDays.current = differenceInDays(startDate, endDate);
-      if (endDate) {
-        formattedEndDate.current = format(endDate, "EEE MMM dd, yyyy");
-      }
-      if (startDate) {
-        formatStartDate.current = format(startDate, "EEE MMM dd, yyyy");
-      }
-    }
-  }, [endDate, startDate]);
+  const {
+    paymentData,
+    refetchPayment,
+    updateLoading,
+    updateUserBooking,
+    bookingLoading,
+    insertBooking,
+    userBookingData,
+    roomData,
+  } = useBookingQueries(userData, id, updateBookingData, bookingData);
 
-  const handleCloseModal = useCallback(() => {
-    dispatch(setCalendarModalOpen(false));
-    updateDates();
-  }, [updateDates, dispatch]);
+  const {
+    dataFromChild,
+    handleDataFromChild,
+    handleEditClick,
+    handleCloseModal,
+    updateBookingDataFn,
+    numOfDays,
+    formattedEndDate,
+    updateDates,
+    formatStartDate,
+  } = useBookingHandlers(
+    userBookingData,
+    bookingData,
+    updateBookingData,
+    updateUserBooking,
+    insertBooking
+  );
+
+  let totalAmount = calculateTotalAmount(
+    roomData?.price,
+    numOfDays.current,
+    userBookingData
+  );
+
+  let load = updateLoading || bookingLoading;
+
+  const bookingStatus = useCheckBookingStatus(refetchPayment, paymentData, id);
 
   useEffect(() => {
     function handleResize() {
@@ -166,19 +192,6 @@ const CheckoutForm = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [dispatch, handleCloseModal]);
-
-  let formattedEndDate = useRef();
-  let formatStartDate = useRef();
-  let numOfDays = useRef();
-
-  const { isLoading: updateLoading, refetch: updateUserBooking } = useQuery({
-    queryFn: () => updateBooking(updateBookingData),
-    queryKey: ["updateBookingData"],
-    enabled: false,
-  });
-
-  const [bookingData, setBookingData] = useState({});
-  const [updateBookingData, setUpdateBookingData] = useState({});
 
   useEffect(() => {
     let bookingData = {
@@ -202,77 +215,17 @@ const CheckoutForm = () => {
     };
 
     setUpdateBookingData(updateBookingData);
+    // eslint-disable-next-line
   }, [
     id,
+    formatStartDate,
+    formattedEndDate,
+    numOfDays,
     userData?.email,
     guestCount,
-    formatStartDate.current,
-    formattedEndDate.current,
+    formatStartDate?.current,
+    formattedEndDate?.current,
   ]);
-
-  function updateBookingDataFn() {
-    if (userBookingData?.success) {
-      if (allBookingDataTruthy(updateBookingData)) {
-        updateUserBooking();
-      }
-    } else {
-      if (allBookingDataTruthy(bookingData)) {
-        insertBooking();
-      }
-    }
-  }
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    updateDates();
-
-    setTimeout(() => {
-      updateBookingDataFn();
-    }, 1000);
-  }, []);
-
-  const allBookingDataTruthy = (data) => {
-    return Object.values(data).every((value) => Boolean(value));
-  };
-
-  const {
-    refetch: insertBooking,
-
-    isLoading: bookingLoading,
-  } = useQuery({
-    queryFn: () => booking(bookingData),
-    queryKey: ["booking"],
-    enabled: false,
-  });
-
-  const { data: userBookingData } = useQuery({
-    queryFn: () => getBooking(userData?.email, id),
-    queryKey: ["bookingInfo", id],
-    enabled: !!userData?.email && !!id,
-  });
-
-  const navigate = useNavigate();
-  const { data } = useQuery({
-    queryKey: ["roomInfo", id],
-    queryFn: () => getRoomInfo(id),
-    enabled: !!id,
-  });
-
-  let totalAmount =
-    Math.ceil(
-      Math.ceil(data?.price / 83) *
-        Math.abs(numOfDays.current || userBookingData?.booking?.numOfDays)
-    ) +
-    Math.floor(Math.ceil(data?.price / 83) * 0.7) +
-    Math.floor(
-      0.11 *
-        Math.ceil(
-          Math.ceil(data?.price / 83) *
-            Math.abs(numOfDays.current || userBookingData?.booking?.numOfDays)
-        )
-    );
-
-  let load = updateLoading || bookingLoading;
 
   // const [bookingDate, setBookingDate] = useState("");
   const bookingDate = useSelector((store) => store.app.bookingDate);
@@ -281,6 +234,8 @@ const CheckoutForm = () => {
 
   useEffect(() => {
     const formatDateRange = (start, end) => {
+      console.log("run");
+
       const startDate = new Date(start);
       const endDate = new Date(end);
       if (start && end)
@@ -305,7 +260,15 @@ const CheckoutForm = () => {
         )
       );
     }
-  }, [startDate, endDate, dateChange.current, dispatch, userBookingData]);
+  }, [
+    startDate,
+    endDate,
+    dateChange?.current,
+    formatStartDate,
+    formattedEndDate,
+    dispatch,
+    userBookingData,
+  ]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -351,7 +314,7 @@ const CheckoutForm = () => {
     }, 1000);
   }, [userData, navigate]);
 
-  const rating = data?.rating_count.match(/\d+/);
+  const rating = roomData?.rating_count.match(/\d+/);
 
   const [isSmallScreen, setIsSmallScreen] = useState(false);
 
@@ -509,15 +472,15 @@ const CheckoutForm = () => {
                         }
                         booked={bookingStatus}
                         startDate={
-                          formatStartDate.current ||
+                          formatStartDate?.current ||
                           userBookingData?.booking?.startDate
                         }
                         endDate={
-                          formattedEndDate.current ||
+                          formattedEndDate?.current ||
                           userBookingData?.booking?.endDate
                         }
                         numOfDays={
-                          numOfDays.current ||
+                          numOfDays?.current ||
                           userBookingData?.booking?.numOfDays
                         }
                         setOnSubmitReference={setSubmitFormReference}
@@ -649,7 +612,7 @@ const CheckoutForm = () => {
                   <div className="max-w-28 min-w-24 min-h-24 max-h-28">
                     <img
                       className="w-full object-cover rounded-xl h-full aspect-square"
-                      src={data?.images[0]}
+                      src={roomData?.images[0]}
                       alt=""
                     />
                   </div>
@@ -662,8 +625,8 @@ const CheckoutForm = () => {
                       }  text-sm font-medium`}
                     >
                       At{" "}
-                      {data?.host_name
-                        ? data?.host_name?.replace(/about/gi, "")
+                      {roomData?.host_name
+                        ? roomData?.host_name?.replace(/about/gi, "")
                         : "Carl's"}
                       's
                     </span>
@@ -673,7 +636,7 @@ const CheckoutForm = () => {
                     <div className="flex items-center space-x-1">
                       <img className="w-4 h-4" src={star} alt="" />
                       <span className="text-sm font-medium">
-                        {data?.house_rating}
+                        {roomData?.house_rating}
                       </span>
                       <span className="text-sm font-light">
                         {isSmallScreen ? `(${rating})` : `(${rating} reviews)`}
@@ -689,7 +652,7 @@ const CheckoutForm = () => {
                 <div>
                   <div className="flex pb-4 font-light justify-between items-center">
                     <span>
-                      ${Math.ceil(data?.price / 83)} x{" "}
+                      ${Math.ceil(roomData?.price / 83)} x{" "}
                       {Math.abs(
                         numOfDays.current || userBookingData?.booking?.numOfDays
                       )}{" "}
@@ -698,7 +661,7 @@ const CheckoutForm = () => {
                     <span>
                       $
                       {Math.ceil(
-                        Math.ceil(data?.price / 83) *
+                        Math.ceil(roomData?.price / 83) *
                           Math.abs(
                             numOfDays.current ||
                               userBookingData?.booking?.numOfDays
@@ -709,7 +672,7 @@ const CheckoutForm = () => {
                   <div className="flex pb-4 justify-between font-light  items-center">
                     <span>Cleaning fee</span>
                     <span>
-                      ${Math.floor(Math.ceil(data?.price / 83) * 0.7)}
+                      ${Math.floor(Math.ceil(roomData?.price / 83) * 0.7)}
                     </span>
                   </div>
                   <div className="flex pb-4 justify-between   font-light items-center">
@@ -719,7 +682,7 @@ const CheckoutForm = () => {
                       {Math.floor(
                         0.11 *
                           Math.ceil(
-                            Math.ceil(data?.price / 83) *
+                            Math.ceil(roomData?.price / 83) *
                               Math.abs(
                                 numOfDays.current ||
                                   userBookingData?.booking?.numOfDays
