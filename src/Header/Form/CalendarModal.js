@@ -119,7 +119,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
       <div
         id="calendar"
         ref={modalRef}
-        className={`bg-white ${
+        className={`bg-white overflow-x-hidden ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
         } transition-all fixed pt-6 ${
           onCheckOutPage ? "rounded-xl" : "rounded-t-3xl 1xz:rounded-3xl"
@@ -127,7 +127,7 @@ const CalendarModal = ({ isOpen, onClose, children }) => {
       >
         <ModalHeader onClose={onClose} onCheckOutPage={onCheckOutPage} />
 
-        <div className="w-full px-10 1md:px-0 1xz:max-w-max max-w-[26rem]">
+        <div className="w-full px-10 1md:px-0 overflow-x-hidden 1xz:max-w-max max-w-[26rem]">
           {children}
         </div>
 

@@ -35,6 +35,7 @@ const Calendar = () => {
   const location = useLocation();
   let onHouseDetailPage = location.pathname.includes("/house/");
   let onCheckOutPage = location.pathname.includes("/book");
+  let onHomePage = location.pathname === "/";
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -415,13 +416,15 @@ const Calendar = () => {
        flex-col justify-center  relative`}
     >
       <div
-        className={`absolute   top-[3.6rem] ${
+        className={` ${
+          onHomePage || onHouseDetailPage ? "absolute" : ""
+        }  top-[3.6rem] ${
           onCheckOutPage &&
-          "1xz:!left-[1.2rem]  1xz:!top-[3.6rem] !-top-5 left-[4rem] !block"
+          "1xz:!left-[1.2rem]  1xz:!top-[3.6rem] !-top-5  left-2 1xz:absolute  mx-auto !block"
         } ${
           onHouseDetailPage && !minimize
-            ? "left-0 1md:left-1 hidden 1xlx:block "
-            : "left-[2.2rem]  hidden  1md:block"
+            ? "left-0 1md:left-1 hidden 1xlx:block absolute "
+            : "left-[2.2rem]  hidden  1md:block "
         }`}
       >
         {renderDays()}
@@ -473,7 +476,9 @@ const Calendar = () => {
       </button>
       <div
         ref={scrollContainerRef}
-        className={` h-full  ${onCheckOutPage && "!w-full"}  ${
+        className={` h-full overflow-x-hidden  ${
+          onCheckOutPage && "!w-full"
+        }  ${
           onHouseDetailPage && !minimize
             ? "1smd:w-[30rem] w-[22rem] 1xs:w-[30rem] 1xz:w-[23rem] 1xlx:w-full mx-auto overflow-x-hidden"
             : "1xz:w-[23rem] w-full mx-auto 1md:w-auto 1xz:overflow-x-hidden 1md:block"
