@@ -7,9 +7,10 @@ import { Analytics } from "@vercel/analytics/react";
 import Wishlist from "./Main/Wishlist";
 
 import Trips from "./Main/Trips";
-import SignIn from "./SignIn";
+
 import CheckoutForm from "./payment/CheckoutForm";
 import Profile from "./Profile";
+import LoginPage from "./LoginPage";
 
 const queryClient = new QueryClient({});
 
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <SignIn></SignIn>,
+    element: <LoginPage></LoginPage>,
   },
   {
     path: "/:id/book",
