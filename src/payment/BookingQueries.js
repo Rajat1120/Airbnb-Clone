@@ -22,39 +22,34 @@ export const useBookingQueries = (
   updateBookingData,
   bookingData
 ) => {
-  // Fetch payments related to the user, refetch manually when needed
   const { data: paymentData, refetch: refetchPayment } = useQuery({
     queryFn: () => getPayments(userData?.email),
     queryKey: ["payments"],
-    enabled: false, // Manually enabled
+    enabled: false,
   });
 
-  // Refetch function to update booking data
   const { isLoading: updateLoading, refetch: updateUserBooking } = useQuery({
     queryFn: () => updateBooking(updateBookingData),
     queryKey: ["updateBookingData"],
-    enabled: false, // Manually enabled
+    enabled: false,
   });
 
-  // Refetch function to create a new booking
   const { isLoading: bookingLoading, refetch: insertBooking } = useQuery({
     queryFn: () => booking(bookingData),
     queryKey: ["booking"],
-    enabled: false, // Manually enabled
+    enabled: false,
   });
 
-  // Fetch specific booking information based on user email and booking ID
   const { data: userBookingData } = useQuery({
     queryFn: () => getBooking(userData?.email, id),
     queryKey: ["bookingInfo", id],
-    enabled: !!userData?.email && !!id, // Only enabled if user email and ID exist
+    enabled: !!userData?.email && !!id,
   });
 
-  // Fetch room information based on the room ID
   const { data: roomData } = useQuery({
     queryFn: () => getRoomInfo(id),
     queryKey: ["roomInfo", id],
-    enabled: !!id, // Only enabled if ID exists
+    enabled: !!id,
   });
 
   return {
