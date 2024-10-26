@@ -38,6 +38,7 @@ export const signInWithGoogle = async () => {
 };
 
 export const getUserLogout = async () => {
+  localStorage.clear();
   store.dispatch(setUserData(null));
   let { error } = await supabase.auth.signOut();
 

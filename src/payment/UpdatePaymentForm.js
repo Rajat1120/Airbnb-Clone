@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookRoom } from "../Services/apiRooms";
+import { areAllKeysTruthy } from "../Utils/Helper";
 
 const UpdatedPaymentForm = ({
   guestCount,
@@ -38,12 +39,10 @@ const UpdatedPaymentForm = ({
   const elements = useElements();
   const dispatch = useDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const isCardNumEmpty = useSelector((store) => store.card.isCardNumEmpty);
-
-  const isExpEmpty = useSelector((store) => store.card.isExpEmpty);
+  const { isCardNumEmpty, isExpEmpty, isCvcEmpty } = useSelector(
+    (store) => store.card
+  );
   const { id } = useParams();
-
-  const isCvcEmpty = useSelector((store) => store.card.isCvcEmpty);
 
   let fieldEmpty = !isCardNumEmpty || !isExpEmpty || !isCvcEmpty;
 
@@ -118,10 +117,6 @@ const UpdatedPaymentForm = ({
       guestCount,
     ]
   );
-
-  function areAllKeysTruthy(obj) {
-    return Object.values(obj).every((value) => Boolean(value));
-  }
 
   const { refetch, error: paymentError } = useQuery({
     queryKey: ["payment"],
