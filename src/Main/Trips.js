@@ -122,7 +122,9 @@ const ArrowRightSVG = () => {
 const ItineraryButton = ({ reservationCode }) => (
   <div className="flex flex-col gap-x-2 gap-y-2 1xxl:flex-row mt-3 items-start justify-between">
     <div className="flex gap-x-2 items-center">
-      <h4 className="font-medium text-gray-700">Reservation code:</h4>
+      <h4 className="font-medium text-nowrap text-gray-700">
+        Reservation code:
+      </h4>
       <span className="text-grey text-[15px] font-[600px]">
         {String(reservationCode).split("-")[0]}
       </span>
