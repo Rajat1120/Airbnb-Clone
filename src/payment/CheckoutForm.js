@@ -16,12 +16,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate, useParams } from "react-router";
 
-import { differenceInDays, format, isSameMonth } from "date-fns";
+import { differenceInDays, format, isSameMonth, parse } from "date-fns";
 import CalendarModal from "../Header/Form/CalendarModal";
 import Calendar from "../Header/Form/FormFields/Calendar";
 import {
   setAdultCount,
   setCalendarModalOpen,
+  setIsBooking,
   setSelectedEndDate,
   setSelectedStartDate,
 } from "../Header/Form/mainFormSlice";
@@ -172,50 +173,34 @@ const useBookingDates = () => {
 };
 
 function useBookingModal(
-  isModalOpen,
   userBookingData,
   updateBookingData,
   allBookingDataTruthy,
-  updateUserBooking
+  updateUserBooking,
+  getBooking,
+  booking,
+  userData,
+  id,
+  InitialBookingData
 ) {
-  const dispatch = useDispatch();
-  const dateChange = useRef(false);
-
   useEffect(() => {
-    if (isModalOpen) {
-      // Set flag to indicate a date change
-      dateChange.current = true;
+    async function updateDates() {
+      if (
+        allBookingDataTruthy(updateBookingData) &&
+        allBookingDataTruthy(InitialBookingData)
+      ) {
+        await getBooking(userData, id);
 
-      // Update selected start and end dates if available in user booking data
-      if (userBookingData?.booking?.startDate) {
-        dispatch(setSelectedStartDate(userBookingData.booking.startDate));
+        if (userBookingData?.success) {
+          await updateUserBooking();
+        } else {
+          await booking(InitialBookingData);
+        }
       }
-      if (userBookingData?.booking?.endDate) {
-        dispatch(setSelectedEndDate(userBookingData.booking.endDate));
-      }
-    } else {
-      // If modal is closed and data is valid, trigger an update after a delay
-      if (allBookingDataTruthy(updateBookingData)) {
-        const timeoutId = setTimeout(() => {
-          updateUserBooking();
-        }, 1000);
-
-        // Cleanup the timeout on unmount
-        return () => clearTimeout(timeoutId);
-      }
-      // Reset date change flag when modal closes
-      dateChange.current = false;
     }
-  }, [
-    isModalOpen,
-    userBookingData,
-    updateBookingData,
-    allBookingDataTruthy,
-    dispatch,
-    updateUserBooking,
-  ]);
-
-  return dateChange;
+    updateDates();
+    //eslint-disable-next-line
+  }, [InitialBookingData, userData, id]);
 }
 
 const useGuestCount = ({
@@ -272,35 +257,6 @@ const useGuestCount = ({
 
   return guestCount;
 };
-
-function useOneTimeBookingCheck(
-  userData,
-  id,
-  InitialBookingData,
-  getBooking,
-  booking,
-  userBookingData
-) {
-  const onlyOneTimeRun = useRef(true);
-
-  useEffect(() => {
-    async function checkBooking() {
-      if (InitialBookingData && onlyOneTimeRun.current) {
-        await getBooking(userData, id);
-        if (userBookingData.success) {
-          return;
-        } else {
-          await booking(InitialBookingData);
-          onlyOneTimeRun.current = false;
-        }
-      }
-    }
-
-    checkBooking();
-  }, [userData, id, InitialBookingData, getBooking, booking, userBookingData]);
-
-  return onlyOneTimeRun.current;
-}
 
 const useBookingData = ({
   id,
@@ -400,9 +356,9 @@ const CheckoutForm = () => {
     isCalendarModalOpen: isModalOpen,
   } = useSelector((store) => store.form);
 
-  const { hasError, error } = useSelector((store) => store.card);
+  const { hasError, error } = useSelector((store) => store?.card);
 
-  const { userData, cancelGuestUpdate } = useSelector((store) => store.app);
+  const { userData, cancelGuestUpdate } = useSelector((store) => store?.app);
 
   useEffect(() => {
     if (openGuestModal) {
@@ -469,15 +425,6 @@ const CheckoutForm = () => {
     booking,
   } = useBookingQueries(userData, id, updateBookingData, bookingData);
 
-  useOneTimeBookingCheck(
-    userData,
-    id,
-    InitialBookingData,
-    getBooking,
-    booking,
-    userBookingData
-  );
-
   // Finally, get handlers
   const {
     dataFromChild,
@@ -519,11 +466,15 @@ const CheckoutForm = () => {
   );
 
   useBookingModal(
-    isModalOpen,
     userBookingData,
     updateBookingData,
     allBookingDataTruthy,
-    updateUserBooking
+    updateUserBooking,
+    getBooking,
+    booking,
+    userData,
+    id,
+    InitialBookingData
   );
 
   useRedirectIfNotLoggedIn(userData);
