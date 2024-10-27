@@ -16,13 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useNavigate, useParams } from "react-router";
 
-import { differenceInDays, format, isSameMonth, parse } from "date-fns";
+import { differenceInDays, format, isSameMonth } from "date-fns";
 import CalendarModal from "../Header/Form/CalendarModal";
 import Calendar from "../Header/Form/FormFields/Calendar";
 import {
   setAdultCount,
   setCalendarModalOpen,
-  setIsBooking,
   setSelectedEndDate,
   setSelectedStartDate,
 } from "../Header/Form/mainFormSlice";
@@ -189,12 +188,18 @@ function useBookingModal(
         allBookingDataTruthy(updateBookingData) &&
         allBookingDataTruthy(InitialBookingData)
       ) {
-        await getBooking(userData, id);
+        localStorage.setItem(
+          `${updateBookingData.roomId}`,
+          JSON.stringify(updateBookingData)
+        );
+        if (userData && id) {
+          const data = await getBooking(userData?.email, id);
 
-        if (userBookingData?.success) {
-          await updateUserBooking();
-        } else {
-          await booking(InitialBookingData);
+          if (data?.success) {
+            await updateUserBooking();
+          } else {
+            await booking(InitialBookingData);
+          }
         }
       }
     }
@@ -318,6 +323,23 @@ const useBookingData = ({
   };
 };
 
+export const useUpdateBookingDates = () => {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { isCalendarModalOpen: isModalOpen } = useSelector(
+    (store) => store.form
+  );
+
+  useEffect(() => {
+    if (localStorage.getItem(id)) {
+      let startDate = new Date(JSON.parse(localStorage.getItem(id)).startDate);
+      let endDate = new Date(JSON.parse(localStorage.getItem(id)).endDate);
+      dispatch(setSelectedStartDate(startDate));
+      dispatch(setSelectedEndDate(endDate));
+    }
+  }, [dispatch, id, isModalOpen]);
+};
+
 // Custom hook to redirect to login if user is not logged in
 function useRedirectIfNotLoggedIn(userData) {
   const navigate = useNavigate();
@@ -374,6 +396,8 @@ const CheckoutForm = () => {
       updateBookingDataFn();
     }, 1000);
   }, []);
+
+  useUpdateBookingDates();
 
   // Get dates first
   const {
