@@ -248,7 +248,6 @@ const useGuestCount = ({
 
     if (formattedCount !== "0 guests,") {
       if (!openGuestModal && !cancelGuestUpdate) {
-        console.log(formattedCount);
         setGuestCount(formattedCount);
       }
     } else {
@@ -273,6 +272,35 @@ const useGuestCount = ({
 
   return guestCount;
 };
+
+function useOneTimeBookingCheck(
+  userData,
+  id,
+  InitialBookingData,
+  getBooking,
+  booking,
+  userBookingData
+) {
+  const onlyOneTimeRun = useRef(true);
+
+  useEffect(() => {
+    async function checkBooking() {
+      if (InitialBookingData && onlyOneTimeRun.current) {
+        await getBooking(userData, id);
+        if (userBookingData.success) {
+          return;
+        } else {
+          await booking(InitialBookingData);
+          onlyOneTimeRun.current = false;
+        }
+      }
+    }
+
+    checkBooking();
+  }, [userData, id, InitialBookingData, getBooking, booking, userBookingData]);
+
+  return onlyOneTimeRun.current;
+}
 
 const useBookingData = ({
   id,
@@ -398,6 +426,7 @@ const CheckoutForm = () => {
     formatStartDate,
     updateDates,
     handleCloseModal,
+    bookingData,
   } = useBookingDates();
 
   const guestCount = useGuestCount({
@@ -412,15 +441,18 @@ const CheckoutForm = () => {
   });
 
   //  get booking data
-  const { bookingData, updateBookingData, allBookingDataTruthy } =
-    useBookingData({
-      id,
-      numOfDays,
-      userEmail: userData?.email,
-      guestCount,
-      formatStartDate,
-      formattedEndDate,
-    });
+  const {
+    bookingData: InitialBookingData,
+    updateBookingData,
+    allBookingDataTruthy,
+  } = useBookingData({
+    id,
+    numOfDays,
+    userEmail: userData?.email,
+    guestCount,
+    formatStartDate,
+    formattedEndDate,
+  });
 
   // Get queries
   const {
@@ -432,7 +464,19 @@ const CheckoutForm = () => {
     insertBooking,
     userBookingData,
     roomData,
+
+    getBooking,
+    booking,
   } = useBookingQueries(userData, id, updateBookingData, bookingData);
+
+  useOneTimeBookingCheck(
+    userData,
+    id,
+    InitialBookingData,
+    getBooking,
+    booking,
+    userBookingData
+  );
 
   // Finally, get handlers
   const {
@@ -461,7 +505,6 @@ const CheckoutForm = () => {
 
   useHandleResize(handleCloseModal, setOpenGuestModal);
 
-  // const [bookingDate, setBookingDate] = useState("");
   const bookingDate = useSelector((store) => store.app.bookingDate);
 
   let dateChange = useRef(false);
@@ -855,7 +898,7 @@ const CheckoutForm = () => {
                 </div>
               </div>
               <CalendarModal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <div className="w-full 1xz:w-[41.31rem]">
+                <div className="w-full overflow-x-hidden 1xz:w-[41.31rem]">
                   <Calendar />
                 </div>
               </CalendarModal>

@@ -61,5 +61,8 @@ export const useBookingQueries = (
     insertBooking,
     userBookingData,
     roomData,
+    updateBooking,
+    getBooking,
+    booking,
   };
 };
