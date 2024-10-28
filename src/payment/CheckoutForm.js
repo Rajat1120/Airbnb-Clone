@@ -9,9 +9,10 @@ import React, {
 import icon from "../data/airbnbLogo.svg";
 import arrowLeft from "../data/Icons svg/arrow-left.svg";
 import star from "../data/Icons svg/star.svg";
-import errorImg from "../data/Icons svg/Error.svg";
+
 import card from "../data/Icons svg/card.svg";
 import { store } from "../Utils/Store";
+import errorImg from "../data/Icons svg/Error.svg";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,6 +36,13 @@ import { setBookingDate, setCancelGuestUpdate } from "../Main/AppSlice";
 import { useBookingHandlers } from "./BookingHandlers";
 import { useBookingQueries } from "./BookingQueries";
 import useSmallScreen from "./ScreenSize";
+import LoadingOverlay from "../Utils/LoadingOverlay";
+import CheckOutPageHeader from "./CheckoutPageHeader";
+import {
+  ErrorMessage,
+  HeaderErrorMessage,
+  TripSummary,
+} from "./BookingSection";
 
 const calculateTotalAmount = (price, numOfDays, userBookingData) => {
   const days = Math.abs(numOfDays || userBookingData?.booking?.numOfDays) || 0;
@@ -97,7 +105,6 @@ const useHandleResize = (handleCloseModal, setOpenGuestModal) => {
 const useFormattedBookingDate = (
   startDate,
   endDate,
-  dateChangeRef,
   formatStartDate,
   formattedEndDate,
   userBookingData
@@ -119,19 +126,18 @@ const useFormattedBookingDate = (
       return "";
     };
 
-    if (!dateChangeRef.current) {
-      const formattedDateRange = formatDateRange(
-        formatStartDate || userBookingData?.booking?.startDate,
-        formattedEndDate || userBookingData?.booking?.endDate
-      );
+    const formattedDateRange = formatDateRange(
+      formatStartDate || userBookingData?.booking?.startDate,
+      formattedEndDate || userBookingData?.booking?.endDate
+    );
 
-      dispatch(setBookingDate(formattedDateRange));
-    }
+    dispatch(setBookingDate(formattedDateRange));
+
     // eslint-disable-next-line
   }, [
     startDate,
     endDate,
-    dateChangeRef?.current,
+
     formatStartDate,
     formattedEndDate,
     dispatch,
@@ -173,7 +179,6 @@ const useBookingDates = () => {
 };
 
 function useBookingModal(
-  userBookingData,
   updateBookingData,
   allBookingDataTruthy,
   updateUserBooking,
@@ -354,10 +359,29 @@ function useRedirectIfNotLoggedIn(userData) {
   return Boolean(userData);
 }
 
+const RequestToBookHeader = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="w-full max-w-7xl px-14 1xz:mt-16 mt-0 border-b border-grey-dim 1xz:border-none 1lg:px-20 mx-auto">
+      <div className="w-full flex pb-2 pt-2 1xz:pt-0 1xz:pb-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="hover:bg-shadow-gray-light -ml-12 h-12 w-12 flex-center rounded-full"
+        >
+          <img className="h-4 w-4" src={arrowLeft} alt="Back" />
+        </button>
+        <span className="block w-full 1xz:w-auto flex-center text-lg 1xz:text-[2rem] font-medium">
+          Request to book
+        </span>
+      </div>
+    </div>
+  );
+};
+
 const CheckoutForm = () => {
   const [openGuestModal, setOpenGuestModal] = useState(false);
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const [submitFormReference, setSubmitFormReference] = useState(false);
 
@@ -477,19 +501,16 @@ const CheckoutForm = () => {
 
   const bookingDate = useSelector((store) => store.app.bookingDate);
 
-  let dateChange = useRef(false);
-
   useFormattedBookingDate(
     startDate,
     endDate,
-    dateChange,
+
     formatStartDate,
     formattedEndDate,
     userBookingData
   );
 
   useBookingModal(
-    userBookingData,
     updateBookingData,
     allBookingDataTruthy,
     updateUserBooking,
@@ -509,94 +530,21 @@ const CheckoutForm = () => {
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false}></Toaster>
-      {load && (
-        <div className=" w-screen z-50 h-screen bg-white opacity-80  fixed flex-center">
-          <div className="cssLoader  absolute top-1/2 left-1/2  w-12 h-3"></div>
-        </div>
-      )}
-      <header className="hidden 1xz:block">
-        <div className="pl-6 border-b border-shadow-gray ">
-          <div className="w-8 ">
-            <a href="/">
-              <div className="flex h-20 items-center">
-                <img
-                  className="mr-2  h-34 scale-[1.2] "
-                  src={icon}
-                  alt="like"
-                />
-                <h1 className="text-2xl  leading-8   text-pink text-start font-semibold">
-                  airbnb
-                </h1>
-              </div>
-            </a>
-          </div>
-        </div>
-      </header>
+      {load ? <LoadingOverlay></LoadingOverlay> : null}
+      <CheckOutPageHeader></CheckOutPageHeader>
       <main>
-        <div className="w-full max-w-7xl px-14 1xz:mt-16 mt-0 border-b border-grey-dim 1xz:border-none   1lg:px-20 mx-auto ">
-          <div className="w-full  flex pb-2 pt-2 1xz:pt-0 1xz:pb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className=" hover:bg-shadow-gray-light -ml-12 h-12 w-12 flex-center rounded-full "
-            >
-              <img className="h-4 w-4" src={arrowLeft} alt="" />
-            </button>
-            <span className=" block w-full 1xz:w-auto flex-center text-lg 1xz:text-[2rem] font-medium ">
-              Request to book
-            </span>
-          </div>
-        </div>
+        <RequestToBookHeader></RequestToBookHeader>
 
         <div className=" w-full flex-col-reverse 1xz:flex-row px-5 1xz:px-14 gap-x-12 1md:gap-x-28 1lg:px-20 flex max-w-7xl mx-auto">
           <section className="1xz:w-1/2 w-full ">
-            {hasError && (
-              <div className="p-4 mb-10 flex space-x-2  border border-shadow-gray rounded-xl">
-                <div className="bg-red-700 flex-center h-[2.8rem] w-[2.8rem] rounded-full">
-                  <img className="h-4 w-4 " src={errorImg} alt="" />
-                </div>
-                <div className="flex justify-center flex-col">
-                  <span className="text-sm font-bold">
-                    Let's try that again
-                  </span>
-                  <span className="text-sm font-light">
-                    Please check your payment details
-                  </span>
-                </div>
-              </div>
-            )}
-            <span className="text-2xl block font-medium pb-6">Your trip</span>
-            <div className="pb-6  flex justify-between">
-              <div className="flex flex-col">
-                <span className="mt-2 font-medium block">Dates</span>
-                <span className="font-light ">{bookingDate}</span>
-              </div>
-              <button
-                onClick={() => handleEditClick()}
-                className={`font-medium ${
-                  bookingStatus === "found" ? "cursor-disable" : ""
-                } underline`}
-                disabled={bookingStatus === "found"}
-              >
-                Edit
-              </button>
-            </div>
-            <div className="pb-6  flex justify-between">
-              <div className="flex flex-col">
-                <span className="mt-2 font-medium block">Guests</span>
-                <span className="font-light ">
-                  {guestCount !== "0 guest" ? guestCount : "1 guest"}
-                </span>
-              </div>
-              <button
-                onClick={() => setOpenGuestModal(true)}
-                className={`font-medium ${
-                  bookingStatus === "found" ? "cursor-disable" : ""
-                } underline`}
-                disabled={bookingStatus === "found"}
-              >
-                Edit
-              </button>
-            </div>
+            {hasError && <HeaderErrorMessage></HeaderErrorMessage>}
+            <TripSummary
+              bookingDate={bookingDate}
+              guestCount={guestCount}
+              bookingStatus={bookingStatus}
+              handleEditClick={handleEditClick}
+              setOpenGuestModal={setOpenGuestModal}
+            ></TripSummary>
             <div className="mt-2">
               <div className="border-t border-grey-light-50 w-full"></div>
               <div className="pt-8 pb-6">
@@ -667,19 +615,8 @@ const CheckoutForm = () => {
                       ></UpdatedPaymentForm>
                     </div>
                     {error?.length ? (
-                      <div className="py-2 flex space-x-1 items-center">
-                        <div className="bg-red-700 flex-center h-3 w-3 rounded-full">
-                          <img className="h-2 w-2" src={errorImg} alt="" />
-                        </div>
-                        <span className="text-xs text-red-500">
-                          Check your {error[0] === "cardError" && "card number"}{" "}
-                          {error[0] === "ExpiryError" && "expiry date"}
-                          {error[0] === "cvcError" && "CVC"}
-                        </span>
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                      <ErrorMessage error={error}></ErrorMessage>
+                    ) : null}
                     <label htmlFor="card-holder-name"></label>
                     <div className="w-full relative flex justify-center mt-4 border border-grey rounded-lg">
                       <span className="absolute left-3 top-2 text-xs font-light">
