@@ -327,8 +327,6 @@ const useBookingData = ({
 
 export const updateBookingDates = (id) => {
   if (localStorage.getItem(id)) {
-    // Log and parse the dates from localStorage
-    console.log(localStorage.getItem(id));
     const parsedDates = JSON.parse(localStorage.getItem(id));
     const startDate = new Date(parsedDates.startDate);
     const endDate = new Date(parsedDates.endDate);

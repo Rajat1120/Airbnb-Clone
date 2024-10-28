@@ -256,51 +256,6 @@ const HouseDetail = () => {
   useHouseData(id, houseInfo);
 
   useEffect(() => {
-    let localData = JSON.parse(localStorage.getItem(id));
-    // console.log(localData);
-
-    if (startDate && endDate) {
-      const formattedStartDate = format(startDate, "eee MMM dd, yyyy");
-
-      const formattedEndDate = format(endDate, "eee MMM dd, yyyy");
-
-      let newData = {
-        ...localData,
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      };
-
-      if (localData) {
-        localStorage.setItem(id, JSON.stringify(newData));
-      }
-    }
-  }, [id, endDate, startDate]);
-
-  useEffect(() => {
-    updateBookingDates(id);
-  }, [id]);
-
-  useEffect(() => {
-    let localData = JSON.parse(localStorage.getItem(id));
-
-    if (startDate && endDate) {
-      const formattedStartDate = format(startDate, "eee MMM dd, yyyy");
-
-      const formattedEndDate = format(endDate, "eee MMM dd, yyyy");
-
-      let newData = {
-        ...localData,
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      };
-
-      if (localData) {
-        localStorage.setItem(id, JSON.stringify(newData));
-      }
-    }
-  }, [id, endDate, startDate]);
-
-  useEffect(() => {
     updateBookingDates(id);
   }, [id]);
 
