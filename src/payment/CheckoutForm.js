@@ -11,6 +11,7 @@ import arrowLeft from "../data/Icons svg/arrow-left.svg";
 import star from "../data/Icons svg/star.svg";
 import errorImg from "../data/Icons svg/Error.svg";
 import card from "../data/Icons svg/card.svg";
+import { store } from "../Utils/Store";
 
 import { useDispatch, useSelector } from "react-redux";
 
@@ -201,6 +202,7 @@ function useBookingModal(
             await booking(InitialBookingData);
           }
         }
+        updateBookingDates(id);
       }
     }
     updateDates();
@@ -323,21 +325,18 @@ const useBookingData = ({
   };
 };
 
-export const useUpdateBookingDates = () => {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const { isCalendarModalOpen: isModalOpen } = useSelector(
-    (store) => store.form
-  );
+export const updateBookingDates = (id) => {
+  if (localStorage.getItem(id)) {
+    // Log and parse the dates from localStorage
+    console.log(localStorage.getItem(id));
+    const parsedDates = JSON.parse(localStorage.getItem(id));
+    const startDate = new Date(parsedDates.startDate);
+    const endDate = new Date(parsedDates.endDate);
 
-  useEffect(() => {
-    if (localStorage.getItem(id)) {
-      let startDate = new Date(JSON.parse(localStorage.getItem(id)).startDate);
-      let endDate = new Date(JSON.parse(localStorage.getItem(id)).endDate);
-      dispatch(setSelectedStartDate(startDate));
-      dispatch(setSelectedEndDate(endDate));
-    }
-  }, [dispatch, id, isModalOpen]);
+    // Dispatch actions to update dates in the Redux store
+    store.dispatch(setSelectedStartDate(startDate));
+    store.dispatch(setSelectedEndDate(endDate));
+  }
 };
 
 // Custom hook to redirect to login if user is not logged in
@@ -397,7 +396,9 @@ const CheckoutForm = () => {
     }, 1000);
   }, []);
 
-  useUpdateBookingDates();
+  useEffect(() => {
+    updateBookingDates(id);
+  }, [id, isModalOpen]);
 
   // Get dates first
   const {

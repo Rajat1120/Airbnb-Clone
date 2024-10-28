@@ -15,7 +15,7 @@ import { setHouseInfo, setIsLoading } from "./HouseDetailSlice";
 import LongFooter from "./LongFooter";
 import { Link } from "react-router-dom";
 import { differenceInDays, format, isSameMonth } from "date-fns";
-import { useUpdateBookingDates } from "../payment/CheckoutForm";
+import { updateBookingDates } from "../payment/CheckoutForm";
 
 // custom hook
 const useFormattedDateRange = (startDate, endDate) => {
@@ -259,6 +259,30 @@ const HouseDetail = () => {
   useEffect(() => {
     let localData = JSON.parse(localStorage.getItem(id));
     // console.log(localData);
+
+    if (startDate && endDate) {
+      const formattedStartDate = format(startDate, "eee MMM dd, yyyy");
+
+      const formattedEndDate = format(endDate, "eee MMM dd, yyyy");
+
+      let newData = {
+        ...localData,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      };
+
+      if (localData) {
+        localStorage.setItem(id, JSON.stringify(newData));
+      }
+    }
+  }, [id, endDate, startDate]);
+
+  useEffect(() => {
+    updateBookingDates(id);
+  }, [id]);
+
+  useEffect(() => {
+    let localData = JSON.parse(localStorage.getItem(id));
 
     if (startDate && endDate) {
       const formattedStartDate = format(startDate, "eee MMM dd, yyyy");
