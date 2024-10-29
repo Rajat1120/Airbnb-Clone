@@ -516,7 +516,9 @@ const CheckoutForm = () => {
   return (
     <div>
       <Toaster position="top-right" reverseOrder={false}></Toaster>
-      {load ? <LoadingOverlay></LoadingOverlay> : null}
+      {load || dataFromChild?.processing ? (
+        <LoadingOverlay></LoadingOverlay>
+      ) : null}
       <CheckOutPageHeader></CheckOutPageHeader>
       <main>
         <RequestToBookHeader></RequestToBookHeader>
