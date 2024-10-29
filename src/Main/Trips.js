@@ -9,6 +9,7 @@ import { getPayments, getWishList } from "../Services/apiRooms";
 import MobileFooter from "../MobileFooter";
 import monthSvg from "../data/Icons svg/month.svg";
 import person from "../data/Icons svg/Person.svg";
+import LoadingOverlay from "../Utils/LoadingOverlay";
 
 const NoTripsBooked = () => {
   return (
@@ -141,17 +142,27 @@ const ItineraryButton = ({ reservationCode }) => (
 const Trips = () => {
   const userData = useSelector((store) => store.app.userData);
   const navigate = useNavigate();
-  const { data: paymentsData } = useQuery({
+  const {
+    data: paymentsData,
+
+    isLoading: isGettingPayment,
+  } = useQuery({
     queryFn: () => getPayments(userData?.email),
     queryKey: ["payments"],
     enabled: !!userData?.email,
   });
 
-  const { data: bookedTrips, refetch } = useQuery({
+  const {
+    data: bookedTrips,
+    refetch,
+    isLoading: isGettingTrips,
+  } = useQuery({
     queryKey: ["trips"],
     queryFn: () => getWishList(paymentsData?.map((item) => item.room_id)),
     enabled: false,
   });
+
+  let loading = isGettingTrips || isGettingPayment;
 
   useEffect(() => {
     if (paymentsData?.length) {
@@ -187,6 +198,12 @@ const Trips = () => {
 
   return (
     <div className="relative">
+      {loading ? (
+        <>
+          <LoadingOverlay></LoadingOverlay>
+          <div className="w-screen h-screen"></div>
+        </>
+      ) : null}
       <div
         id="header"
         className={`  z-50 bg-white fixed top-0 hidden  w-full 1xz:flex items-start justify-center  `}
@@ -198,7 +215,7 @@ const Trips = () => {
         <h1 className="text-3xl border-b border-grey-light-50 pb-5 font-medium">
           Trips
         </h1>
-        {!isTripAvailable && <NoTripsBooked></NoTripsBooked>}
+        {!isTripAvailable && !loading ? <NoTripsBooked></NoTripsBooked> : null}
         {isTripAvailable && (
           <div className="grid 1lg:gap-x-4 mt-5 mb-20  1xs:px-12 1xz:px-0 gap-x-4  gap-y-10 grid-cols-1 1xz:grid-cols-2 1xll:grid-cols-3 justify-center w-full items-start 1lg:gap-y-4 xl:gap-y-8   grid-flow-row">
             {bookedTrips?.map((tripData) => (

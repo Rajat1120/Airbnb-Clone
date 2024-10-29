@@ -1,15 +1,15 @@
-import { useCallback, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { format, differenceInDays } from "date-fns";
+import { useCallback, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { setCalendarModalOpen } from "../Header/Form/mainFormSlice";
+import { areAllKeysTruthy } from "../Utils/Helper";
 
 export const useBookingHandlers = (
   userBookingData,
   bookingData,
   updateBookingData,
   updateUserBooking,
-  insertBooking,
-  allBookingDataTruthy
+  insertBooking
 ) => {
   const dispatch = useDispatch();
   const [dataFromChild, setDataFromChild] = useState({});
@@ -24,11 +24,11 @@ export const useBookingHandlers = (
 
   const updateBookingDataFn = useCallback(() => {
     if (userBookingData?.success) {
-      if (allBookingDataTruthy(updateBookingData)) {
+      if (areAllKeysTruthy(updateBookingData)) {
         updateUserBooking();
       }
     } else {
-      if (allBookingDataTruthy(bookingData)) {
+      if (areAllKeysTruthy(bookingData)) {
         insertBooking();
       }
     }
@@ -38,7 +38,6 @@ export const useBookingHandlers = (
     bookingData,
     updateUserBooking,
     insertBooking,
-    allBookingDataTruthy,
   ]);
 
   return {
