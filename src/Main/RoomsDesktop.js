@@ -37,6 +37,7 @@ const FavoriteButton = ({ item, favListings, userData }) => {
 
   return (
     <button
+      aria-label="add favourite button"
       onClick={(e) => {
         e.preventDefault();
         if (!userData) {

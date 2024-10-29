@@ -18,6 +18,66 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookRoom } from "../Services/apiRooms";
 import { areAllKeysTruthy } from "../Utils/Helper";
 
+// Custom hook to manage Supabase session state
+const useSupabaseSession = () => {
+  // State to hold the session object
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    // Fetch the current session on mount and set the session state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    // Subscribe to auth state changes (e.g., sign-in, sign-out)
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    // Unsubscribe from the auth state listener on cleanup
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return session;
+};
+
+function useSendChildData({
+  onSendData,
+  stripe,
+  processing,
+  session,
+  error,
+  success,
+  isSubmitting,
+}) {
+  // Memoize child data to ensure it only updates when dependencies change
+  const childData = useMemo(
+    () => ({
+      stripe,
+      processing,
+      session,
+      error,
+      success,
+      isSubmitting,
+    }),
+    [stripe, processing, session, error, success, isSubmitting]
+  );
+
+  // Callback function to send child data to the parent
+  const sendDataToParent = useCallback(() => {
+    onSendData(childData);
+  }, [childData, onSendData]);
+
+  // Effect to trigger sendDataToParent when relevant dependencies change
+  useEffect(() => {
+    sendDataToParent();
+  }, [sendDataToParent, stripe, processing, session, error, success]);
+
+  return sendDataToParent;
+}
+
 const UpdatedPaymentForm = ({
   guestCount,
   totalAmount,
@@ -30,7 +90,6 @@ const UpdatedPaymentForm = ({
   numOfDays,
   booked,
 }) => {
-  const [session, setSession] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
   const [stripePaymentId, setStripePaymentId] = useState(null);
@@ -46,39 +105,17 @@ const UpdatedPaymentForm = ({
 
   let fieldEmpty = !isCardNumEmpty || !isExpEmpty || !isCvcEmpty;
 
-  let childData = useMemo(
-    () => ({
-      stripe: stripe,
-      processing: processing,
-      session: session,
-      error: error,
-      success: success,
-      isSubmitting: isSubmitting,
-    }),
-    [stripe, processing, session, error, isSubmitting, success]
-  );
+  const session = useSupabaseSession();
 
-  const sendDataToParent = useCallback(() => {
-    onSendData(childData);
-  }, [childData, onSendData]);
-
-  useEffect(() => {
-    sendDataToParent();
-  }, [stripe, processing, session, sendDataToParent, error, success]);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
+  const sendDataToParent = useSendChildData({
+    onSendData,
+    stripe,
+    processing,
+    session,
+    error,
+    success,
+    isSubmitting,
+  });
 
   const fieldEmptyFun = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
