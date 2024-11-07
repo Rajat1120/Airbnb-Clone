@@ -184,7 +184,7 @@ const BookingForm = () => {
           } justify-end sticky top-20`}
         >
           {!startDate || !endDate ? (
-            <div className="rounded-xl border-[1px] w-full border-grey-dim p-6 max-w-[23.14rem]">
+            <div className="rounded-xl  border-[1px] w-full border-grey-dim p-6 max-w-[23.14rem]">
               <h1 className="text-2xl font-light mb-6">Add dates for prices</h1>
               <DateSelection
                 scrollToSection={scrollToSection}
@@ -198,7 +198,9 @@ const BookingForm = () => {
                 disabled
                 className="w-full rounded-lg flex-center bg-dark-pink h-12"
               >
-                <span className="text-white">Check availability</span>
+                <span className="text-white text-nowrap">
+                  Check availability
+                </span>
               </button>
             </div>
           ) : (

@@ -65,8 +65,10 @@ const PriceDetails = ({
     return totalPrice;
   };
 
+  if (!dateSelected) return null;
+
   return (
-    <div className="flex flex-col">
+    <div className="flex  flex-col">
       {dateSelected && (
         <span className="text-normal font-medium">
           ${calculatePrice()} <span className="font-light text-sm">night</span>
@@ -76,11 +78,7 @@ const PriceDetails = ({
         <span className="text-sm font-medium underline">
           {tripDurationDate}
         </span>
-      ) : (
-        <div className="flex flex-col">
-          <span className="font-light">Add dates for prices</span>
-        </div>
-      )}
+      ) : null}
     </div>
   );
 };
@@ -119,7 +117,7 @@ const ActionButton = ({
           dateSelected ? "px-10" : "px-6"
         } rounded-lg flex-center bg-dark-pink h-12`}
       >
-        <span className="text-white">
+        <span className="text-white text-nowrap">
           {dateSelected ? "Reserve" : "Check availability"}
         </span>
       </button>
