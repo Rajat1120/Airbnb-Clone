@@ -102,11 +102,11 @@ const UpdatedPaymentForm = ({
     (store) => store.card
   );
   const { id } = useParams();
+  const queryClient = useQueryClient();
 
   let fieldEmpty = !isCardNumEmpty || !isExpEmpty || !isCvcEmpty;
 
   const session = useSupabaseSession();
-  const queryClient = useQueryClient();
 
   const sendDataToParent = useSendChildData({
     onSendData,

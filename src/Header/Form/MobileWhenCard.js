@@ -56,7 +56,7 @@ const Header = () => (
 
 // Component for weekday labels
 const WeekdayLabels = () => (
-  <div className="grid grid-cols-7 w-full place-content-center place-items-stretch">
+  <div className="grid grid-cols-7 w-full px-6 1xsss:px-6  1xs:px-px place-content-center place-items-stretch">
     {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
       <span key={day} className="text-xs text-center font-medium text-grey">
         {day}
