@@ -1,13 +1,13 @@
-import personalInfo from "./data/ProfilePageSvg/Profile.svg";
-import loginSecurity from "./data/ProfilePageSvg/login.svg";
-import paymentPayout from "./data/ProfilePageSvg/payments.svg";
-import taxes from "./data/ProfilePageSvg/taxes.svg";
-import notifications from "./data/ProfilePageSvg/notification.svg";
-import pricingSharing from "./data/ProfilePageSvg/privacy.svg";
-import globalPreferences from "./data/ProfilePageSvg/globalprefrences.svg";
-import travelForWork from "./data/ProfilePageSvg/travel.svg";
-import professionalHostingTools from "./data/ProfilePageSvg/tools.svg";
-import referralCreditCoupons from "./data/ProfilePageSvg/coupns.svg";
+import personalInfo from "./Asset/ProfilePageSvg/Profile.svg";
+import loginSecurity from "./Asset/ProfilePageSvg/login.svg";
+import paymentPayout from "./Asset/ProfilePageSvg/payments.svg";
+import taxes from "./Asset/ProfilePageSvg/taxes.svg";
+import notifications from "./Asset/ProfilePageSvg/notification.svg";
+import pricingSharing from "./Asset/ProfilePageSvg/privacy.svg";
+import globalPreferences from "./Asset/ProfilePageSvg/globalprefrences.svg";
+import travelForWork from "./Asset/ProfilePageSvg/travel.svg";
+import professionalHostingTools from "./Asset/ProfilePageSvg/tools.svg";
+import referralCreditCoupons from "./Asset/ProfilePageSvg/coupns.svg";
 
 let profilePageData = [
   {

@@ -7,8 +7,8 @@ import {
 } from "@stripe/react-stripe-js";
 import supabase from "../Services/Supabase"; // Adjust the import path as needed
 import CustomCardElement from "./CustomCardElement"; // Adjust the import path as needed
-import copySvg from "../data/Icons svg/copy.svg";
-import importantSvg from "../data/Icons svg/important.svg";
+import copySvg from "../Asset/Icons svg/copy.svg";
+import importantSvg from "../Asset/Icons svg/important.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setHasError } from "./CardSlice";
 import toast, { Toaster } from "react-hot-toast";

@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import cross from "../data/Icons svg/cross.svg";
-import google from "../data/Icons svg/Google.svg";
-import person from "../data/Icons svg/Person.svg";
+import cross from "../Asset/Icons svg/cross.svg";
+import google from "../Asset/Icons svg/Google.svg";
+import person from "../Asset/Icons svg/Person.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowLogin } from "../Main/AppSlice";
 import {

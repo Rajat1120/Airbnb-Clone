@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import arrowUp from "../data/Icons svg/arrowUpword.svg";
+import arrowUp from "../Asset/Icons svg/arrowUpword.svg";
 import { setShowLogin } from "../Main/AppSlice";
 import { setIsVisible } from "./HouseDetailSlice";
 import { useDispatch, useSelector } from "react-redux";

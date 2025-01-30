@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import "leaflet/dist/leaflet.css";
 
 import LocationDescriptionModal from "./LocationDescriptionModal";
-import showMore from "../data/Icons svg/arrow-right.svg";
+import showMore from "../Asset/Icons svg/arrow-right.svg";
 import TruncatedText from "./Truncatedtext";
 
 // Custom hook for handling text overflow

@@ -7,8 +7,8 @@ import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { getPayments, getWishList } from "../Services/apiRooms";
 import MobileFooter from "../MobileFooter";
-import monthSvg from "../data/Icons svg/month.svg";
-import person from "../data/Icons svg/Person.svg";
+import monthSvg from "../Asset/Icons svg/month.svg";
+import person from "../Asset/Icons svg/Person.svg";
 import LoadingOverlay from "../Utils/LoadingOverlay";
 
 const NoTripsBooked = () => {

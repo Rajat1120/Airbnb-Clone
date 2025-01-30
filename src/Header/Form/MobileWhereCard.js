@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Destination from "../../data/destination";
+import Destination from "../../Asset/destination";
 import {
   setDestinationInputVal,
   setOpenWhenCard,

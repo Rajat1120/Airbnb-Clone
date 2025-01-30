@@ -8,7 +8,7 @@ import {
   setHoverInput,
   setRegion,
 } from "./mainFormSlice";
-import cross from "../../data/Icons svg/cross.svg";
+import cross from "../../Asset/Icons svg/cross.svg";
 import { useHandleCrossClick } from "./MainFormContent";
 
 // Custom hook for destination form logic

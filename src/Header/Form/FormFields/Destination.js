@@ -7,12 +7,12 @@ import {
   setOpenName,
   setRegion,
 } from "../mainFormSlice";
-import Europe from "../../../data/Continents/europe.jpg";
-import MiddleEast from "../../../data/Continents/Middle-East.jpg";
-import world from "../../../data/Continents/world.jpg";
-import UnitedArabEmirates from "../../../data/Continents/UAE.jpg";
-import Thiland from "../../../data/Continents/thisland.jpg";
-import SouthEastAsia from "../../../data/Continents/southEash.jpg";
+import Europe from "../../../Asset/Continents/europe.jpg";
+import MiddleEast from "../../../Asset/Continents/Middle-East.jpg";
+import world from "../../../Asset/Continents/world.jpg";
+import UnitedArabEmirates from "../../../Asset/Continents/UAE.jpg";
+import Thiland from "../../../Asset/Continents/thisland.jpg";
+import SouthEastAsia from "../../../Asset/Continents/southEash.jpg";
 
 // Custom hook to manage region selection logic
 const useRegionSelection = () => {

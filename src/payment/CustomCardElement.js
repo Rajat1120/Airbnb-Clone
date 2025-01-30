@@ -1,5 +1,5 @@
 import React from "react";
-import copySvg from "../data/Icons svg/copy.svg";
+import copySvg from "../Asset/Icons svg/copy.svg";
 import {
   CardNumberElement,
   CardExpiryElement,

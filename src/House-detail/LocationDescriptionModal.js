@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import arrowLeft from "../Asset/Icons svg/arrow-left.svg";
 import { useSelector } from "react-redux";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 

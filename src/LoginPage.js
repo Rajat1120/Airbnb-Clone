@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import LongFooter from "./House-detail/LongFooter";
 import Header from "./Header/Header";
-import person from "../src/data/Icons svg/Person.svg";
-import google from "./data/Icons svg/Google.svg";
+import person from "../src/Asset/Icons svg/Person.svg";
+import google from "./Asset/Icons svg/Google.svg";
 import MobileFooter from "./MobileFooter";
 import { loginWithEmail, signInWithGoogle } from "./Services/apiAuthentication";
 

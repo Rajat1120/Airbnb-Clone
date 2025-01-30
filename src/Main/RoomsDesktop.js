@@ -1,9 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import star from "../data/Icons svg/star.svg";
-import arrow_right from "../data/Icons svg/arrow-right.svg";
-import arrow_left from "../data/Icons svg/arrow-left.svg";
+import star from "../Asset/Icons svg/star.svg";
+import arrow_right from "../Asset/Icons svg/arrow-right.svg";
+import arrow_left from "../Asset/Icons svg/arrow-left.svg";
 
 import {
   removeUserFavListing,
@@ -14,7 +14,7 @@ import {
   setShowLogin,
   setUserFavListing,
 } from "./AppSlice";
-import { svg as favSvg } from "../data/HeartIconSvg";
+import { svg as favSvg } from "../Asset/HeartIconSvg";
 
 // Utility component to render rating stars and rating value
 const Rating = ({ rating }) => (

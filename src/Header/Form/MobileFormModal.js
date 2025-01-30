@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setHitSearch, setShowMobileForm } from "../../Main/AppSlice";
-import crossIcon from "../../data/Icons svg/cross.svg";
+import crossIcon from "../../Asset/Icons svg/cross.svg";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
 import { handleSearchInput } from "./HandleSearch";

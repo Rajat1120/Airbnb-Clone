@@ -1,6 +1,6 @@
 import React from "react";
 import CheckInOption from "./DatesOption";
-import cross from "../../data/Icons svg/cross.svg";
+import cross from "../../Asset/Icons svg/cross.svg";
 import Calendar from "./FormFields/Calendar";
 import Modal from "../../Modals/Modal";
 import { useDispatch } from "react-redux";

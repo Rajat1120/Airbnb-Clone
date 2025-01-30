@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import share from "../../src/data/Icons svg/shareIcon.svg";
+import share from "../../src/Asset/Icons svg/shareIcon.svg";
 
-import dots from "../data/Icons svg/dots.svg";
+import dots from "../Asset/Icons svg/dots.svg";
 import { useNavigate, useParams } from "react-router";
-import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import arrowLeft from "../Asset/Icons svg/arrow-left.svg";
 import { useDispatch, useSelector } from "react-redux";
 import ImageGalleryModal from "./ImageGalleryModal";
-import { svg } from "../data/HeartIconSvg";
+import { svg } from "../Asset/HeartIconSvg";
 import {
   removeUserFavListing,
   setIsFavorite,

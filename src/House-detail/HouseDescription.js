@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import showMore from "../data/Icons svg/arrow-right.svg";
+import showMore from "../Asset/Icons svg/arrow-right.svg";
 import HouseDescriptionModal from "./HouseDescriptionModal";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";

@@ -1,5 +1,5 @@
 import React from "react";
-import star from "../data/Icons svg/star.svg";
+import star from "../Asset/Icons svg/star.svg";
 
 let imgs = [
   "https://a0.muscache.com/im/pictures/user/e64ff105-0336-4db5-9ea3-f2e35546739c.jpg?im_w=240",

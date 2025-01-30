@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowMobileForm } from "../../Main/AppSlice";
 import { setIsSearch } from "./mainFormSlice";
 import MobileFormModal from "./MobileFormModal";
-import FilterIcon from "../../data/Icons svg/filter.svg";
-import WestArrowIcon from "../../data/Icons svg/westArrow.svg";
+import FilterIcon from "../../Asset/Icons svg/filter.svg";
+import WestArrowIcon from "../../Asset/Icons svg/westArrow.svg";
 
 const MobileForm = () => {
   const dispatch = useDispatch();

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import filter_icon from "../../data/Icons svg/filter_icon.svg";
+import filter_icon from "../../Asset/Icons svg/filter_icon.svg";
 import Toggle from "../Toggle";
 
 const FilterHome = () => {

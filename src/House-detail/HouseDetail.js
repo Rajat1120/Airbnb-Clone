@@ -6,7 +6,7 @@ import { useLocation, useParams } from "react-router";
 import TopMainCont from "./TopMainCont";
 import MidMainCont from "./MidMainCont";
 import BottomMainCont from "./BottomMainCont";
-import star from "../data/Icons svg/star.svg";
+import star from "../Asset/Icons svg/star.svg";
 
 import NavBar from "./NavBar";
 import { getRoomInfo } from "../Services/apiRooms";

@@ -1,11 +1,11 @@
 import React from "react";
-import star from "../data/Icons svg/star.svg";
-import spray from "../data/Icons svg/Spray.svg";
-import checkMark from "../data/Icons svg/accuracy.svg";
-import key from "../data/Icons svg/key.svg";
-import msg from "../data/Icons svg/msg.svg";
-import location from "../data/Icons svg/location.svg";
-import value from "../data/Icons svg/value.svg";
+import star from "../Asset/Icons svg/star.svg";
+import spray from "../Asset/Icons svg/Spray.svg";
+import checkMark from "../Asset/Icons svg/accuracy.svg";
+import key from "../Asset/Icons svg/key.svg";
+import msg from "../Asset/Icons svg/msg.svg";
+import location from "../Asset/Icons svg/location.svg";
+import value from "../Asset/Icons svg/value.svg";
 import { useSelector } from "react-redux";
 
 const StarRating = ({ houseRating, ratingCount, formatSingleDigit }) => {

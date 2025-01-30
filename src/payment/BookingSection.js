@@ -1,8 +1,8 @@
 import React from "react";
-import errorImg from "../data/Icons svg/Error.svg";
+import errorImg from "../Asset/Icons svg/Error.svg";
 import UpdatedPaymentForm from "./UpdatePaymentForm";
-import cardImage from "../data/Icons svg/card.svg";
-import star from "../data/Icons svg/star.svg";
+import cardImage from "../Asset/Icons svg/card.svg";
+import star from "../Asset/Icons svg/star.svg";
 import { useDispatch } from "react-redux";
 import { setFirstBtnClick } from "./CardSlice";
 

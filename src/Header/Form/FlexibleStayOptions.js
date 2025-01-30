@@ -6,10 +6,10 @@ import {
   setStayDuration,
   setTextForFlexibleInput,
 } from "./mainFormSlice";
-import monthSvg from "../../data/Icons svg/month.svg";
-import monthSelected from "../../data/Icons svg/month-checked.svg";
-import arrow_left from "../../data/Icons svg/arrowLeftDark.svg";
-import arrow_right from "../../data/Icons svg/arrowRightDark.svg";
+import monthSvg from "../../Asset/Icons svg/month.svg";
+import monthSelected from "../../Asset/Icons svg/month-checked.svg";
+import arrow_left from "../../Asset/Icons svg/arrowLeftDark.svg";
+import arrow_right from "../../Asset/Icons svg/arrowRightDark.svg";
 
 // Constants
 const SCROLL_DISTANCE = 760;

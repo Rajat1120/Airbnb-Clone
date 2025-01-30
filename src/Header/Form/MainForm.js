@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MainFormContent from "./MainFormContent";
 import ReactDOM from "react-dom";
-import searchIcon from "../../data/Icons svg/search-icon.svg";
+import searchIcon from "../../Asset/Icons svg/search-icon.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setActiveInput,

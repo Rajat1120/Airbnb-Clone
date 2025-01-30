@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { setHoverInput } from "./mainFormSlice";
 import CheckInOption from "./DatesOption";
 import Calendar from "./FormFields/Calendar";
-import cross from "../../data/Icons svg/cross.svg";
+import cross from "../../Asset/Icons svg/cross.svg";
 import { useHandleCrossClick } from "./MainFormContent";
 
 // Custom hook for handling input hover state

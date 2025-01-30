@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import cross from "../../data/Icons svg/cross.svg";
+import cross from "../../Asset/Icons svg/cross.svg";
 import { useLocation } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedEndDate, setSelectedStartDate } from "./mainFormSlice";

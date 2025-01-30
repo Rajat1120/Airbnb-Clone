@@ -13,8 +13,8 @@ import {
   isWithinInterval,
   isBefore,
 } from "date-fns";
-import arrowRight from "../../../data/Icons svg/arrow-right.svg";
-import arrowLeft from "../../../data/Icons svg/arrow-left.svg";
+import arrowRight from "../../../Asset/Icons svg/arrow-right.svg";
+import arrowLeft from "../../../Asset/Icons svg/arrow-left.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setActiveInput,

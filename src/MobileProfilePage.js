@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
-import notifications from "./data/ProfilePageSvg/notifications.svg";
-import arrowRight from "./data/Icons svg/arrow-right.svg";
-import personalInfo from "./data/ProfilePageSvg/MobilePersonalInfo.svg";
-import account from "./data/ProfilePageSvg/MobileAccount.svg";
-import help from "./data/ProfilePageSvg/MobileHelp.svg";
-import safety from "./data/ProfilePageSvg/MobileSaftey.svg";
-import airbnb from "./data/ProfilePageSvg/MobileAirbnb.svg";
-import Report from "./data/ProfilePageSvg/MobileReport.svg";
+import notifications from "./Asset/ProfilePageSvg/notifications.svg";
+import arrowRight from "./Asset/Icons svg/arrow-right.svg";
+import personalInfo from "./Asset/ProfilePageSvg/MobilePersonalInfo.svg";
+import account from "./Asset/ProfilePageSvg/MobileAccount.svg";
+import help from "./Asset/ProfilePageSvg/MobileHelp.svg";
+import safety from "./Asset/ProfilePageSvg/MobileSaftey.svg";
+import airbnb from "./Asset/ProfilePageSvg/MobileAirbnb.svg";
+import Report from "./Asset/ProfilePageSvg/MobileReport.svg";
 import { getUserLogout } from "./Services/apiAuthentication";
 
 // Custom hook to handle authentication check

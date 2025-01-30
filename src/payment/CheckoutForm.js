@@ -6,7 +6,7 @@ import React, {
   useCallback,
 } from "react";
 
-import arrowLeft from "../data/Icons svg/arrow-left.svg";
+import arrowLeft from "../Asset/Icons svg/arrow-left.svg";
 
 import { store } from "../Utils/Store";
 

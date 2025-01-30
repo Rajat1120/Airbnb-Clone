@@ -1,5 +1,5 @@
 import React from "react";
-import globe from "../src/data/globe.svg";
+import globe from "../src/Asset/globe.svg";
 import { useLocation } from "react-router";
 
 const Footer = () => {

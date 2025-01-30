@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
-import cross from "../data/Icons svg/cross.svg";
+import cross from "../Asset/Icons svg/cross.svg";
 
 // Custom hook for locking body scroll when modal is open
 const useBodyOverflowLock = (isOpen) => {

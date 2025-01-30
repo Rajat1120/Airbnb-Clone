@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router";
 import AddGuest from "../Header/Form/FormFields/AddGuest";
-import cross from "../data/Icons svg/cross.svg";
+import cross from "../Asset/Icons svg/cross.svg";
 import { setCancelGuestUpdate } from "../Main/AppSlice";
 
 const AddGuestModal = ({ isOpen, onClose }) => {

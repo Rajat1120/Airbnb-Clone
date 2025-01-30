@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import HouseDescription from "./HouseDescription";
 import SleepBedDetail from "./SleepBedDetail";
 
-import room from "../../src/data/Icons svg/roomIcon.svg";
-import sharedSpace from "../../src/data/Icons svg/commonSpace.svg";
-import bathroom from "../../src/data/Icons svg/bathroom.svg";
-import furryFriend from "../../src/data/Icons svg/furryFriends.svg";
-import star from "../../src/data/Icons svg/star.svg";
-import person from "../data/person.svg";
+import room from "../../src/Asset/Icons svg/roomIcon.svg";
+import sharedSpace from "../../src/Asset/Icons svg/commonSpace.svg";
+import bathroom from "../../src/Asset/Icons svg/bathroom.svg";
+import furryFriend from "../../src/Asset/Icons svg/furryFriends.svg";
+import star from "../../src/Asset/Icons svg/star.svg";
+import person from "../Asset/person.svg";
 import { useSelector } from "react-redux";
 
 const HouseInfo = ({ houseInfo, houseInfoDetails, isLoading }) => {

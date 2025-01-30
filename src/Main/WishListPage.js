@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import star from "../data/Icons svg/star.svg";
+import star from "../Asset/Icons svg/star.svg";
 
 import MobileFooter from "../MobileFooter";
 import LongFooter from "../House-detail/LongFooter";

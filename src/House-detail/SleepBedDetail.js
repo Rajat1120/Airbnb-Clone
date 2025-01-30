@@ -1,15 +1,15 @@
 import React from "react";
-import kitchen from "../data/Icons svg/kitchen.svg";
-import car from "../data/Icons svg/car.svg";
-import wifi from "../data/Icons svg/wifi.svg";
-import tub from "../data/Icons svg/tub.svg";
-import pets from "../data/Icons svg/pets.svg";
-import tv from "../data/Icons svg/tv.svg";
-import lift from "../data/Icons svg/Lift.svg";
-import airConditioner from "../data/Icons svg/AC.svg";
-import carbon from "../data/Icons svg/Carbon.svg";
-import alarm from "../data/Icons svg/Alarm.svg";
-import bed from "../data/Icons svg/bed.svg";
+import kitchen from "../Asset/Icons svg/kitchen.svg";
+import car from "../Asset/Icons svg/car.svg";
+import wifi from "../Asset/Icons svg/wifi.svg";
+import tub from "../Asset/Icons svg/tub.svg";
+import pets from "../Asset/Icons svg/pets.svg";
+import tv from "../Asset/Icons svg/tv.svg";
+import lift from "../Asset/Icons svg/Lift.svg";
+import airConditioner from "../Asset/Icons svg/AC.svg";
+import carbon from "../Asset/Icons svg/Carbon.svg";
+import alarm from "../Asset/Icons svg/Alarm.svg";
+import bed from "../Asset/Icons svg/bed.svg";
 import Calendar from "../Header/Form/FormFields/Calendar";
 import {
   setSelectedEndDate,

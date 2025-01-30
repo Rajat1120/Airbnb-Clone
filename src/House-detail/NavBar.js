@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import star from "../data/Icons svg/star.svg";
+import star from "../Asset/Icons svg/star.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowLogin } from "../Main/AppSlice";
 import { Link } from "react-router-dom";

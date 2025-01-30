@@ -1,7 +1,7 @@
 import React from "react";
-import star from "../../src/data/Icons svg/star.svg";
+import star from "../../src/Asset/Icons svg/star.svg";
 import { useSelector } from "react-redux";
-import person from "../data/person.svg";
+import person from "../Asset/person.svg";
 
 const HostImage = ({ src, alt }) => (
   <div className="w-full flex justify-center items-end">

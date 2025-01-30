@@ -1,8 +1,8 @@
-import faceBook from "../data/Icons svg/faceBookIcon.svg";
-import twitter from "../data/Icons svg/twitter.svg";
-import Instagram from "../data/Icons svg/Insta.svg";
-import globe from "../data/globe.svg";
-import arrowRight from "../data/Icons svg/arrow-right.svg";
+import faceBook from "../Asset/Icons svg/faceBookIcon.svg";
+import twitter from "../Asset/Icons svg/twitter.svg";
+import Instagram from "../Asset/Icons svg/Insta.svg";
+import globe from "../Asset/globe.svg";
+import arrowRight from "../Asset/Icons svg/arrow-right.svg";
 
 import React from "react";
 import { useLocation } from "react-router";

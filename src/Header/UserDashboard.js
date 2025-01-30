@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import menu from "../data/Menu-Icon.svg";
-import person from "../data/person.svg";
+import menu from "../Asset/Menu-Icon.svg";
+import person from "../Asset/person.svg";
 import UserDmodal from "./UserDmodal";
 
 // Custom hook to handle modal behavior

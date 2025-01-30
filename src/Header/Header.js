@@ -1,5 +1,5 @@
-import icon from "../data/airbnbLogo.svg";
-import globe from "../data/globe.svg";
+import icon from "../Asset/airbnbLogo.svg";
+import globe from "../Asset/globe.svg";
 import MainForm from "./Form/MainForm";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";

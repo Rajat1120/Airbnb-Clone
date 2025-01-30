@@ -1,6 +1,6 @@
 // CheckOutPageHeader.js
 import React from "react";
-import AirbnbLogo from "../data/airbnbLogo.svg";
+import AirbnbLogo from "../Asset/airbnbLogo.svg";
 
 const CheckOutPageHeader = () => {
   return (

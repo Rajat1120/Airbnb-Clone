@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { svg } from "../data/HeartIconSvg";
+import { svg } from "../Asset/HeartIconSvg";
 import { useQuery } from "@tanstack/react-query";
 import { getWishList } from "../Services/apiRooms";
 
