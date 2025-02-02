@@ -1,4 +1,3 @@
-
 # Airbnb Clone
 
 This project is an Airbnb clone built with React, Redux, and Supabase, designed to mimic core features of the Airbnb platform. Users can search for listings, log in/log out, save favourite listings, book trips, and view listings with infinite scroll. The app also supports Google Sign-In for authentication and is highly responsive, providing a seamless experience across devices.
@@ -10,7 +9,6 @@ This project is an Airbnb clone built with React, Redux, and Supabase, designed 
 - [Setup Instructions](#setup-instructions)
 - [Known Issues](#known-issues)
 - [Contributing](#contributing)
-
 
 ## Features
 
@@ -26,6 +24,7 @@ This project is an Airbnb clone built with React, Redux, and Supabase, designed 
 ## Tech Stack
 
 - **Frontend:**
+
   - React
   - React Router DOM
   - Redux & Redux Toolkit
@@ -34,12 +33,12 @@ This project is an Airbnb clone built with React, Redux, and Supabase, designed 
   - React Hot Toast (for notifications)
 
 - **Backend:**
+
   - Supabase (PostgreSQL database and authentication)
   - Google Sign-In (OAuth)
 
 - **Others:**
   - Stripe (for handling payments)
-  - Jest (for testing)
   - ESlint & Prettier (for code quality)
 
 ## Setup Instructions
@@ -47,8 +46,7 @@ This project is an Airbnb clone built with React, Redux, and Supabase, designed 
 ### Prerequisites
 
 - Node.js (>= 14.x.x)
-- npm 
-
+- npm
 
 ### Installation
 
@@ -73,23 +71,18 @@ This project is an Airbnb clone built with React, Redux, and Supabase, designed 
 4. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
-   The app will be available at `http://localhost:3000`.
-
-
+   The app will be available at `http://localhost:5173`.
 
 ## Known Issues
 
 - The search functionality may not always return accurate results.
 
-
-
 ## Contributing
 
 Feel free to open issues and submit pull requests to improve the project!
-
 
 ### To contribute:
 
@@ -97,8 +90,6 @@ Feel free to open issues and submit pull requests to improve the project!
 2. Create a new feature branch.
 3. Make your changes.
 4. Submit a pull request.
-
-   
 
 ## Show Your Support
 
