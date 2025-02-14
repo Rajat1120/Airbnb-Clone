@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import formReducer from "./mainFormSlice";
 import appReducer from "./AppSlice";
-import HouseDetailSlice from "../components/House-detail/HouseDetailSlice";
+import HouseDetailSlice from "./HouseDetailSlice";
 
 import CardSlice from "./CardSlice";
 import {
