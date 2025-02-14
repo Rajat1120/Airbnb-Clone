@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import arrowUp from "../../asset/Icons_svg/arrowUpword.svg";
 import { setShowLogin } from "../../redux/AppSlice";
-import { setIsVisible } from "./HouseDetailSlice";
+import { setIsVisible } from "../../redux/HouseDetailSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { differenceInDays, format } from "date-fns";
 

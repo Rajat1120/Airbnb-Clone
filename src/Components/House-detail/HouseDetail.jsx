@@ -11,7 +11,7 @@ import BottomMainCont from "./BottomMainCont";
 import NavBar from "./NavBar";
 import { getRoomInfo } from "../../api/apiRooms";
 import { useQuery } from "@tanstack/react-query";
-import { setHouseInfo, setIsLoading } from "./HouseDetailSlice";
+import { setHouseInfo, setIsLoading } from "../../redux/HouseDetailSlice";
 import LongFooter from "./LongFooter";
 import { Link } from "react-router-dom";
 import { differenceInDays, format, isSameMonth } from "date-fns";
