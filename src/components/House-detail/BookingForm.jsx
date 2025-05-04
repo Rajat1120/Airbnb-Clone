@@ -36,19 +36,21 @@ const DateSelection = ({
       <div className="w-full h-1/2  flex border-b border-border-color">
         <div
           onClick={scrollToSection("calendar")}
-          className="w-1/2 h-full border-r-[1px] border-border-color flex justify-center flex-col pl-3"
+          className="w-1/2 h-full border-r-[1px] border-border-color flex justify-center flex-col px-3"
         >
-          <span className="text-[10px] font-semibold">CHECK-IN</span>
-          <span className="text-sm text-grey font-normal">
+          <span className="text-[10px] whitespace-nowrap font-semibold">
+            CHECK-IN
+          </span>
+          <span className="text-sm whitespace-nowrap text-grey font-normal">
             {startDate ? formatStartDate : "Add date"}
           </span>
         </div>
         <div
           onClick={scrollToSection("calendar")}
-          className="w-1/2 h-full flex justify-center flex-col pl-3"
+          className="w-1/2 h-full flex justify-center flex-col px-3"
         >
           <span className="text-[10px] font-semibold">CHECKOUT</span>
-          <span className="text-sm text-grey font-normal">
+          <span className="text-sm text-grey whitespace-nowrap font-normal">
             {endDate ? formatEndDate : "Add date"}
           </span>
         </div>

@@ -1,5 +1,5 @@
 import icon from "../../asset/airbnbLogo.svg";
-import globe from "../../asset/globe.svg";
+import github from "../../asset/github.svg";
 import MainForm from "./Form/MainForm";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
@@ -62,9 +62,15 @@ function Header({ headerRef }) {
             Airbnb your home
           </button>
 
-          <button className="min-h-9 cursor-auto hidden 1smm:flex items-center justify-center rounded-full hover:bg-shadow-gray-light min-w-9">
-            <img className="h-4 w-4" src={globe} alt="Global" />
-          </button>
+          <a
+            href="https://github.com/Rajat1120/Airbnb-Clone"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <button className="min-h-9 cursor-pointer 1smm:flex items-center justify-center rounded-full hover:bg-shadow-gray-light min-w-9">
+              <img className="h-5 w-5" src={github} alt="GitHub Repo" />
+            </button>
+          </a>
 
           <UserDashboard />
         </div>
